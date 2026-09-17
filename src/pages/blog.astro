@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import articles from '../data/blog.json';
+const liveArticles = articles.filter((article) => !article.archived && !article.draft);
+---
+<BaseLayout
+  title="Blog — Insights & Ideas for Modern Branding and Logo Design | Unroot Design"
+  description="Explore Unroot Blog for expert insights on modern branding, logo design, and creative strategy. Discover guides, tips, and stories to elevate your brand identity."
+>
+  <Header />
+  <main>
+    <section class="blog-hero">
+      <div class="container">
+        <p class="eyebrow">Insights</p>
+        <h1>Unroot Blog</h1>
+        <p class="intro">All current Webflow CMS articles are now represented in the Astro project with their existing public URLs, content and SEO metadata.</p>
+      </div>
+    </section>
+    <section class="container blog-grid">
+      {liveArticles.map((article) => (
+        <a href={article.url} class="article-card">
+          <div class="card-image">
+            {article.image ? <img src={article.image} alt="" loading="lazy" /> : <div class="image-placeholder">Image</div>}
+          </div>
+          <div class="card-copy">
+            <div class="tags">{article.tags.map((tag) => <span>#{tag}</span>)}</div>
+            <h2>{article.name}</h2>
+            <p>{article.metaDescription}</p>
+            <code>{article.url}</code>
+          </div>
+        </a>
+      ))}
+    </section>
+  </main>
+  <footer><div class="container">Unroot migration · {liveArticles.length} Webflow CMS articles imported</div></footer>
+</BaseLayout>
+
+<style>
+  .blog-hero { padding:96px 0 64px; border-bottom:1px solid #cfcfc8; }
+  .blog-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; padding-top:40px; padding-bottom:90px; }
+  .article-card { display:block; border:1px solid #cfcfc8; border-radius:18px; overflow:hidden; background:#fff; text-decoration:none; }
+  .card-image { aspect-ratio:16/9; background:#e5e5df; overflow:hidden; }
+  .card-image img { width:100%; height:100%; object-fit:cover; display:block; }
+  .image-placeholder { height:100%; display:grid; place-items:center; color:#888; }
+  .card-copy { padding:24px; }
+  .tags { display:flex; gap:8px; flex-wrap:wrap; color:#777; font-size:12px; }
+  .article-card h2 { font-size:30px; line-height:1.08; letter-spacing:-.035em; margin:16px 0 12px; }
+  .article-card p { color:#5a5a55; line-height:1.55; margin:0 0 20px; }
+  .article-card code { font-size:11px; color:#777; word-break:break-all; }
+  @media(max-width:760px){ .blog-grid{grid-template-columns:1fr;} }
+</style>

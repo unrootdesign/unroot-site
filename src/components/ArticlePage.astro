@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from './Header.astro';
+
+interface FAQ { question: string; slug: string; answer: string }
+interface Author { name?: string; position?: string; photo?: string; about?: string; twitter?: string; instagram?: string; linkedin?: string }
+interface Article {
+  name: string; url: string; section: string; slug: string; content: string; metaTitle: string; metaDescription: string;
+  openGraphImage?: string; image?: string; tags: string[]; publishedOn?: string; updatedOn?: string; featured?: boolean;
+  author?: Author; faqs: FAQ[]; hideH3InToc?: boolean;
+}
+interface Props { article: Article }
+const { article } = Astro.props;
+const label = article.section === 'logo-design' ? 'Logo design' : article.section === 'web-development' ? 'Web development' : 'Web design';
+
+const headings: { level: number; text: string; id: string }[] = [];
+const usedIds = new Map<string, number>();
+const decodeText = (value: string) => value
+  .replace(/<[^>]+>/g, '')
+  .replace(/&amp;/g, '&')
+  .replace(/&quot;/g, '\"')
+  .replace(/&#39;/g, "'")
+  .replace(/&nbsp;/g, ' ')
+  .trim();
+const slugify = (value: string) => value
+  .toLowerCase()
+  .normalize('NFKD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '') || 'section';
+
+const contentWithAnchors = article.content.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi, (match, levelRaw, attrs, inner) => {
+  const level = Number(levelRaw);
+  const text = decodeText(inner);
+  const existingId = attrs.match(/\sid=[\"']([^\"']+)[\"']/i)?.[1];
+  const base = existingId || slugify(text);
+  const count = usedIds.get(base) || 0;
+  usedIds.set(base, count + 1);
+  const id = count ? `${base}-${count + 1}` : base;
+  if (level === 2 || (level === 3 && !article.hideH3InToc)) headings.push({ level, text, id });
+  if (existingId) return match;
+  return `<h${level}${attrs} id=\"${id}\">${inner}</h${level}>`;
+});
+---
+<BaseLayout title={article.metaTitle || article.name} description={article.metaDescription} image={article.openGraphImage || article.image}>
+  <Header />
+  <main class="article-shell">
+    <div class="article-top container">
+      <a class="back-link" href="/blog">← Blog</a>
+      <div class="article-meta">
+        <span>{label}</span>
+        {article.tags.map((tag) => <span>#{tag}</span>)}
+      </div>
+    </div>
+
+    <article class="article-body container">
+      {headings.length > 0 && (
+        <nav class="article-toc" aria-label="Table of contents">
+          <p class="toc-title">Contents</p>
+          <ol>
+            {headings.map((heading) => (
+              <li class:list={{ 'toc-h3': heading.level === 3 }}>
+                <a href={`#${heading.id}`}>{heading.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      <div class="rich-text" set:html={contentWithAnchors}></div>
+
+      {article.faqs.length > 0 && (
+        <section class="article-faq">
+          <p class="eyebrow">FAQ</p>
+          <h2>Frequently asked questions</h2>
+          <div class="faq-list">
+            {article.faqs.map((faq) => (
+              <details>
+                <summary>{faq.question}</summary>
+                <div class="faq-answer rich-text" set:html={faq.answer}></div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {article.author?.name && (
+        <section class="author-card">
+          {article.author.photo && <img src={article.author.photo} alt={article.author.name} loading="lazy" />}
+          <div>
+            <p class="eyebrow">Author</p>
+            <h2>{article.author.name}</h2>
+            {article.author.position && <p class="author-position">{article.author.position}</p>}
+            {article.author.about && <div class="author-about rich-text" set:html={article.author.about}></div>}
+          </div>
+        </section>
+      )}
+    </article>
+  </main>
+  <footer><div class="container">Unroot migration · blog content imported from Webflow CMS</div></footer>
+</BaseLayout>
+
+<style>
+  .article-shell { padding: 28px 0 80px; }
+  .article-top { display:flex; justify-content:space-between; gap:24px; align-items:center; padding-top:18px; padding-bottom:28px; border-bottom:1px solid #cfcfc8; }
+  .back-link { text-decoration:none; font-size:14px; }
+  .article-meta { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; font-size:12px; color:#666; }
+  .article-meta span { border:1px solid #cfcfc8; border-radius:999px; padding:7px 10px; }
+  .article-body { max-width:900px; padding-top:64px; }
+  .article-toc { margin:0 0 64px; padding:24px 0 28px; border-top:1px solid #cfcfc8; border-bottom:1px solid #cfcfc8; }
+  .toc-title { margin:0 0 14px; font-size:13px; font-weight:700; }
+  .article-toc ol { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+  .article-toc li { margin:0; }
+  .article-toc li.toc-h3 { padding-left:20px; }
+  .article-toc a { color:#4b4b47; text-decoration:none; font-size:15px; line-height:1.4; }
+  .article-toc a:hover { color:#111; text-decoration:underline; text-underline-offset:3px; }
+  .rich-text :global(h2[id]), .rich-text :global(h3[id]) { scroll-margin-top:96px; }
+  .rich-text :global(h1) { max-width:none; font-size:clamp(42px,7vw,82px); line-height:.98; letter-spacing:-.055em; margin:0 0 42px; }
+  .rich-text :global(h2) { font-size:clamp(30px,4vw,48px); letter-spacing:-.035em; line-height:1.05; margin:72px 0 22px; }
+  .rich-text :global(h3) { font-size:clamp(22px,2.6vw,30px); letter-spacing:-.02em; line-height:1.15; margin:44px 0 16px; }
+  .rich-text :global(p), .rich-text :global(li) { font-size:18px; line-height:1.72; color:#373733; }
+  .rich-text :global(ul), .rich-text :global(ol) { padding-left:28px; }
+  .rich-text :global(a) { text-underline-offset:3px; }
+  .rich-text :global(figure) { margin:42px 0; max-width:none !important; }
+  .rich-text :global(figure > div) { width:100%; }
+  .rich-text :global(img), .rich-text :global(video) { display:block; width:100%; height:auto; border-radius:14px; background:#e6e6e0; }
+  .rich-text :global(figcaption) { margin-top:10px; color:#777; font-size:13px; text-align:center; }
+  .rich-text :global(blockquote) { margin:40px 0; padding:24px 28px; border-left:3px solid #111; background:#fff; font-size:22px; line-height:1.45; }
+  .article-faq { margin-top:92px; padding-top:48px; border-top:1px solid #cfcfc8; }
+  .article-faq > h2 { font-size:clamp(34px,5vw,58px); letter-spacing:-.045em; margin:0 0 28px; }
+  .faq-list details { border-top:1px solid #cfcfc8; padding:20px 0; }
+  .faq-list details:last-child { border-bottom:1px solid #cfcfc8; }
+  .faq-list summary { cursor:pointer; font-size:19px; font-weight:650; }
+  .faq-answer { padding-top:8px; }
+  .faq-answer :global(p) { font-size:16px; }
+  .author-card { display:grid; grid-template-columns:112px 1fr; gap:28px; margin-top:92px; padding:32px; border:1px solid #cfcfc8; border-radius:18px; background:#fff; }
+  .author-card > img { width:112px; height:112px; border-radius:50%; object-fit:cover; }
+  .author-card h2 { margin:0; font-size:34px; letter-spacing:-.035em; }
+  .author-position { margin:8px 0 12px; color:#666; }
+  .author-about :global(p) { margin:0; font-size:15px; line-height:1.6; }
+  @media (max-width:700px) {
+    .article-top { align-items:flex-start; flex-direction:column; }
+    .article-meta { justify-content:flex-start; }
+    .article-body { padding-top:42px; }
+    .author-card { grid-template-columns:1fr; }
+  }
+</style>

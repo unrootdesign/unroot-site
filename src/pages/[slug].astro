@@ -1,0 +1,11 @@
+---
+import PageWireframe from '../components/PageWireframe.astro';
+import { pages } from '../data/pages';
+
+export function getStaticPaths() {
+  return pages.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+---
+<PageWireframe page={page} />

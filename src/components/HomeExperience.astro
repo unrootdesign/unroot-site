@@ -1,0 +1,859 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    name: 'Dreamie',
+    year: '2025 — Present',
+    description: 'Brand and digital experience for a wellness startup built around light-based sleep science.',
+    tags: ['Brand', 'Website', '3D', 'Healthtech'],
+    image: '/assets/webflow-export/ambient-dreamie-brand-identity.jpg',
+    href: 'https://unroot.design/case-studies/dreamie',
+    accent: '#ff6940'
+  },
+  {
+    name: 'Switch',
+    year: '2025',
+    description: 'Digital foundation for a next-generation payments platform with 100K+ active users.',
+    tags: ['Website', 'Fintech'],
+    image: '/assets/webflow-export/Design-Concept-for-Switch.avif',
+    href: 'https://unroot.design/',
+    accent: '#6c63ff'
+  },
+  {
+    name: 'Epsilon Health',
+    year: '2025',
+    description: 'A clearer, more credible digital platform for a MedTech company transforming radiology workflows.',
+    tags: ['Website', 'Medtech'],
+    image: '/assets/webflow-export/Epsilon-Health-Hero-Section.avif',
+    href: 'https://unroot.design/',
+    accent: '#35b879'
+  },
+  {
+    name: 'JavelinVP',
+    year: '2024',
+    description: 'Brand and high-performance website for a $125M seed and Series A venture capital fund.',
+    tags: ['Brand', 'Website', 'VC'],
+    image: '/assets/webflow-export/Javelin_1Javelin.avif',
+    href: 'https://unroot.design/case-studies/javelinvp',
+    accent: '#f4c83f'
+  }
+];
+
+const commands = [
+  { label: 'Selected work', hint: 'Projects', href: '#work', icon: '↗', keywords: 'projects portfolio cases work dreamie switch epsilon javelin' },
+  { label: 'Services', hint: 'What we do', href: '/services', icon: '⌁', keywords: 'services branding web design development 3d ai visuals' },
+  { label: 'Web design', hint: 'Service', href: '/web-design', icon: '□', keywords: 'website ui ux conversion design' },
+  { label: 'Logo & branding', hint: 'Service', href: '/logo-design', icon: '◇', keywords: 'logo brand identity branding' },
+  { label: 'Pricing', hint: 'Packages', href: '/pricing', icon: '$', keywords: 'pricing price cost budget packages' },
+  { label: 'Blog', hint: 'Insights', href: '/blog', icon: '≡', keywords: 'blog articles insights ai design webflow framer' },
+  { label: 'Book a call', hint: 'Start a project', href: '/call', icon: '→', keywords: 'contact call project start hire' },
+  { label: 'Dreamie', hint: 'Case study', href: 'https://unroot.design/case-studies/dreamie', icon: '●', keywords: 'dreamie healthtech brand website 3d wellness' },
+  { label: 'JavelinVP', hint: 'Case study', href: 'https://unroot.design/case-studies/javelinvp', icon: '●', keywords: 'javelin venture capital vc brand website' }
+];
+---
+<BaseLayout
+  title="Design partner for AI and Tech founders | Unroot Design"
+  description="We design and build premium custom websites and brands for AI and tech companies."
+>
+  <main class="experience" data-experience>
+    <aside class="intro-panel">
+      <div class="intro-topbar">
+        <a class="mark" href="/" aria-label="Unroot home">unroot<span>.</span></a>
+        <button class="command-mini" type="button" data-open-command aria-label="Open site search">
+          <span>Search</span><kbd>⌘K</kbd>
+        </button>
+      </div>
+
+      <div class="intro-copy">
+        <p class="status"><span></span> Independent design studio · Warsaw / worldwide</p>
+        <h1>We turn complex tech into brands and websites people trust.</h1>
+        <p class="lede">Senior design partner for AI and tech founders. Strategy, brand, web design and development — one focused team.</p>
+      </div>
+
+      <div class="intro-bottom">
+        <div class="active-project" aria-live="polite">
+          <span class="active-project-label">In view</span>
+          <strong data-current-project>Dreamie</strong>
+        </div>
+        <div class="trust-line">
+          <span>Selected work</span>
+          <span>100+ projects</span>
+          <span>4.9/5 client rating</span>
+        </div>
+        <div class="intro-actions">
+          <a class="primary-action" href="/call">Start a conversation <span>↗</span></a>
+          <a class="secondary-action" href="/services">Explore services</a>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content-panel" id="work">
+      <header class="content-nav">
+        <span>Selected work</span>
+        <nav aria-label="Homepage sections">
+          <a href="/services">Services</a>
+          <a href="/blog">Blog</a>
+          <a href="/call">Contact</a>
+        </nav>
+      </header>
+
+      <div class="project-list">
+        {projects.map((project, index) => (
+          <article
+            class="project-card"
+            data-project-card
+            data-project={project.name}
+            data-accent={project.accent}
+          >
+            <a class="project-media" href={project.href} target={project.href.startsWith('http') ? '_blank' : undefined} rel={project.href.startsWith('http') ? 'noreferrer' : undefined} aria-label={`View ${project.name} project`}>
+              <img src={project.image} alt="" loading={index > 1 ? 'lazy' : 'eager'} />
+              <span class="project-open">Open ↗</span>
+              <span class="project-number">0{index + 1}</span>
+            </a>
+            <div class="project-info">
+              <div>
+                <h2>{project.name}</h2>
+                <p>{project.description}</p>
+              </div>
+              <div class="project-meta">
+                <span>{project.year}</span>
+                <span>{project.tags.join(' · ')}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <section class="playground" aria-labelledby="playground-title">
+        <div class="playground-heading">
+          <div>
+            <span class="section-kicker">Playground</span>
+            <h2 id="playground-title">Move things around.</h2>
+          </div>
+          <p>A small interactive break from the portfolio. Drag the cards — no purpose beyond making the page feel less static.</p>
+        </div>
+        <div class="drag-stage" data-drag-stage>
+          <div class="drag-card card-a" data-draggable tabindex="0">
+            <img src="/assets/webflow-export/Productizer-p-800.avif" alt="" />
+            <span>Product design</span>
+          </div>
+          <div class="drag-card card-b" data-draggable tabindex="0">
+            <img src="/assets/webflow-export/Avenna-p-800.avif" alt="" />
+            <span>Brand systems</span>
+          </div>
+          <div class="drag-card card-c" data-draggable tabindex="0">
+            <img src="/assets/webflow-export/Emrace-p-800.avif" alt="" />
+            <span>Web experiences</span>
+          </div>
+          <div class="stage-note">drag me / drag me / drag me</div>
+          <button class="reset-cards" type="button" data-reset-cards>Reset</button>
+        </div>
+      </section>
+
+      <section class="service-strip">
+        <span>Brand strategy</span>
+        <span>Identity</span>
+        <span>Web design</span>
+        <span>Development</span>
+        <span>3D & motion</span>
+      </section>
+
+      <section class="closing">
+        <p>Have a product that is difficult to explain?</p>
+        <h2>We can make it feel obvious.</h2>
+        <a href="/call">Book a free intro call <span>↗</span></a>
+      </section>
+    </section>
+
+    <button class="command-launcher" type="button" data-open-command>
+      <span class="search-icon">⌕</span>
+      <span class="launcher-copy">Type what you're looking for…</span>
+      <span class="launcher-key">⌘ K</span>
+    </button>
+  </main>
+
+  <div class="command-backdrop" data-command-backdrop hidden>
+    <section class="command-palette" role="dialog" aria-modal="true" aria-label="Site navigation" data-command-palette>
+      <div class="command-input-wrap">
+        <span class="command-search-icon">⌕</span>
+        <input data-command-input type="search" placeholder="Type what you're looking for…" autocomplete="off" spellcheck="false" />
+        <kbd>esc</kbd>
+      </div>
+      <div class="command-caption">Available actions</div>
+      <div class="command-results" data-command-results>
+        {commands.map((command, index) => (
+          <a
+            class="command-item"
+            href={command.href}
+            data-command-item
+            data-index={index}
+            data-search={`${command.label} ${command.hint} ${command.keywords}`.toLowerCase()}
+          >
+            <span class="command-icon">{command.icon}</span>
+            <span class="command-label">{command.label}</span>
+            <span class="command-hint">{command.hint}</span>
+          </a>
+        ))}
+        <div class="command-empty" data-command-empty hidden>No matching page. Try “web”, “pricing” or “Dreamie”.</div>
+      </div>
+      <footer class="command-footer">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> select</span>
+        <span><kbd>esc</kbd> close</span>
+      </footer>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const root = document.querySelector('[data-experience]');
+  const backdrop = document.querySelector('[data-command-backdrop]');
+  const palette = document.querySelector('[data-command-palette]');
+  const input = document.querySelector('[data-command-input]');
+  const empty = document.querySelector('[data-command-empty]');
+  const launchers = document.querySelectorAll('[data-open-command]');
+  const allItems = Array.from(document.querySelectorAll('[data-command-item]'));
+  let visibleItems = [...allItems];
+  let activeIndex = 0;
+
+  function paintSelection() {
+    allItems.forEach((item) => item.classList.remove('is-active'));
+    if (visibleItems.length) {
+      activeIndex = Math.max(0, Math.min(activeIndex, visibleItems.length - 1));
+      visibleItems[activeIndex].classList.add('is-active');
+      visibleItems[activeIndex].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function filterCommands() {
+    const query = input?.value.trim().toLowerCase() || '';
+    visibleItems = allItems.filter((item) => {
+      const matches = !query || item.dataset.search?.includes(query);
+      item.hidden = !matches;
+      return matches;
+    });
+    activeIndex = 0;
+    if (empty) empty.hidden = visibleItems.length > 0;
+    paintSelection();
+  }
+
+  function openCommand() {
+    if (!backdrop || !input) return;
+    backdrop.hidden = false;
+    document.documentElement.classList.add('command-open');
+    input.value = '';
+    filterCommands();
+    window.setTimeout(() => input.focus(), 20);
+  }
+
+  function closeCommand() {
+    if (!backdrop) return;
+    backdrop.hidden = true;
+    document.documentElement.classList.remove('command-open');
+  }
+
+  launchers.forEach((button) => button.addEventListener('click', openCommand));
+  input?.addEventListener('input', filterCommands);
+  backdrop?.addEventListener('click', (event) => {
+    if (event.target === backdrop) closeCommand();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      backdrop?.hidden ? openCommand() : closeCommand();
+      return;
+    }
+    if (backdrop?.hidden) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeCommand();
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (visibleItems.length) activeIndex = (activeIndex + 1) % visibleItems.length;
+      paintSelection();
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (visibleItems.length) activeIndex = (activeIndex - 1 + visibleItems.length) % visibleItems.length;
+      paintSelection();
+    } else if (event.key === 'Enter' && document.activeElement === input && visibleItems.length) {
+      event.preventDefault();
+      visibleItems[activeIndex].click();
+    }
+  });
+
+  allItems.forEach((item) => {
+    item.addEventListener('mouseenter', () => {
+      const index = visibleItems.indexOf(item);
+      if (index >= 0) activeIndex = index;
+      paintSelection();
+    });
+  });
+
+  const projectLabel = document.querySelector('[data-current-project]');
+  const projectCards = document.querySelectorAll('[data-project-card]');
+  const observer = new IntersectionObserver((entries) => {
+    const candidates = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+    const current = candidates[0]?.target;
+    if (!current) return;
+    const name = current.getAttribute('data-project');
+    const accent = current.getAttribute('data-accent');
+    if (projectLabel && name) projectLabel.textContent = name;
+    if (root && accent) root.style.setProperty('--active-accent', accent);
+  }, { threshold: [0.35, 0.55, 0.75] });
+  projectCards.forEach((card) => observer.observe(card));
+
+  const stage = document.querySelector('[data-drag-stage]');
+  const draggableCards = Array.from(document.querySelectorAll('[data-draggable]'));
+  const reset = document.querySelector('[data-reset-cards]');
+  const initialPositions = draggableCards.map((card) => ({
+    left: getComputedStyle(card).left,
+    top: getComputedStyle(card).top,
+    transform: getComputedStyle(card).transform
+  }));
+
+  draggableCards.forEach((card) => {
+    let dragging = false;
+    let pointerId = null;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    card.addEventListener('pointerdown', (event) => {
+      if (!stage || window.matchMedia('(max-width: 820px)').matches) return;
+      dragging = true;
+      pointerId = event.pointerId;
+      const cardRect = card.getBoundingClientRect();
+      const stageRect = stage.getBoundingClientRect();
+      offsetX = event.clientX - cardRect.left;
+      offsetY = event.clientY - cardRect.top;
+      card.style.left = `${cardRect.left - stageRect.left}px`;
+      card.style.top = `${cardRect.top - stageRect.top}px`;
+      card.style.transform = 'rotate(0deg) scale(1.02)';
+      card.classList.add('is-dragging');
+      card.setPointerCapture(event.pointerId);
+    });
+
+    card.addEventListener('pointermove', (event) => {
+      if (!dragging || !stage || event.pointerId !== pointerId) return;
+      const stageRect = stage.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const x = Math.max(0, Math.min(event.clientX - stageRect.left - offsetX, stageRect.width - cardRect.width));
+      const y = Math.max(0, Math.min(event.clientY - stageRect.top - offsetY, stageRect.height - cardRect.height));
+      card.style.left = `${x}px`;
+      card.style.top = `${y}px`;
+    });
+
+    const release = (event) => {
+      if (!dragging || event.pointerId !== pointerId) return;
+      dragging = false;
+      pointerId = null;
+      card.classList.remove('is-dragging');
+      card.style.transform = 'rotate(0deg)';
+    };
+    card.addEventListener('pointerup', release);
+    card.addEventListener('pointercancel', release);
+  });
+
+  reset?.addEventListener('click', () => {
+    draggableCards.forEach((card, index) => {
+      card.style.left = initialPositions[index].left;
+      card.style.top = initialPositions[index].top;
+      card.style.transform = '';
+    });
+  });
+</script>
+
+<style>
+  @font-face {
+    font-family: 'Overused Grotesk';
+    src: url('/assets/OverusedGrotesk-VF.woff') format('woff');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :global(html.command-open) { overflow: hidden; }
+  :global(body) { background: #0b0b0b; }
+
+  .experience {
+    --active-accent: #ff6940;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(340px, 35vw) minmax(0, 1fr);
+    font-family: 'Overused Grotesk', Inter, ui-sans-serif, system-ui, sans-serif;
+    color: #111;
+    background: #efeee9;
+  }
+
+  .intro-panel {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: #0a0a0a;
+    color: #f5f3ee;
+    border-right: 1px solid #262626;
+    overflow: hidden;
+  }
+
+  .intro-panel::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    left: -140px;
+    bottom: -150px;
+    border-radius: 50%;
+    background: var(--active-accent);
+    opacity: .23;
+    filter: blur(70px);
+    transition: background .45s ease;
+    pointer-events: none;
+  }
+
+  .intro-topbar,
+  .content-nav,
+  .project-info,
+  .playground-heading,
+  .intro-actions,
+  .trust-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .mark {
+    color: inherit;
+    text-decoration: none;
+    font-size: 25px;
+    line-height: 1;
+    font-weight: 760;
+    letter-spacing: -.065em;
+  }
+  .mark span { color: var(--active-accent); transition: color .45s ease; }
+
+  .command-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid #333;
+    background: #151515;
+    color: #c9c7c1;
+    padding: 7px 8px 7px 11px;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .command-mini kbd,
+  .command-footer kbd,
+  .command-input-wrap kbd {
+    border: 1px solid rgba(255,255,255,.13);
+    border-bottom-color: rgba(255,255,255,.22);
+    background: rgba(255,255,255,.06);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font: inherit;
+    font-size: 10px;
+  }
+
+  .intro-copy {
+    margin: auto 0;
+    max-width: 620px;
+    padding: 12vh 0 8vh;
+  }
+
+  .status {
+    margin: 0 0 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8f8d87;
+    font-size: 12px;
+  }
+  .status span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--active-accent);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--active-accent) 18%, transparent);
+    transition: background .45s ease;
+  }
+
+  .intro-copy h1 {
+    margin: 0;
+    max-width: none;
+    color: #f6f4ee;
+    font-size: clamp(40px, 4.2vw, 76px);
+    line-height: .94;
+    letter-spacing: -.066em;
+    font-weight: 540;
+  }
+  .lede {
+    max-width: 520px;
+    margin: 28px 0 0;
+    color: #9a9892;
+    font-size: clamp(16px, 1.25vw, 20px);
+    line-height: 1.42;
+    letter-spacing: -.018em;
+  }
+
+  .intro-bottom { position: relative; z-index: 1; }
+  .active-project {
+    display: grid;
+    grid-template-columns: 86px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid #2d2d2d;
+    border-bottom: 1px solid #2d2d2d;
+  }
+  .active-project-label { color: #696863; font-size: 11px; text-transform: uppercase; letter-spacing: .09em; }
+  .active-project strong { font-size: 14px; font-weight: 510; }
+  .trust-line {
+    padding: 12px 0 18px;
+    color: #6e6d68;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+  .intro-actions { align-items: stretch; }
+  .intro-actions a {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .primary-action { flex: 1.25; background: #f4f1ea; color: #111; }
+  .primary-action span { color: var(--active-accent); font-size: 18px; transition: color .45s ease; }
+  .secondary-action { flex: 1; border: 1px solid #2f2f2f; color: #a8a6a0; }
+
+  .content-panel {
+    min-width: 0;
+    padding: 0 18px 130px;
+    background: #efeee9;
+  }
+  .content-nav {
+    min-height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 0 4px;
+    border-bottom: 1px solid #d2d0ca;
+    background: rgba(239,238,233,.9);
+    backdrop-filter: blur(14px);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .055em;
+  }
+  .content-nav nav { display: flex; gap: 20px; }
+  .content-nav a { text-decoration: none; color: #686761; }
+  .content-nav a:hover { color: #111; }
+
+  .project-list { padding-top: 18px; }
+  .project-card {
+    padding: 0 0 52px;
+    margin-bottom: 54px;
+    border-bottom: 1px solid #cbc9c3;
+  }
+  .project-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    min-height: min(65vw, 720px);
+    border-radius: 3px;
+    background: #dad8d1;
+    color: #fff;
+    text-decoration: none;
+  }
+  .project-media img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    transition: transform .65s cubic-bezier(.2,.75,.25,1), filter .65s ease;
+  }
+  .project-card:nth-child(2) .project-media img,
+  .project-card:nth-child(4) .project-media img {
+    object-fit: contain;
+    background: #151515;
+  }
+  .project-card:nth-child(2) .project-media { background: #171717; }
+  .project-card:nth-child(4) .project-media { background: #d9d7cf; }
+  .project-card:nth-child(4) .project-media img { background: #d9d7cf; }
+  .project-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.28));
+    opacity: .35;
+    transition: opacity .35s ease;
+  }
+  .project-media:hover img { transform: scale(1.018); }
+  .project-media:hover::after { opacity: .05; }
+  .project-open,
+  .project-number {
+    position: absolute;
+    z-index: 2;
+    top: 14px;
+    padding: 7px 9px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 999px;
+    background: rgba(16,16,16,.43);
+    backdrop-filter: blur(10px);
+    font-size: 10px;
+    letter-spacing: .04em;
+  }
+  .project-open { right: 14px; }
+  .project-number { left: 14px; }
+
+  .project-info { align-items: flex-end; padding-top: 15px; }
+  .project-info h2 {
+    margin: 0 0 5px;
+    font-size: clamp(30px, 3vw, 48px);
+    line-height: 1;
+    letter-spacing: -.048em;
+    font-weight: 520;
+  }
+  .project-info p {
+    max-width: 620px;
+    margin: 0;
+    color: #77756f;
+    font-size: 13px;
+    line-height: 1.42;
+  }
+  .project-meta {
+    min-width: 190px;
+    display: grid;
+    gap: 5px;
+    text-align: right;
+    color: #77756f;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .playground { padding: 26px 0 80px; border-bottom: 1px solid #cbc9c3; }
+  .playground-heading { align-items: flex-end; margin-bottom: 24px; }
+  .section-kicker {
+    display: block;
+    margin-bottom: 8px;
+    color: #85837d;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .playground-heading h2,
+  .closing h2 {
+    margin: 0;
+    font-size: clamp(42px, 5vw, 78px);
+    line-height: .92;
+    letter-spacing: -.06em;
+    font-weight: 520;
+  }
+  .playground-heading p { max-width: 330px; margin: 0; color: #77756f; font-size: 12px; line-height: 1.5; }
+
+  .drag-stage {
+    position: relative;
+    min-height: 610px;
+    overflow: hidden;
+    border: 1px solid #cfcdc6;
+    border-radius: 4px;
+    background-color: #e7e5de;
+    background-image: radial-gradient(#c1bfb8 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .drag-card {
+    position: absolute;
+    width: clamp(180px, 27%, 300px);
+    padding: 8px 8px 11px;
+    border-radius: 5px;
+    background: #f7f5ef;
+    box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    transition: box-shadow .2s ease;
+  }
+  .drag-card.is-dragging { cursor: grabbing; z-index: 4; box-shadow: 0 20px 50px rgba(0,0,0,.18); }
+  .drag-card img { width: 100%; aspect-ratio: 1.4; display: block; object-fit: cover; border-radius: 3px; pointer-events: none; }
+  .drag-card span { display: block; padding: 9px 3px 0; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  .card-a { left: 7%; top: 14%; transform: rotate(-6deg); }
+  .card-b { left: 36%; top: 37%; transform: rotate(5deg); }
+  .card-c { left: 66%; top: 12%; transform: rotate(-2deg); }
+  .stage-note { position: absolute; left: 24px; bottom: 22px; color: #aaa8a1; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; }
+  .reset-cards { position: absolute; right: 18px; bottom: 17px; border: 1px solid #c6c4bd; background: #f5f3ed; border-radius: 999px; padding: 7px 11px; font: inherit; font-size: 10px; cursor: pointer; }
+
+  .service-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 42px 0;
+    border-bottom: 1px solid #cbc9c3;
+  }
+  .service-strip span {
+    padding: 10px 14px;
+    border: 1px solid #c7c5be;
+    border-radius: 999px;
+    background: #f7f5ef;
+    font-size: 12px;
+  }
+
+  .closing { padding: 110px 0 30px; }
+  .closing p { color: #77756f; font-size: 13px; }
+  .closing h2 { max-width: 850px; }
+  .closing a {
+    width: fit-content;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 44px;
+    padding: 15px 16px;
+    border-radius: 4px;
+    background: #111;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .closing a span { color: var(--active-accent); font-size: 19px; }
+
+  .command-launcher {
+    position: fixed;
+    z-index: 20;
+    left: calc(35vw + ((65vw - 580px) / 2));
+    bottom: 18px;
+    width: min(580px, calc(65vw - 54px));
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 12px;
+    border: 1px solid rgba(20,20,20,.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,.9);
+    color: #60605c;
+    box-shadow: 0 10px 34px rgba(0,0,0,.12);
+    backdrop-filter: blur(16px);
+    font: inherit;
+    cursor: pointer;
+  }
+  .search-icon { font-size: 23px; color: #999791; }
+  .launcher-copy { flex: 1; text-align: left; font-size: 13px; }
+  .launcher-key { border: 1px solid #deddd8; border-radius: 7px; padding: 4px 7px; color: #9a9892; font-size: 10px; }
+
+  .command-backdrop[hidden] { display: none; }
+  .command-backdrop {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(12,12,12,.62);
+    backdrop-filter: blur(8px);
+  }
+  .command-palette {
+    width: min(620px, 100%);
+    max-height: min(680px, calc(100vh - 40px));
+    overflow: hidden;
+    border: 1px solid #282828;
+    border-radius: 13px;
+    background: #111;
+    color: #f2f0ea;
+    box-shadow: 0 35px 100px rgba(0,0,0,.45);
+    font-family: 'Overused Grotesk', Inter, sans-serif;
+  }
+  .command-input-wrap {
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 13px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .command-search-icon { color: #74736f; font-size: 24px; }
+  .command-input-wrap input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #fff;
+    font: inherit;
+    font-size: 16px;
+  }
+  .command-input-wrap input::placeholder { color: #66645f; }
+  .command-caption { padding: 12px 15px 8px; color: #64625e; font-size: 10px; text-transform: uppercase; letter-spacing: .09em; }
+  .command-results { max-height: 430px; overflow: auto; padding: 0 7px 8px; }
+  .command-item {
+    min-height: 48px;
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 0 10px;
+    border-radius: 7px;
+    color: #d5d3cc;
+    text-decoration: none;
+  }
+  .command-item[hidden] { display: none; }
+  .command-item.is-active { background: #222; color: #fff; }
+  .command-icon { color: #77756f; }
+  .command-label { font-size: 14px; }
+  .command-hint { color: #5f5e5a; font-size: 11px; }
+  .command-empty { padding: 24px 10px 32px; color: #77756f; font-size: 13px; }
+  .command-footer { display: flex; justify-content: flex-end; gap: 15px; padding: 10px 12px; border-top: 1px solid #292929; color: #66645f; font-size: 10px; }
+  .command-footer span { display: flex; align-items: center; gap: 5px; }
+
+  @media (max-width: 1060px) {
+    .experience { grid-template-columns: minmax(300px, 39vw) minmax(0, 1fr); }
+    .command-launcher { left: calc(39vw + 24px); width: calc(61vw - 48px); }
+    .intro-panel { padding: 16px; }
+    .trust-line span:nth-child(2) { display: none; }
+    .intro-actions { flex-direction: column; }
+    .project-info { align-items: flex-start; flex-direction: column; }
+    .project-meta { text-align: left; }
+  }
+
+  @media (max-width: 820px) {
+    :global(body) { background: #efeee9; }
+    .experience { display: block; }
+    .intro-panel {
+      position: relative;
+      height: auto;
+      min-height: 82svh;
+      padding: 16px;
+    }
+    .intro-copy { padding: 16vh 0 11vh; }
+    .intro-copy h1 { font-size: clamp(48px, 13vw, 78px); }
+    .intro-bottom { margin-top: auto; }
+    .content-panel { padding: 0 12px 110px; }
+    .content-nav { min-height: 54px; }
+    .content-nav nav { gap: 13px; }
+    .content-nav nav a:nth-child(2) { display: none; }
+    .project-card { margin-bottom: 34px; padding-bottom: 30px; }
+    .project-media { min-height: 70svh; }
+    .project-info p { max-width: 92%; }
+    .playground-heading { align-items: flex-start; flex-direction: column; }
+    .playground-heading p { max-width: 520px; }
+    .drag-stage { min-height: 0; padding: 10px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .drag-card { position: relative; width: 100%; left: auto !important; top: auto !important; transform: none !important; }
+    .stage-note, .reset-cards { display: none; }
+    .command-launcher { left: 12px; right: 12px; bottom: 12px; width: auto; }
+    .closing { padding-top: 78px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+  }
+</style>

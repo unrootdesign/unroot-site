@@ -1,0 +1,15 @@
+{
+  "name": "unroot-wireframe",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "localize-assets": "node scripts/localize-webflow-assets.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.13.5"
+  }
+}
