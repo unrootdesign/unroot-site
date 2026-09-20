@@ -10,7 +10,7 @@ const assets = new Set();
 const media = new Set();
 const links = new Set(['/']);
 assert.ok(!existsSync(resolve(root, 'public/index.html')), 'public/index.html competes with the Astro route');
-assert.ok(homepage.includes('see your new homepage in'), 'The v6 homepage was not built');
+assert.ok(homepage.includes('Website design and build for funded AI and tech startups.'), 'The black-and-orange homepage was not built');
 const ids = new Set([...homepage.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]));
 const local = value => value.startsWith('/') && !value.startsWith('//');
 const assetPath = value => decodeURIComponent(value.split(/[?#]/)[0]);
@@ -26,6 +26,9 @@ for (const [tag] of homepage.matchAll(/<(?:img|video|source|script|link)\b[^>]*>
     assets.add(url);
     if (/^<(img|video|source)\b/.test(tag) && attr !== 'href') media.add(url);
   }
+}
+for (const [, url] of homepage.matchAll(/\bdata-(?:before|after-image)="([^"]+)"/g)) {
+  assets.add(url); media.add(url);
 }
 for (const url of assets) {
   const path = checkFile(dist, url);
@@ -55,4 +58,4 @@ if (base) {
     await response.arrayBuffer();
   }
 }
-console.log(`PASS: v6 at /; ${assets.size} assets (${media.size} public media/font files); ${links.size} local routes; all homepage anchors.${base ? ' All HTTP requests returned 200 with no asset fallback pages.' : ''}`);
+console.log(`PASS: Black-and-orange homepage at /; ${assets.size} assets (${media.size} public media/font files); ${links.size} local routes; all homepage anchors.${base ? ' All HTTP requests returned 200 with no asset fallback pages.' : ''}`);

@@ -94,3 +94,13 @@ script now builds and verifies the Astro source instead of restoring a static ho
 The migration was checked against the production preview at five viewport
 widths (320, 390, 768, 1024, and 1440px), including keyboard interactions,
 image decoding, and metadata loading for all six videos.
+
+## Current homepage — restored black-and-orange direction
+
+At the owner's request, the original black-and-orange layout is restored in
+`src/pages/index.astro`. The single Astro route and extracted CSS/JS remain.
+Placeholder comparisons now use all six real before/after pairs; the concept
+board uses its six project covers; the six case studies each offer three
+selectable images; and all four client portraits are local images.
+`npm run verify:homepage` now checks this restored design and includes the
+comparison images referenced by project-tab data attributes.
