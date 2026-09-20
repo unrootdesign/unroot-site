@@ -104,3 +104,15 @@ board uses its six project covers; the six case studies each offer three
 selectable images; and all four client portraits are local images.
 `npm run verify:homepage` now checks this restored design and includes the
 comparison images referenced by project-tab data attributes.
+
+## Incremental homepage layout update
+
+The supplied `unroot-homepage-source.html` informs only the palette, footer
+content, and original Trustpilot URLs. Existing typography and controls remain.
+Concept imagery and deliverables now share one outer container. Reviews display
+one at a time with previous/next buttons; the three source review links remain
+available. Services and Team have independent sections and navigation targets.
+The footer follows the complete two-column shell and spans the viewport.
+Templates, Terms of Use, and Privacy Policy labels are preserved as text until
+those routes exist; project shortcuts target their existing homepage cards.
+Pricing names and terms are unchanged pending the owner's choice of wording.

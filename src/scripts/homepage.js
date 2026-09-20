@@ -26,8 +26,8 @@
         paint();
       };
       let previousFocus;
-      const open = () => { previousFocus = document.activeElement; document.querySelector(".shell").inert = true; overlay.hidden = false; document.body.classList.add('command-open'); input.value=''; filter(); setTimeout(() => input.focus(),20); };
-      const close = () => { document.querySelector(".shell").inert = false; previousFocus?.focus({preventScroll:true}); overlay.hidden = true; document.body.classList.remove('command-open'); };
+      const open = () => { previousFocus = document.activeElement; document.querySelector(".shell").inert = true; document.querySelector(".footer").inert = true; overlay.hidden = false; document.body.classList.add('command-open'); input.value=''; filter(); setTimeout(() => input.focus(),20); };
+      const close = () => { document.querySelector(".shell").inert = false; document.querySelector(".footer").inert = false; previousFocus?.focus({preventScroll:true}); overlay.hidden = true; document.body.classList.remove('command-open'); };
       document.querySelectorAll('[data-open-command]').forEach(btn => btn.addEventListener('click', open));
       input.addEventListener('input', filter);
       overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
@@ -121,11 +121,25 @@
       });
       document.querySelector('[data-reset]').addEventListener('click', () => cards.forEach(card => { card.removeAttribute('style'); }));
 
+      const reviews = [...document.querySelectorAll('[data-review]')];
+      let reviewIndex = 0;
+      const showReview = index => {
+        reviewIndex = (index + reviews.length) % reviews.length;
+        reviews.forEach((review, i) => { review.hidden = i !== reviewIndex; });
+        document.querySelector('[data-review-count]').textContent = `Review ${reviewIndex + 1} of ${reviews.length}`;
+      };
+      document.querySelector('[data-review-prev]').addEventListener('click', () => showReview(reviewIndex - 1));
+      document.querySelector('[data-review-next]').addEventListener('click', () => showReview(reviewIndex + 1));
+      document.querySelector('.review-carousel').addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        showReview(reviewIndex + (event.key === 'ArrowRight' ? 1 : -1));
+      });
       const time = document.querySelector('[data-warsaw-time]');
       const updateTime = () => {
         const value = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit',weekday:'short'}).format(new Date());
         time.textContent = 'Warsaw, ' + value;
+        document.querySelector('[data-nyc-time]').textContent = 'NYC, ' + new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',weekday:'short'}).format(new Date());
       };
       updateTime(); setInterval(updateTime, 30000);
     })();
-

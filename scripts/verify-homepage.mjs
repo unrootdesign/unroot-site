@@ -10,7 +10,7 @@ const assets = new Set();
 const media = new Set();
 const links = new Set(['/']);
 assert.ok(!existsSync(resolve(root, 'public/index.html')), 'public/index.html competes with the Astro route');
-assert.ok(homepage.includes('Website design and build for funded AI and tech startups.'), 'The black-and-orange homepage was not built');
+assert.ok(homepage.includes('Website design and build for funded AI and tech startups.'), 'The homepage was not built');
 const ids = new Set([...homepage.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]));
 const local = value => value.startsWith('/') && !value.startsWith('//');
 const assetPath = value => decodeURIComponent(value.split(/[?#]/)[0]);
@@ -58,4 +58,4 @@ if (base) {
     await response.arrayBuffer();
   }
 }
-console.log(`PASS: Black-and-orange homepage at /; ${assets.size} assets (${media.size} public media/font files); ${links.size} local routes; all homepage anchors.${base ? ' All HTTP requests returned 200 with no asset fallback pages.' : ''}`);
+console.log(`PASS: Homepage at /; ${assets.size} assets (${media.size} public media/font files); ${links.size} local routes; all homepage anchors.${base ? ' All HTTP requests returned 200 with no asset fallback pages.' : ''}`);
