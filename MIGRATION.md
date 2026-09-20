@@ -65,3 +65,32 @@ The homepage now prototypes the chosen direction:
 - responsive fallback for mobile.
 
 The blog article template now also builds a Contents block from H2/H3 headings and adds anchor links, matching the behavior that previously came from the Webflow/Finsweet TOC script.
+
+## Homepage v6 — Astro source
+
+The homepage now lives in `src/pages/index.astro`, with styles in
+`src/styles/homepage.css` and interactions in `src/scripts/homepage.js`.
+The former `public/index.html` has been removed so it cannot compete with
+Astro's `/` route. Keep homepage changes in these source files.
+
+Local images and videos remain in `public/homepage/img`; the four embedded
+font weights are now cacheable files in `public/homepage/fonts`.
+Run `npm ci` and `npm run build`; Cloudflare should publish `dist`.
+
+The primary contact and pricing actions open an email to Adam. Case-study
+shortcuts point to the matching homepage project cards until case-study
+routes are migrated. Terms and privacy routes remain migration work; their dead homepage links are omitted.
+The obsolete HomeExperience component has been removed. The legacy deployment
+script now builds and verifies the Astro source instead of restoring a static homepage.
+
+### Homepage release checks
+
+- `npm run build` generates the production site in `dist`.
+- `npm run verify:homepage` checks the v6 route, every homepage asset,
+  local navigation destination, and section anchor.
+- With `npm run preview -- --port 4322` running, use
+  `npm run verify:homepage -- http://localhost:4322` to check HTTP responses.
+
+The migration was checked against the production preview at five viewport
+widths (320, 390, 768, 1024, and 1440px), including keyboard interactions,
+image decoding, and metadata loading for all six videos.

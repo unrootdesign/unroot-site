@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "localize-assets": "node scripts/localize-webflow-assets.mjs"
+    "localize-assets": "node scripts/localize-webflow-assets.mjs",
+    "verify:homepage": "node scripts/verify-homepage.mjs"
   },
   "dependencies": {
     "astro": "^5.13.5"
