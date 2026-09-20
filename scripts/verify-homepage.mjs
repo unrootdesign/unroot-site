@@ -10,7 +10,7 @@ const assets = new Set();
 const media = new Set();
 const links = new Set(['/']);
 assert.ok(!existsSync(resolve(root, 'public/index.html')), 'public/index.html competes with the Astro route');
-assert.ok(homepage.includes('Website design and build for funded AI and tech startups.'), 'The homepage was not built');
+assert.ok(homepage.includes('Websites for AI and tech startups.'), 'The homepage was not built');
 const ids = new Set([...homepage.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]));
 const local = value => value.startsWith('/') && !value.startsWith('//');
 const assetPath = value => decodeURIComponent(value.split(/[?#]/)[0]);
@@ -29,6 +29,12 @@ for (const [tag] of homepage.matchAll(/<(?:img|video|source|script|link)\b[^>]*>
 }
 for (const [, url] of homepage.matchAll(/\bdata-(?:before|after-image)="([^"]+)"/g)) {
   assets.add(url); media.add(url);
+}
+// Astro can inline small shared stylesheets, including font-face declarations.
+for (const [, style] of homepage.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g)) {
+  for (const [, url] of style.matchAll(/url\(["']?([^\s)'";]+)["']?\)/g)) {
+    if (local(url)) { assets.add(url); media.add(url); }
+  }
 }
 for (const url of assets) {
   const path = checkFile(dist, url);

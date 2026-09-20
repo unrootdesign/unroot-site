@@ -9,7 +9,7 @@
       --blue:#563898;
       --left:35vw;
       --radius:24px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: 'Google Sans', ui-sans-serif, system-ui, sans-serif;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth;background:var(--paper)}
@@ -277,3 +277,58 @@
 .footer .closing .btn{display:flex;font-size:16px}
 .footer .closing .btn span{margin:0;font-size:inherit}
 .footer .closing .btn span:last-child{font-size:12px}
+
+/* Stronger hierarchy from the cream palette: action, offer, supporting surface. */
+:root{
+  --cream:#F6C9B6;
+  --cream-strong:#D99C7C;
+  --cream-soft:#FFEFE6;
+  --cream-panel:#F8DDCD;
+  --deep:#563898;
+}
+.logo span{color:var(--cream)}
+.btn-primary{background:var(--cream);border-color:var(--cream);color:var(--ink)}
+.btn-primary:hover{background:var(--cream-strong);border-color:var(--cream-strong)}
+.btn-secondary{background:transparent;border-color:var(--cream);color:var(--cream)}
+.availability{background:transparent;border-color:var(--deep);color:var(--cream)}
+.rail::after{border-color:var(--deep);box-shadow:0 0 0 45px var(--ink),0 0 0 46px var(--deep),0 0 0 90px var(--ink),0 0 0 91px var(--deep)}
+.command-button{background:transparent;border-color:var(--deep)}
+.kicker{font-weight:600;color:var(--deep)}
+.concept-stage{border-color:var(--cream-strong)}
+.concept-toolbar{background:var(--cream-panel);border-color:var(--cream-strong)}
+.project-tab{border-color:var(--cream-strong);color:var(--ink)}
+.project-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+.concept-details{background:var(--cream-soft);border-color:var(--cream-strong)}
+.concept-details .offer-card{background:var(--cream-soft)}
+.concept-details .mini-card{background:var(--cream);border-color:var(--cream-strong)}
+.offer-points{border-color:var(--cream-strong);background:var(--cream-strong)}
+.offer-points div{background:var(--cream-soft)}
+.offer-delivery{display:block;margin-top:10px;font-size:14px;font-weight:600}
+.concept-details .mini-card .big{font-size:56px;margin-top:10px}
+#pricing{background:var(--cream-panel)}
+.price-card{border-color:var(--cream-strong);min-height:440px}
+.price-card.featured{background:var(--cream);color:var(--ink);border:2px solid var(--cream-strong)}
+.price-card.featured .label,.price-card.featured p{color:var(--ink)}
+.price-card.featured a{border-color:var(--cream-strong)}
+.price-card .label{font-weight:700;color:var(--deep)}
+.price-card h3{margin:18px 0 10px;font-size:22px;letter-spacing:-.035em;line-height:1.15}
+.price-term{font-size:11px;color:var(--muted)}
+.price-card ul{padding:0 0 0 16px;margin:2px 0 22px;font-size:12px;line-height:1.5;color:var(--muted)}
+.price-card li+li{margin-top:8px}
+.price-card.featured ul,.price-card.featured .price-term{color:var(--ink)}
+.price-card .price{margin-bottom:10px}
+.sprint-card{border-top:4px solid var(--deep)}
+.price-card a{min-height:44px}
+.review-controls button:hover{background:var(--cream);color:var(--ink);border-color:var(--cream-strong)}
+.list-title{background:var(--cream-soft);color:var(--deep);font-weight:600}
+.footer .closing{padding:32px;border-radius:24px;background:var(--cream);border:1px solid var(--cream-strong);color:var(--ink)}
+.footer .closing h2{color:var(--ink)}
+.footer .closing p{color:var(--ink)}
+.footer .closing .btn{background:var(--ink);color:#fff}
+.footer .closing .btn span{color:#fff}
+.footer .closing .btn:last-child{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+.footer .closing .btn:last-child span{color:var(--ink)}
+.footer .closing .btn:hover{background:var(--deep);color:#fff}
+.footer .closing .btn:hover span{color:#fff}
+@media(max-width:1100px){.price-card{min-height:0}.concept-details .mini-card{border-top-color:var(--cream-strong)}}
+@media(max-width:520px){.footer .closing{padding:24px 18px}.footer .closing h2{font-size:46px}.price-card{margin-bottom:12px}}
