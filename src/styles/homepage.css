@@ -2,7 +2,7 @@
       --ink:#21153D;
       --paper:#FBEFEA;
       --card:#FFFFFF;
-      --line:#EADFD9;
+      --line:rgba(33,21,61,.10);
       --muted:#5C5672;
       --accent:#8961E7;
       --acid:#F6C9B6;
@@ -113,7 +113,7 @@
     .drag:nth-child(5){left:13%;top:62%;background:#21153D;color:#fff;transform:rotate(2deg)}
     .drag:nth-child(6){left:51%;top:61%;background:#EEB6DF;transform:rotate(-4deg)}
 
-    .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
     .case{border:1px solid var(--line);background:var(--card);border-radius:20px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
     .case:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(24,22,18,.07)}
     .case-visual{aspect-ratio:16/9;display:grid;place-items:center;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
@@ -257,7 +257,8 @@
 .footer{background:var(--ink);color:#FFEFE6;padding:48px 24px 90px}
 .footer-inner{max-width:1200px;margin:auto}
 .footer-grid{grid-template-columns:repeat(4,minmax(0,1fr));padding-top:40px}
-.footer ul{list-style:none;margin:0;padding:0}
+.footer ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.footer-grid li a,.footer-grid li span{margin:0}
 .footer h4{color:#F6C9B6}
 .footer a,.footer span{color:#FFEFE6}
 .footer .closing{padding:0 0 40px;min-height:0;border-radius:0;background:transparent;border-bottom:1px solid #563898}
@@ -280,36 +281,37 @@
 
 /* Stronger hierarchy from the cream palette: action, offer, supporting surface. */
 :root{
-  --cream:#F6C9B6;
-  --cream-strong:#D99C7C;
+  --cream:#FFB38E;
+  --cream-strong:#F5A078;
+  --cream-border:rgba(175,102,66,.18);
   --cream-soft:#FFEFE6;
   --cream-panel:#F8DDCD;
   --deep:#563898;
 }
 .logo span{color:var(--cream)}
 .btn-primary{background:var(--cream);border-color:var(--cream);color:var(--ink)}
-.btn-primary:hover{background:var(--cream-strong);border-color:var(--cream-strong)}
+.btn-primary:hover{background:var(--cream-strong);border-color:var(--cream-border)}
 .btn-secondary{background:transparent;border-color:var(--cream);color:var(--cream)}
 .availability{background:transparent;border-color:var(--deep);color:var(--cream)}
 .rail::after{border-color:var(--deep);box-shadow:0 0 0 45px var(--ink),0 0 0 46px var(--deep),0 0 0 90px var(--ink),0 0 0 91px var(--deep)}
 .command-button{background:transparent;border-color:var(--deep)}
 .kicker{font-weight:600;color:var(--deep)}
-.concept-stage{border-color:var(--cream-strong)}
-.concept-toolbar{background:var(--cream-panel);border-color:var(--cream-strong)}
-.project-tab{border-color:var(--cream-strong);color:var(--ink)}
+.concept-stage{border-color:var(--cream-border)}
+.concept-toolbar{background:var(--cream-panel);border-color:var(--cream-border)}
+.project-tab{border-color:var(--cream-border);color:var(--ink)}
 .project-tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
-.concept-details{background:var(--cream-soft);border-color:var(--cream-strong)}
+.concept-details{background:var(--cream-soft);border-color:var(--cream-border)}
 .concept-details .offer-card{background:var(--cream-soft)}
-.concept-details .mini-card{background:var(--cream);border-color:var(--cream-strong)}
-.offer-points{border-color:var(--cream-strong);background:var(--cream-strong)}
+.concept-details .mini-card{background:var(--cream);border-color:var(--cream-border)}
+.offer-points{border-color:var(--cream-border);background:var(--cream-border)}
 .offer-points div{background:var(--cream-soft)}
 .offer-delivery{display:block;margin-top:10px;font-size:14px;font-weight:600}
 .concept-details .mini-card .big{font-size:56px;margin-top:10px}
 #pricing{background:var(--cream-panel)}
-.price-card{border-color:var(--cream-strong);min-height:440px}
-.price-card.featured{background:var(--cream);color:var(--ink);border:2px solid var(--cream-strong)}
+.price-card{border-color:var(--cream-border);min-height:440px}
+.price-card.featured{background:var(--cream);color:var(--ink);border:1px solid var(--cream-border)}
 .price-card.featured .label,.price-card.featured p{color:var(--ink)}
-.price-card.featured a{border-color:var(--cream-strong)}
+.price-card.featured a{border-color:var(--cream-border)}
 .price-card .label{font-weight:700;color:var(--deep)}
 .price-card h3{margin:18px 0 10px;font-size:22px;letter-spacing:-.035em;line-height:1.15}
 .price-term{font-size:11px;color:var(--muted)}
@@ -317,11 +319,11 @@
 .price-card li+li{margin-top:8px}
 .price-card.featured ul,.price-card.featured .price-term{color:var(--ink)}
 .price-card .price{margin-bottom:10px}
-.sprint-card{border-top:4px solid var(--deep)}
+.sprint-card{border-top:1px solid var(--line)}
 .price-card a{min-height:44px}
-.review-controls button:hover{background:var(--cream);color:var(--ink);border-color:var(--cream-strong)}
+.review-controls button:hover{background:var(--cream);color:var(--ink);border-color:var(--cream-border)}
 .list-title{background:var(--cream-soft);color:var(--deep);font-weight:600}
-.footer .closing{padding:32px;border-radius:24px;background:var(--cream);border:1px solid var(--cream-strong);color:var(--ink)}
+.footer .closing{padding:32px;border-radius:24px;background:var(--cream);border:1px solid var(--cream-border);color:var(--ink)}
 .footer .closing h2{color:var(--ink)}
 .footer .closing p{color:var(--ink)}
 .footer .closing .btn{background:var(--ink);color:#fff}
@@ -330,5 +332,12 @@
 .footer .closing .btn:last-child span{color:var(--ink)}
 .footer .closing .btn:hover{background:var(--deep);color:#fff}
 .footer .closing .btn:hover span{color:#fff}
-@media(max-width:1100px){.price-card{min-height:0}.concept-details .mini-card{border-top-color:var(--cream-strong)}}
+@media(max-width:1100px){.price-card{min-height:0}.concept-details .mini-card{border-top-color:var(--cream-border)}}
 @media(max-width:520px){.footer .closing{padding:24px 18px}.footer .closing h2{font-size:46px}.price-card{margin-bottom:12px}}
+
+/* Softer outlines keep the emphasis on imagery and the peach surfaces. */
+.rail::after{opacity:.3}
+.tag{border-color:var(--line)}
+.play-card,.review-carousel,.list-card,.faq,.case{border-color:var(--line)}
+.footer .closing{border-color:transparent}
+.footer-bar{border-top-color:rgba(255,239,230,.16)}
