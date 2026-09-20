@@ -1,4 +1,515 @@
----
-import HomeExperience from '../components/HomeExperience.astro';
----
-<HomeExperience />
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Unroot Design is a 5 person website design and build studio in Warsaw for funded AI and tech startups.">
+  <title>Unroot Design, website design and build for AI and tech startups</title>
+  <style>
+    :root{
+      --ink:#0b0b0b;
+      --paper:#f2f1ec;
+      --card:#fbfaf6;
+      --line:#d5d2c8;
+      --muted:#706e67;
+      --accent:#ff5f2e;
+      --acid:#d9ff45;
+      --blue:#4d67ff;
+      --left:35vw;
+      --radius:24px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--paper)}
+    body{margin:0;color:var(--ink);background:var(--paper);font-size:16px;line-height:1.35}
+    body.command-open{overflow:hidden}
+    button,input{font:inherit}
+    button,a{color:inherit}
+    a{text-decoration:none}
+    button{cursor:pointer}
+    ::selection{background:var(--acid);color:var(--ink)}
+
+    .shell{display:grid;grid-template-columns:minmax(360px,var(--left)) 1fr;min-height:100vh}
+    .rail{position:sticky;top:0;height:100vh;background:var(--ink);color:#fff;padding:22px 24px 24px;display:flex;flex-direction:column;overflow:hidden;z-index:10}
+    .rail::after{content:"";position:absolute;width:330px;height:330px;right:-180px;bottom:-170px;border:1px solid #303030;border-radius:50%;box-shadow:0 0 0 45px #111,0 0 0 46px #303030,0 0 0 90px #111,0 0 0 91px #303030;pointer-events:none}
+    .rail-top{display:flex;align-items:center;justify-content:space-between;gap:18px;position:relative;z-index:2}
+    .logo{font-size:21px;font-weight:780;letter-spacing:-.055em}
+    .logo span{color:var(--accent)}
+    .command-button{border:1px solid #343434;background:#151515;color:#d8d8d8;border-radius:999px;padding:9px 10px 9px 13px;display:flex;align-items:center;gap:14px;font-size:12px}
+    .command-button kbd,.command-launch kbd{font:inherit;background:#272727;border:1px solid #3b3b3b;border-radius:6px;padding:2px 6px;color:#fff}
+
+    .hero{margin:auto 0 22px;position:relative;z-index:2}
+    .availability{display:inline-flex;align-items:center;gap:8px;border:1px solid #303030;background:#121212;border-radius:999px;padding:7px 10px;margin-bottom:22px;color:#d4d4d4;font-size:12px}
+    .availability i{width:7px;height:7px;border-radius:50%;background:var(--acid);box-shadow:0 0 0 4px rgba(217,255,69,.08)}
+    h1{font-size:clamp(45px,4.65vw,76px);line-height:.93;letter-spacing:-.064em;margin:0;max-width:650px;font-weight:650}
+    .hero-copy{font-size:17px;line-height:1.48;color:#a7a7a7;max-width:560px;margin:24px 0 0}
+    .hero-copy strong{color:#fff;font-weight:560}
+    .hero-actions{display:grid;grid-template-columns:1.25fr .75fr;gap:8px;margin-top:26px;max-width:560px}
+    .btn{min-height:52px;border-radius:14px;border:1px solid #303030;display:flex;align-items:center;justify-content:space-between;padding:0 15px;font-weight:650;letter-spacing:-.02em}
+    .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .btn-secondary{background:#151515;color:#fff}
+    .btn span:last-child{font-size:18px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#292929;border:1px solid #292929;border-radius:16px;overflow:hidden;margin-top:14px;max-width:560px}
+    .stat{padding:13px 11px;background:#111}
+    .stat strong{display:block;font-size:20px;letter-spacing:-.035em}
+    .stat span{display:block;color:#777;font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+    .rail-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;color:#777;font-size:11px;position:relative;z-index:2;border-top:1px solid #222;padding-top:15px}
+    .rail-foot nav{display:flex;gap:14px;flex-wrap:wrap}
+    .rail-foot a:hover{color:#fff}
+
+    .feed{min-width:0}
+    .feed-nav{height:72px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(242,241,236,.88);backdrop-filter:blur(16px);z-index:8}
+    .feed-nav strong{font-size:12px;text-transform:uppercase;letter-spacing:.1em}
+    .feed-nav nav{display:flex;gap:20px;font-size:13px}
+    .feed-nav a{color:#625f58}
+    .feed-nav a:hover{color:var(--ink)}
+    .mobile-brand{display:none;font-weight:780;letter-spacing:-.05em}
+
+    .section{padding:24px;border-bottom:1px solid var(--line)}
+    .section-head{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:22px;align-items:end}
+    .kicker{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#7e7b73}
+    .section-head h2{font-size:clamp(34px,4vw,66px);letter-spacing:-.055em;line-height:.94;margin:5px 0 0;font-weight:620}
+    .section-head p{margin:0;color:#66645e;max-width:540px;font-size:15px}
+
+    .concept-stage{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);overflow:hidden}
+    .concept-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-bottom:1px solid var(--line)}
+    .project-tabs{display:flex;gap:6px;flex-wrap:wrap}
+    .project-tab{border:1px solid var(--line);background:transparent;border-radius:999px;padding:7px 10px;font-size:11px;color:#77746d}
+    .project-tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .concept-price{font-size:11px;color:#66645e}
+    .compare{position:relative;aspect-ratio:16/9;background:#e4e1d8;overflow:hidden;touch-action:none;user-select:none}
+    .compare-panel{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}
+    .compare-before{background:repeating-linear-gradient(135deg,#dfddd5 0,#dfddd5 18px,#eae8e1 18px,#eae8e1 36px)}
+    .compare-after{background:linear-gradient(135deg,#131313 0 42%,#252525 42% 58%,#111 58% 100%);width:56%;right:auto}
+    .mock-label{position:absolute;left:18px;bottom:18px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.9);font-size:11px;z-index:3;white-space:nowrap}
+    .compare-after .mock-label{background:var(--acid)}
+    .fake-browser{width:70%;height:67%;border:1px solid rgba(20,20,20,.23);border-radius:10px;background:#f7f6f1;box-shadow:0 20px 50px rgba(0,0,0,.08);position:relative;padding:12px;display:grid;grid-template-rows:10px 1fr;gap:14px}
+    .fake-browser::before{content:"";width:45px;height:6px;border-radius:999px;background:#cbc8be;box-shadow:55px 0 0 #d8d5cd,100px 0 0 #e1ded6}
+    .wire{display:grid;grid-template-columns:.72fr 1.28fr;gap:12px}
+    .wire div{border-radius:7px;background:#dedbd1}
+    .wire div:first-child{background:#c7c3b9}
+    .compare-after .fake-browser{background:#080808;border-color:#454545;box-shadow:0 25px 70px rgba(0,0,0,.45)}
+    .compare-after .fake-browser::before{background:#343434;box-shadow:55px 0 0 #292929,100px 0 0 #202020}
+    .compare-after .wire div{background:#232323}.compare-after .wire div:first-child{background:var(--accent)}
+    .compare-handle{position:absolute;top:0;bottom:0;left:56%;width:2px;background:#fff;z-index:5;transform:translateX(-1px);pointer-events:none}
+    .compare-handle::after{content:"↔";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:39px;height:39px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:15px;box-shadow:0 4px 18px rgba(0,0,0,.16)}
+    .compare-caption{display:grid;grid-template-columns:1.3fr .7fr;gap:20px;padding:15px 16px 17px;border-top:1px solid var(--line);font-size:13px}
+    .compare-caption span:last-child{text-align:right;color:#75726b}
+
+    .concept-details{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;margin-top:12px}
+    .offer-card,.mini-card{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:18px}
+    .offer-card h3{font-size:27px;letter-spacing:-.04em;margin:0 0 12px}
+    .offer-card p{margin:0;color:#66645e;max-width:620px}
+    .offer-points{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:18px;border-radius:12px;overflow:hidden}
+    .offer-points div{background:var(--card);padding:12px;font-size:12px}
+    .offer-points strong{display:block;font-size:15px;margin-bottom:4px}
+    .mini-card{display:flex;flex-direction:column;justify-content:space-between;background:var(--acid);border-color:#c3e92d}
+    .mini-card .big{font-size:46px;letter-spacing:-.06em;line-height:.9;font-weight:680}
+    .mini-card p{margin:28px 0 0;font-size:13px;max-width:250px}
+
+    .play-card{padding:18px;border:1px solid var(--line);border-radius:20px;background:#dedbd4;position:relative;overflow:hidden}
+    .play-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+    .play-head p{font-size:12px;color:#6e6b64;margin:0}
+    .reset{border:1px solid #aaa79e;border-radius:999px;background:rgba(255,255,255,.55);padding:7px 10px;font-size:11px}
+    .board{height:330px;position:relative;border-radius:14px;background:#c8c4bb;overflow:hidden;background-image:linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px);background-size:24px 24px}
+    .drag{position:absolute;width:145px;aspect-ratio:4/3;border-radius:12px;padding:11px;border:1px solid rgba(0,0,0,.14);box-shadow:0 8px 25px rgba(0,0,0,.12);cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;justify-content:space-between;font-size:11px;font-weight:620}
+    .drag:active{cursor:grabbing}.drag::after{content:"concept cover";font-size:9px;text-transform:uppercase;letter-spacing:.08em;opacity:.52}
+    .drag:nth-child(1){left:7%;top:14%;background:#ff7450;transform:rotate(-5deg)}
+    .drag:nth-child(2){left:30%;top:38%;background:#f7f5ee;transform:rotate(4deg)}
+    .drag:nth-child(3){left:56%;top:11%;background:#3d50dc;color:#fff;transform:rotate(-2deg)}
+    .drag:nth-child(4){left:75%;top:48%;background:#d9ff45;transform:rotate(5deg)}
+    .drag:nth-child(5){left:13%;top:62%;background:#111;color:#fff;transform:rotate(2deg)}
+    .drag:nth-child(6){left:51%;top:61%;background:#f0b9ff;transform:rotate(-4deg)}
+
+    .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .case{border:1px solid var(--line);background:var(--card);border-radius:20px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+    .case:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(24,22,18,.07)}
+    .case-visual{aspect-ratio:16/9;display:grid;place-items:center;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+    .case:nth-child(1) .case-visual{background:#301941;color:#f0c9ff}
+    .case:nth-child(2) .case-visual{background:#c9ff66;color:#0d0d0d}
+    .case:nth-child(3) .case-visual{background:#111;color:#f5c849}
+    .case:nth-child(4) .case-visual{background:#ced8ff;color:#1834a9}
+    .case:nth-child(5) .case-visual{background:#ff7656;color:#28100a}
+    .case:nth-child(6) .case-visual{background:#d9eee9;color:#0d5f51}
+    .placeholder-caption{font-size:11px;text-transform:uppercase;letter-spacing:.1em;border:1px solid currentColor;border-radius:999px;padding:7px 9px}
+    .case-content{padding:15px}
+    .case-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+    .case h3{font-size:24px;letter-spacing:-.04em;margin:0}
+    .case-year{font-size:11px;color:#7b7870;padding-top:5px}
+    .case p{font-size:13px;color:#68655e;margin:9px 0 16px;min-height:53px}
+    .tags{display:flex;gap:5px;flex-wrap:wrap}
+    .tag{font-size:10px;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--line);border-radius:999px;padding:5px 7px}
+
+    .process{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+    .step{background:var(--card);padding:20px;min-height:210px;display:flex;flex-direction:column;justify-content:space-between}
+    .step strong{font-size:12px;color:#77746d}.step h3{font-size:27px;letter-spacing:-.04em;margin:0 0 8px}.step p{font-size:13px;color:#69665f;margin:0}
+
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .price-card{border:1px solid var(--line);border-radius:20px;padding:18px;background:var(--card);display:flex;flex-direction:column;min-height:330px}
+    .price-card.featured{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .price-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:#77746d}
+    .price-card.featured .label{color:#8f8f8f}
+    .price{font-size:47px;letter-spacing:-.06em;margin:12px 0 16px;line-height:1}
+    .price-card p{font-size:13px;color:#6d6a63;margin:0 0 12px}.price-card.featured p{color:#aaa}
+    .price-card .spacer{flex:1}
+    .price-card a{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:13px;font-weight:650;font-size:13px}.price-card.featured a{border-color:#333}
+
+    .quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .quote{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:18px;display:flex;flex-direction:column;min-height:265px}
+    .quote blockquote{margin:0;font-size:18px;letter-spacing:-.025em;line-height:1.35}
+    .quote footer{margin-top:auto;padding-top:24px;display:flex;gap:10px;align-items:center;border:0}
+    .avatar{width:38px;height:38px;border-radius:50%;border:1px dashed #999;background:#ece9e0;display:grid;place-items:center;font-size:9px;text-align:center;line-height:1.1;color:#77746d;flex:0 0 auto}
+    .person{font-size:12px}.person strong{display:block}.person span{color:#77746d}
+
+    .services-team{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .list-card{border:1px solid var(--line);background:var(--card);border-radius:20px;overflow:hidden}
+    .list-title{padding:16px;border-bottom:1px solid var(--line);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#77746d}
+    .list-row{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;font-size:14px}.list-row:last-child{border-bottom:0}.list-row span:last-child{color:#7d7a72;text-align:right}
+
+    .faq{border:1px solid var(--line);background:var(--card);border-radius:20px;overflow:hidden}
+    details{border-bottom:1px solid var(--line)}details:last-child{border-bottom:0}
+    summary{list-style:none;padding:17px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;font-size:17px;letter-spacing:-.025em}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-size:24px;font-weight:300;color:#77746d}details[open] summary::after{content:"×"}
+    details p{margin:0;padding:0 18px 18px;color:#68655e;max-width:740px;font-size:14px}
+
+    .closing{border-radius:26px;background:var(--accent);color:#fff;padding:24px;min-height:390px;display:flex;flex-direction:column;justify-content:space-between}
+    .closing-top{display:flex;justify-content:space-between;gap:18px;font-size:12px}
+    .closing h2{font-size:clamp(48px,6vw,96px);line-height:.88;letter-spacing:-.065em;margin:40px 0 22px;max-width:890px;font-weight:640}
+    .closing-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .closing .btn{background:#fff;color:var(--ink);border:0;min-width:180px}.closing .btn:last-child{background:#111;color:#fff}
+
+    .footer{padding:24px;border-top:1px solid var(--line);background:#e8e5dc}
+    .footer-grid{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:28px}
+    .footer h4{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#7b7870;margin:0 0 11px}
+    .footer a,.footer span{display:block;font-size:12px;margin:7px 0;color:#494741}
+    .footer .big-mark{font-size:24px;font-weight:780;letter-spacing:-.05em;margin-bottom:10px;color:var(--ink)}
+    .warsaw-time{margin-top:22px;font-size:11px;color:#77746d}
+
+    .command-launch{position:fixed;right:18px;bottom:18px;z-index:20;border:1px solid #cfcac0;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);box-shadow:0 8px 30px rgba(0,0,0,.12);border-radius:14px;padding:12px 13px;display:flex;align-items:center;gap:11px;font-size:12px}
+    .command-launch kbd{background:#efede7;border-color:#d7d3ca;color:#333}
+    .command-launch .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+
+    .overlay[hidden]{display:none}
+    .overlay{position:fixed;inset:0;background:rgba(9,9,9,.58);backdrop-filter:blur(9px);z-index:100;display:grid;place-items:center;padding:20px}
+    .palette{width:min(660px,100%);background:#f8f7f2;border:1px solid #d4d0c6;border-radius:20px;box-shadow:0 30px 90px rgba(0,0,0,.32);overflow:hidden}
+    .palette-input{display:flex;align-items:center;gap:11px;padding:12px;border-bottom:1px solid var(--line)}
+    .palette-input input{border:0;background:transparent;outline:0;flex:1;font-size:18px;padding:7px 2px;min-width:0}
+    .palette-input kbd,.palette-foot kbd{font:inherit;font-size:10px;border:1px solid #d5d1c8;background:#ece9e2;border-radius:6px;padding:4px 6px}
+    .palette-label{padding:12px 14px 5px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#8a877f}
+    .palette-results{padding:7px}
+    .result{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:8px;padding:10px;border-radius:11px;font-size:13px}
+    .result.active{background:#eae7df}.result[hidden]{display:none}
+    .result-icon{width:30px;height:30px;border:1px solid #d7d2c9;border-radius:8px;display:grid;place-items:center;color:#68655e}
+    .result small{color:#8a877f}.palette-empty{padding:18px 12px;color:#7c7972;font-size:13px}
+    .palette-foot{display:flex;gap:16px;justify-content:flex-end;padding:10px 12px;border-top:1px solid var(--line);font-size:10px;color:#77746d}
+
+    @media (max-width:1100px){
+      :root{--left:40vw}
+      .section-head{grid-template-columns:1fr}.work-grid,.quotes{grid-template-columns:1fr}.pricing{grid-template-columns:1fr}.price-card{min-height:250px}.services-team{grid-template-columns:1fr}.concept-details{grid-template-columns:1fr}.process{grid-template-columns:1fr}.step{min-height:160px}
+    }
+    @media (max-width:820px){
+      .shell{display:block}.rail{position:relative;height:auto;min-height:720px;padding:18px 16px 20px}.rail-top{position:sticky;top:0}.hero{margin:120px 0 48px}.hero-actions{grid-template-columns:1fr}.stats{max-width:none}.rail-foot{display:none}.feed-nav{height:58px;padding:0 14px}.mobile-brand{display:block}.feed-nav strong{display:none}.feed-nav nav{gap:12px}.section{padding:16px 12px}.section-head{margin-bottom:16px}.compare-caption{grid-template-columns:1fr}.compare-caption span:last-child{text-align:left}.concept-toolbar{align-items:flex-start;flex-direction:column}.work-grid{grid-template-columns:1fr}.board{height:430px}.drag{width:125px}.drag:nth-child(1){left:5%;top:8%}.drag:nth-child(2){left:46%;top:19%}.drag:nth-child(3){left:12%;top:41%}.drag:nth-child(4){left:55%;top:55%}.drag:nth-child(5){left:7%;top:70%}.drag:nth-child(6){left:54%;top:79%}.footer-grid{grid-template-columns:1fr 1fr}.command-launch{left:12px;right:12px;justify-content:center;bottom:12px}.fake-browser{width:82%;height:70%}.closing{min-height:430px}
+    }
+    @media (max-width:520px){
+      h1{font-size:51px}.hero-copy{font-size:15px}.stats{grid-template-columns:1fr}.stat{display:flex;align-items:baseline;gap:8px}.stat span{margin:0}.feed-nav nav a:nth-child(2){display:none}.section-head h2{font-size:43px}.offer-points{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.project-tabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%}.project-tab{padding:7px 4px}.concept-price{display:none}.board{height:460px}.quotes{grid-template-columns:1fr}.process{display:block}.step{border-bottom:1px solid var(--line)}.pricing{display:block}.price-card{margin-bottom:10px}.closing h2{font-size:55px}.closing-actions{display:grid}.closing .btn{width:100%}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail">
+      <div class="rail-top">
+        <a class="logo" href="#top">unroot<span>.</span></a>
+        <button class="command-button" type="button" data-open-command><span>Search</span><kbd>⌘K</kbd></button>
+      </div>
+
+      <div class="hero" id="top">
+        <div class="availability"><i></i><span>2 slots left in October. Next opening December.</span></div>
+        <h1>Website design and build for funded AI and tech startups.</h1>
+        <p class="hero-copy"><strong>5 people in Warsaw.</strong> We work with pre-seed to Series A teams, mostly in the US, UK, Canada and Australia. Start with a 7 day concept.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#concept"><span>get a concept, $1,499</span><span>↘</span></a>
+          <a class="btn btn-secondary" href="mailto:adam@unroot.design?subject=Intro%20call"><span>book call</span><span>↗</span></a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>9 years</strong><span>doing the work</span></div>
+          <div class="stat"><strong>100+</strong><span>brands</span></div>
+          <div class="stat"><strong>$130M+</strong><span>raised by clients</span></div>
+        </div>
+      </div>
+
+      <div class="rail-foot">
+        <nav><a href="#work">work</a><a href="#pricing">pricing</a><a href="#team">team</a><a href="#faq">faq</a></nav>
+        <span>Warsaw, Poland</span>
+      </div>
+    </aside>
+
+    <main class="feed">
+      <header class="feed-nav">
+        <a class="mobile-brand" href="#top">unroot.</a>
+        <strong>Concept to shipped website</strong>
+        <nav><a href="#concept">Concept</a><a href="#work">Work</a><a href="#pricing">Pricing</a><a href="#footer">Contact</a></nav>
+      </header>
+
+      <section class="section" id="concept">
+        <div class="section-head">
+          <div><span class="kicker">01, the Concept</span><h2>Send a link. Get a direction in 7 days.</h2></div>
+          <p>No brief. No moodboard. No discovery call. You send your current website. 7 days later, you get 1 homepage direction in Figma, hero plus 3 sections, with an animated scroll preview.</p>
+        </div>
+
+        <div class="concept-stage">
+          <div class="concept-toolbar">
+            <div class="project-tabs" role="tablist" aria-label="Concept examples">
+              <button class="project-tab active" type="button" data-project="Javelin VP">Javelin VP</button>
+              <button class="project-tab" type="button" data-project="Switch">Switch</button>
+              <button class="project-tab" type="button" data-project="Epsilon Health">Epsilon</button>
+              <button class="project-tab" type="button" data-project="Ambient Dreamie">Dreamie</button>
+              <button class="project-tab" type="button" data-project="ResumAI">ResumAI</button>
+              <button class="project-tab" type="button" data-project="Leadgains">Leadgains</button>
+            </div>
+            <div class="concept-price">drag to compare</div>
+          </div>
+          <div class="compare" data-compare>
+            <div class="compare-panel compare-before">
+              <div class="fake-browser"><div class="wire"><div></div><div></div></div></div>
+              <span class="mock-label" data-before-label>Before screenshot, Javelin VP</span>
+            </div>
+            <div class="compare-panel compare-after" data-after>
+              <div class="fake-browser"><div class="wire"><div></div><div></div></div></div>
+              <span class="mock-label" data-after-label>7 day concept, Javelin VP</span>
+            </div>
+            <div class="compare-handle" data-handle></div>
+          </div>
+          <div class="compare-caption"><span>Placeholder for the real before and after pair. Tall source screenshots can open full height on click.</span><span>Animated scroll preview can replace this area.</span></div>
+        </div>
+
+        <div class="concept-details">
+          <article class="offer-card">
+            <h3>1 direction. One shot.</h3>
+            <p>The Concept is fixed. No revisions. If you move into the full redesign within 60 days, the $1,499 is credited. If you do not, you keep the Figma file.</p>
+            <div class="offer-points">
+              <div><strong>hero + 3 sections</strong>Custom homepage direction in Figma.</div>
+              <div><strong>animated preview</strong>Scroll motion, not a flat mockup.</div>
+              <div><strong>7 days</strong>From current website link to concept.</div>
+              <div><strong>yours to keep</strong>Use the file however you want.</div>
+            </div>
+          </article>
+          <article class="mini-card"><div><span class="kicker">Entry point</span><div class="big">$1,499<br>7 days</div></div><p>Finding out on day 7 beats finding out on week 4.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="play-head"><div><span class="kicker">02, concept board</span><p>Move the covers around. These become the 9 real concept covers later.</p></div><button class="reset" type="button" data-reset>reset board</button></div>
+        <div class="play-card">
+          <div class="board" data-board>
+            <div class="drag" data-drag>Oramedia</div><div class="drag" data-drag>ResumAI</div><div class="drag" data-drag>Rezi</div><div class="drag" data-drag>Switch</div><div class="drag" data-drag>Ambient Dreamie</div><div class="drag" data-drag>Leadgains</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="work">
+        <div class="section-head"><div><span class="kicker">03, shipped work</span><h2>Concepts are fast. The finished work still has to hold up.</h2></div><p>6 shipped case studies. The real project imagery goes into these 16:9 frames.</p></div>
+        <div class="work-grid">
+          <article class="case"><div class="case-visual"><span class="placeholder-caption">3 case study images, Ambient Dreamie</span></div><div class="case-content"><div class="case-top"><h3>Ambient Dreamie</h3><span class="case-year">2025</span></div><p>Built the brand and digital experience for a wellness startup that raised $550K on light-based sleep science.</p><div class="tags"><span class="tag">brand</span><span class="tag">3d</span><span class="tag">website</span><span class="tag">healthtech</span></div></div></article>
+          <article class="case"><div class="case-visual"><span class="placeholder-caption">3 case study images, Switch</span></div><div class="case-content"><div class="case-top"><h3>Switch</h3><span class="case-year">2025</span></div><p>Built the digital foundation for a next-generation payments platform with 100K+ active users.</p><div class="tags"><span class="tag">website</span><span class="tag">fintech</span></div></div></article>
+          <article class="case"><div class="case-visual"><span class="placeholder-caption">3 case study images, Javelin VP</span></div><div class="case-content"><div class="case-top"><h3>Javelin VP</h3><span class="case-year">2024</span></div><p>Crafted the brand and digital platform for a $125M seed and Series A venture capital fund.</p><div class="tags"><span class="tag">website</span><span class="tag">vc</span></div></div></article>
+          <article class="case"><div class="case-visual"><span class="placeholder-caption">3 case study images, Trustyfy</span></div><div class="case-content"><div class="case-top"><h3>Trustyfy</h3><span class="case-year">2025</span></div><p>Built a next-gen fintech experience for a $6.8M funded payments startup.</p><div class="tags"><span class="tag">website</span><span class="tag">fintech</span></div></div></article>
+          <article class="case"><div class="case-visual"><span class="placeholder-caption">3 case study images, Workshop Film Co.</span></div><div class="case-content"><div class="case-top"><h3>Workshop Film Co.</h3><span class="case-year">2025</span></div><p>Shaped the brand and web presence for a production studio driving $770K in annual revenue.</p><div class="tags"><span class="tag">brand</span><span class="tag">website</span><span class="tag">film</span></div></div></article>
+          <article class="case"><div class="case-visual"><span class="placeholder-caption">3 case study images, Epsilon Health</span></div><div class="case-content"><div class="case-top"><h3>Epsilon Health</h3><span class="case-year">2025</span></div><p>Designed the digital platform for a MedTech company transforming radiology imaging workflows.</p><div class="tags"><span class="tag">website</span><span class="tag">medtech</span></div></div></article>
+        </div>
+      </section>
+
+      <section class="section" id="process">
+        <div class="section-head"><div><span class="kicker">04, how it runs</span><h2>Start without a meeting.</h2></div><p>No account managers between you and the people doing the work.</p></div>
+        <div class="process">
+          <article class="step"><strong>Day 1</strong><div><h3>Send the link.</h3><p>Pay through Stripe. No call needed to start.</p></div></article>
+          <article class="step"><strong>Day 7</strong><div><h3>The concept lands.</h3><p>You react. If it is wrong, you keep the file and we shake hands.</p></div></article>
+          <article class="step"><strong>Week 2 to 5</strong><div><h3>Design and build.</h3><p>The rest gets designed and built in Webflow or Framer, then handed over.</p></div></article>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="section-head"><div><span class="kicker">05, pricing</span><h2>3 ways in.</h2></div><p>Start with a concept, book 1 focused week, or take a full month.</p></div>
+        <div class="pricing">
+          <article class="price-card featured"><span class="label">Concept in 7 days</span><div class="price">$1,499</div><p>1 homepage direction in Figma, hero plus 3 sections. Animated scroll preview. Credited toward the full redesign within 60 days.</p><p>Yours to keep. No revisions, it is a fixed concept.</p><div class="spacer"></div><a href="mailto:adam@unroot.design?subject=Concept"><span>get a concept</span><span>↗</span></a></article>
+          <article class="price-card"><span class="label">Trial week</span><div class="price">$2,499</div><p>For when you already know what needs doing. Design, build, or both.</p><p>Private Slack channel from day 1. Daily output, not a weekly report. Ends on Friday, no notice period.</p><div class="spacer"></div><a href="mailto:adam@unroot.design?subject=Trial%20week"><span>book a week</span><span>↗</span></a></article>
+          <article class="price-card"><span class="label">A month</span><div class="price">$7,899</div><p>1 senior designer, 1 senior developer, art direction. A landing page designed and built, or a whole website designed, inside 4 weeks.</p><p>Unlimited requests inside the month. Pause or stop before the next block starts.</p><div class="spacer"></div><a href="mailto:adam@unroot.design?subject=Monthly%20project"><span>book call</span><span>↗</span></a></article>
+        </div>
+      </section>
+
+      <section class="section" id="reviews">
+        <div class="section-head"><div><span class="kicker">06, clients</span><h2>Direct work. Direct feedback.</h2></div><p>The first 3 testimonials are verified on Trustpilot. Avatar circles are placeholders for the real client avatars.</p></div>
+        <div class="quotes">
+          <article class="quote"><blockquote>“We could not have been happier with his work and strongly recommend him to any future clients. He is creative and very timely with responses.”</blockquote><footer><div class="avatar">client<br>avatar</div><div class="person"><strong>Tasnia Huque</strong><span>Principal at Javelin VP</span></div></footer></article>
+          <article class="quote"><blockquote>“Collaboration was smooth from design through build, and they handled every detail with care.”</blockquote><footer><div class="avatar">client<br>avatar</div><div class="person"><strong>Adrian Canoso</strong><span>CEO and Co-Founder at Ambient Dreamie</span></div></footer></article>
+          <article class="quote"><blockquote>“Adam and his team excel in both design and development, consistently delivering high-quality work with clear and timely communication.”</blockquote><footer><div class="avatar">client<br>avatar</div><div class="person"><strong>Jonah Neuss</strong><span>Wow House Studio</span></div></footer></article>
+          <article class="quote"><blockquote>“The designs are honestly some of the coolest stuff I have seen out there.”</blockquote><footer><div class="avatar">client<br>avatar</div><div class="person"><strong>Rokas Judickas</strong><span>Founding designer at Sintra.ai</span></div></footer></article>
+        </div>
+      </section>
+
+      <section class="section" id="team">
+        <div class="section-head"><div><span class="kicker">07, studio</span><h2>5 people. No account layer.</h2></div><p>Adam runs the projects. The client works with the people designing and building the website.</p></div>
+        <div class="services-team">
+          <div class="list-card"><div class="list-title">Services</div><div class="list-row"><span>Website design</span><span>Webflow and Framer</span></div><div class="list-row"><span>Vibe coding</span><span>build</span></div><div class="list-row"><span>Logo and brand identity</span><span>brand</span></div><div class="list-row"><span>Design systems</span><span>systems</span></div><div class="list-row"><span>3D and motion</span><span>visuals</span></div><div class="list-row"><span>Landing pages</span><span>launch</span></div><div class="list-row"><span>CMS setup and training</span><span>handover</span></div></div>
+          <div class="list-card"><div class="list-title">Team</div><div class="list-row"><span>Adam</span><span>design, runs projects</span></div><div class="list-row"><span>Eugenia</span><span>senior design</span></div><div class="list-row"><span>Alex</span><span>development</span></div><div class="list-row"><span>Igor</span><span>design</span></div><div class="list-row"><span>Yuliia</span><span>design</span></div></div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="section-head"><div><span class="kicker">08, faq</span><h2>Before you send the link.</h2></div><p>The short version of what happens, what you own, and where AI fits.</p></div>
+        <div class="faq">
+          <details><summary>What exactly do I get for $1,499</summary><p>A custom homepage concept in Figma, hero plus 3 sections, a scroll animation, and our take on the direction your redesign should go. Delivered in 7 days.</p></details>
+          <details><summary>What if I do not move forward with the full website</summary><p>You keep the concept and can build it however you want. The $1,499 is credited if you upgrade within 60 days. Finding out on day 7 beats finding out on week 4.</p></details>
+          <details><summary>Are revisions included in the concept</summary><p>No. It is a fixed concept, 1 direction, one shot. Revisions and evolution happen inside the full project, and that is priced separately.</p></details>
+          <details><summary>Can I give input before you start</summary><p>You can share context and we read everything you send. But we do not ask for moodboards or brand kits. You are paying for our call on the direction, not for assembling yours.</p></details>
+          <details><summary>Will I be able to edit the website myself afterwards</summary><p>Yes. We build in Webflow or Framer with a real CMS. Your marketing person can swap copy, add a post and publish without calling us. We lock the layout rules early so a text change on desktop does not break tablet.</p></details>
+          <details><summary>What happens if you go quiet for a week</summary><p>We do not. You get a private Slack channel with the people doing the work, weekly updates, and a status line on Friday whether or not there is good news. Delays are survivable, silence is what kills projects.</p></details>
+          <details><summary>Is an AI doing the design</summary><p>No. We vibe code the build, which is why a month is enough for a full website. The direction, the layout and the taste are ours.</p></details>
+          <details><summary>Who owns the files</summary><p>You do. Figma, the Webflow or Framer project, fonts, everything handed over at the end.</p></details>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="closing">
+          <div class="closing-top"><span>2 slots left in October</span><span>next opening, December</span></div>
+          <h2>Send the website. See our direction 7 days later.</h2>
+          <div class="closing-actions"><a class="btn" href="mailto:adam@unroot.design?subject=Concept"><span>get a concept, $1,499</span><span>↗</span></a><a class="btn" href="mailto:adam@unroot.design?subject=Intro%20call"><span>book call</span><span>↗</span></a></div>
+        </div>
+      </section>
+
+      <footer class="footer" id="footer">
+        <div class="footer-grid">
+          <div><div class="big-mark">unroot.</div><span>Website design and build studio in Warsaw.</span><a href="mailto:adam@unroot.design">adam@unroot.design</a><div class="warsaw-time" data-warsaw-time>Warsaw time</div></div>
+          <div><h4>Browse</h4><a href="#concept">Concept</a><span>Services</span><span>Redesign</span><span>Templates</span><span>Blog</span><span>Careers</span></div>
+          <div><h4>Work</h4><a href="#work">Ambient Dreamie</a><a href="#work">Switch</a><a href="#work">Javelin VP</a><a href="#work">Trustyfy</a><a href="#work">Workshop Film Co.</a><a href="#work">Epsilon Health</a></div>
+          <div><h4>Say hello</h4><a href="mailto:adam@unroot.design">Email</a><span>LinkedIn</span><span>X (Twitter)</span><span>Threads</span><span>Trustpilot</span><span>Terms of Use</span><span>Privacy Policy</span></div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <button class="command-launch" type="button" data-open-command><span class="dot"></span><span>jump anywhere</span><kbd>⌘K</kbd></button>
+
+  <div class="overlay" data-overlay hidden>
+    <section class="palette" role="dialog" aria-modal="true" aria-label="Website navigation">
+      <div class="palette-input"><span>⌕</span><input type="search" data-command-input placeholder="Type what you're looking for..." autocomplete="off"><kbd>esc</kbd></div>
+      <div class="palette-label">Available actions</div>
+      <div class="palette-results" data-results>
+        <a class="result" href="#concept" data-result data-search="concept 1499 7 days redesign before after"><span class="result-icon">01</span><span>Get a Concept</span><small>$1,499</small></a>
+        <a class="result" href="#work" data-result data-search="projects work case studies ambient dreamie switch javelin trustyfy workshop epsilon"><span class="result-icon">02</span><span>See shipped work</span><small>6 projects</small></a>
+        <a class="result" href="#process" data-result data-search="process how project runs day 1 day 7 week"><span class="result-icon">03</span><span>How a project runs</span><small>3 steps</small></a>
+        <a class="result" href="#pricing" data-result data-search="pricing price concept trial week month 1499 2499 7899"><span class="result-icon">04</span><span>Pricing</span><small>3 options</small></a>
+        <a class="result" href="#team" data-result data-search="services team adam eugenia alex igor yuliia webflow framer vibe coding brand"><span class="result-icon">05</span><span>Services and team</span><small>5 people</small></a>
+        <a class="result" href="#faq" data-result data-search="faq questions revisions ownership ai cms edit"><span class="result-icon">06</span><span>FAQ</span><small>8 answers</small></a>
+        <a class="result" href="mailto:adam@unroot.design?subject=Intro%20call" data-result data-search="book call contact email adam start project"><span class="result-icon">↗</span><span>Book call</span><small>email Adam</small></a>
+        <div class="palette-empty" data-empty hidden>No match. Try “concept”, “pricing”, “work” or “team”.</div>
+      </div>
+      <div class="palette-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> select</span></div>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const overlay = document.querySelector('[data-overlay]');
+      const input = document.querySelector('[data-command-input]');
+      const allResults = [...document.querySelectorAll('[data-result]')];
+      const empty = document.querySelector('[data-empty]');
+      let visible = [...allResults];
+      let active = 0;
+
+      const paint = () => {
+        allResults.forEach(item => item.classList.remove('active'));
+        if (!visible.length) return;
+        active = Math.max(0, Math.min(active, visible.length - 1));
+        visible[active].classList.add('active');
+        visible[active].scrollIntoView({block:'nearest'});
+      };
+      const filter = () => {
+        const q = input.value.trim().toLowerCase();
+        visible = allResults.filter(item => {
+          const ok = !q || item.dataset.search.includes(q) || item.textContent.toLowerCase().includes(q);
+          item.hidden = !ok;
+          return ok;
+        });
+        empty.hidden = visible.length > 0;
+        active = 0;
+        paint();
+      };
+      const open = () => { overlay.hidden = false; document.body.classList.add('command-open'); input.value=''; filter(); setTimeout(() => input.focus(),20); };
+      const close = () => { overlay.hidden = true; document.body.classList.remove('command-open'); };
+      document.querySelectorAll('[data-open-command]').forEach(btn => btn.addEventListener('click', open));
+      input.addEventListener('input', filter);
+      overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+      allResults.forEach(item => item.addEventListener('click', close));
+      document.addEventListener('keydown', e => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); overlay.hidden ? open() : close(); return; }
+        if (overlay.hidden) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, visible.length - 1); paint(); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); paint(); }
+        if (e.key === 'Enter' && visible[active]) { e.preventDefault(); visible[active].click(); }
+      });
+
+      const compare = document.querySelector('[data-compare]');
+      const after = document.querySelector('[data-after]');
+      const handle = document.querySelector('[data-handle]');
+      let comparing = false;
+      const setCompare = clientX => {
+        const rect = compare.getBoundingClientRect();
+        const pct = Math.max(8, Math.min(92, ((clientX - rect.left) / rect.width) * 100));
+        after.style.width = pct + '%';
+        handle.style.left = pct + '%';
+      };
+      compare.addEventListener('pointerdown', e => { comparing = true; compare.setPointerCapture(e.pointerId); setCompare(e.clientX); });
+      compare.addEventListener('pointermove', e => { if (comparing) setCompare(e.clientX); });
+      compare.addEventListener('pointerup', () => comparing = false);
+      compare.addEventListener('pointercancel', () => comparing = false);
+
+      const beforeLabel = document.querySelector('[data-before-label]');
+      const afterLabel = document.querySelector('[data-after-label]');
+      document.querySelectorAll('[data-project]').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-project]').forEach(x => x.classList.remove('active'));
+        btn.classList.add('active');
+        const name = btn.dataset.project;
+        beforeLabel.textContent = 'Before screenshot, ' + name;
+        afterLabel.textContent = '7 day concept, ' + name;
+      }));
+
+      const board = document.querySelector('[data-board]');
+      const cards = [...document.querySelectorAll('[data-drag]')];
+      const initial = cards.map(card => ({left:card.style.left, top:card.style.top, transform:getComputedStyle(card).transform}));
+      cards.forEach(card => {
+        let dx = 0, dy = 0, moving = false;
+        card.addEventListener('pointerdown', e => {
+          moving = true;
+          const rect = card.getBoundingClientRect();
+          dx = e.clientX - rect.left; dy = e.clientY - rect.top;
+          card.setPointerCapture(e.pointerId);
+          card.style.zIndex = 20;
+          card.style.transform = 'rotate(0deg) scale(1.02)';
+        });
+        card.addEventListener('pointermove', e => {
+          if (!moving) return;
+          const b = board.getBoundingClientRect();
+          const c = card.getBoundingClientRect();
+          const x = Math.max(0, Math.min(b.width - c.width, e.clientX - b.left - dx));
+          const y = Math.max(0, Math.min(b.height - c.height, e.clientY - b.top - dy));
+          card.style.left = x + 'px'; card.style.top = y + 'px';
+        });
+        const end = () => { moving = false; card.style.zIndex = ''; card.style.transform = 'rotate(0deg)'; };
+        card.addEventListener('pointerup', end); card.addEventListener('pointercancel', end);
+      });
+      document.querySelector('[data-reset]').addEventListener('click', () => cards.forEach(card => { card.removeAttribute('style'); }));
+
+      const time = document.querySelector('[data-warsaw-time]');
+      const updateTime = () => {
+        const value = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Warsaw',hour:'2-digit',minute:'2-digit',weekday:'short'}).format(new Date());
+        time.textContent = 'Warsaw, ' + value;
+      };
+      updateTime(); setInterval(updateTime, 30000);
+    })();
+  </script>
+</body>
+</html>
