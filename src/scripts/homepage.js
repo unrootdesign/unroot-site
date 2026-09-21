@@ -29,6 +29,7 @@
       const open = () => { previousFocus = document.activeElement; document.querySelector(".shell").inert = true; document.querySelector(".footer").inert = true; overlay.hidden = false; document.body.classList.add('command-open'); input.value=''; filter(); setTimeout(() => input.focus(),20); };
       const close = () => { document.querySelector(".shell").inert = false; document.querySelector(".footer").inert = false; previousFocus?.focus({preventScroll:true}); overlay.hidden = true; document.body.classList.remove('command-open'); };
       document.querySelectorAll('[data-open-command]').forEach(btn => btn.addEventListener('click', open));
+      document.querySelector('[data-close-command]').addEventListener('click', close);
       input.addEventListener('input', filter);
       overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
       allResults.forEach(item => item.addEventListener('click', close));
@@ -38,7 +39,7 @@
         if (e.key === 'Escape') { close(); return; }
         if (e.key === 'Tab') {
           e.preventDefault();
-          const items = [input, ...visible];
+          const items = [input, document.querySelector('[data-close-command]'), ...visible];
           const index = items.indexOf(document.activeElement);
           items[(index + (e.shiftKey ? -1 : 1) + items.length) % items.length].focus();
         }
@@ -70,6 +71,7 @@
         before.alt = name + ' website before redesign';
         after.src = btn.dataset.afterImage;
         after.alt = name + ' homepage concept';
+        document.querySelector('[data-full-concept]').href = btn.dataset.afterImage;
         document.querySelector('[data-before-label]').textContent = 'Before, ' + name;
         document.querySelector('[data-after-label]').textContent = '7 day concept, ' + name;
       };
@@ -96,11 +98,21 @@
 
       const board = document.querySelector('[data-board]');
       const cards = [...document.querySelectorAll('[data-drag]')];
-      const initial = cards.map(card => ({left:card.style.left, top:card.style.top, transform:getComputedStyle(card).transform}));
+
       cards.forEach(card => {
+        card.tabIndex = window.matchMedia('(max-width:760px)').matches ? -1 : 0;
+        card.setAttribute('aria-label', card.textContent + '. Use arrow keys to move this cover.');
+        card.addEventListener('keydown', event => {
+          if (window.matchMedia('(max-width:760px)').matches || !['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)) return;
+          event.preventDefault();
+          card.style.transform = 'none';
+          const step = event.shiftKey ? 30 : 10;
+          card.style.left = Math.max(0, Math.min(board.clientWidth - card.offsetWidth, card.offsetLeft + (event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0))) + 'px';
+          card.style.top = Math.max(0, Math.min(board.clientHeight - card.offsetHeight, card.offsetTop + (event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0))) + 'px';
+        });
         let dx = 0, dy = 0, moving = false;
         card.addEventListener('pointerdown', e => {
-          if (window.matchMedia('(max-width:520px)').matches || e.button !== 0) return;
+          if (window.matchMedia('(max-width:760px)').matches || e.button !== 0) return;
           moving = true;
           const rect = card.getBoundingClientRect();
           dx = e.clientX - rect.left; dy = e.clientY - rect.top;
@@ -119,7 +131,9 @@
         const end = () => { moving = false; card.style.zIndex = ''; card.style.transform = 'rotate(0deg)'; };
         card.addEventListener('pointerup', end); card.addEventListener('pointercancel', end);
       });
-      document.querySelector('[data-reset]').addEventListener('click', () => cards.forEach(card => { card.removeAttribute('style'); }));
+      const resetBoard = () => cards.forEach(card => { card.removeAttribute('style'); card.tabIndex = window.matchMedia('(max-width:760px)').matches ? -1 : 0; });
+      document.querySelector('[data-reset]').addEventListener('click', resetBoard);
+      window.addEventListener('resize', resetBoard);
 
       const reviews = [...document.querySelectorAll('[data-review]')];
       let reviewIndex = 0;

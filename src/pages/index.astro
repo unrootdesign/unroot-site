@@ -12,6 +12,7 @@ import "../styles/homepage.css";
 
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="shell">
     <aside class="rail">
       <div class="rail-top">
@@ -20,37 +21,47 @@ import "../styles/homepage.css";
       </div>
 
       <div class="hero" id="top">
-        <div class="availability"><i></i><span>Warsaw studio. Working worldwide.</span></div>
-        <h1>Your new homepage in 7 days.</h1>
-        <p class="hero-copy"><strong>A homepage concept for AI and tech startups.</strong> One design direction in Figma, a hero, three sections and a scroll preview. Then decide if we build the rest.</p>
+        <div class="availability">Independent design &amp; build studio</div>
+        <h1>Your new homepage in <span>7 days.</span></h1>
+        <p class="hero-copy">A homepage concept in Figma.<br>Then decide if we build the rest.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#concept"><span>get a concept, $1,499</span><span>↘</span></a>
-          <a class="btn btn-secondary" href="mailto:adam@unroot.design?subject=Intro%20call"><span>book call</span><span>↗</span></a>
+          <a class="btn btn-primary" href="mailto:adam@unroot.design?subject=Homepage%20Concept"><span>Get a concept — $1,499</span><span aria-hidden="true">↗</span></a>
+          <a class="btn btn-secondary" href="mailto:adam@unroot.design?subject=Intro%20call"><span>Discuss a project</span><span>↗</span></a>
         </div>
+
+      </div>
+
+      <div class="rail-foot">
+        <nav><a href="#work">work</a><a href="#pricing">pricing</a><a href="#team">team</a><a href="#faq">faq</a></nav>
+        <span>Based in Warsaw.<br>Working worldwide.</span>
+      </div>
+    </aside>
+
+    <main class="feed" id="main-content" tabindex="-1">
+      <header class="feed-nav">
+        <a class="mobile-brand" href="#top">unroot.</a>
+        <strong>Unroot / Selected work</strong>
+        <nav><a href="#concept">Concept</a><a href="#work">Work</a><a href="#pricing">Pricing</a><a href="#footer">Contact</a></nav>
+      </header>
+
+      <section class="featured-work" aria-label="Featured project">
+        <div class="featured-heading"><span class="kicker">Built with Unroot</span><a href="#work">Explore our work <span aria-hidden="true">↗</span></a></div>
+        <a class="featured-image" href="#work-dreamie" aria-label="Explore the Ambient Dreamie project">
+          <img src="/homepage/img/w-dreamie-2.jpg" alt="Ambient Dreamie website featuring its bedside sleep device" width="1600" height="900" fetchpriority="high">
+          <span class="image-link" aria-hidden="true">↗</span>
+        </a>
+        <div class="featured-caption"><h2>Ambient Dreamie</h2><span>Brand identity · 3D · Website</span></div>
         <div class="stats">
           <div class="stat"><strong>9 years</strong><span>in design &amp; development</span></div>
           <div class="stat"><strong>100+</strong><span>brands served</span></div>
           <div class="stat"><strong>$130M+</strong><span>raised by clients</span></div>
         </div>
-      </div>
-
-      <div class="rail-foot">
-        <nav><a href="#work">work</a><a href="#pricing">pricing</a><a href="#team">team</a><a href="#faq">faq</a></nav>
-        <span>Warsaw, Poland</span>
-      </div>
-    </aside>
-
-    <main class="feed">
-      <header class="feed-nav">
-        <a class="mobile-brand" href="#top">unroot.</a>
-        <strong>Website design &amp; development</strong>
-        <nav><a href="#concept">Concept</a><a href="#work">Work</a><a href="#pricing">Pricing</a><a href="#footer">Contact</a></nav>
-      </header>
+      </section>
 
       <section class="section" id="concept">
         <div class="section-head">
-          <div><span class="kicker">01, homepage concept</span><h2>Start with a concept.</h2></div>
-          <p>Send your website. We design one homepage direction in Figma: a hero, three sections and a scroll preview. Delivered in 7 days for $1,499.</p>
+          <div><span class="kicker">01 / The concept</span><h2>First, a direction.<br>Then, a decision.</h2></div>
+          <p>Send your website. In 7 days, see what it could become — before booking the full redesign.</p>
         </div>
 
         <div class="concept-stage">
@@ -67,7 +78,7 @@ import "../styles/homepage.css";
           </div>
           <div class="compare" data-compare>
             <div class="compare-panel compare-before">
-              <img data-before-image src="/homepage/img/p-javelin-before.jpg" alt="Javelin VP website before redesign" width="620" height="1033" fetchpriority="high">
+              <img data-before-image src="/homepage/img/p-javelin-before.jpg" alt="Javelin VP website before redesign" width="620" height="1033" loading="lazy">
               <span class="mock-label" data-before-label>Before, Javelin VP</span>
             </div>
             <div class="compare-panel compare-after" data-after>
@@ -77,26 +88,37 @@ import "../styles/homepage.css";
             <div class="compare-handle" data-handle></div>
             <input class="compare-range" type="range" min="0" max="100" value="56" aria-label="Reveal the homepage concept" data-compare-range>
           </div>
-          <div class="compare-caption"><span>Drag to compare the original website with our homepage concept.</span><span>Select a project above to explore another direction.</span></div>
+          <div class="compare-caption"><span>Move the slider to compare.</span><a href="/homepage/img/p-javelin-after.jpg" data-full-concept target="_blank" rel="noopener">View full concept ↗</a></div>
 
         <div class="concept-details">
           <div class="offer-card">
-            <h3>A defined scope. A file you keep.</h3>
-            <p>One design direction, with no revisions or development included. The Figma file is yours. Continue with a full redesign within 60 days and we credit the $1,499 toward it.</p>
-            <div class="offer-points">
-              <div><strong>hero + 3 sections</strong>One homepage direction in Figma.</div>
-              <div><strong>animated preview</strong>See how the page moves on scroll.</div>
-              <div><strong>7 days</strong>Delivery after payment and your website link.</div>
-              <div><strong>yours to keep</strong>Keep the design, whether we build it or not.</div>
-            </div>
+            <h3>Your homepage,<br>reimagined.</h3>
+            <p>One direction in Figma. A hero and three sections. A scroll preview to see it in motion.</p>
+            <ul class="offer-points">
+              <li>The Figma file is yours to keep</li>
+              <li>No revisions or development included</li>
+              <li>$1,499 credited toward a full redesign within 60 days</li>
+            </ul>
           </div>
-          <div class="mini-card"><div><span class="kicker">Homepage Concept</span><div class="big">$1,499</div><span class="offer-delivery">Delivered in 7 days</span></div><p>Decide on the design before booking the full website.</p></div>
+          <div class="mini-card"><div><span class="kicker">Homepage Concept</span><div class="big">$1,499</div><span class="offer-delivery">Delivered in 7 days</span></div><a class="btn btn-primary" href="mailto:adam@unroot.design?subject=Homepage%20Concept"><span>Get your concept</span><span aria-hidden="true">↗</span></a></div>
         </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="play-head"><div><span class="kicker">02, concept board</span><p>More homepage concepts. Drag the covers to explore.</p></div><button class="reset" type="button" data-reset>reset board</button></div>
+      <section class="section" id="work">
+        <div class="section-head"><div><span class="kicker">02 / Selected work</span><h2>From first idea<br>to live website.</h2></div><p>Work for venture capital, finance, health and film businesses.</p></div>
+        <div class="work-grid">
+          <article class="case" id="work-dreamie"><div class="case-visual"><img src="/homepage/img/w-dreamie-1.jpg" alt="Ambient Dreamie, project image 1" loading="lazy"><img src="/homepage/img/w-dreamie-2.jpg" alt="Ambient Dreamie, project image 2" loading="lazy" hidden><img src="/homepage/img/w-dreamie-3.jpg" alt="Ambient Dreamie, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Ambient Dreamie image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Ambient Dreamie image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Ambient Dreamie image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Ambient Dreamie</h3><span class="case-year">2025</span></div><p>Brand identity, 3D visuals and a website for a company making light-based sleep products.</p><div class="tags">brand · 3d · website · healthtech</div></div></article>
+          <article class="case" id="work-switch"><div class="case-visual"><img src="/homepage/img/w-switch-1.jpg" alt="Switch, project image 1" loading="lazy"><img src="/homepage/img/w-switch-2.jpg" alt="Switch, project image 2" loading="lazy" hidden><img src="/homepage/img/w-switch-3.jpg" alt="Switch, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Switch image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Switch image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Switch image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Switch</h3><span class="case-year">2025</span></div><p>A website for a group finance platform with shared accounts, MoneyPools and instant payments.</p><div class="tags">website · fintech</div></div></article>
+          <article class="case" id="work-javelinvp"><div class="case-visual"><img src="/homepage/img/w-javelin-1.jpg" alt="Javelin VP, project image 1" loading="lazy"><img src="/homepage/img/w-javelin-2.jpg" alt="Javelin VP, project image 2" loading="lazy" hidden><img src="/homepage/img/w-javelin-3.jpg" alt="Javelin VP, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Javelin VP image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Javelin VP image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Javelin VP image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Javelin VP</h3><span class="case-year">2024</span></div><p>Website redesign and development for a venture capital fund. Migrated from WordPress to Webflow.</p><div class="tags">website · vc</div></div></article>
+          <article class="case" id="work-trustyfy"><div class="case-visual"><img src="/homepage/img/w-trustyfy-1.jpg" alt="Trustyfy, project image 1" loading="lazy"><img src="/homepage/img/w-trustyfy-2.jpg" alt="Trustyfy, project image 2" loading="lazy" hidden><img src="/homepage/img/w-trustyfy-3.jpg" alt="Trustyfy, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Trustyfy image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Trustyfy image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Trustyfy image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Trustyfy</h3><span class="case-year">2025</span></div><p>A website for a payments business offering crypto and fiat wallets, cards and transfers.</p><div class="tags">website · fintech</div></div></article>
+          <article class="case" id="work-workshop-film-co"><div class="case-visual"><img src="/homepage/img/w-workshop-1.jpg" alt="Workshop Film Co., project image 1" loading="lazy"><img src="/homepage/img/w-workshop-2.jpg" alt="Workshop Film Co., project image 2" loading="lazy" hidden><img src="/homepage/img/w-workshop-3.jpg" alt="Workshop Film Co., project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Workshop Film Co. image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Workshop Film Co. image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Workshop Film Co. image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Workshop Film Co.</h3><span class="case-year">2025</span></div><p>Brand identity and a website for a production studio making commercials and brand films.</p><div class="tags">brand · website · film</div></div></article>
+          <article class="case" id="work-epsilon-health"><div class="case-visual"><img src="/homepage/img/w-epsilon-1.jpg" alt="Epsilon Health, project image 1" loading="lazy"><img src="/homepage/img/w-epsilon-2.jpg" alt="Epsilon Health, project image 2" loading="lazy" hidden><img src="/homepage/img/w-epsilon-3.jpg" alt="Epsilon Health, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Epsilon Health image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Epsilon Health image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Epsilon Health image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Epsilon Health</h3><span class="case-year">2025</span></div><p>A website for a MedTech company building software for radiology imaging workflows.</p><div class="tags">website · medtech</div></div></article>
+        </div>
+      </section>
+
+      <section class="section playground" id="play">
+        <div class="play-head"><div><span class="kicker">03 / Concept desk</span><p>More homepage concepts. Drag the covers to explore.</p></div><button class="reset" type="button" data-reset>reset board</button></div>
         <div class="play-card">
           <div class="board" data-board>
             <div class="drag" data-drag><img src="/homepage/img/c-oramedia.jpg" alt="Oramedia concept cover" loading="lazy" draggable="false"><span>Oramedia</span></div><div class="drag" data-drag><img src="/homepage/img/c-resumai.jpg" alt="ResumAI concept cover" loading="lazy" draggable="false"><span>ResumAI</span></div><div class="drag" data-drag><img src="/homepage/img/c-rezi.jpg" alt="Rezi concept cover" loading="lazy" draggable="false"><span>Rezi</span></div><div class="drag" data-drag><img src="/homepage/img/c-switch.jpg" alt="Switch concept cover" loading="lazy" draggable="false"><span>Switch</span></div><div class="drag" data-drag><img src="/homepage/img/c-dreamie.jpg" alt="Ambient Dreamie concept cover" loading="lazy" draggable="false"><span>Ambient Dreamie</span></div><div class="drag" data-drag><img src="/homepage/img/c-leadgains.jpg" alt="Leadgains concept cover" loading="lazy" draggable="false"><span>Leadgains</span></div>
@@ -104,20 +126,8 @@ import "../styles/homepage.css";
         </div>
       </section>
 
-      <section class="section" id="work">
-        <div class="section-head"><div><span class="kicker">03, shipped work</span><h2>Selected websites we designed and built.</h2></div><p>Work for venture capital, finance, health and film businesses.</p></div>
-        <div class="work-grid">
-          <article class="case" id="work-dreamie"><div class="case-visual"><img src="/homepage/img/w-dreamie-1.jpg" alt="Ambient Dreamie, project image 1" loading="lazy"><img src="/homepage/img/w-dreamie-2.jpg" alt="Ambient Dreamie, project image 2" loading="lazy" hidden><img src="/homepage/img/w-dreamie-3.jpg" alt="Ambient Dreamie, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Ambient Dreamie image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Ambient Dreamie image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Ambient Dreamie image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Ambient Dreamie</h3><span class="case-year">2025</span></div><p>Brand identity, 3D visuals and a website for a company making light-based sleep products.</p><div class="tags"><span class="tag">brand</span><span class="tag">3d</span><span class="tag">website</span><span class="tag">healthtech</span></div></div></article>
-          <article class="case" id="work-switch"><div class="case-visual"><img src="/homepage/img/w-switch-1.jpg" alt="Switch, project image 1" loading="lazy"><img src="/homepage/img/w-switch-2.jpg" alt="Switch, project image 2" loading="lazy" hidden><img src="/homepage/img/w-switch-3.jpg" alt="Switch, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Switch image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Switch image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Switch image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Switch</h3><span class="case-year">2025</span></div><p>A website for a group finance platform with shared accounts, MoneyPools and instant payments.</p><div class="tags"><span class="tag">website</span><span class="tag">fintech</span></div></div></article>
-          <article class="case" id="work-javelinvp"><div class="case-visual"><img src="/homepage/img/w-javelin-1.jpg" alt="Javelin VP, project image 1" loading="lazy"><img src="/homepage/img/w-javelin-2.jpg" alt="Javelin VP, project image 2" loading="lazy" hidden><img src="/homepage/img/w-javelin-3.jpg" alt="Javelin VP, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Javelin VP image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Javelin VP image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Javelin VP image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Javelin VP</h3><span class="case-year">2024</span></div><p>Website redesign and development for a venture capital fund. Migrated from WordPress to Webflow.</p><div class="tags"><span class="tag">website</span><span class="tag">vc</span></div></div></article>
-          <article class="case" id="work-trustyfy"><div class="case-visual"><img src="/homepage/img/w-trustyfy-1.jpg" alt="Trustyfy, project image 1" loading="lazy"><img src="/homepage/img/w-trustyfy-2.jpg" alt="Trustyfy, project image 2" loading="lazy" hidden><img src="/homepage/img/w-trustyfy-3.jpg" alt="Trustyfy, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Trustyfy image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Trustyfy image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Trustyfy image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Trustyfy</h3><span class="case-year">2025</span></div><p>A website for a payments business offering crypto and fiat wallets, cards and transfers.</p><div class="tags"><span class="tag">website</span><span class="tag">fintech</span></div></div></article>
-          <article class="case" id="work-workshop-film-co"><div class="case-visual"><img src="/homepage/img/w-workshop-1.jpg" alt="Workshop Film Co., project image 1" loading="lazy"><img src="/homepage/img/w-workshop-2.jpg" alt="Workshop Film Co., project image 2" loading="lazy" hidden><img src="/homepage/img/w-workshop-3.jpg" alt="Workshop Film Co., project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Workshop Film Co. image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Workshop Film Co. image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Workshop Film Co. image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Workshop Film Co.</h3><span class="case-year">2025</span></div><p>Brand identity and a website for a production studio making commercials and brand films.</p><div class="tags"><span class="tag">brand</span><span class="tag">website</span><span class="tag">film</span></div></div></article>
-          <article class="case" id="work-epsilon-health"><div class="case-visual"><img src="/homepage/img/w-epsilon-1.jpg" alt="Epsilon Health, project image 1" loading="lazy"><img src="/homepage/img/w-epsilon-2.jpg" alt="Epsilon Health, project image 2" loading="lazy" hidden><img src="/homepage/img/w-epsilon-3.jpg" alt="Epsilon Health, project image 3" loading="lazy" hidden><div class="case-controls"><button type="button" data-case-image="0" aria-label="Show Epsilon Health image 1" aria-pressed="true">1</button><button type="button" data-case-image="1" aria-label="Show Epsilon Health image 2" aria-pressed="false">2</button><button type="button" data-case-image="2" aria-label="Show Epsilon Health image 3" aria-pressed="false">3</button></div></div><div class="case-content"><div class="case-top"><h3>Epsilon Health</h3><span class="case-year">2025</span></div><p>A website for a MedTech company building software for radiology imaging workflows.</p><div class="tags"><span class="tag">website</span><span class="tag">medtech</span></div></div></article>
-        </div>
-      </section>
-
       <section class="section" id="process">
-        <div class="section-head"><div><span class="kicker">04, from concept to website</span><h2>Start with the concept. Decide what comes next.</h2></div><p>The concept is a separate purchase. You can continue with us or take the design elsewhere.</p></div>
+        <div class="section-head"><div><span class="kicker">04 / The process</span><h2>A clear next step.<br>At every stage.</h2></div><p>The concept is a separate purchase. You can continue with us or take the design elsewhere.</p></div>
         <div class="process">
           <article class="step"><strong>Day 1</strong><div><h3>Send the link.</h3><p>Send your current website and pay for the concept. No kickoff call required.</p></div></article>
           <article class="step"><strong>Day 7</strong><div><h3>Review the direction.</h3><p>Receive your Figma concept and scroll preview. Keep the files, whether or not you continue.</p></div></article>
@@ -126,7 +136,7 @@ import "../styles/homepage.css";
       </section>
 
       <section class="section" id="pricing">
-        <div class="section-head"><div><span class="kicker">05, pricing</span><h2>Choose the work you need.</h2></div><p>Buy a design direction, a week of work on defined tasks, or a month with a designer and developer.</p></div>
+        <div class="section-head"><div><span class="kicker">05 / Ways to work together</span><h2>The right start<br>for your website.</h2></div><p>Buy a design direction, a week of work on defined tasks, or a month with a designer and developer.</p></div>
         <div class="pricing">
           <article class="price-card featured">
             <span class="label">Homepage Concept</span><div class="price">$1,499</div>
@@ -156,7 +166,7 @@ import "../styles/homepage.css";
       </section>
 
       <section class="section" id="reviews">
-        <div class="section-head"><div><span class="kicker">06, clients</span><h2>What clients say.</h2></div><p>Read the original reviews using the Trustpilot links below.</p></div>
+        <div class="section-head"><div><span class="kicker">06 / In their words</span><h2>What clients say.</h2></div><p>Read the original reviews using the Trustpilot links below.</p></div>
         <div class="review-carousel" role="region" aria-roledescription="carousel" aria-label="Client reviews">
         <div class="quotes" id="review-slides">
           <article class="quote" data-review role="group" aria-roledescription="slide" aria-label="1 of 4"><blockquote>“We could not have been happier with his work and strongly recommend him to any future clients. He is creative and very timely with responses.”</blockquote><footer><img class="avatar" src="/homepage/img/av-tasnia.jpg" alt="Tasnia Huque" width="38" height="38" loading="lazy"><div class="person"><strong>Tasnia Huque</strong><span>Principal at Javelin VP</span></div><a class="review-source" href="https://www.trustpilot.com/reviews/68811a779569d1770b673aba" target="_blank" rel="noopener noreferrer">Read on Trustpilot ↗</a></footer></article>
@@ -173,17 +183,17 @@ import "../styles/homepage.css";
       </section>
 
       <section class="section" id="services">
-        <div class="section-head"><div><span class="kicker">07, services</span><h2>What we do.</h2></div><p>From brand identity and page design to development and CMS handover.</p></div>
-        <div class="list-card"><div class="list-title">Services</div><div class="list-row"><span>Website design</span><span>Figma</span></div><div class="list-row"><span>Website development</span><span>Webflow &amp; Framer</span></div><div class="list-row"><span>Custom development</span><span>Code</span></div><div class="list-row"><span>Logo and brand identity</span><span>brand</span></div><div class="list-row"><span>Design systems</span><span>systems</span></div><div class="list-row"><span>3D and motion</span><span>visuals</span></div><div class="list-row"><span>Landing pages</span><span>launch</span></div><div class="list-row"><span>CMS setup and training</span><span>handover</span></div></div>
+        <div class="section-head"><div><span class="kicker">07 / Services</span><h2>What we do.</h2></div><p>From brand identity and page design to development and CMS handover.</p></div>
+        <div class="list-card"><div class="list-row"><span>Website design</span><span>Figma</span></div><div class="list-row"><span>Website development</span><span>Webflow &amp; Framer</span></div><div class="list-row"><span>Custom development</span><span>Code</span></div><div class="list-row"><span>Logo and brand identity</span><span>brand</span></div><div class="list-row"><span>Design systems</span><span>systems</span></div><div class="list-row"><span>3D and motion</span><span>visuals</span></div><div class="list-row"><span>Landing pages</span><span>launch</span></div><div class="list-row"><span>CMS setup and training</span><span>handover</span></div></div>
       </section>
 
       <section class="section" id="team">
-        <div class="section-head"><div><span class="kicker">08, team</span><h2>Meet the team doing the work.</h2></div><p>Adam leads design and manages your project. You work directly with the designers and developer.</p></div>
-        <div class="list-card"><div class="list-title">Team</div><div class="list-row"><span>Adam</span><span>design, runs projects</span></div><div class="list-row"><span>Eugenia</span><span>senior design</span></div><div class="list-row"><span>Alex</span><span>development</span></div><div class="list-row"><span>Igor</span><span>design</span></div><div class="list-row"><span>Yuliia</span><span>design</span></div></div>
+        <div class="section-head"><div><span class="kicker">08 / The studio</span><h2>Five people.<br>Direct collaboration.</h2></div><p>Adam leads design and manages your project. You work directly with the designers and developer.</p></div>
+        <div class="list-card"><div class="list-row"><span>Adam</span><span>Design &amp; project lead</span></div><div class="list-row"><span>Eugenia</span><span>Senior designer</span></div><div class="list-row"><span>Alex</span><span>Developer</span></div><div class="list-row"><span>Igor</span><span>Designer</span></div><div class="list-row"><span>Yuliia</span><span>Designer</span></div></div>
       </section>
 
       <section class="section" id="faq">
-        <div class="section-head"><div><span class="kicker">09, faq</span><h2>Scope, process and handover.</h2></div><p>What is included, how we work and what you receive.</p></div>
+        <div class="section-head"><div><span class="kicker">09 / Good to know</span><h2>Before we start.</h2></div><p>What is included, how we work and what you receive.</p></div>
         <div class="faq">
           <details><summary>What is included in the Homepage Concept?</summary><p>One homepage direction in Figma: a hero, three sections and an animated scroll preview. The price is $1,499, with delivery in 7 days after payment and receipt of your website link. Development and revisions are not included.</p></details>
           <details><summary>How is the Concept different from a Sprint?</summary><p>The Concept buys a fixed design deliverable. The Sprint buys one working week of design or development on agreed tasks. Choose the Concept to explore a redesign direction; choose the Sprint when you already know what needs doing.</p></details>
@@ -203,11 +213,12 @@ import "../styles/homepage.css";
   <footer class="footer" id="footer">
     <div class="footer-inner">
       <section class="closing" aria-labelledby="footer-heading">
-        <h2 id="footer-heading">Send us your website.</h2>
-        <p>Tell us what needs to change. We can start with a homepage concept or discuss the design and development work you need.</p>
+        <span class="kicker">A good place to start</span>
+        <h2 id="footer-heading">Your website.<br>Our next project.</h2>
+        <p>Send the link. Tell us what needs to change.<br>We’ll take it from there.</p>
         <div class="closing-actions">
           <a class="btn" href="mailto:adam@unroot.design?subject=Concept"><span>get a concept</span><span>$1,499 ↗</span></a>
-          <a class="btn" href="mailto:adam@unroot.design?subject=Intro%20call"><span>book call</span><span>15 min ↗</span></a>
+          <a class="btn" href="mailto:adam@unroot.design?subject=Intro%20call"><span>Discuss a project</span><span>↗</span></a>
         </div>
       </section>
       <div class="footer-grid">
@@ -251,11 +262,10 @@ import "../styles/homepage.css";
     </div>
   </footer>
 
-  <button class="command-launch" type="button" data-open-command><span class="dot"></span><span>jump anywhere</span><kbd>⌘K</kbd></button>
 
   <div class="overlay" data-overlay hidden>
     <section class="palette" role="dialog" aria-modal="true" aria-label="Website navigation">
-      <div class="palette-input"><span>⌕</span><input type="search" data-command-input aria-label="Search website navigation" placeholder="Type what you're looking for..." autocomplete="off"><kbd>esc</kbd></div>
+      <div class="palette-input"><span>⌕</span><input type="search" data-command-input aria-label="Search website navigation" placeholder="Type what you're looking for..." autocomplete="off"><button class="palette-close" type="button" data-close-command aria-label="Close navigation">Esc</button></div>
       <div class="palette-label">Available actions</div>
       <div class="palette-results" data-results>
         <a class="result" href="#concept" data-result data-search="concept 1499 7 days redesign before after"><span class="result-icon">01</span><span>Homepage Concept</span><small>$1,499</small></a>

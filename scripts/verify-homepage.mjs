@@ -10,7 +10,7 @@ const assets = new Set();
 const media = new Set();
 const links = new Set(['/']);
 assert.ok(!existsSync(resolve(root, 'public/index.html')), 'public/index.html competes with the Astro route');
-assert.ok(homepage.includes('Your new homepage in 7 days.'), 'The homepage was not built');
+assert.ok(homepage.replace(/<[^>]*>/g, '').includes('Your new homepage in 7 days.'), 'The homepage was not built');
 const ids = new Set([...homepage.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]));
 const local = value => value.startsWith('/') && !value.startsWith('//');
 const assetPath = value => decodeURIComponent(value.split(/[?#]/)[0]);
