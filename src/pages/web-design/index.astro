@@ -1,0 +1,42 @@
+---
+import ServicePage from '../../components/ServicePage.astro';
+// title и description дословно из Webflow
+const title = "We Design Websites That Inspire, Engage, and Drive Real Results | Unroot.design";
+const description = "Discover how Unroot designs websites that convert: from custom layouts and user-centered design to responsive development and ongoing support.";
+const I = '/images/';
+---
+<ServicePage title={title} description={description} related="web-design"
+  tag="Website design"
+  h1="We Design Websites That Inspire, Engage," acc="and Drive Real Results"
+  lede="We create modern, user-friendly websites that not only look stunning but also work flawlessly. From strategy and wireframes to pixel-perfect layouts, we make sure your website tells your story and drives results."
+  hero={{ src: I + 'Infographic-Mockup-Website-Design.avif', alt: 'Website design mockups' }}
+  sections={[
+    { tag: 'Process', title: 'How We Build Websites', acc: 'That Work for Your Business', blocks: [{ kind: 'steps', items: [
+      { t: 'Planning', d: 'We start with research and strategy: defining your goals, audience, and website structure. At this stage, we create sitemaps and wireframes to make sure the foundation is solid.' },
+      { t: 'Design', d: 'We transform ideas into stunning visuals: layouts that reflect your brand, engage users, and are built with usability in mind. Every detail is tailored to your identity.' },
+      { t: 'Development', d: 'Clean, responsive, and SEO-friendly code brings the design to life. We ensure smooth performance across all devices and browsers, with scalable solutions for future growth.' },
+      { t: 'Support', d: 'After launch, we stay by your side. From updates and maintenance to new features, we provide ongoing support to keep your website performing at its best.' },
+    ]}]},
+    { tag: 'What you get', title: 'What You Will Get', acc: 'from Us', image: { src: I + 'Infographic-Mockup-Features.avif' }, blocks: [{ kind: 'list', items: [
+      { t: 'Custom Design', d: 'Tailored to your brand and goals' },
+      { t: 'Responsive', d: 'Works perfectly on mobile, tablet, desktop' },
+      { t: 'User-Centered', d: 'Focused on usability and conversion' },
+      { t: 'SEO-Ready', d: 'Optimized structure for visibility' },
+      { t: 'Scalable', d: 'Easy to expand as your business grows' },
+      { t: 'Visual Assets', d: 'Mockups, illustrations, animations if needed' },
+    ]}]},
+    { tag: 'Why Unroot', title: 'Why Clients Work', acc: 'with Unroot', image: { src: I + 'Infographic-Our-Principles.avif' }, blocks: [{ kind: 'list', items: [
+      'Flexible with deadlines, adaptive to project needs',
+      'Open to iterations, we refine until it is right',
+      'Clear communication: direct designer contact, shared Slack',
+      'Weekly updates and calls to keep things transparent',
+    ]}]},
+    { tag: 'Work', title: 'Websites', acc: 'We Have Designed', blocks: [{ kind: 'gallery', images: [
+      { src: I + 'Ambient-Dreamie-Hero-Section.avif', alt: 'Ambient Dreamie website' },
+      { src: I + 'Epsilon-Health-Hero-Section.avif', alt: 'Epsilon Health website' },
+      { src: I + 'CF-1-Hero-Section.avif', alt: 'Website hero section' },
+    ]}]},
+    { tag: 'Niches', title: 'Niches', acc: 'We Work With', blocks: [{ kind: 'pills',
+      items: ['AI startups', 'Tech companies', 'SaaS', 'Creative businesses', 'Professional services'],
+      note: 'But we are open to any industry, just ask.' }]},
+  ]} />

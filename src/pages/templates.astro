@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import Tri from '../components/Tri.astro';
+
+// title и description дословно из Webflow
+const title = "Templates | Unroot Design";
+const description = "The best Webflow templates by Unroot.design";
+const I = '/images/';
+
+const templates = [
+  { n: 'Urban', d: 'AI Agency and SaaS Startup Framer Template', img: 'Urban.avif', url: 'https://urban2026.framer.website/', p: 'framer', price: 'Free', isNew: true },
+  { n: 'Oren', d: 'AI Agency and SaaS Startup Framer Template', img: 'Oren.avif', url: 'https://oren.framer.website/', p: 'framer', price: 'Free', isNew: true },
+  { n: 'Adwise', d: 'Framer Template for Creative Studio and Marketing Agency', img: 'Adwise.avif', url: 'https://adwise.framer.website/', p: 'framer', price: 'Free', isNew: true },
+  { n: 'Nevra', d: 'AI Agency Website Template', img: 'Nerva.avif', url: 'https://nevra.framer.website/', p: 'framer', price: 'Free' },
+  { n: 'Avenna', d: 'AI Automation Website Template', img: 'Avenna.avif', url: 'https://avenna-template.framer.website/', p: 'framer', price: 'Free' },
+  { n: 'Kontra AI', d: 'AI Automation Website Template', img: 'kontra.avif', url: 'https://kontra-template.framer.website/', p: 'framer', price: '$99' },
+  { n: 'Embrace', d: 'Technology Website Template', img: 'Emrace.avif', url: 'https://embrace-saas.webflow.io/', p: 'webflow', price: '$24' },
+  { n: 'Heavent', d: 'Portfolio and Agency Website Template', img: 'Heavent.avif', url: 'https://heavent-template.webflow.io/', p: 'webflow', price: '$29' },
+  { n: 'MCCS', d: 'Launch and Coming Soon Website Template', img: 'MCCS.avif', url: 'https://mccs-template.webflow.io/', p: 'webflow', price: '$29' },
+  { n: 'Productizer', d: 'Portfolio and Agency Website Template', img: 'Productizer.avif', url: 'https://productizer-template.webflow.io/', p: 'webflow', price: '$29' },
+];
+const says = [
+  ['Yenlik', '@uxyenlik', 'Yenlik', 'That little movements make a huge difference.'],
+  ['Anand Patel', '@imananddesigner', 'Anand-Patel', 'Great template! The visual language is strong and immersive.'],
+  ['Brock Dilan', '@thebrock', 'Brock-Dilan', 'Everything feels thoughtfully crafted. Super easy to work with.'],
+  ['Adeline | Astra OS', '@AdelineAstraOS', 'Adeline', 'Really good visuals and theme, love it!'],
+  ['Sohail Hashmi', '@flysohail', 'Sohail-Hashmi', 'Love how a simple tweak can make such a big difference!'],
+  ['Sarthak', '@sarthakbysg', 'Sarthak', 'That looks so well done Adam. I love clean design like this.'],
+  ['Mubashir', '@mubix', 'Mubashir', 'Smooth flow and great visual clarity.'],
+  ['Iji John', '@WD_John', 'Iji-John', "Amazing visuals!!! You're good!"],
+  ['Nolan Sancho', '@nolansan', 'Nolan-Sancho', 'You did great work!!!'],
+];
+const label = { framer: 'Framer', webflow: 'Webflow' };
+---
+<Base title={title} description={description}>
+  <header class="phead">
+    <div class="wrap">
+      <p class="tag"><i></i>Templates</p>
+      <h1 class="h1 tp__h1">Framer and Webflow templates <span class="acc">for SaaS and AI startups</span></h1>
+      <p class="lede">Build fully functional websites in Framer and Webflow, easily and code-free.</p>
+      <p class="mono tp__note">Trusted by 630+ customers</p>
+
+      <div class="tabs tp__tabs" role="tablist">
+        <button data-f="all" aria-selected="true" role="tab" type="button">All</button>
+        <button data-f="framer" aria-selected="false" role="tab" type="button">Framer</button>
+        <button data-f="webflow" aria-selected="false" role="tab" type="button">Webflow</button>
+      </div>
+      <ul class="cards tp__grid">
+        {templates.map(t => (
+          <li class="card" data-p={t.p}><a href={t.url} target="_blank" rel="noopener">
+            <img class="card__img" src={I + t.img} alt={`${t.n} template`} loading="lazy" decoding="async" />
+            <span class="tp__tags">
+              <span class="card__k mono">{label[t.p as 'framer' | 'webflow']}</span>
+              <span class="card__k mono">{t.price}</span>
+              {t.isNew && <span class="card__k mono tp__new">New</span>}
+            </span>
+            <h2 class="card__t">{t.n}</h2>
+            <p class="card__d">{t.d}</p>
+            <span class="card__go link">Preview <Tri /></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </header>
+
+  <section class="sec">
+    <div class="wrap tp__row">
+      <div>
+        <p class="tag"><i></i>Customize</p>
+        <h2 class="h2">Easy to customize <span class="acc">for your company</span></h2>
+        <p class="lede">Swap the copy, colors and images in Framer or Webflow and ship. Need something custom instead? That is what the concept is for.</p>
+        <div class="ctas"><a class="btn btn--line" href="/concept"><span>See the concept</span><Tri /></a></div>
+      </div>
+      <img class="tp__img" src={I + 'customize.avif'} alt="Template customization" loading="lazy" decoding="async" />
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="tag"><i></i>Customers say</p>
+      <h2 class="h2">What people say <span class="acc">about the templates</span></h2>
+      <ul class="tp__says">
+        {says.map(([n, h, img, t]) => (
+          <li>
+            <p>&ldquo;{t}&rdquo;</p>
+            <footer><img src={`${I}${img}.avif`} alt={n} loading="lazy" /><span><b>{n}</b><s>{h}</s></span></footer>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .tp__h1 { max-width: 20ch; }
+  .tp__note { margin-top: 18px; color: var(--ink-3); }
+  .tabs { display: flex; gap: 28px; border-bottom: 1px solid var(--line); }
+  .tabs button { font: 500 .68rem/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; border: 0; background: none; color: var(--ink-3); padding: 0 0 15px; cursor: pointer; position: relative; transition: color var(--t) var(--ease); }
+  .tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--violet); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
+  .tabs button:hover, .tabs button[aria-selected="true"] { color: var(--ink); }
+  .tabs button[aria-selected="true"]::after { transform: scaleX(1); }
+  .tp__tabs { margin-top: clamp(40px, 5vw, 64px); }
+  .tp__grid { margin-top: 28px; }
+  .tp__grid .card[hidden] { display: none; }
+  .tp__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tp__tags .card__k { margin-top: 18px; }
+  .tp__new { background: var(--violet); color: #fff; }
+  .tp__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+  @media (max-width: 900px) { .tp__row { grid-template-columns: 1fr; } }
+  .tp__img { width: 100%; border: 1px solid var(--line); background: var(--bg); }
+  .tp__says { list-style: none; padding: 1px 0 0 1px; margin: clamp(32px, 4vw, 48px) 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (max-width: 1000px) { .tp__says { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .tp__says { grid-template-columns: 1fr; } }
+  .tp__says li { display: flex; flex-direction: column; justify-content: space-between; gap: 22px; border: 1px solid var(--line); margin: -1px 0 0 -1px; padding: clamp(18px, 2vw, 24px); }
+  .tp__says p { font-size: 1.04rem; font-weight: 500; letter-spacing: -.015em; line-height: 1.45; }
+  .tp__says footer { display: flex; align-items: center; gap: 12px; }
+  .tp__says img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+  .tp__says b { display: block; font-weight: 500; font-size: .92rem; }
+  .tp__says s { text-decoration: none; font: 500 .6rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+</style>
+
+<script>
+  const btns = [...document.querySelectorAll<HTMLButtonElement>('.tp__tabs button')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.tp__grid .card')];
+  btns.forEach(b => b.addEventListener('click', () => {
+    btns.forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    cards.forEach(c => { c.hidden = b.dataset.f !== 'all' && c.dataset.p !== b.dataset.f; });
+  }));
+</script>

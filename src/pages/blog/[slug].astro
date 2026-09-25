@@ -1,0 +1,22 @@
+---
+import { getCollection, render } from 'astro:content';
+import PostPage from '../../components/PostPage.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('legacy');
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const d = post.data;
+const url = `https://unroot.design/blog/${d.slug}`;
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'Article',
+  headline: d.title, description: d.seoDescription,
+  author: { '@type': 'Person', name: d.author },
+  publisher: { '@type': 'Organization', name: 'Unroot Design', url: 'https://unroot.design' },
+  datePublished: d.publishDate.toISOString(), mainEntityOfPage: url,
+}];
+---
+<PostPage d={d} url={url} headings={headings} schema={schema} legacy><Content /></PostPage>

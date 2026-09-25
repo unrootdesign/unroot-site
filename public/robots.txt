@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://unroot.design/sitemap-index.xml

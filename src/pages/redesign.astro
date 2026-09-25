@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Tri from '../components/Tri.astro';
+import { BUY_ROAST, ROAST_EXAMPLES } from '../data/links';
+
+// title и description дословно из Webflow. Страницу не показываем в навигации и футере, ссылку отправляем лично.
+const title = "Redesign | Unroot Design";
+const description = "Get free hero redesigns of your website in next 48h";
+const shots = [4, 5, 1, 2, 3].map(n => `/images/redesign${n}.jpg`);
+const steps = ['Submit your website', 'Make a secure payment', 'Get the Figma file in 3-5 days'];
+---
+<Base title={title} description={description}>
+  <header class="phead">
+    <div class="wrap rd__grid">
+      <div>
+        <p class="tag"><i></i>Hero redesign</p>
+        <h1 class="h1">Elevate the first impression <span class="acc">of your website</span></h1>
+        <p class="lede">We analyze and refresh your hero section, with clear design improvements to help increase conversions.</p>
+        <div class="ctas">
+          <a class="btn btn--main" href={BUY_ROAST}><span class="prints"></span><span>Roast my hero for <span class="nw">$129</span></span><Tri /></a>
+          <a class="btn btn--line" href={ROAST_EXAMPLES} target="_blank" rel="noopener"><span>View Figma examples</span><Tri /></a>
+        </div>
+        <p class="mono rd__note">100+ satisfied customers</p>
+      </div>
+      <ol class="rd__steps">
+        {steps.map((s, i) => <li><span class="mono">{String(i + 1).padStart(2, '0')}</span><b>{s}</b></li>)}
+      </ol>
+    </div>
+  </header>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="tag"><i></i>Examples</p>
+      <h2 class="h2">Hero redesigns <span class="acc">we have done</span></h2>
+      <div class="rd__gal">{shots.map(s => <a href={ROAST_EXAMPLES} target="_blank" rel="noopener"><img src={s} alt="Hero redesign example" loading="lazy" decoding="async" /></a>)}</div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .rd__grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: end; }
+  @media (max-width: 900px) { .rd__grid { grid-template-columns: 1fr; } }
+  .rd__note { margin-top: 20px; color: var(--ink-3); }
+  .rd__steps { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+  .rd__steps li { display: flex; gap: 18px; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .rd__steps span { color: var(--violet-d); }
+  .rd__steps b { font-weight: 500; font-size: 1.1rem; letter-spacing: -.02em; }
+  .rd__gal { margin-top: clamp(32px, 4vw, 48px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .rd__gal a:first-child { grid-column: 1 / -1; }
+  @media (max-width: 700px) { .rd__gal { grid-template-columns: 1fr; } }
+  .rd__gal img { width: 100%; border: 1px solid var(--line); background: var(--bg); transition: border-color var(--t) var(--ease); }
+  .rd__gal a:hover img { border-color: var(--violet); }
+</style>

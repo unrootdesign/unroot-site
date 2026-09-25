@@ -1,0 +1,38 @@
+---
+import ServicePage from '../../components/ServicePage.astro';
+// title и description дословно из Webflow
+const title = "Webflow & Framer Development for Marketing Sites | Unroot.design";
+const description = "We build responsive, production-ready websites in Webflow and Framer — clean structure, scalable CMS, strong performance, and SEO-ready setup.";
+const I = '/images/';
+---
+<ServicePage title={title} description={description} related="web-development"
+  tag="Website development"
+  h1="Webflow / Framer" acc="Development"
+  lede="We build production-ready websites in Webflow and Framer: responsive, fast, and maintainable. Design is part of our process too, but this page focuses on the build: turning a clear design direction into a real website that ships."
+  sections={[
+    { tag: 'Approach', title: 'What development means', acc: 'in our studio', image: { src: I + 'logo-unlok-clothing-brand.jpg' }, blocks: [
+      { kind: 'text', paras: ['Development is where the website becomes a system: predictable layout rules, reusable components, structured content, and a setup your team can update without breaking the design. We treat Webflow and Framer like production tools, not prototypes.'] },
+      { kind: 'list', items: [
+        { t: 'Landing pages and marketing websites', d: 'Launches, product pages, pricing, careers.' },
+        { t: 'CMS builds', d: 'Blogs, case studies, resources, changelogs.' },
+        { t: 'Rebuilds and platform moves', d: 'Usually paired with a design upgrade, not a blind copy of the old website.' },
+      ]},
+    ]},
+    { tag: 'Platforms', title: 'Webflow vs Framer', acc: 'for real projects', image: { src: I + 'Webflow-vs-Framer-for-real-projects.jpg' }, blocks: [{ kind: 'compare', cols: [
+      { t: 'Webflow is a strong choice when you need', items: ['More complex layouts and structure', 'CMS that scales with richer content needs', 'More freedom for custom integrations and advanced setup', 'A mature platform for larger marketing websites'] },
+      { t: 'Framer is a strong choice when you need', items: ['A fast, clean marketing website shipped quickly', 'A designer-friendly workflow that stays lightweight', 'Simple CMS and easy iteration', 'A modern look with smooth interactions'] },
+    ], note: 'Most marketing websites can be built on either platform. The decision usually comes down to CMS complexity, how you want to maintain the website, and how much long-term flexibility you need.' }]},
+    { tag: 'Standards', title: 'Our build', acc: 'standards', image: { src: I + 'Our-build-standards.jpg' }, blocks: [{ kind: 'list', items: [
+      { t: 'Responsive behavior that is planned, not patched', d: 'Breakpoints, spacing, and typography changes are handled intentionally.' },
+      { t: 'Clean structure and reuse', d: 'Webflow class strategy or Framer components that your team can work with.' },
+      { t: 'Performance baseline', d: 'Optimized assets and sensible effects so the website feels premium and loads fast.' },
+      { t: 'SEO and technical hygiene', d: 'Meta fields, clean URLs, heading structure, OG previews, and indexation basics.' },
+    ]}]},
+    { tag: 'Migration', title: 'Migration', acc: '(when it makes sense)', image: { src: I + 'framer-webflow-interface-compare.jpg' }, blocks: [{ kind: 'text', paras: [
+      'If you are moving off a tool that limits you, we can migrate to Webflow or Framer. But the goal is not to preserve every old detail. We rebuild around a better structure, improved design quality, and a setup that is easier to scale.',
+    ]}]},
+    { tag: 'Kickoff', title: 'What we need', acc: 'to build fast', image: { src: I + 'framer-webflow-interface-compare-2.jpg' }, blocks: [
+      { kind: 'list', items: ['Content (or a clear draft)', '2-3 reference websites you like', 'Platform decision (or we help you choose)', 'Access to domain and accounts when it is time to launch'] },
+      { kind: 'text', paras: ['If you have a Figma file, we can build from that. If you do not, we can define the design direction as part of the process.'] },
+    ]},
+  ]} />

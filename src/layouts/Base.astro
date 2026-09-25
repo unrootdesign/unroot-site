@@ -1,0 +1,93 @@
+---
+import '../styles/base.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+  title: string;                 // <title> — переносится из Webflow ДОСЛОВНО
+  description: string;           // meta description — тоже дословно
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  schema?: unknown[];            // JSON-LD: FAQPage, Article, BreadcrumbList
+  bodyClass?: string;
+}
+
+const {
+  title, description,
+  canonical = Astro.url.pathname,
+  ogImage = '/cms/OG-Unroot-Design.jpg',
+  ogType = 'website',
+  noindex = false,
+  publishedTime, modifiedTime,
+  schema = [],
+  bodyClass = '',
+} = Astro.props;
+
+const site = 'https://unroot.design';
+// build.format: 'file' даёт пути вида /blog.html — чистим, canonical должен быть без расширения
+const cleanPath = canonical
+  .replace(/index\.html$/, '')
+  .replace(/\.html$/, '')
+  .replace(/\/+$/, '') || '/';
+const canonicalURL = new URL(cleanPath, site).href.replace(/\/$/, '') || site;
+const ogImageURL = new URL(ogImage, site).href;
+const GTM = 'GTM-WSGJLFR';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content="Unroot Design" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={ogImageURL} />
+  {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+  {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageURL} />
+
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/google-sans-500.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/google-sans-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  {schema.map((s) => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
+
+  <script is:inline define:vars={{ GTM }}>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer',GTM);
+  </script>
+</head>
+<body class={bodyClass}>
+  <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM}`}
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+  <Nav />
+  <main id="main"><slot /></main>
+  <Footer />
+  <div id="trail" aria-hidden="true"></div>
+  <script>import '../scripts/site.js';</script>
+</body>
+</html>

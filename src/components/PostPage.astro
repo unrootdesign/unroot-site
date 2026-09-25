@@ -1,0 +1,101 @@
+---
+/* Общий шаблон статьи блога: /web-design/*, /logo-design/*, /web-development/* и старая /blog/* */
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Tri from './Tri.astro';
+
+export interface Props {
+  d: any;                 // данные записи
+  url: string;            // канонический адрес
+  headings?: { depth: number; slug: string; text: string }[];
+  schema: unknown[];
+  legacy?: boolean;
+}
+const { d, url, headings = [], schema, legacy = false } = Astro.props;
+const CAT: Record<string, string> = { 'web-design': 'Web design', 'web-development': 'Web development', 'logo-design': 'Logo design' };
+const cat = legacy ? 'Blog' : (CAT[d.category] ?? 'Blog');
+const date = d.publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const toc = headings.filter(h => h.depth === 2);
+
+const all = await getCollection('blog');
+const more = all.filter(p => p.data.slug !== d.slug && !p.data.noindex)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()).slice(0, 3);
+---
+<Base title={d.seoTitle} description={d.seoDescription} ogType="article" ogImage={d.ogImage} noindex={d.noindex}
+  publishedTime={d.publishDate.toISOString()} modifiedTime={d.updatedDate?.toISOString()} schema={schema}>
+
+  <header class="phead">
+    <div class="wrap">
+      <nav class="crumbs mono" aria-label="Breadcrumb"><a href="/blog">Blog</a><span aria-hidden="true">/</span><span>{cat}</span></nav>
+      <h1 class="h1 post__h">{d.title}</h1>
+      {d.excerpt && <p class="lede">{d.excerpt}</p>}
+      <p class="post__meta mono">
+        <span>{d.author}</span><span>{date}</span>{d.readingTime && <span>{d.readingTime}</span>}
+      </p>
+    </div>
+  </header>
+
+  {d.cover && (
+    <div class="post__cover">
+      <div class="wrap"><img class="frame-img" src={d.cover} alt={d.coverAlt ?? ''} loading="eager" decoding="async" /></div>
+    </div>
+  )}
+
+  <section class={`sec post__body${d.cover ? " has-cover" : ""}`}>
+    <div class="wrap post__grid">
+      <aside class="post__side">
+        {toc.length > 2 && (
+          <nav class="toc" aria-label="Contents">
+            <p class="mono toc__k">Contents</p>
+            <ol>{toc.map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </nav>
+        )}
+      </aside>
+      <div class="prose"><slot /></div>
+    </div>
+  </section>
+
+  {d.faq?.length > 0 && (
+    <section class="sec sec--white" id="faq">
+      <div class="wrap post__grid">
+        <div><p class="tag"><i></i>FAQ</p></div>
+        <div>{d.faq.map((f: any) => <details class="fq"><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+      </div>
+    </section>
+  )}
+
+  <section class="sec sec--white">
+    <div class="wrap">
+      <p class="tag"><i></i>Keep reading</p>
+      <h2 class="h2">More from <span class="acc">the blog</span></h2>
+      <ul class="cards more">
+        {more.map(p => (
+          <li class="card"><a href={`/${p.data.category}/${p.data.slug}`}>
+            {p.data.cover && <img class="card__img" src={p.data.cover} alt={p.data.coverAlt} loading="lazy" decoding="async" />}
+            <p class="card__k mono">{CAT[p.data.category]}</p>
+            <h3 class="card__t">{p.data.title}</h3>
+            <span class="card__go link">Read <Tri /></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .post__h { max-width: 22ch; font-size: clamp(2.3rem, 3.8vw, 3.6rem); }
+  .post__meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 28px; color: var(--ink-3); }
+  .frame-img { width: 100%; aspect-ratio: 16/8; object-fit: cover; border: 1px solid var(--line); background: var(--bg); }
+  .post__body { border-top: 0; }
+  /* первая картинка в тексте повторяет обложку */
+  .has-cover .prose > :global(p:first-child:has(> img:only-child)) { display: none; }
+  .post__grid { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+  @media (max-width: 960px) { .post__grid { grid-template-columns: 1fr; } .post__side:empty { display: none; } }
+  .toc { position: sticky; top: calc(var(--bar) + 32px); }
+  .toc__k { color: var(--ink-3); margin-bottom: 14px; }
+  .toc ol { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--line); }
+  .toc li a { display: block; padding: 7px 0 7px 16px; font-size: .88rem; line-height: 1.35; color: var(--ink-2); margin-left: -1px; border-left: 2px solid transparent; transition: color var(--t) var(--ease), border-color var(--t) var(--ease); }
+  .toc li a:hover { color: var(--violet-d); border-left-color: var(--violet); }
+  @media (max-width: 960px) { .toc { position: static; } }
+  .more { margin-top: clamp(32px, 4vw, 48px); }
+</style>

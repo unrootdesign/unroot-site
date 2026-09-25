@@ -1,0 +1,110 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Tri from '../../components/Tri.astro';
+
+export async function getStaticPaths() {
+  const items = await getCollection('case-studies');
+  return items.map((item) => ({ params: { slug: item.data.slug }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const d = item.data;
+const others = (await getCollection('case-studies'))
+  .filter(i => i.data.slug !== d.slug)
+  .sort((a, b) => a.data.order - b.data.order);
+const host = d.liveUrl ? d.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+const label = (t: string) => t.replace(/-/g, ' ');
+---
+<Base title={d.seoTitle} description={d.seoDescription} ogImage={d.ogImage} noindex={d.noindex}
+  schema={[{
+    '@context': 'https://schema.org', '@type': 'CreativeWork',
+    name: d.title, about: d.client, creator: { '@type': 'Organization', name: 'Unroot Design' },
+  }]}>
+
+  <header class="phead">
+    <div class="wrap phead__grid">
+      <div>
+        <nav class="crumbs mono" aria-label="Breadcrumb"><a href="/#work">Work</a><span aria-hidden="true">/</span><span>Case study</span></nav>
+        <h1 class="h1">{d.title}</h1>
+        {d.cardDescription && <p class="lede">{d.cardDescription}</p>}
+        {d.liveUrl && (
+          <div class="ctas">
+            <a class="btn btn--line" href={d.liveUrl} target="_blank" rel="noopener"><span>Visit the website</span><Tri /></a>
+          </div>
+        )}
+      </div>
+      <ul class="facts-list mono">
+        <li><span>Client</span><span>{d.client}</span></li>
+        {d.year && <li><span>Year</span><span>{d.year}</span></li>}
+        {d.tags.length > 0 && <li><span>Scope</span><span>{d.tags.map(label).join(', ')}</span></li>}
+        {host && <li><span>Website</span><span><a class="cs__host" href={d.liveUrl} target="_blank" rel="noopener">{host}</a></span></li>}
+      </ul>
+    </div>
+  </header>
+
+  {(d.video || d.gallery.length > 0) && (
+    <section class="sec cs__media">
+      <div class="wrap cs__stack">
+        {d.video && (
+          <div class="win frame"><span class="win__bar"><i></i><i></i><i></i></span>
+            <video src={d.video} muted loop playsinline autoplay preload="metadata"></video></div>
+        )}
+        {d.gallery.map(g => <img class="cs__img" src={g.src} alt={g.alt} loading="lazy" decoding="async" />)}
+      </div>
+    </section>
+  )}
+
+  <section class="sec sec--white">
+    <div class="wrap cs__grid">
+      <div><p class="tag"><i></i>The project</p></div>
+      <div class="prose"><Content /></div>
+    </div>
+  </section>
+
+  {d.testimonial && (
+    <section class="sec">
+      <div class="wrap cs__grid">
+        <div><p class="tag"><i></i>Client</p></div>
+        <blockquote class="quote">
+          <p>&ldquo;{d.testimonial.quote}&rdquo;</p>
+          <footer>
+            {d.testimonial.photo && <img src={d.testimonial.photo} alt={d.testimonial.name} loading="lazy" />}
+            <span><b>{d.testimonial.name}</b><s>{d.testimonial.role}</s></span>
+          </footer>
+        </blockquote>
+      </div>
+    </section>
+  )}
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="tag"><i></i>More work</p>
+      <h2 class="h2">Other <span class="acc">projects</span></h2>
+      <ul class="cards cs__more">
+        {others.map(o => (
+          <li class="card"><a href={`/case-studies/${o.data.slug}`}>
+            {(o.data.cover || o.data.gallery[0]) && <img class="card__img" src={o.data.cover ?? o.data.gallery[0].src} alt={o.data.coverAlt} loading="lazy" decoding="async" />}
+            <p class="card__k mono">{o.data.tags.slice(0, 2).map(label).join(' · ')}</p>
+            <h3 class="card__t">{o.data.title}</h3>
+            <p class="card__d">{o.data.cardDescription}</p>
+            <span class="card__go link">View case <Tri /></span>
+          </a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cs__host { color: var(--violet-d); }
+  .cs__host:hover { color: var(--ink); }
+  .cs__stack { display: grid; gap: clamp(28px, 4vw, 48px); }
+  .cs__media video { width: 100%; display: block; }
+  .cs__img { width: 100%; border: 1px solid var(--line); background: #fff; }
+  .cs__grid { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+  @media (max-width: 960px) { .cs__grid { grid-template-columns: 1fr; } }
+  .cs__more { margin-top: clamp(32px, 4vw, 48px); }
+  :global(.facts-list) { align-self: end; }
+</style>

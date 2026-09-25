@@ -1,0 +1,192 @@
+---
+import Base from '../layouts/Base.astro';
+import Tri from '../components/Tri.astro';
+
+// title дословно из Webflow, description написан заново (в Webflow не было)
+const title = "Careers | Unroot.design";
+const description = "Open roles at Unroot Design. We are a small remote studio designing and building websites for AI and tech startups. Designers, Webflow and Framer developers, project managers.";
+
+/* Заявки уходят через Web3Forms на почту владельца ключа.
+   Ключ в переменной PUBLIC_WEB3FORMS_KEY в настройках Cloudflare Pages. */
+const FORM_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+
+const principles = [
+  { t: 'We create experiences that last', d: 'We are not just building websites, we are building experiences. Our clients expect bold, polished, premium results. That means we cannot settle for just enough.' },
+  { t: 'We aim higher than the minimum', d: 'If work-life balance in the corporate sense of doing the bare minimum is what you are after, this is not the place for you.' },
+  { t: 'We take the driver’s seat', d: 'We are looking for drivers, not passengers. If you only want to do exactly what is asked and nothing more, you will not last long here.' },
+  { t: 'We thrive on curiosity and craft', d: 'But if design excites you, if you push a project further than expected, experiment, learn and care about craft, then welcome. You will fit right in.' },
+];
+const roles = [
+  { dep: 'Design', t: 'Web Designer', d: 'A web designer skilled in Figma, animation and storytelling, to create engaging, impactful product experiences.' },
+  { dep: 'Development', t: 'Webflow / Framer Developer', d: 'A Webflow developer to deliver clean, responsive builds with thoughtful structure and custom touches.' },
+  { dep: 'Management', t: 'Project Manager', d: 'A project manager fluent in design and development logic. Proactive, strategic, and far beyond just forwarding messages.' },
+];
+const values = [
+  { t: 'Proactivity', d: 'You think ahead. You notice what is missing before we say it.' },
+  { t: 'Craft', d: 'You care about the work as much as we do. Pixel-perfect is your default.' },
+  { t: 'Responsibility', d: 'You do not say “this wasn’t in the task.” You say “got it.”' },
+  { t: 'Speed through skill', d: 'You know what you are doing, and you do it fast. Not by rushing, by mastery.' },
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Base title={title} description={description}>
+  <header class="phead">
+    <div class="wrap">
+      <p class="tag"><i></i>Careers</p>
+      <h1 class="h1 cr__h1">Together, we build <span class="acc">more than products</span></h1>
+      <p class="lede">A small remote team designing and building websites for AI and tech startups. We hire people who are already pushing their craft forward.</p>
+      <div class="ctas"><a class="btn btn--main" href="#roles"><span class="prints"></span><span>Explore roles</span><Tri /></a></div>
+    </div>
+  </header>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="tag"><i></i>Our principles</p>
+      <h2 class="h2">How we work <span class="acc">and what we believe in</span></h2>
+      <ol class="cr__grid">
+        {principles.map((p, i) => <li><span class="mono">{pad(i + 1)}</span><b>{p.t}</b><p>{p.d}</p></li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="roles">
+    <div class="wrap">
+      <p class="tag"><i></i>Current openings</p>
+      <h2 class="h2">Open <span class="acc">roles</span></h2>
+      <ul class="cr__roles">
+        {roles.map(r => (
+          <li>
+            <a href="#apply" data-role={r.t}>
+              <span class="mono cr__dep">{r.dep}</span>
+              <span class="cr__rt">{r.t}</span>
+              <span class="cr__rd">{r.d}</span>
+              <span class="mono cr__meta">Remote · Full-time or part-time · Salary negotiable</span>
+              <span class="link cr__go">Apply <Tri /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap cr__two">
+      <div>
+        <p class="tag"><i></i>What we value</p>
+        <h2 class="h2">Who belongs <span class="acc">with us</span></h2>
+        <div class="cr__text">
+          <p>We only hire people who are already pushing their craft forward, not those who wait to be told to.</p>
+          <p>If you are not already experimenting, learning and exploring new ways, you will not enjoy working with us. We do not pay people to maybe learn someday. We work with those who already prove their value, and we invest in them because they are all-in.</p>
+        </div>
+      </div>
+      <ul class="cr__values">
+        {values.map(v => <li><b>{v.t}</b><span>{v.d}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="apply">
+    <div class="wrap cr__two">
+      <div>
+        <p class="tag"><i></i>Apply</p>
+        <h2 class="h2">Join the <span class="acc">Unroot team</span></h2>
+        <p class="lede">Every application is read by a person. If it is a fit, we will reply within a week.</p>
+      </div>
+      <form class="cr__form" id="applyForm" data-key={FORM_KEY} novalidate>
+        <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
+        <label class="f"><span class="mono">Full name</span><input name="name" type="text" required autocomplete="name" /></label>
+        <label class="f"><span class="mono">Email</span><input name="email" type="email" required autocomplete="email" /></label>
+        <label class="f"><span class="mono">Role</span>
+          <select name="role" required>
+            <option value="">Select a role</option>
+            {roles.map(r => <option value={r.t}>{r.t}</option>)}
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <label class="f"><span class="mono">Portfolio link</span><input name="portfolio" type="url" placeholder="https://" required /></label>
+        <label class="f"><span class="mono">What are you currently learning or improving?</span><textarea name="learning" rows="4" required></textarea></label>
+        <label class="f"><span class="mono">What is one thing you created or solved that made you proud?</span><textarea name="proud" rows="4" required></textarea></label>
+        <label class="f"><span class="mono">Salary expectations</span><input name="salary" type="text" required /></label>
+        <button type="submit" class="btn btn--main cr__send"><span class="prints"></span><span>Send application</span><Tri /></button>
+        <p class="cr__status mono" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cr__h1 { max-width: 18ch; }
+  .cr__grid { list-style: none; margin: clamp(32px, 4vw, 48px) 0 0; padding: 1px 0 0 1px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 760px) { .cr__grid { grid-template-columns: 1fr; } }
+  .cr__grid li { border: 1px solid var(--line); margin: -1px 0 0 -1px; padding: clamp(20px, 2.4vw, 32px); }
+  .cr__grid span { color: var(--violet-d); }
+  .cr__grid b { display: block; margin-top: 18px; font-size: 1.25rem; font-weight: 500; letter-spacing: -.025em; }
+  .cr__grid p { margin-top: 10px; color: var(--ink-2); line-height: 1.6; max-width: 52ch; }
+  .cr__roles { list-style: none; padding: 0; margin: clamp(32px, 4vw, 48px) 0 0; border-top: 1px solid var(--line); }
+  .cr__roles a { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; grid-template-areas: "dep t go" "dep d go" "dep m go"; column-gap: clamp(20px, 3vw, 40px); row-gap: 8px;
+    padding: 24px 0; border-bottom: 1px solid var(--line); position: relative; transition: padding var(--t) var(--ease); }
+  .cr__roles a::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--violet); transform: scaleY(0); transition: transform .35s var(--ease); }
+  .cr__roles a:hover { padding-left: 22px; }
+  .cr__roles a:hover::before { transform: scaleY(1); }
+  .cr__dep { grid-area: dep; color: var(--violet-d); padding-top: 6px; }
+  .cr__rt { grid-area: t; font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -.03em; transition: color var(--t) var(--ease); }
+  .cr__roles a:hover .cr__rt { color: var(--violet-d); }
+  .cr__rd { grid-area: d; color: var(--ink-2); max-width: 60ch; }
+  .cr__meta { grid-area: m; color: var(--ink-3); }
+  .cr__go { grid-area: go; align-self: center; }
+  @media (max-width: 760px) { .cr__roles a { grid-template-columns: 1fr; grid-template-areas: "dep" "t" "d" "m" "go"; } .cr__go { justify-self: start; margin-top: 8px; } }
+  .cr__two { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  @media (max-width: 900px) { .cr__two { grid-template-columns: 1fr; } }
+  .cr__text p { margin-top: 18px; color: var(--ink-2); font-size: 1.04rem; line-height: 1.65; max-width: 52ch; }
+  .cr__values { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+  .cr__values li { padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .cr__values b { display: block; font-weight: 500; font-size: 1.1rem; letter-spacing: -.02em; }
+  .cr__values span { display: block; margin-top: 4px; color: var(--ink-2); }
+  .cr__form { display: grid; gap: 18px; }
+  .f { display: grid; gap: 8px; }
+  .f span { color: var(--ink-2); text-transform: none; letter-spacing: .02em; font-size: .72rem; }
+  .f input, .f select, .f textarea { width: 100%; padding: 13px 14px; border: 1px solid var(--line-b); border-radius: 0; background: var(--white); font-size: 1rem; color: var(--ink);
+    transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease); }
+  .f input:hover, .f select:hover, .f textarea:hover { border-color: var(--ink-3); }
+  .f input:focus, .f select:focus, .f textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px var(--pale); }
+  .f textarea { resize: vertical; }
+  .f .bad { border-color: #D14343; }
+  .cr__send { justify-self: start; margin-top: 6px; }
+  .cr__send[disabled] { opacity: .6; cursor: wait; }
+  .cr__status { min-height: 1.2em; color: var(--ink-2); }
+  .cr__status.ok { color: var(--violet-d); }
+  .cr__status.err { color: #B42318; }
+</style>
+
+<script>
+  const form = document.getElementById('applyForm') as HTMLFormElement | null;
+  document.querySelectorAll<HTMLAnchorElement>('[data-role]').forEach(a => a.addEventListener('click', () => {
+    const sel = form?.querySelector('select[name="role"]') as HTMLSelectElement | null;
+    if (sel) sel.value = a.dataset.role || '';
+  }));
+  if (form) {
+    const status = form.querySelector('.cr__status') as HTMLElement;
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let ok = true;
+      form.querySelectorAll<HTMLInputElement>('[required]').forEach(el => { const v = el.checkValidity(); el.classList.toggle('bad', !v); if (!v) ok = false; });
+      if (!ok) { status.className = 'cr__status mono err'; status.textContent = 'Please fill in every field.'; return; }
+      const key = form.dataset.key;
+      if (!key) { status.className = 'cr__status mono err'; status.textContent = 'The form is not connected yet. Write to adam@unroot.design.'; return; }
+      const data = Object.fromEntries(new FormData(form).entries());
+      btn.disabled = true; status.className = 'cr__status mono'; status.textContent = 'Sending...';
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...data, access_key: key, subject: `New application: ${data.role || 'role not set'}`, from_name: 'Unroot Careers', replyto: data.email }),
+        });
+        const json = await res.json();
+        if (json.success) { form.reset(); status.className = 'cr__status mono ok'; status.textContent = 'Thank you. Your application is in.'; }
+        else throw new Error(json.message);
+      } catch {
+        status.className = 'cr__status mono err'; status.textContent = 'Something went wrong. Try again or write to adam@unroot.design.';
+      } finally { btn.disabled = false; }
+    });
+  }
+</script>

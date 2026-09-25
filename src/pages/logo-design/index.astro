@@ -1,0 +1,39 @@
+---
+import ServicePage from '../../components/ServicePage.astro';
+// title и description дословно из Webflow
+const title = "Standout Logo Design Services for Modern Brands | Unroot.design";
+const description = "Get a memorable, versatile logo crafted for your brand by Unroot.design. Our step-by-step process delivers custom, scalable logos for AI startups, tech companies and Saas.";
+const I = '/images/';
+---
+<ServicePage title={title} description={description} related="logo-design"
+  tag="Logo design"
+  h1="We design Standout Logos" acc="for Modern Brands"
+  lede="We are happy to build a visual identity that is memorable, versatile, and perfectly tailored to your company. From concept to final vector, we craft logos that tell your story and grow with your brand."
+  hero={{ src: I + '1.avif', alt: 'Logo design process' }}
+  sections={[
+    { tag: 'Process', title: 'Our Step-by-Step Logo Design Process:', acc: 'How We Design Logos That Last', blocks: [
+      { kind: 'steps', items: [
+        { t: 'Discovery and your project brief' }, { t: 'Market research, moodboarding and design direction' },
+        { t: 'Sketches and concept exploration' }, { t: 'Digital drafts in Figma or Illustrator' },
+        { t: 'Getting feedback' }, { t: 'Logo refinement' }, { t: 'Final exports (SVG, PNG, EPS)' },
+      ]},
+      { kind: 'pills', items: ['Branding guidelines', 'Animated logos', '3D logo'], note: 'Add-on services you can add to any logo project.' },
+    ]},
+    { tag: 'What you get', title: 'What You Will Get', acc: 'from Us', image: { src: I + 'clothing-brand-logo-multiplatform-mockup_1.avif', alt: 'Clothing brand logo shown on website, apparel, packaging, and Instagram ads to demonstrate versatile branding.' }, blocks: [{ kind: 'list', items: [
+      { t: 'Brand-Aligned', d: 'Built around your mission and values' },
+      { t: 'Versatile', d: 'Works across websites, packaging, social media' },
+      { t: 'Memorable', d: 'Designed to leave a strong impression' },
+      { t: 'Scalable', d: 'Provided in high resolution formats for any use' },
+      { t: 'Images, mockups' },
+    ]}]},
+    { tag: 'Why Unroot', title: 'Why Clients Work', acc: 'with Unroot', image: { src: I + 'rough-logo-sketches-brainstorming_1.avif', alt: 'A notebook with rough sketches of logo concepts, showcasing the brainstorming phase of logo creation' }, blocks: [{ kind: 'list', items: [
+      'Flexible with timeline', 'Open for changes, we do our best to deliver the best',
+      'Clear communication: shared Slack channel, direct contact to designers', 'Weekly calls if needed',
+    ]}]},
+    { tag: 'Work', title: 'Logo and Branding', acc: 'We Did for Clients', blocks: [{ kind: 'gallery', images: [
+      { src: I + '2.avif', alt: 'Brand identity board for ambient, showing logo, product mockups, color palette, UI icons, employee badges, and Overused Grotesk typeface.' },
+      { src: I + '3.avif', alt: 'Side-by-side mockups of Ambient Twitter profile in light and dark mode, featuring the Dreamie sleep device banner' },
+      { src: I + 'logo-brand1_1.avif', alt: 'Logo and brand work' },
+    ]}]},
+    { tag: 'Niches', title: 'Niches', acc: 'We Work With', blocks: [{ kind: 'pills', items: ['AI startups', 'Tech companies', 'SaaS'], note: 'But feel free to ask if there is no match with your industry.' }]},
+  ]} />

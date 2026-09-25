@@ -1,0 +1,181 @@
+---
+import Base from '../layouts/Base.astro';
+import Tri from '../components/Tri.astro';
+import { home } from '../data/home';
+import { BUY_CONCEPT, CALL } from '../data/links';
+import '../styles/home.css';
+
+// title дословно из Webflow, description написан заново (в Webflow не было)
+const title = "Concept | Unroot.design";
+const description = "See the direction before you commit to a full website. A fixed-price homepage concept in 7 days, designed by the same team that ships the build.";
+
+const M = '/home/';
+const I = '/images/';
+const V = '/videos/';
+const pad = (n: number) => String(n).padStart(2, '0');
+const strip = ['ResumAI', 'EpsilonHealth_1', 'Switch', 'Leadgians_1', 'Rezi', 'Lavelin-VP_1', 'Oramedia', 'Ambient-Dreamie_1', 'Wow-House-Studio']
+  .map(n => `${I}Design-Concept-for-${n}.avif`);
+const included = [
+  { t: 'Animated preview', d: 'A live preview you can click and scroll. Figma plus vibe coding, not a flat mockup.', v: 'Animated-preview' },
+  { t: 'Strategy-backed layout', d: 'Hero plus 3 sections, laid out around what your visitors need to see first.', v: 'Strategy-backed-layout' },
+  { t: 'Ready for the full redesign', d: 'Designed the way we would build it, so the next step is a build, not a restart.', v: 'Ready-to-full-redesign' },
+];
+const steps = [
+  { t: 'Submit your website', d: 'Send your current website and pay via Stripe.' },
+  { t: 'We reimagine it', d: 'We redesign it from scratch. No calls, no briefs, no moodboards.' },
+  { t: 'Receive your concept', d: 'An animated, interactive concept lands in your inbox in 7 days.' },
+];
+const faq = [
+  { q: 'What exactly do I get for $1,499?', a: 'An animated homepage concept, hero plus 3 sections. Designed in Figma and vibe coded into a live preview you can click through, with our take on where your redesign should go.' },
+  { q: 'Can I give input?', a: 'This is an expert-led process. You are welcome to share context, but we do not ask for brand kits or moodboards. We handle everything.' },
+  { q: 'What if I do not move forward with the full website?', a: 'No problem. You keep the concept and can build it however you want, except reselling it. And the $1,499 is credited if you upgrade within 60 days.' },
+  { q: 'Are revisions included?', a: 'No. This is a fixed concept. If you need adjustments or want to take it further, that happens inside the full redesign.' },
+  { q: 'Is this just a mockup?', a: 'No. It is an interactive preview with real layout ideas, animation and conversion-focused UX. You can click through it like a real website.' },
+];
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+}];
+---
+<Base title={title} description={description} schema={schema}>
+  <header class="phead">
+    <div class="wrap">
+      <p class="tag"><i></i>Homepage concept</p>
+      <h1 class="h1 cc__h1">Don&rsquo;t spend $7K to $15K on a new website <span class="acc">until you see the direction</span></h1>
+      <p class="lede">Start with an animated, interactive homepage concept for $1,499. Figma plus vibe coding, delivered in 7 days, fully credited toward the full redesign.</p>
+      <div class="ctas">
+        <a class="btn btn--main" href={BUY_CONCEPT}><span class="prints"></span><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
+        <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+      </div>
+      <p class="mono cc__note">$1,499 for now. The price goes up to $2,000 soon.</p>
+    </div>
+    <div class="cc__strip" aria-hidden="true">
+      <div class="cc__track">{[...strip, ...strip].map(s => <img src={s} alt="" loading="lazy" decoding="async" />)}</div>
+    </div>
+  </header>
+
+  <section class="sec" id="what">
+    <div class="wrap">
+      <p class="tag"><i></i>What you get</p>
+      <h2 class="h2">A clear design direction <span class="acc">before you commit thousands</span></h2>
+      <ul class="cards cc__inc">
+        {included.map(x => (
+          <li class="card cc__card">
+            <div class="cc__vid"><video data-lazy src={`${V}${x.v}-transcode.mp4`} poster={`${V}${x.v}-poster-00001.jpg`} muted loop playsinline preload="none"></video></div>
+            <h3 class="card__t">{x.t}</h3>
+            <p class="card__d">{x.d}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="how">
+    <div class="wrap">
+      <p class="tag"><i></i>How it works</p>
+      <h2 class="h2">3 steps <span class="acc">to your new homepage</span></h2>
+      <ol class="cc__steps">
+        {steps.map((s, i) => <li><span class="mono">{pad(i + 1)}</span><b>{s.t}</b><p>{s.d}</p></li>)}
+      </ol>
+      <div class="ctas"><a class="btn btn--main" href={BUY_CONCEPT}><span class="prints"></span><span>Submit your website</span><Tri /></a></div>
+    </div>
+  </section>
+
+  <section class="sec" id="concepts">
+    <div class="wrap">
+      <p class="tag"><i></i>Concepts</p>
+      <h2 class="h2">How we already changed <span class="acc">our clients&rsquo; websites</span></h2>
+      <div class="tabs" role="tablist">
+        <button data-tab="ba" aria-selected="true" role="tab" type="button">Before / after</button>
+        <button data-tab="anim" aria-selected="false" role="tab" type="button">Animated</button>
+      </div>
+      <div class="pane" data-pane="ba"><div class="bas cc__bas">
+        {home.pairs.map(p => (
+          <figure class="ba">
+            <div class="ba__stage">
+              <img class="ba__l" src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} loading="lazy" />
+              <img class="ba__r" src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} loading="lazy" />
+              <span class="ba__tag ba__tag--l">Before</span><span class="ba__tag ba__tag--r">After</span>
+              <span class="ba__bar"><i></i></span>
+            </div>
+            <figcaption><span>{p.name}</span><span>7 day concept</span></figcaption>
+          </figure>
+        ))}
+      </div></div>
+      <div class="pane" data-pane="anim" hidden><div class="ans cc__ans">
+        {home.pairs.map(p => (
+          <figure class="an">
+            <div class="an__stage"><video data-lazy src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted loop playsinline preload="none"></video></div>
+            <figcaption><span>{p.name}</span><span>Scroll preview</span></figcaption>
+          </figure>
+        ))}
+      </div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="testimonials">
+    <div class="wrap">
+      <p class="tag"><i></i>Clients</p>
+      <h2 class="h2">What they say <span class="acc">after</span></h2>
+      <div class="bd">
+        <div class="qwrap">
+          {home.quotes.map((q, i) => (
+            <article class={`q${i === 0 ? ' on' : ''}`}>
+              <p>&ldquo;{q.text}&rdquo;</p>
+              <footer>
+                <span class="q__who"><img src={`${M}av-${q.avatar}.jpg`} alt={q.name} loading="lazy" /><span><b>{q.name}</b><s>{q.role}</s></span></span>
+                {q.url && <a href={q.url} target="_blank" rel="noopener" class="q__tp">Verified on Trustpilot <svg class="ars" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>}
+              </footer>
+            </article>
+          ))}
+        </div>
+        <div class="sl__nav">
+          <button class="arrow" id="qPrev" type="button" aria-label="Previous review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg></button>
+          <button class="arrow" id="qNext" type="button" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+          <span class="qn" id="qn">01 / {pad(home.quotes.length)}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="faq">
+    <div class="wrap cc__faq">
+      <div>
+        <p class="tag"><i></i>FAQ</p>
+        <h2 class="h2">Still got <span class="acc">questions?</span></h2>
+      </div>
+      <div>{faq.map(f => <details class="fq"><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+    </div>
+  </section>
+</Base>
+
+<script>import '../scripts/home.js';</script>
+
+<style>
+  .cc__h1 { max-width: 20ch; }
+  .cc__note { margin-top: 20px; color: var(--ink-3); }
+  .cc__strip { margin-top: clamp(48px, 6vw, 80px); overflow: hidden; border-block: 1px solid var(--line); padding-block: 20px; }
+  .cc__track { display: flex; gap: 16px; width: max-content; animation: cc-scroll 60s linear infinite; }
+  .cc__track img { height: clamp(160px, 18vw, 240px); width: auto; border: 1px solid var(--line); background: var(--bg); }
+  .cc__strip:hover .cc__track { animation-play-state: paused; }
+  @keyframes cc-scroll { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .cc__track { animation: none; } }
+  .cc__inc { margin-top: clamp(32px, 4vw, 48px); }
+  .cc__card { padding: clamp(16px, 1.8vw, 22px); }
+  .cc__vid { aspect-ratio: 4/3; overflow: hidden; border: 1px solid var(--line); background: var(--bg); }
+  .cc__vid video { width: 100%; height: 100%; object-fit: cover; }
+  .cc__card .card__t { margin-top: 18px; }
+  .cc__steps { list-style: none; margin: clamp(32px, 4vw, 48px) 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 1px 0 0 1px; }
+  @media (max-width: 800px) { .cc__steps { grid-template-columns: 1fr; } }
+  .cc__steps li { border: 1px solid var(--line); margin: -1px 0 0 -1px; padding: clamp(20px, 2.2vw, 28px); }
+  .cc__steps span { color: var(--violet-d); }
+  .cc__steps b { display: block; margin-top: 18px; font-size: 1.2rem; font-weight: 500; letter-spacing: -.02em; }
+  .cc__steps p { margin-top: 8px; color: var(--ink-2); font-size: .95rem; line-height: 1.55; }
+  .cc__bas { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (max-width: 1000px) { .cc__bas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .cc__bas { grid-template-columns: 1fr; } }
+  .cc__ans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 800px) { .cc__ans { grid-template-columns: 1fr; } }
+  .cc__faq { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  @media (max-width: 900px) { .cc__faq { grid-template-columns: 1fr; } }
+</style>

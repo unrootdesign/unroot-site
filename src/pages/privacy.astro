@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+
+const title = 'Privacy Policy | Unroot Design';
+const description = 'How Unroot Design collects, uses and protects your data on unroot.design, and which services process it.';
+---
+<Base title={title} description={description}>
+  <header class="phead">
+    <div class="wrap">
+      <p class="tag"><i></i>Legal</p>
+      <h1 class="h1">Privacy Policy</h1>
+      <p class="lede mono legal__date">Last updated: 19 September 2026</p>
+    </div>
+  </header>
+  <section class="sec">
+    <div class="wrap">
+      <div class="prose legal">
+
+      <p>We respect your privacy and protect your personal information. Here is what you need to know.</p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li>Name, email and contact details when you reach out or work with us</li>
+        <li>Project details, feedback and communication history</li>
+        <li>Website usage data through cookies and analytics</li>
+      </ul>
+
+      <h2>How we use it</h2>
+      <ul>
+        <li>To communicate about your project and deliver our services</li>
+        <li>To improve this website and what we offer</li>
+        <li>For billing, support and account management</li>
+      </ul>
+
+      <h2>Who processes your data</h2>
+      <p>We do not sell your information to anyone. We share it only with the services we need to run the studio:</p>
+      <ul>
+        <li><strong>Stripe</strong> for payments</li>
+        <li><strong>Cloudflare</strong> for hosting and delivering this website</li>
+        <li><strong>Google Analytics</strong> through Google Tag Manager for usage statistics</li>
+        <li><strong>Web3Forms</strong> for the careers form</li>
+        <li><strong>Slack</strong> and email for project communication</li>
+        <li>Contractors working on your project, only when the work requires it</li>
+      </ul>
+
+      <h2>Cookies</h2>
+      <p>We use cookies and analytics to understand how visitors use this website. You can block them in your browser and everything here will still work.</p>
+
+      <h2>Your rights</h2>
+      <p>You can ask to see, correct or delete your data at any time. Write to <a href="mailto:adam@unroot.design">adam@unroot.design</a> with any privacy question and we will answer within a few days.</p>
+
+      <h2>Updates</h2>
+      <p>We may update this policy and will post changes on this page with a new date at the top.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal__date { color: var(--ink-3); }
+</style>

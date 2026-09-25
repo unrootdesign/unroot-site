@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import Tri from '../components/Tri.astro';
+---
+<Base title="Page not found | Unroot Design" description="This page does not exist." noindex>
+  <header class="phead nf">
+    <div class="wrap">
+      <p class="tag"><i></i>404</p>
+      <h1 class="h1">This page <span class="acc">does not exist</span></h1>
+      <p class="lede">The link may be old or mistyped. Start from the homepage or the blog.</p>
+      <div class="ctas">
+        <a class="btn btn--main" href="/"><span class="prints"></span><span>Go to the homepage</span><Tri /></a>
+        <a class="btn btn--line" href="/blog"><span>Read the blog</span><Tri /></a>
+      </div>
+    </div>
+  </header>
+</Base>
+
+<style>
+  .nf { min-height: 60vh; display: flex; align-items: center; }
+</style>

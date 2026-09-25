@@ -1,0 +1,31 @@
+---
+import ServicePage from '../components/ServicePage.astro';
+// title и description дословно из Webflow
+const title = "Branding & Design Services for Modern Companies | Unroot Design";
+const description = "Build a bold, scalable brand with Unroot.design. We craft modern, timeless identities and websites that help startups and tech companies grow.";
+const I = '/images/';
+---
+<ServicePage title={title} description={description}
+  tag="Services"
+  h1="Unroot" acc="Services"
+  lede="We create end-to-end design solutions for brands and digital products. From visual identity to cutting-edge websites and AI-driven concepts, everything your company needs to stand out and look ahead of the curve."
+  sections={[
+    { id: 'branding', tag: 'Service 01', title: 'Full', acc: 'branding', image: { src: I + 'ambient-dreamie-brand-identity.jpg', alt: 'Ambient Dreamie brand identity' }, blocks: [{ kind: 'text', paras: [
+      'We create complete brand identities that go far beyond a logo. Our work covers brand strategy, positioning, tone of voice, visual identity, and guidelines that ensure consistency across every channel. A strong brand is your foundation: it builds trust, attracts the right audience, and communicates who you are before you even say a word.',
+      'Our approach combines research and creativity: we study your market and competitors, define what makes your business unique, and translate it into a visual system that feels authentic and timeless. From color palettes and typography to brand assets and collateral, we give you a toolkit that empowers your company to grow with confidence.',
+    ]}]},
+    { id: 'website-design', tag: 'Service 02', title: 'Website', acc: 'design', image: { src: I + 'modern-hero-sections-collage.avif', alt: 'Collage of modern hero sections' }, blocks: [{ kind: 'text', paras: [
+      'We design websites that are not only visually striking but also functional and user-centered. Every detail is crafted with the end-user in mind, from clear navigation and responsive layouts to carefully chosen typography and imagery. Our goal is to create digital experiences that feel natural, engaging, and aligned with your brand.',
+      'A great website design is more than a nice interface. It is about telling your story in a way that resonates, guiding visitors through a journey, and encouraging them to take action. We pay special attention to conversion-driven design, ensuring that aesthetics go hand in hand with performance. The result is a website that elevates your brand, captures attention, and drives measurable results.',
+    ]}]},
+    { id: 'website-development', tag: 'Service 03', title: 'Website', acc: 'development', image: { src: I + 'website-development-services-webflow-framer.avif', alt: 'Website development in Webflow and Framer' }, blocks: [{ kind: 'text', paras: [
+      'We bring your ideas to life with full-scale development: clean code, seamless functionality, and optimized performance. Our team builds websites that are fast, secure, and scalable, designed to grow together with your business.',
+      'We also work with modern no-code platforms such as Webflow and Framer, which allow us to launch projects quickly without sacrificing quality or flexibility. These tools give you easy control over content and design updates while keeping the user experience smooth and polished. Whether you need a lightweight landing page, a marketing website, or a custom web platform, we choose the right approach and technology for your goals.',
+    ]}]},
+    { id: '3d', tag: 'Service 04', title: '3D custom', acc: 'visuals', image: { src: I + '3d-custom-visuals-concepts.avif', alt: '3D custom visuals' }, blocks: [{ kind: 'text', paras: [
+      'We add depth and uniqueness through 3D graphics. From product renderings and promo visuals to immersive interactive elements, 3D opens up new ways to communicate your brand. Whether it is a bold hero image on your homepage or a striking visual for a campaign, we create tailored experiences that grab attention and stay in memory.',
+    ]}]},
+    { id: 'ai', tag: 'Service 05', title: 'AI visuals,', acc: 'concept design', image: { src: I + 'ai-visuals-illustartion.avif', alt: 'AI visuals illustration' }, blocks: [{ kind: 'text', paras: [
+      'We experiment with AI to create concepts, art direction references, and one-of-a-kind visual solutions. AI is not a replacement for creativity, but a powerful tool that unlocks unexpected directions and accelerates the process. From futuristic visuals to quick exploration of design variations, we use it to push the boundaries of what is possible.',
+    ]}]},
+  ]} />

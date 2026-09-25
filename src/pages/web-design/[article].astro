@@ -1,9 +1,0 @@
----
-import ArticlePage from '../../components/ArticlePage.astro';
-import articles from '../../data/blog.json';
-export function getStaticPaths() {
-  return articles.filter((article) => article.section === 'web-design' && !article.archived && !article.draft).map((article) => ({ params: { article: article.slug }, props: { article } }));
-}
-const { article } = Astro.props;
----
-<ArticlePage article={article} />

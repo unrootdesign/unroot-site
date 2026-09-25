@@ -1,0 +1,20 @@
+---
+/* тёмный блок «Want one for your website?», как на главной */
+import Tri from './Tri.astro';
+import { BUY_CONCEPT } from '../data/links';
+export interface Props { kicker?: string; title?: string; text?: string; }
+const {
+  kicker = 'Homepage concept · $1,499',
+  title = 'Want one for your website?',
+  text = 'Animated and interactive, Figma plus vibe coding. In your inbox in 7 days.',
+} = Astro.props;
+---
+<div class="ob">
+  <canvas class="stars" aria-hidden="true"></canvas>
+  <div>
+    <p class="ob__k">{kicker}</p>
+    <h2 class="ob__h">{title}</h2>
+    <p class="ob__s">{text}</p>
+  </div>
+  <a class="btn btn--main" href={BUY_CONCEPT}><span class="prints"></span><span>Get a concept</span><Tri /></a>
+</div>

@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from 'astro:content';
+import PostPage from '../../components/PostPage.astro';
+
+const CATEGORY = 'logo-design';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', (p) => p.data.category === 'logo-design');
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const d = post.data;
+const url = `https://unroot.design/${CATEGORY}/${d.slug}`;
+
+const schema: unknown[] = [
+  {
+    '@context': 'https://schema.org', '@type': 'Article',
+    headline: d.title, description: d.seoDescription, author: { '@type': 'Person', name: d.author },
+    publisher: { '@type': 'Organization', name: 'Unroot Design', url: 'https://unroot.design' },
+    datePublished: d.publishDate.toISOString(),
+    ...(d.updatedDate && { dateModified: d.updatedDate.toISOString() }),
+    mainEntityOfPage: url,
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://unroot.design' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://unroot.design/blog' },
+      { '@type': 'ListItem', position: 3, name: d.title, item: url },
+    ],
+  },
+];
+
+if (d.faq.length) {
+  schema.push({
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: d.faq.map((f) => ({
+      '@type': 'Question', name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+---
+
+<PostPage d={d} url={url} headings={headings} schema={schema}><Content /></PostPage>
