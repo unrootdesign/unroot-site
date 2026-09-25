@@ -121,8 +121,8 @@
       cv.width=Math.round(W*D); cv.height=Math.round(H*D);
       const n=Math.min(innerWidth<700?320:950, Math.round(W*H/1050));
       const now=performance.now();
-      P=[]; for(let i=0;i<n;i++){ const p={a:10+Math.random()*36,f:.00012+Math.random()*.00022,ph:Math.random()*6.28,
-        k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.2}; p.at=now+(p.tw?R(300,15000):R(2000,90000)); place(p); P.push(p); }
+      P=[]; for(let i=0;i<n;i++){ const p={a:10+Math.random()*36,f:.00005+Math.random()*.0001,ph:Math.random()*6.28,
+        k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.08}; if(p.tw){ p.st=2; p.o=0; p.at=now+R(500,25000); } else p.at=now+R(3000,500000); place(p); P.push(p); }
     };
     host.addEventListener('pointermove',e=>{const r=host.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;});
     host.addEventListener('pointerleave',()=>{mx=-1e4;my=-1e4;});
@@ -140,13 +140,13 @@
       for(const p of P){
         // мерцание: живёт, гаснет, пропадает, загорается в другом месте со вспышкой
         if(T>p.at){
-          if(p.st===0){ p.st=1; p.at=T+R(900,1600); p.d=p.at-T; }
-          else if(p.st===1){ p.st=2; p.at=T+R(400,2200); p.o=0; }
-          else if(p.st===2){ place(p); p.st=3; p.at=T+R(1200,2000); p.d=p.at-T; }
-          else { p.st=0; p.o=1; p.g=0; p.at=T+(p.tw?R(5000,18000):R(40000,120000)); }
+          if(p.st===0){ p.st=1; p.at=T+R(3500,5500); p.d=p.at-T; }
+          else if(p.st===1){ p.st=2; p.at=T+R(2000,6000); p.o=0; }
+          else if(p.st===2){ place(p); p.st=3; p.at=T+R(4500,7000); p.d=p.at-T; }
+          else { p.st=0; p.o=1; p.g=0; p.at=T+(p.tw?R(15000,40000):R(240000,600000)); }
         }
-        if(p.st===1){ p.o=Math.max(0,(p.at-T)/p.d); p.g=0; }
-        else if(p.st===3){ const q=1-(p.at-T)/p.d; p.o=Math.min(1,q*1.6); p.g=Math.sin(Math.PI*q); }
+        if(p.st===1){ const q=Math.max(0,(p.at-T)/p.d); p.o=q*q*(3-2*q); p.g=0; }
+        else if(p.st===3){ const q=Math.min(1,1-(p.at-T)/p.d), u=Math.min(1,q*1.5); p.o=u*u*(3-2*u); p.g=Math.pow(Math.sin(Math.PI*q),2); }
         if(p.st===2) continue;
         const tx=p.hx+Math.sin(T*p.f+p.ph)*p.a, ty=p.hy+Math.cos(T*p.f*1.3+p.ph)*p.a*.7;
         let ax=(tx-p.x)*.04, ay=(ty-p.y)*.04;
