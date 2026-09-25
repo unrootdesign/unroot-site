@@ -82,7 +82,8 @@
     text-transform:uppercase;padding:11px 13px;box-shadow:inset 0 0 0 1px var(--line-b);
     transition:box-shadow var(--t) var(--ease),background var(--t) var(--ease),color var(--t) var(--ease)}
   .wk__go .tri{color:var(--violet)}
-  .wk__c:hover .wk__go{background:var(--ink);color:#fff;box-shadow:inset 0 0 0 1px var(--ink)}
+  .wk__c:hover .wk__go{background:var(--violet-hi);color:#fff;box-shadow:inset 0 0 0 1px var(--violet-hi)}
+  .wk__c:hover .wk__go .tri{color:#fff}
   .wk__b{display:block;margin-top:14px;color:var(--ink-2);font-size:1.02rem;max-width:62ch}
   .wk__meta{display:block;margin-top:16px;font:500 .64rem/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--violet-d)}
 
@@ -105,7 +106,7 @@
     display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line-b);
     transition:background var(--t) var(--ease),color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
   .arrow svg{width:18px;height:18px}
-  .arrow:hover{background:var(--ink);color:#fff;box-shadow:inset 0 0 0 1px var(--ink)}
+  .arrow:hover{background:var(--violet-hi);color:#fff;box-shadow:inset 0 0 0 1px var(--violet-hi)}
   .qn{margin-left:auto;font:500 .7rem/1 var(--mono);letter-spacing:.1em;color:var(--ink-3)}
 
   /* ── цены: концепт крупно, остальное проще ── */
@@ -124,7 +125,7 @@
   .pk__d{margin-top:16px;font-size:1.06rem;line-height:1.45;color:rgba(255,255,255,.9);max-width:32ch}
   .pk .btn{margin-top:28px}
   .pk .btn--main{background:#fff;color:var(--ink)}
-  .pk .btn--main:hover{background:var(--night);color:#fff}
+  .pk .btn--main:hover{background:var(--violet-hi);color:#fff}
   .pk .print{mix-blend-mode:multiply}
   .pk__list{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid rgba(255,255,255,.25)}
   .pk__list li{position:relative;padding:13px 0 13px 20px;border-bottom:1px solid rgba(255,255,255,.25);font-size:.92rem;line-height:1.45}

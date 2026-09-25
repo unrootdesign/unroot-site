@@ -1,4 +1,4 @@
-/* Общие эффекты сайта: хвост курсора, отпечатки на кнопке, пятна и звёзды в тёмных блоках.
+/* Общие эффекты сайта: курсор-комета, отпечатки на кнопке, пятна и звёзды в тёмных блоках.
    Перенесено из превью главной (версия D). */
 (() => {
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -11,32 +11,41 @@
     let W=0,H=0,D=1;
     const size=()=>{ D=Math.min(devicePixelRatio||1,2); W=innerWidth; H=innerHeight; cv.width=W*D; cv.height=H*D; };
     size(); addEventListener('resize',size);
-    let mx=-100,my=-100,hx=-100,hy=-100,alpha=0,last=0,running=false,seen=false;
-    const pts=[]; const LIFE=420;
-    const start=()=>{ if(!running){ running=true; requestAnimationFrame(tick); } };
+    let mx=-100,my=-100,hx=-100,hy=-100,sx=-100,sy=-100,alpha=0,last=0,running=false,seen=false,pt=0;
+    const pts=[]; const LIFE=460;
+    const start=()=>{ if(!running){ running=true; pt=performance.now(); requestAnimationFrame(tick); } };
     addEventListener('pointermove',e=>{
       if(e.pointerType==='touch') return;
       mx=e.clientX; my=e.clientY; last=performance.now();
-      if(!seen){ hx=mx; hy=my; seen=true; }
+      if(!seen){ hx=sx=mx; hy=sy=my; seen=true; }
       start();
     },{passive:true});
     document.addEventListener('pointerleave',()=>{ last=0; });
     function tick(t){
-      hx+=(mx-hx)*.55; hy+=(my-hy)*.55;
+      // сглаживание как у кисти в графических редакторах: голова догоняет мышь,
+      // хвост догоняет голову, скорость не зависит от частоты экрана
+      const dt=Math.min(64,t-pt)/16.67; pt=t;
+      const kh=1-Math.pow(1-.42,dt), ks=1-Math.pow(1-.3,dt);
+      hx+=(mx-hx)*kh; hy+=(my-hy)*kh;
+      sx+=(hx-sx)*ks; sy+=(hy-sy)*ks;
       const moving=t-last<120;
-      pts.push({x:hx,y:hy,t});
+      const lp=pts[pts.length-1];
+      if(!lp || Math.hypot(sx-lp.x,sy-lp.y)>1.5) pts.push({x:sx,y:sy,t});
+      else lp.t=t;
       while(pts.length && t-pts[0].t>LIFE) pts.shift();
       const target=(t-last<1200 && last)?1:0;
       alpha+=(target-alpha)*.12;
       ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
-      // хвост: сужается и гаснет к концу
-      ctx.lineCap='round';
-      for(let i=1;i<pts.length;i++){
-        const a=pts[i-1], b=pts[i], k=1-(t-b.t)/LIFE;
+      // хвост: плавная кривая через середины отрезков, сужается и гаснет к концу
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      const all=pts.concat([{x:hx,y:hy,t}]);
+      for(let i=1;i<all.length-1;i++){
+        const a=all[i-1], b=all[i], c=all[i+1], k=1-(t-b.t)/LIFE;
         if(k<=0) continue;
         ctx.strokeStyle=`rgba(137,97,231,${(k*k*.55*alpha).toFixed(3)})`;
         ctx.lineWidth=.5+k*4.5;
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo((a.x+b.x)/2,(a.y+b.y)/2);
+        ctx.quadraticCurveTo(b.x,b.y,(b.x+c.x)/2,(b.y+c.y)/2); ctx.stroke();
       }
       // голова: ядро и свечение
       const r=moving?16:12;
@@ -47,8 +56,8 @@
       ctx.fillStyle=g; ctx.beginPath(); ctx.arc(hx,hy,r,0,6.2832); ctx.fill();
       ctx.fillStyle=`rgba(255,255,255,${alpha.toFixed(3)})`;
       ctx.beginPath(); ctx.arc(hx,hy,1.6,0,6.2832); ctx.fill();
-      ctx.fillStyle=`rgba(137,97,231,${alpha.toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(hx,hy,2.6,0,6.2832); ctx.lineWidth=1.2; ctx.strokeStyle=ctx.fillStyle; ctx.stroke();
+      ctx.strokeStyle=`rgba(137,97,231,${alpha.toFixed(3)})`; ctx.lineWidth=1.2;
+      ctx.beginPath(); ctx.arc(hx,hy,2.6,0,6.2832); ctx.stroke();
       if(alpha<.01 && !pts.length){ running=false; ctx.clearRect(0,0,W,H); return; }
       if(alpha<.01 && t-last>1200){ pts.length=0; }
       requestAnimationFrame(tick);
@@ -110,28 +119,34 @@
     const size=()=>{
       D=Math.min(devicePixelRatio||1,1.5); W=host.offsetWidth; H=host.offsetHeight;
       cv.width=Math.round(W*D); cv.height=Math.round(H*D);
-      const n=Math.min(innerWidth<700?380:1100, Math.round(W*H/900));
+      const n=Math.min(innerWidth<700?320:950, Math.round(W*H/1050));
       const now=performance.now();
       P=[]; for(let i=0;i<n;i++){ const p={a:10+Math.random()*36,f:.00012+Math.random()*.00022,ph:Math.random()*6.28,
-        k:(Math.random()*4)|0, o:1, st:0, at:now+R(2000,30000)}; place(p); P.push(p); }
+        k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.2}; p.at=now+(p.tw?R(300,15000):R(2000,90000)); place(p); P.push(p); }
     };
     host.addEventListener('pointermove',e=>{const r=host.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;});
     host.addEventListener('pointerleave',()=>{mx=-1e4;my=-1e4;});
-    const B=[[],[],[],[]], AL=[.18,.3,.46,.75], SZ=[1.1,1.4,1.8,2.3];
+    const B=[[],[],[],[]], G=[], AL=[.18,.3,.46,.75], SZ=[1.1,1.4,1.8,2.3];
+    // свечение рисуется один раз в маленький спрайт и потом только копируется, видеокарту не грузит
+    const GL=document.createElement('canvas'); GL.width=GL.height=64;
+    { const c=GL.getContext('2d'), g=c.createRadialGradient(32,32,0,32,32,32);
+      g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.12,'rgba(210,194,252,.85)');
+      g.addColorStop(.4,'rgba(137,97,231,.28)'); g.addColorStop(1,'rgba(137,97,231,0)');
+      c.fillStyle=g; c.fillRect(0,0,64,64); }
     const frame=T=>{
       ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
-      for(const b of B) b.length=0;
+      for(const b of B) b.length=0; G.length=0;
       const RP=130,RP2=RP*RP;
       for(const p of P){
-        // мерцание: живёт, гаснет, пропадает, появляется в другом месте
+        // мерцание: живёт, гаснет, пропадает, загорается в другом месте со вспышкой
         if(T>p.at){
-          if(p.st===0){ p.st=1; p.at=T+R(700,1400); }
-          else if(p.st===1){ p.st=2; p.at=T+R(800,4000); p.o=0; }
-          else if(p.st===2){ place(p); p.st=3; p.at=T+R(700,1400); }
-          else { p.st=0; p.o=1; p.at=T+R(8000,40000); }
+          if(p.st===0){ p.st=1; p.at=T+R(900,1600); p.d=p.at-T; }
+          else if(p.st===1){ p.st=2; p.at=T+R(400,2200); p.o=0; }
+          else if(p.st===2){ place(p); p.st=3; p.at=T+R(1200,2000); p.d=p.at-T; }
+          else { p.st=0; p.o=1; p.g=0; p.at=T+(p.tw?R(5000,18000):R(40000,120000)); }
         }
-        if(p.st===1) p.o=Math.max(0,(p.at-T)/1000);
-        else if(p.st===3) p.o=Math.min(1,1-(p.at-T)/1000);
+        if(p.st===1){ p.o=Math.max(0,(p.at-T)/p.d); p.g=0; }
+        else if(p.st===3){ const q=1-(p.at-T)/p.d; p.o=Math.min(1,q*1.6); p.g=Math.sin(Math.PI*q); }
         if(p.st===2) continue;
         const tx=p.hx+Math.sin(T*p.f+p.ph)*p.a, ty=p.hy+Math.cos(T*p.f*1.3+p.ph)*p.a*.7;
         let ax=(tx-p.x)*.04, ay=(ty-p.y)*.04;
@@ -139,6 +154,7 @@
         if(d2<RP2){const d=Math.sqrt(d2)||1,f=1-d/RP; ax+=dx/d*f*f*9; ay+=dy/d*f*f*9;}
         p.vx=(p.vx+ax)*.82; p.vy=(p.vy+ay)*.82; p.x+=p.vx; p.y+=p.vy;
         B[p.k].push(p.x,p.y,p.o);
+        if(p.g>.02) G.push(p.x,p.y,p.g,p.k);
       }
       for(let k=0;k<4;k++){ const b=B[k], sz=SZ[k];
         for(let i=0;i<b.length;i+=3){
@@ -146,6 +162,9 @@
           ctx.fillRect(b[i]-sz/2,b[i+1]-sz/2,sz,sz);
         }
       }
+      for(let i=0;i<G.length;i+=4){ const s=6+G[i+3]*2.5;
+        ctx.globalAlpha=G[i+2]*(.45+G[i+3]*.12); ctx.drawImage(GL,G[i]-s,G[i+1]-s,s*2,s*2); }
+      ctx.globalAlpha=1;
     };
     const tick=t=>{ if(!run) return; frame(t); requestAnimationFrame(tick); };
     size(); frame(performance.now());

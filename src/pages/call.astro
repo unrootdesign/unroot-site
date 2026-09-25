@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Tri from '../components/Tri.astro';
-import { BUY_CONCEPT } from '../data/links';
+import CtaBand from '../components/CtaBand.astro';
 
 // title дословно из Webflow, description в Webflow не было
 const title = "Book a Call | Unroot Design";
@@ -22,7 +21,9 @@ const VIDEO = 'https://cdn.prod.website-files.com/63b1a61bccd2eafa936ec2d8/69eb6
             <button class="call__play" id="callPlay" type="button" aria-label="Play video"><svg viewBox="0 0 99 114" aria-hidden="true"><path d="M98.25 56.72L0 113.45V0z" fill="currentColor"/></svg></button>
           </div>
         </div>
-        <p class="call__alt mono">Not ready for a call? <a href={BUY_CONCEPT}>Get a concept first <Tri /></a></p>
+        <div class="call__cta">
+          <CtaBand kicker="Not ready for a call?" title="Get a concept first" text="Send us a link. Get an animated, interactive homepage concept in 7 days. $1,499." />
+        </div>
       </div>
       <div class="call__cal" id="my-cal-inline" aria-label="Booking calendar"></div>
     </div>
@@ -39,9 +40,7 @@ const VIDEO = 'https://cdn.prod.website-files.com/63b1a61bccd2eafa936ec2d8/69eb6
   .call__play svg { width: 44px; height: 44px; padding: 16px 14px 16px 18px; box-sizing: content-box; background: var(--violet); }
   .call__play:hover svg { background: var(--violet-hi); }
   .call__play.off { opacity: 0; }
-  .call__alt { margin-top: 26px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .call__alt a { display: inline-flex; align-items: center; gap: 8px; color: var(--violet-d); }
-  .call__alt a:hover { color: var(--ink); }
+  .call__cta { margin-top: 28px; }
   .call__cal { min-height: 640px; border: 1px solid var(--line); background: var(--white); overflow: auto; }
 </style>
 
