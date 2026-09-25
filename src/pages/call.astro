@@ -18,7 +18,7 @@ const VIDEO = 'https://cdn.prod.website-files.com/63b1a61bccd2eafa936ec2d8/69eb6
         <div class="win frame call__video">
           <span class="win__bar"><i></i><i></i><i></i></span>
           <div class="call__stage">
-            <video id="callVideo" playsinline loop data-src={VIDEO}></video>
+            <video id="callVideo" playsinline loop preload="none" poster="/images/call-poster.webp" data-src={VIDEO}></video>
             <button class="call__play" id="callPlay" type="button" aria-label="Play video"><svg viewBox="0 0 99 114" aria-hidden="true"><path d="M98.25 56.72L0 113.45V0z" fill="currentColor"/></svg></button>
           </div>
         </div>

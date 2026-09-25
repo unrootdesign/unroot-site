@@ -38,7 +38,7 @@ src/
   content.config.ts      схемы, повторяют поля CMS Webflow
   pages/                 маршруты один в один с живым сайтом
 public/
-  _redirects             пусто по замыслу, ничего не переезжает
+  _redirects             только /concept → /#concept (301), страницы концепта больше нет
   _headers               кеш и заголовки безопасности
   robots.txt
 scripts/
@@ -109,7 +109,7 @@ npm run verify   # всё вместе, гонять перед каждым д�
 
 - Токены D в `tokens.css`, общие компоненты (кнопки, метки, faq, карточки, тёмный блок `.ob`, prose) в `base.css`.
 - `Nav.astro` белая полоса, `Footer.astro` тёмный с частицами, `CtaBand.astro` тёмный блок «Want one for your website?».
-- Эффекты (хвост курсора, отпечатки на кнопке, звёзды, пятна) в `src/scripts/site.js`, подключены в `Base.astro`.
+- Эффекты (курсор-комета на canvas, отпечатки на кнопке, мерцающие звёзды в футере, пятна) в `src/scripts/site.js`, подключены в `Base.astro`.
 - Готово в новом стиле: главная, кейсы, список блога, все статьи (`components/PostPage.astro`), услуги web-design, web-development, logo-design, services (`components/ServicePage.astro`), /call (Cal.com unrootdesign/30min), terms, privacy.
 - Все 26 страниц в новом стиле. /redesign (hero roast $129) не показываем в навигации и футере, ссылку Adam отправляет лично.
 - Careers: форма шлёт заявки через Web3Forms (бесплатно, 250 в месяц). Без `PUBLIC_WEB3FORMS_KEY` форма пишет, что не подключена.
@@ -127,3 +127,4 @@ npm run verify   # всё вместе, гонять перед каждым д�
 
 - Все кнопки «Get a concept» ведут на Stripe, «Discuss a project» на /call. Ссылки в `src/data/links.ts`.
 - Внутренние страницы на белом фоне, секции делятся только тонкой линией. Тёмный блок с предложением только на главной, на остальных страницах его роль играет футер.
+- У видео на /call есть превью `public/images/call-poster.webp` (кадр из самого видео), видео грузится только по клику.

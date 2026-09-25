@@ -12,10 +12,16 @@ const live = JSON.parse(await readFile(join(root, 'scripts/live-urls.json'), 'ut
 
 const toFile = (u) => (u === '/' ? 'index.html' : `${u.replace(/^\//, '')}.html`);
 
+// URL, которые осознанно переехали через 301 в public/_redirects, тоже считаются живыми
+const redirects = new Set((await readFile(join(root, 'public/_redirects'), 'utf8'))
+  .split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'))
+  .filter((l) => / 301$/.test(l)).map((l) => l.split(/\s+/)[0]));
+
 const missing = [];
 const empty = [];
 
 for (const url of live) {
+  if (redirects.has(url)) continue;
   const path = join(root, 'dist', toFile(url));
   try {
     const s = await stat(path);
@@ -28,6 +34,7 @@ for (const url of live) {
 // Проверяем, что у каждой страницы есть непустые title и description
 const thin = [];
 for (const url of live) {
+  if (redirects.has(url)) continue;
   const path = join(root, 'dist', toFile(url));
   try {
     const html = await readFile(path, 'utf8');

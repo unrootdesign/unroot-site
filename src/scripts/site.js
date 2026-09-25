@@ -2,32 +2,57 @@
    Перенесено из превью главной (версия D). */
 (() => {
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  if (!document.getElementById('trail')) { const t = document.createElement('div'); t.id = 'trail'; document.body.appendChild(t); }
-  /* курсор */
-  const SPEC=[{d:4,e:1,o:1},{d:8,e:.26,o:.55},{d:12,e:.155,o:.38},{d:16,e:.095,o:.25},{d:20,e:.055,o:.15}];
-  const wrap=document.getElementById('trail');
-  const nodes=SPEC.map(sp=>{
-    const el=document.createElement('span'); el.className='trail';
-    el.style.width=sp.d+'px'; el.style.height=sp.d+'px';
-    el.style.margin=`${-sp.d/2}px 0 0 ${-sp.d/2}px`; el.style.setProperty('--o',sp.o);
-    wrap.appendChild(el); return {el,x:0,y:0,...sp};
-  });
-  let mx=innerWidth/2,my=innerHeight/2,idle=null,big=false;
-  addEventListener('pointermove',e=>{
-    if(e.pointerType==='touch') return;
-    mx=e.clientX; my=e.clientY; document.body.classList.add('cur-on');
-    clearTimeout(idle); idle=setTimeout(()=>document.body.classList.remove('cur-on'),700);
-    big=!!(e.target instanceof Element && e.target.closest('button,a,.ba__stage,summary'));
-  });
-  addEventListener('pointerleave',()=>document.body.classList.remove('cur-on'));
-  (function loop(){
-    nodes.forEach(n=>{ n.x+=(mx-n.x)*n.e; n.y+=(my-n.y)*n.e;
-      const k=big&&n.d>5?1.5:1;
-      // хвост сжимается в ноль, когда курсор остановился и точки его догнали
-      const lag=n.d>5?Math.min(1,Math.hypot(mx-n.x,my-n.y)/14):1;
-      n.s=(n.s??0)+((lag*k)-(n.s??0))*.3;
-      n.el.style.transform=`translate(${n.x.toFixed(2)}px,${n.y.toFixed(2)}px) scale(${n.s.toFixed(3)})`; });
-    requestAnimationFrame(loop);
+  /* курсор: звезда с хвостом. Canvas поверх страницы, клики не перехватывает */
+  (()=>{
+    if(RM || matchMedia('(pointer:coarse)').matches) return;
+    const cv=document.createElement('canvas'); cv.className='comet'; cv.setAttribute('aria-hidden','true');
+    document.body.appendChild(cv);
+    const ctx=cv.getContext('2d');
+    let W=0,H=0,D=1;
+    const size=()=>{ D=Math.min(devicePixelRatio||1,2); W=innerWidth; H=innerHeight; cv.width=W*D; cv.height=H*D; };
+    size(); addEventListener('resize',size);
+    let mx=-100,my=-100,hx=-100,hy=-100,alpha=0,last=0,running=false,seen=false;
+    const pts=[]; const LIFE=420;
+    const start=()=>{ if(!running){ running=true; requestAnimationFrame(tick); } };
+    addEventListener('pointermove',e=>{
+      if(e.pointerType==='touch') return;
+      mx=e.clientX; my=e.clientY; last=performance.now();
+      if(!seen){ hx=mx; hy=my; seen=true; }
+      start();
+    },{passive:true});
+    document.addEventListener('pointerleave',()=>{ last=0; });
+    function tick(t){
+      hx+=(mx-hx)*.55; hy+=(my-hy)*.55;
+      const moving=t-last<120;
+      pts.push({x:hx,y:hy,t});
+      while(pts.length && t-pts[0].t>LIFE) pts.shift();
+      const target=(t-last<1200 && last)?1:0;
+      alpha+=(target-alpha)*.12;
+      ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
+      // хвост: сужается и гаснет к концу
+      ctx.lineCap='round';
+      for(let i=1;i<pts.length;i++){
+        const a=pts[i-1], b=pts[i], k=1-(t-b.t)/LIFE;
+        if(k<=0) continue;
+        ctx.strokeStyle=`rgba(137,97,231,${(k*k*.55*alpha).toFixed(3)})`;
+        ctx.lineWidth=.5+k*4.5;
+        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+      }
+      // голова: ядро и свечение
+      const r=moving?16:12;
+      const g=ctx.createRadialGradient(hx,hy,0,hx,hy,r);
+      g.addColorStop(0,`rgba(185,162,245,${(.55*alpha).toFixed(3)})`);
+      g.addColorStop(.35,`rgba(137,97,231,${(.28*alpha).toFixed(3)})`);
+      g.addColorStop(1,'rgba(137,97,231,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(hx,hy,r,0,6.2832); ctx.fill();
+      ctx.fillStyle=`rgba(255,255,255,${alpha.toFixed(3)})`;
+      ctx.beginPath(); ctx.arc(hx,hy,1.6,0,6.2832); ctx.fill();
+      ctx.fillStyle=`rgba(137,97,231,${alpha.toFixed(3)})`;
+      ctx.beginPath(); ctx.arc(hx,hy,2.6,0,6.2832); ctx.lineWidth=1.2; ctx.strokeStyle=ctx.fillStyle; ctx.stroke();
+      if(alpha<.01 && !pts.length){ running=false; ctx.clearRect(0,0,W,H); return; }
+      if(alpha<.01 && t-last>1200){ pts.length=0; }
+      requestAnimationFrame(tick);
+    }
   })();
 
   /* отпечатки на фиолетовой кнопке */
@@ -75,53 +100,52 @@
   })();
 
 
-  /* звёзды: сетка точек и плавающие частицы, всё уходит от курсора (футер и блок концепта) */
+  /* звёзды: плавают, уходят от курсора и иногда гаснут и загораются в новом месте (футер и тёмный блок) */
   const stars=(host,cv)=>{
     if(!host||!cv||!cv.getContext) return;
     const ctx=cv.getContext('2d');
-    let W=0,H=0,D=1,P=[],G=[],run=false,mx=-1e4,my=-1e4,gx=-1e4,gy=-1e4,first=true;
-    const S=innerWidth<700?26:30;
+    let W=0,H=0,D=1,P=[],run=false,mx=-1e4,my=-1e4;
+    const R=(a,b)=>a+Math.random()*(b-a);
+    const place=(p)=>{ p.hx=Math.random()*W; p.hy=Math.random()*H; p.x=p.hx; p.y=p.hy; p.vx=0; p.vy=0; };
     const size=()=>{
       D=Math.min(devicePixelRatio||1,1.5); W=host.offsetWidth; H=host.offsetHeight;
       cv.width=Math.round(W*D); cv.height=Math.round(H*D);
-      const n=Math.min(innerWidth<700?260:620, Math.round(W*H/1500));
-      P=[]; for(let i=0;i<n;i++) P.push({hx:Math.random()*W,hy:Math.random()*H,x:0,y:0,vx:0,vy:0,
-        a:14+Math.random()*34,f:.00012+Math.random()*.00022,p:Math.random()*6.28,k:(Math.random()*4)|0});
-      G=[]; const ox=(W%S)/2, oy=(H%S)/2;
-      for(let y=oy;y<H;y+=S) for(let x=ox;x<W;x+=S) G.push(x,y);
-      first=true;
+      const n=Math.min(innerWidth<700?380:1100, Math.round(W*H/900));
+      const now=performance.now();
+      P=[]; for(let i=0;i<n;i++){ const p={a:10+Math.random()*36,f:.00012+Math.random()*.00022,ph:Math.random()*6.28,
+        k:(Math.random()*4)|0, o:1, st:0, at:now+R(2000,30000)}; place(p); P.push(p); }
     };
     host.addEventListener('pointermove',e=>{const r=host.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;});
     host.addEventListener('pointerleave',()=>{mx=-1e4;my=-1e4;});
-    const B=[[],[],[],[]], AL=[.16,.28,.44,.7];
+    const B=[[],[],[],[]], AL=[.18,.3,.46,.75], SZ=[1.1,1.4,1.8,2.3];
     const frame=T=>{
-      gx+=(mx-gx)*.14; gy+=(my-gy)*.14;
       ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
-      const RG=150,RG2=RG*RG, near=[];
-      ctx.fillStyle='rgba(185,162,245,.17)';
-      for(let i=0;i<G.length;i+=2){
-        const x=G[i],y=G[i+1],dx=x-gx,dy=y-gy,d2=dx*dx+dy*dy;
-        if(d2<RG2){const d=Math.sqrt(d2)||1,f=1-d/RG; near.push(x+dx/d*f*f*26,y+dy/d*f*f*26,f);}
-        else ctx.fillRect(x-.75,y-.75,1.5,1.5);
-      }
-      for(let i=0;i<near.length;i+=3){const f=near[i+2];
-        ctx.fillStyle=`rgba(196,176,250,${(.17+f*.6).toFixed(3)})`; const s=1.5+f*2;
-        ctx.fillRect(near[i]-s/2,near[i+1]-s/2,s,s);}
       for(const b of B) b.length=0;
       const RP=130,RP2=RP*RP;
       for(const p of P){
-        const tx=p.hx+Math.sin(T*p.f+p.p)*p.a, ty=p.hy+Math.cos(T*p.f*1.3+p.p)*p.a*.7;
-        if(first){p.x=tx;p.y=ty;}
+        // мерцание: живёт, гаснет, пропадает, появляется в другом месте
+        if(T>p.at){
+          if(p.st===0){ p.st=1; p.at=T+R(700,1400); }
+          else if(p.st===1){ p.st=2; p.at=T+R(800,4000); p.o=0; }
+          else if(p.st===2){ place(p); p.st=3; p.at=T+R(700,1400); }
+          else { p.st=0; p.o=1; p.at=T+R(8000,40000); }
+        }
+        if(p.st===1) p.o=Math.max(0,(p.at-T)/1000);
+        else if(p.st===3) p.o=Math.min(1,1-(p.at-T)/1000);
+        if(p.st===2) continue;
+        const tx=p.hx+Math.sin(T*p.f+p.ph)*p.a, ty=p.hy+Math.cos(T*p.f*1.3+p.ph)*p.a*.7;
         let ax=(tx-p.x)*.04, ay=(ty-p.y)*.04;
         const dx=p.x-mx,dy=p.y-my,d2=dx*dx+dy*dy;
         if(d2<RP2){const d=Math.sqrt(d2)||1,f=1-d/RP; ax+=dx/d*f*f*9; ay+=dy/d*f*f*9;}
         p.vx=(p.vx+ax)*.82; p.vy=(p.vy+ay)*.82; p.x+=p.vx; p.y+=p.vy;
-        B[p.k].push(p.x,p.y);
+        B[p.k].push(p.x,p.y,p.o);
       }
-      first=false;
-      for(let k=0;k<4;k++){const b=B[k]; if(!b.length) continue;
-        ctx.fillStyle=`rgba(196,176,250,${AL[k]})`; const sz=k>1?1.9:1.4;
-        for(let i=0;i<b.length;i+=2) ctx.fillRect(b[i],b[i+1],sz,sz);}
+      for(let k=0;k<4;k++){ const b=B[k], sz=SZ[k];
+        for(let i=0;i<b.length;i+=3){
+          ctx.fillStyle=`rgba(196,176,250,${(AL[k]*b[i+2]).toFixed(3)})`;
+          ctx.fillRect(b[i]-sz/2,b[i+1]-sz/2,sz,sz);
+        }
+      }
     };
     const tick=t=>{ if(!run) return; frame(t); requestAnimationFrame(tick); };
     size(); frame(performance.now());

@@ -43,7 +43,7 @@
   --read: 68ch;
 
   --ease: cubic-bezier(.22,1,.36,1);
-  --t: .2s;
+  --t: .12s;
 
   /* совместимость со старыми именами */
   --c-bg: var(--white); --c-bg-alt: var(--bg); --c-bg-invert: var(--night);
