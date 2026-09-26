@@ -181,8 +181,9 @@ const schema = [{
 
       <section class="sec" id="team">
         <p class="tag"><i></i>About us</p>
-        <h2 class="h2 rv">Who you will <span class="acc">work with</span></h2>
-        <p class="sub">A small team of 5 in Warsaw. The people on your first call are the people doing the work. No account managers in between.</p>
+        <h2 class="h2 rv">Small team, <span class="acc">senior hands</span></h2>
+        <p class="sub">5 people in Warsaw. The people on your call are the people doing the work, no account managers in between. Book 30 minutes, tell us what you are building, and we will tell you what we would change on your website and how we can help. No sales pitch.</p>
+        <div class="tmcal" id="home-cal" aria-label="Booking calendar"><p class="tmcal__load mono">Loading calendar</p></div>
       </section>
 
       <section class="sec" id="faq">
@@ -195,3 +196,18 @@ const schema = [{
 </Base>
 
 <script>import '../scripts/home.js';</script>
+<script is:inline>
+  /* Cal.com unrootdesign/30min, грузится только когда секция близко */
+  (function () {
+    var el = document.getElementById('home-cal'); if (!el) return;
+    function boot() {
+      (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+      Cal("init", "30min", { origin: "https://cal.com" });
+      Cal.ns["30min"]("inline", { elementOrSelector: "#home-cal", config: { layout: "month_view", theme: "light" }, calLink: "unrootdesign/30min" });
+      Cal.ns["30min"]("ui", { theme: "light", hideEventTypeDetails: false, layout: "month_view", cssVarsPerTheme: { light: { "cal-brand": "#8961E7" } } });
+    }
+    if (!('IntersectionObserver' in window)) return boot();
+    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); boot(); } }, { rootMargin: '800px 0px' });
+    io.observe(el);
+  })();
+</script>
