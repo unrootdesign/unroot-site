@@ -205,3 +205,14 @@
   .tmcal{position:relative;margin-top:40px;min-height:640px;border:1px solid var(--line);background:var(--white);overflow:auto}
   .tmcal__load{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-3);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase}
   .tmcal:has(iframe) .tmcal__load{display:none}
+
+  /* ── логотипы клиентов, бегущая строка ───── */
+  .lg{margin-top:56px;min-width:0}
+  .lg__k{font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+  .lg__v{margin-top:20px;overflow:hidden;contain:inline-size;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .lg__t{display:flex;align-items:center;gap:64px;width:max-content;padding-right:64px;animation:lgrun 48s linear infinite}
+  .lg__v:hover .lg__t{animation-play-state:paused}
+  .lg__t img{display:block;width:auto;flex:none;opacity:.42;transition:opacity var(--t) var(--ease)}
+  .lg__t img:hover{opacity:1}
+  @keyframes lgrun{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.lg__t{animation:none;flex-wrap:wrap;width:auto;row-gap:28px}.lg__t img[aria-hidden]{display:none}}

@@ -40,7 +40,7 @@ const schema = [{
       <section class="sec" id="concept">
         <p class="tag"><i></i>Concept</p>
         <h2 class="h2 rv">See the direction <span class="acc">before you commit</span></h2>
-        <p class="sub">You send the link, we redesign the homepage from scratch. Drag any of these to see what changed.</p>
+        <p class="sub">You send a link, we redesign the homepage from scratch. Drag the slider to see what changed.</p>
 
         <div class="tabs" role="tablist">
           <button data-tab="ba" aria-selected="true" role="tab" type="button">Before / after</button>
@@ -120,6 +120,12 @@ const schema = [{
             <span class="qn" id="qn">01 / {pad(home.quotes.length)}</span>
           </div>
         </div>
+        <div class="lg" aria-label="Clients we have worked with">
+          <p class="lg__k mono">Teams we have worked with</p>
+          <div class="lg__v"><div class="lg__t">
+            {[0, 1].map(k => home.logos.map(l => <img src={`${M}logos/${l.slug}.png`} alt={k ? '' : l.name} aria-hidden={k ? 'true' : undefined} style={`height:${l.h}px`} loading="lazy" />))}
+          </div></div>
+        </div>
       </section>
 
       <section class="sec" id="pricing">
@@ -136,21 +142,21 @@ const schema = [{
             <ul class="pk__list">
               <li>Hero plus 3 sections, designed the way we would build it</li>
               <li>A live preview you can click and scroll, not a flat mockup</li>
-              <li>The file is yours whatever you decide</li>
-              <li>Credited toward a full redesign within 60 days</li>
+              <li>The files are yours whatever you decide</li>
+              <li>The $1,499 goes toward the full website if you start within 60 days</li>
             </ul>
           </div>
           <div class="pns">
             <div class="pn">
               <p class="pn__n">Design and Build Sprint</p>
               <p class="pn__p">$2,499<small>/ week</small></p>
-              <p class="pn__d">A week of design, build, or both. Ends on Friday, no notice period.</p>
+              <p class="pn__d">1 week of design, build or both. Ends on Friday, no notice period.</p>
               <a class="pn__go" href={CALL}>Discuss a project <Tri /></a>
             </div>
             <div class="pn">
               <p class="pn__n">Monthly Design and Build</p>
               <p class="pn__p">$7,899<small>/ month</small></p>
-              <p class="pn__d">4 weeks with a senior designer and a senior developer. Pause or stop between blocks.</p>
+              <p class="pn__d">4 weeks with a senior designer and a senior developer. Pause or stop after any month.</p>
               <a class="pn__go" href={CALL}>Discuss a project <Tri /></a>
             </div>
           </div>

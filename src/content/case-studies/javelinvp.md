@@ -26,29 +26,29 @@ testimonial:
 ---
 ## The starting point
 
-The old site worked, but it didn’t match the level of the firm.It needed clearer hierarchy, stronger credibility cues, and a more confident visual system.
+The old website worked, but it did not match the level of the firm. It needed a clearer hierarchy, stronger proof and a more confident visual system.
 
 ![](/cms/javelin-Before-After-NEW.avif)
 
 ## What we delivered
 
-We partnered with Javelin to redesign and rebuild their site so it feels premium, sharp, and effortless to navigate, while staying extremely fast even with rich media on the homepage.
+We redesigned the website and rebuilt it in Webflow. It is easy to navigate and stays fast with video and rich media on the homepage.
 
 ![](/cms/Javelin9.avif)
 
 ## How we worked
 
-Focusing on clarity and high-speed performance. To build a truly premium experience, we shifted from decorative elements to a strategic, performance-driven approach.
+We removed decorative elements and focused on clarity and speed.
 
-- Cut all stock photography. Commissioned custom shoots — the firm feels real, not templated.
-- Built a portfolio section that ages well. Structured for ongoing updates without feeling outdated.
-- Migrated from WordPress to Webflow. The team can now update the site without a developer.
+- Cut all stock photography and commissioned custom shoots, so the firm looks real, not templated.
+- Built a portfolio section the team keeps up to date on its own.
+- Migrated from WordPress to Webflow. The team now updates the website without a developer.
 
 ![](/cms/Hero-Section.avif)
 
 ![](/cms/Javelin3.avif)
 
-*Distinctive logo for JavelinVp*
+*Logo for Javelin VP*
 
 ![](/cms/Javelin1.avif)
 
@@ -56,7 +56,7 @@ Focusing on clarity and high-speed performance. To build a truly premium experie
 
 ![](/cms/Javelin2.avif)
 
-*A harmonious color palette*
+*Color palette*
 
 ![](/cms/Javelin4.avif)
 
@@ -64,6 +64,6 @@ Focusing on clarity and high-speed performance. To build a truly premium experie
 
 ## Result
 
-### Crafting the JavelinVP Identity
+### A new identity for Javelin VP
 
-A sharp, high-performance site that balances rich media with effortless navigation to build long-term trust.
+A fast website with rich media that is still easy to navigate.

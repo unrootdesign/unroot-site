@@ -32,17 +32,17 @@ When we joined, the website didn’t really show the product. No device, no cl
 
 ## What we delivered
 
-We partnered with the team across 2024–2025 and helped turn an early, vague “whitelist-style” page into a clear, premium product story and a launch-ready website. A small team, full-stack delivery: Agile, focused, collaborative, creative, and dedicated throughout the entire project.
+We worked with the team through 2024 and 2025 and turned an early, vague “whitelist-style” page into a clear product story and a launch-ready website. One small team did the brand, the 3D and the website.
 
 ![](/cms/dreame.avif)
 
 ## How we worked
 
-This website evolved through several rounds of refinement. Each iteration brought us closer to a polished, confident, and user-focused experience.
+The website went through several rounds. 3 decisions shaped it:
 
-- Removed all hand shots from the device. Without hands, it felt like a finished product — not a prototype.
-- TIterated on the hero 7 times. Motion versions distracted from the product, so we kept it static.
-- Designed the page as a single scroll. Kickstarter decisions happen fast — anything non-essential was cut.
+- Removed all hand shots from the device. Without hands, it looks like a finished product, not a prototype.
+- Iterated on the hero 7 times. Motion versions distracted from the product, so we kept it static.
+- Designed the page as a single scroll. Kickstarter backers decide fast, so we cut everything non-essential.
 
 ![](/cms/Dreamie1.avif)
 
@@ -68,12 +68,12 @@ This website evolved through several rounds of refinement. Each iteration brough
 
 ![](/cms/Dreamie7.avif)
 
-*High-quality 3D renders of the device*
+*3D renders of the device*
 
 ## Result
 
-### Raised $44k Kickstarter
+### Raised $44K on Kickstarter
 
-On Kickstarter, thanks to the support of 158 backers who believed in our vision
+158 people backed the launch
 
 ![](/cms/Dreamie.avif)

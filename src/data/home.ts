@@ -33,7 +33,7 @@ export const home = {
    "year": "2025",
    "kind": "Healthtech, brand, 3D",
    "url": "https://www.helloambient.com/",
-   "desc": "Brand and digital experience for a wellness startup that raised $550K on light-based sleep science, then $44K from 158 Kickstarter backers."
+   "desc": "Brand, 3D and website for a sleep tech startup. They raised $550K, then $44K from 158 backers on Kickstarter."
   },
   {
    "slug": "switch",
@@ -41,7 +41,7 @@ export const home = {
    "year": "2025",
    "kind": "Fintech",
    "url": "https://www.joinswitch.co",
-   "desc": "The digital foundation for a group finance platform with 100K+ active users, shared accounts, MoneyPools and instant payments."
+   "desc": "Website for a group finance app with 100K+ active users: shared accounts, MoneyPools and instant payments."
   },
   {
    "slug": "javelin",
@@ -49,7 +49,7 @@ export const home = {
    "year": "2024",
    "kind": "Venture capital",
    "url": "https://www.javelinvp.com/",
-   "desc": "Brand and website for a $125M seed and Series A fund. Moved off WordPress and rebuilt in Webflow, fast even with rich media on the homepage."
+   "desc": "Brand and website for a $125M seed and Series A fund. We moved them from WordPress to Webflow, and the homepage stays fast with video on it."
   },
   {
    "slug": "trustyfy",
@@ -57,7 +57,7 @@ export const home = {
    "year": "2025",
    "kind": "Fintech",
    "url": "https://www.trustyfy.com/",
-   "desc": "A next-gen fintech experience for a $6.8M funded payments startup handling crypto and fiat, wallets and cards in one place."
+   "desc": "Website for a payments startup with $6.8M in funding: crypto and fiat, wallets and cards in one app."
   },
   {
    "slug": "workshop",
@@ -65,7 +65,7 @@ export const home = {
    "year": "2025",
    "kind": "Film, brand",
    "url": "https://www.workshopfilmcompany.com/",
-   "desc": "Brand and web presence for a commercial production studio driving $770K in annual revenue on cinematic brand films and ad campaigns."
+   "desc": "Brand and website for a production studio that makes $770K a year on brand films and ad campaigns."
   },
   {
    "slug": "epsilon",
@@ -73,8 +73,19 @@ export const home = {
    "year": "2025",
    "kind": "Medtech",
    "url": "https://epsilonhealth.webflow.io/",
-   "desc": "The digital platform for a MedTech company rebuilding radiology imaging workflows to cut diagnostic delays and radiologist burnout."
+   "desc": "Website for a MedTech company that rebuilds radiology workflows to cut diagnostic delays and radiologist burnout."
   }
+ ],
+ "logos": [
+  { "slug": "leadgains", "name": "Leadgains", "h": 24 },
+  { "slug": "switch", "name": "Switch", "h": 44 },
+  { "slug": "trustyfy", "name": "Trustyfy", "h": 28 },
+  { "slug": "javelin", "name": "Javelin VP", "h": 32 },
+  { "slug": "ambient", "name": "Ambient Dreamie", "h": 44 },
+  { "slug": "sintra", "name": "Sintra", "h": 26 },
+  { "slug": "wowhouse", "name": "Wow House Studio", "h": 34 },
+  { "slug": "workshop", "name": "Workshop Film Co.", "h": 34 },
+  { "slug": "epsilon", "name": "Epsilon Health", "h": 24 }
  ],
  "quotes": [
   {
@@ -113,15 +124,15 @@ export const home = {
   },
   {
    "q": "What if I do not move forward with the full website?",
-   "a": "You keep the concept and can build it however you want. The $1,499 is credited if you upgrade within 60 days. Finding out on day 7 beats finding out on week 4."
+   "a": "You keep the concept and can build it with anyone. If you start the full website with us within 60 days, the $1,499 goes toward it."
   },
   {
    "q": "Are revisions included in the concept?",
-   "a": "No. It is a fixed concept, 1 direction, one shot. Revisions and evolution happen inside the full project, and that is priced separately."
+   "a": "No. The concept is 1 direction, done once. Revisions happen in the full project, which is priced separately."
   },
   {
    "q": "Can I give input before you start?",
-   "a": "You can share context and we read everything you send. But we do not ask for moodboards or brand kits. You are paying for our call on the direction, not for assembling yours."
+   "a": "Send any context you have, we read all of it. We do not ask for moodboards or brand kits: choosing the direction is our job."
   },
   {
    "q": "Will I be able to edit the website myself afterwards?",
@@ -129,15 +140,27 @@ export const home = {
   },
   {
    "q": "What happens if you go quiet for a week?",
-   "a": "We do not. You get a private Slack channel with the people doing the work, weekly updates, and a status line on Friday whether or not there is good news."
+   "a": "We do not. You get a private Slack channel with the people doing the work, weekly updates and a status message every Friday, good news or not."
   },
   {
    "q": "Is an AI doing the design?",
-   "a": "No. We vibe code the build, which is why a month is enough for a full website. The direction, the layout and the taste are ours."
+   "a": "No. Designers make every decision on direction and layout. AI helps us write the code, which is why a full website fits into a month."
+  },
+  {
+   "q": "How is Monthly Design and Build different from a subscription?",
+   "a": "It is 1 month of work, not a plan that renews on its own. Stop after any month and come back when you need us. No notice period."
+  },
+  {
+   "q": "Do you only work with AI startups?",
+   "a": "Most of our clients build in AI, fintech and health. If you sell a complex product and need a website that explains it fast, we are likely a fit."
+  },
+  {
+   "q": "What is vibe coding and when do you use it?",
+   "a": "It means we write code together with AI. That is how the concept becomes a live preview in 7 days. We also use it for custom interactions and MVPs when Webflow or Framer cannot do the job out of the box."
   },
   {
    "q": "Who owns the files?",
-   "a": "You do. Figma, the Webflow or Framer project, fonts, everything handed over at the end."
+   "a": "You do. Figma files, the Webflow or Framer project, code and assets: everything is yours once the project is paid."
   }
  ],
  "services": [
