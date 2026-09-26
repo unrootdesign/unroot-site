@@ -30,7 +30,8 @@
 
   /* ── правая колонка ──────────────────────── */
   .stream{display:grid;min-width:0}
-  .home .sec{position:relative;padding:clamp(64px,8vw,104px) clamp(20px,4vw,56px);border-bottom:1px solid var(--line)}
+  .home{--sx:clamp(16px,calc(4vw - 10px),46px)}
+  .home .sec{position:relative;padding:clamp(64px,8vw,104px) var(--sx);border-bottom:1px solid var(--line)}
   .stream{position:relative;isolation:isolate;background:var(--bg);clip-path:inset(0)}
   .home .sec{z-index:1;background:transparent}
   .home .sec .tag{background:var(--white)}
@@ -77,9 +78,12 @@
   /* ── работы ──────────────────────────────── */
   .wk{display:grid;gap:clamp(64px,8vw,104px)}
   .wk__c{display:block}
+  .wk{margin-inline:calc(var(--sx) * -1)}
+  .wk__c .win{border-left:0;border-right:0}
+  .wk__c .win__bar{padding-inline:var(--sx)}
   .wk__c .win{transition:border-color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
   .wk__c:hover .win{border-color:var(--violet)}
-  .wk__m{display:block;padding:clamp(20px,2.4vw,30px);border-top:1px solid var(--line)}
+  .wk__m{display:block;padding:clamp(20px,2.4vw,30px) var(--sx);border-top:1px solid var(--line)}
   .wk__h{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:12px}
   .wk__n{font-size:clamp(1.5rem,2.3vw,2rem);font-weight:500;letter-spacing:-.04em;line-height:1.05}
   .wk__go{display:inline-flex;align-items:center;gap:10px;font:500 .66rem/1 var(--mono);letter-spacing:.08em;
@@ -188,7 +192,7 @@
     .rail__mid{margin:0;padding:40px 20px 36px}
       .facts div{padding:16px 12px 18px}
     .facts div:first-child{padding-left:20px}
-    .home .sec{padding:64px 20px}
+    .home .sec{padding:64px var(--sx)}
   }
 
   /* глобальные поправки для главной */
