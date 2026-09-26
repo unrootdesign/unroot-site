@@ -31,10 +31,12 @@
   /* ── правая колонка ──────────────────────── */
   .stream{display:grid;min-width:0}
   .home .sec{position:relative;padding:clamp(64px,8vw,104px) clamp(20px,4vw,56px);border-bottom:1px solid var(--line)}
-  .home .sec{background:var(--bg)}
-  .home .sec::before{content:"";position:absolute;left:-6px;top:-6px;width:11px;height:11px;z-index:2;
-    background:linear-gradient(var(--ink) 0 0) center/11px 1px no-repeat,linear-gradient(var(--ink) 0 0) center/1px 11px no-repeat}
-  .home .sec:first-child::before{display:none}
+  .stream{position:relative;isolation:isolate;background:var(--bg);clip-path:inset(0)}
+  .home .sec{z-index:1;background:transparent}
+  .home .sec .tag{background:var(--white)}
+  /* звёзды на светлом фоне: стоят на месте, тихо гаснут и загораются */
+  .sky{position:fixed;top:0;right:0;width:100%;height:100vh;height:100lvh;z-index:0;pointer-events:none;display:block}
+  @media(min-width:961px){.sky{width:calc(100% - var(--rw))}}
   .bd{margin-top:clamp(32px,4vw,48px)}
 
 
@@ -75,8 +77,10 @@
   /* ── работы ──────────────────────────────── */
   .wk{display:grid;gap:clamp(64px,8vw,104px)}
   .wk__c{display:block}
-  .wk__m{display:block;padding-top:22px}
-  .wk__h{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .wk__c .win{transition:border-color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+  .wk__c:hover .win{border-color:var(--violet)}
+  .wk__m{display:block;padding:clamp(20px,2.4vw,30px);border-top:1px solid var(--line)}
+  .wk__h{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:12px}
   .wk__n{font-size:clamp(1.5rem,2.3vw,2rem);font-weight:500;letter-spacing:-.04em;line-height:1.05}
   .wk__go{display:inline-flex;align-items:center;gap:10px;font:500 .66rem/1 var(--mono);letter-spacing:.08em;
     text-transform:uppercase;padding:11px 13px;box-shadow:inset 0 0 0 1px var(--line-b);
@@ -85,7 +89,7 @@
   .wk__c:hover .wk__go{background:var(--violet-hi);color:#fff;box-shadow:inset 0 0 0 1px var(--violet-hi)}
   .wk__c:hover .wk__go .tri{color:#fff}
   .wk__b{display:block;margin-top:14px;color:var(--ink-2);font-size:1.02rem;max-width:62ch}
-  .wk__meta{display:block;margin-top:16px;font:500 .64rem/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--violet-d)}
+  .wk__meta{display:block;font:500 .64rem/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--violet-d)}
 
   /* ── отзывы ──────────────────────────────── */
   .qwrap{display:grid}
@@ -185,7 +189,6 @@
       .facts div{padding:16px 12px 18px}
     .facts div:first-child{padding-left:20px}
     .home .sec{padding:64px 20px}
-    .home .sec::before{left:-6px}
   }
 
   /* глобальные поправки для главной */

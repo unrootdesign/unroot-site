@@ -174,4 +174,47 @@
   };
   document.querySelectorAll('.stars').forEach(cv=>stars(cv.parentElement,cv));
 
+  /* звёзды на светлом фоне главной: белые, стоят на месте, медленно гаснут и загораются в другом месте */
+  document.querySelectorAll('.sky').forEach(cv=>{
+    const ctx=cv.getContext('2d'); if(!ctx) return;
+    let W=0,H=0,D=1,P=[],run=true;
+    const R=(a,b)=>a+Math.random()*(b-a);
+    const GL=document.createElement('canvas'); GL.width=GL.height=64;
+    { const c=GL.getContext('2d'), g=c.createRadialGradient(32,32,0,32,32,32);
+      g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.18,'rgba(255,255,255,.95)');
+      g.addColorStop(.3,'rgba(185,162,245,.22)'); g.addColorStop(1,'rgba(185,162,245,0)');
+      c.fillStyle=g; c.fillRect(0,0,64,64); }
+    const place=p=>{ p.x=Math.random()*W; p.y=Math.random()*H; p.s=R(5,11); };
+    const size=()=>{
+      D=Math.min(devicePixelRatio||1,2); W=cv.offsetWidth; H=cv.offsetHeight;
+      cv.width=Math.round(W*D); cv.height=Math.round(H*D);
+      const n=Math.round(W*H/14000), now=performance.now();
+      P=[]; for(let i=0;i<n;i++){ const p={st:3,d:R(5000,8000)}; p.at=now+R(0,p.d); place(p); P.push(p); }
+    };
+    const frame=T=>{
+      ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
+      for(const p of P){
+        if(T>p.at){
+          if(p.st===0){ p.st=1; p.d=R(5000,8000); p.at=T+p.d; }
+          else if(p.st===1){ p.st=2; p.at=T+R(2000,7000); }
+          else if(p.st===2){ place(p); p.st=3; p.d=R(5000,8000); p.at=T+p.d; }
+          else { p.st=0; p.at=T+R(8000,30000); }
+        }
+        let o=1;
+        if(p.st===1){ const q=Math.max(0,(p.at-T)/p.d); o=q*q*(3-2*q); }
+        else if(p.st===2) continue;
+        else if(p.st===3){ const q=Math.min(1,1-(p.at-T)/p.d); o=q*q*(3-2*q); }
+        ctx.globalAlpha=o; ctx.drawImage(GL,p.x-p.s,p.y-p.s,p.s*2,p.s*2);
+      }
+      ctx.globalAlpha=1;
+    };
+    let last=0;
+    const tick=t=>{ if(!run) return; if(t-last>33){ frame(t); last=t; } requestAnimationFrame(tick); };
+    size(); frame(performance.now());
+    let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(cv.offsetWidth===W) return; size(); frame(performance.now()); },150); });
+    if(RM) return;
+    requestAnimationFrame(tick);
+    document.addEventListener('visibilitychange',()=>{ const was=run; run=!document.hidden; if(run&&!was) requestAnimationFrame(tick); });
+  });
+
 })();
