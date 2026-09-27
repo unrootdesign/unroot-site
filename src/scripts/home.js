@@ -44,7 +44,7 @@
   });
 
   /* видео: грузим и играем то, что в кадре */
-  const vids=[...document.querySelectorAll('video[data-lazy], .home video:not(.svv)')];
+  const vids=[...document.querySelectorAll('.home video:not(.svv)')].filter(v=>!v.closest('.pk__v'));
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(es=>es.forEach(e=>{
       const v=e.target;
@@ -53,6 +53,25 @@
     }),{threshold:.25});
     vids.forEach(v=>io.observe(v));
   }
+
+  /* концепты в карточке цены: по очереди, каждые 3 секунды */
+  (()=>{
+    const box=document.querySelector('.pk__v'); if(!box) return;
+    const vs=[...box.querySelectorAll('video')], ns=[...box.querySelectorAll('.pk__vn span')];
+    let i=0, timer=null, seen=false;
+    const load=v=>{ if(!v.dataset.l){ v.dataset.l=1; v.preload='auto'; v.load(); } };
+    const show=k=>{
+      vs.forEach((v,n)=>{ const on=n===k; v.classList.toggle('on',on); ns[n]?.classList.toggle('on',on);
+        if(on){ load(v); v.currentTime=0; v.play().catch(()=>{}); } else v.pause(); });
+      load(vs[(k+1)%vs.length]);
+    };
+    new IntersectionObserver(es=>es.forEach(e=>{
+      clearInterval(timer);
+      if(e.isIntersecting){ if(!seen){ seen=true; show(0); } else vs[i].play().catch(()=>{});
+        if(!RM) timer=setInterval(()=>{ i=(i+1)%vs.length; show(i); },3000); }
+      else vs.forEach(v=>v.pause());
+    }),{threshold:.3}).observe(box);
+  })();
 
   /* кадры в кейсах, без анимации */
   document.querySelectorAll('.wk__c .win__v').forEach((box,bi)=>{

@@ -3,27 +3,33 @@ export const home = {
  "pairs": [
   {
    "slug": "javelin",
-   "name": "Javelin VP"
+   "name": "Javelin VP",
+   "label": "Animated concept"
   },
   {
    "slug": "switch",
-   "name": "Switch"
+   "name": "Switch",
+   "label": "Ready in 7 days"
   },
   {
    "slug": "epsilon",
-   "name": "Epsilon Health"
+   "name": "Epsilon Health",
+   "label": "Designed in Figma"
   },
   {
    "slug": "dreamie",
-   "name": "Ambient Dreamie"
+   "name": "Ambient Dreamie",
+   "label": "Vibe coded"
   },
   {
    "slug": "resumai",
-   "name": "ResumAI"
+   "name": "ResumAI",
+   "label": "Hero plus 3 sections"
   },
   {
    "slug": "leadgains",
-   "name": "Leadgains"
+   "name": "Leadgains",
+   "label": "Clickable preview"
   }
  ],
  "work": [
@@ -76,23 +82,14 @@ export const home = {
    "desc": "Website for a MedTech company that rebuilds radiology workflows to cut diagnostic delays and radiologist burnout."
   }
  ],
- "logos": [
-  { "slug": "leadgains", "name": "Leadgains", "h": 24 },
-  { "slug": "switch", "name": "Switch", "h": 44 },
-  { "slug": "trustyfy", "name": "Trustyfy", "h": 28 },
-  { "slug": "javelin", "name": "Javelin VP", "h": 32 },
-  { "slug": "ambient", "name": "Ambient Dreamie", "h": 44 },
-  { "slug": "sintra", "name": "Sintra", "h": 26 },
-  { "slug": "wowhouse", "name": "Wow House Studio", "h": 34 },
-  { "slug": "workshop", "name": "Workshop Film Co.", "h": 34 },
-  { "slug": "epsilon", "name": "Epsilon Health", "h": 24 }
- ],
  "quotes": [
   {
    "text": "Javelin worked with Adam at Unroot on the re-design and development of our website, transitioning from WordPress to Webflow. We could not have been happier with his work and strongly recommend him to any future clients. He is creative and very timely with responses, which we really appreciated.",
    "name": "Tasnia Huque",
    "role": "Principal at Javelin VP",
    "avatar": "tasnia",
+   "logo": "javelin",
+   "logoH": 28,
    "url": "https://www.trustpilot.com/reviews/68811a779569d1770b673aba"
   },
   {
@@ -100,6 +97,8 @@ export const home = {
    "name": "Adrian Canoso",
    "role": "CEO and Co-Founder at Ambient Dreamie",
    "avatar": "adrian",
+   "logo": "ambient",
+   "logoH": 38,
    "url": "https://www.trustpilot.com/reviews/68dad10cbf77717f3c8e7895"
   },
   {
@@ -107,6 +106,8 @@ export const home = {
    "name": "Jonah Neuss",
    "role": "Wow House Studio",
    "avatar": "jonah",
+   "logo": "wowhouse",
+   "logoH": 30,
    "url": "https://www.trustpilot.com/reviews/68800cfb2b8ce173b31d4fce"
   },
   {
@@ -114,6 +115,8 @@ export const home = {
    "name": "Rokas Judickas",
    "role": "Founding designer at Sintra.ai",
    "avatar": "rokas",
+   "logo": "sintra",
+   "logoH": 22,
    "url": ""
   }
  ],

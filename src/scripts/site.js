@@ -113,16 +113,18 @@
   const stars=(host,cv)=>{
     if(!host||!cv||!cv.getContext) return;
     const ctx=cv.getContext('2d');
-    let W=0,H=0,D=1,P=[],run=false,mx=-1e4,my=-1e4;
+    let W=0,H=0,D=1,P=[],run=false,mx=-1e4,my=-1e4,clk=0,lt=0;
     const R=(a,b)=>a+Math.random()*(b-a);
     const place=(p)=>{ p.hx=Math.random()*W; p.hy=Math.random()*H; p.x=p.hx; p.y=p.hy; p.vx=0; p.vy=0; };
     const size=()=>{
       D=Math.min(devicePixelRatio||1,1.5); W=host.offsetWidth; H=host.offsetHeight;
       cv.width=Math.round(W*D); cv.height=Math.round(H*D);
       const n=Math.min(innerWidth<700?320:950, Math.round(W*H/1050));
-      const now=performance.now();
+      const now=clk;
       P=[]; for(let i=0;i<n;i++){ const p={a:10+Math.random()*36,f:.00005+Math.random()*.0001,ph:Math.random()*6.28,
-        k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.08}; if(p.tw){ p.st=2; p.o=0; p.at=now+R(500,25000); } else p.at=now+R(3000,500000); place(p); P.push(p); }
+        k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.05};
+        // у каждой звезды своя фаза, чтобы они никогда не загорались разом
+        if(p.tw && Math.random()<.5){ p.st=2; p.o=0; p.at=now+R(0,40000); } else p.at=now+(p.tw?R(0,70000):R(20000,900000)); place(p); P.push(p); }
     };
     host.addEventListener('pointermove',e=>{const r=host.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;});
     host.addEventListener('pointerleave',()=>{mx=-1e4;my=-1e4;});
@@ -140,13 +142,13 @@
       for(const p of P){
         // мерцание: живёт, гаснет, пропадает, загорается в другом месте со вспышкой
         if(T>p.at){
-          if(p.st===0){ p.st=1; p.at=T+R(3500,5500); p.d=p.at-T; }
-          else if(p.st===1){ p.st=2; p.at=T+R(2000,6000); p.o=0; }
-          else if(p.st===2){ place(p); p.st=3; p.at=T+R(4500,7000); p.d=p.at-T; }
-          else { p.st=0; p.o=1; p.g=0; p.at=T+(p.tw?R(15000,40000):R(240000,600000)); }
+          if(p.st===0){ p.st=1; p.at=T+R(6000,10000); p.d=p.at-T; }
+          else if(p.st===1){ p.st=2; p.at=T+R(4000,14000); p.o=0; }
+          else if(p.st===2){ place(p); p.st=3; p.at=T+R(8000,13000); p.d=p.at-T; }
+          else { p.st=0; p.o=1; p.g=0; p.at=T+(p.tw?R(25000,80000):R(300000,900000)); }
         }
         if(p.st===1){ const q=Math.max(0,(p.at-T)/p.d); p.o=q*q*(3-2*q); p.g=0; }
-        else if(p.st===3){ const q=Math.min(1,1-(p.at-T)/p.d), u=Math.min(1,q*1.5); p.o=u*u*(3-2*u); p.g=Math.pow(Math.sin(Math.PI*q),2); }
+        else if(p.st===3){ const q=Math.min(1,1-(p.at-T)/p.d), u=Math.min(1,q*1.5); p.o=u*u*(3-2*u); p.g=p.tw?Math.pow(Math.sin(Math.PI*q),2):0; }
         if(p.st===2) continue;
         const tx=p.hx+Math.sin(T*p.f+p.ph)*p.a, ty=p.hy+Math.cos(T*p.f*1.3+p.ph)*p.a*.7;
         let ax=(tx-p.x)*.04, ay=(ty-p.y)*.04;
@@ -163,21 +165,22 @@
         }
       }
       for(let i=0;i<G.length;i+=4){ const s=6+G[i+3]*2.5;
-        ctx.globalAlpha=G[i+2]*(.45+G[i+3]*.12); ctx.drawImage(GL,G[i]-s,G[i+1]-s,s*2,s*2); }
+        ctx.globalAlpha=G[i+2]*(.35+G[i+3]*.1); ctx.drawImage(GL,G[i]-s,G[i+1]-s,s*2,s*2); }
       ctx.globalAlpha=1;
     };
-    const tick=t=>{ if(!run) return; frame(t); requestAnimationFrame(tick); };
-    size(); frame(performance.now());
-    addEventListener('resize',()=>{size();frame(performance.now());});
+    // своё время: идёт только пока футер виден, поэтому после паузы звёзды не вспыхивают все сразу
+    const tick=t=>{ if(!run) return; clk+=Math.min(50,Math.max(0,t-lt)); lt=t; frame(clk); requestAnimationFrame(tick); };
+    size(); frame(clk);
+    addEventListener('resize',()=>{size();frame(clk);});
     if(RM) return;
-    new IntersectionObserver(es=>es.forEach(e=>{const was=run; run=e.isIntersecting; if(run&&!was) requestAnimationFrame(tick);})).observe(host);
+    new IntersectionObserver(es=>es.forEach(e=>{const was=run; run=e.isIntersecting; if(run&&!was) requestAnimationFrame(t=>{ lt=t; tick(t); });})).observe(host);
   };
   document.querySelectorAll('.stars').forEach(cv=>stars(cv.parentElement,cv));
 
   /* звёзды на светлом фоне главной: белые, стоят на месте, медленно гаснут и загораются в другом месте */
   document.querySelectorAll('.sky').forEach(cv=>{
     const ctx=cv.getContext('2d'); if(!ctx) return;
-    let W=0,H=0,D=1,P=[],run=true;
+    let W=0,H=0,D=1,P=[],run=true,clk=0,lt=0;
     const R=(a,b)=>a+Math.random()*(b-a);
     // белая звезда с белым свечением, спрайт рисуется один раз
     const GL=document.createElement('canvas'); GL.width=GL.height=64;
@@ -189,7 +192,7 @@
     const size=()=>{
       D=Math.min(devicePixelRatio||1,2); W=cv.offsetWidth; H=cv.offsetHeight;
       cv.width=Math.round(W*D); cv.height=Math.round(H*D);
-      const n=Math.round(W*H/12000), now=performance.now();
+      const n=Math.round(W*H/12000), now=clk;
       P=[]; for(let i=0;i<n;i++){ const p={st:3,d:R(1800,3200)}; p.at=now+R(0,p.d*3); place(p); P.push(p); }
     };
     const frame=T=>{
@@ -212,12 +215,12 @@
       ctx.globalAlpha=1;
     };
     let last=0;
-    const tick=t=>{ if(!run) return; if(t-last>33){ frame(t); last=t; } requestAnimationFrame(tick); };
-    size(); frame(performance.now());
-    let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(cv.offsetWidth===W) return; size(); frame(performance.now()); },150); });
+    const tick=t=>{ if(!run) return; if(t-last>33){ clk+=Math.min(66,t-last); frame(clk); last=t; } requestAnimationFrame(tick); };
+    size(); frame(clk);
+    let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(cv.offsetWidth===W) return; size(); frame(clk); },150); });
     if(RM) return;
     requestAnimationFrame(tick);
-    document.addEventListener('visibilitychange',()=>{ const was=run; run=!document.hidden; if(run&&!was) requestAnimationFrame(tick); });
+    document.addEventListener('visibilitychange',()=>{ const was=run; run=!document.hidden; if(run&&!was) requestAnimationFrame(t=>{ last=t; tick(t); }); });
   });
 
 

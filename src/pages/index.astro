@@ -64,7 +64,7 @@ const schema = [{
           {home.pairs.map(p => (
             <figure class="an">
               <div class="an__stage"><video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted loop playsinline preload="none"></video></div>
-              <figcaption><span>{p.name}</span><span>Scroll preview</span></figcaption>
+              <figcaption><span>{p.name}</span><span>{p.label}</span></figcaption>
             </figure>
           ))}
         </div></div>
@@ -83,18 +83,12 @@ const schema = [{
       <section class="sec" id="work">
         <p class="tag"><i></i>Work</p>
         <h2 class="h2 rv">Concepts that turned <span class="acc">into websites</span></h2>
-        <div class="wk bd">
+        <div class="ans wk bd">
           {home.work.map(w => (
-            <a class="wk__c" href={w.url} target="_blank" rel="noopener">
-              <span class="win">
-                <span class="win__bar"><i></i><i></i><i></i></span>
-                <span class="win__v">{[1, 2, 3].map(i => <img src={`${M}w-${w.slug}-${i}.jpg`} alt={w.name} class={i === 1 ? 'on' : ''} loading="lazy" />)}</span>
-                <span class="wk__m">
-                  <span class="wk__meta">{w.year} &middot; {w.kind}</span>
-                  <span class="wk__h"><span class="wk__n">{w.name}</span><span class="wk__go">Visit the website <Tri /></span></span>
-                  <span class="wk__b">{w.desc}</span>
-                </span>
-              </span>
+            <a class="an wk__c" href={w.url} target="_blank" rel="noopener">
+              <span class="an__stage win__v">{[1, 2, 3].map(i => <img src={`${M}w-${w.slug}-${i}.jpg`} alt={w.name} class={i === 1 ? 'on' : ''} loading="lazy" />)}</span>
+              <span class="wk__cap"><span class="wk__t"><span class="wk__n">{w.name}</span><span class="wk__k">{w.kind}</span></span><span class="wk__go">Visit the website <Tri /></span></span>
+              <span class="wk__b">{w.desc}</span>
             </a>
           ))}
         </div>
@@ -109,7 +103,7 @@ const schema = [{
               <article class={`q${i === 0 ? ' on' : ''}`}>
                 <p>&ldquo;{q.text}&rdquo;</p>
                 <footer>
-                  <span class="q__who"><img src={`${M}av-${q.avatar}.jpg`} alt={q.name} loading="lazy" /><span><b>{q.name}</b><s>{q.role}</s></span></span>
+                  <span class="q__l"><span class="q__who"><img src={`${M}av-${q.avatar}.jpg`} alt={q.name} loading="lazy" /><span><b>{q.name}</b><s>{q.role}</s></span></span><img class="q__co" src={`${M}logos/${q.logo}.png`} alt="" style={`height:${q.logoH}px`} loading="lazy" /></span>
                   {q.url && <a href={q.url} target="_blank" rel="noopener" class="q__tp">Verified on Trustpilot <svg class="ars" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>}
                 </footer>
               </article>
@@ -120,12 +114,6 @@ const schema = [{
             <button class="arrow" id="qNext" type="button" aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
             <span class="qn" id="qn">01 / {pad(home.quotes.length)}</span>
           </div>
-        </div>
-        <div class="lg" aria-label="Clients we have worked with">
-          <p class="lg__k mono">Teams we have worked with</p>
-          <div class="lg__v"><div class="lg__t">
-            {[0, 1].map(k => home.logos.map(l => <img src={`${M}logos/${l.slug}.png`} alt={k ? '' : l.name} aria-hidden={k ? 'true' : undefined} style={`height:${l.h}px`} loading="lazy" />))}
-          </div></div>
         </div>
       </section>
 
@@ -139,13 +127,17 @@ const schema = [{
               <p class="pk__p">$1,499<small>one-off</small></p>
               <p class="pk__d">1 animated, interactive homepage direction. Figma plus vibe coding, delivered in 7&nbsp;days.</p>
               <a class="btn btn--main" href={BUY_CONCEPT}><span class="prints"></span><span>Get a concept</span><Tri /></a>
-            </div>
-            <ul class="pk__list">
+              <ul class="pk__list">
               <li>Hero plus 3 sections, designed the way we would build it</li>
               <li>A live preview you can click and scroll, not a flat mockup</li>
               <li>The files are yours whatever you decide</li>
               <li>The $1,499 goes toward the full website if you start within 60 days</li>
-            </ul>
+              </ul>
+            </div>
+            <div class="pk__v" aria-label="Concept examples">
+              {home.pairs.map((p, i) => <video class={i === 0 ? 'on' : ''} src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted loop playsinline preload="none" data-lazy aria-label={`${p.name} concept`}></video>)}
+              <span class="pk__vn mono">{home.pairs.map((p, i) => <span class={i === 0 ? 'on' : ''}>{p.name}</span>)}</span>
+            </div>
           </div>
           <div class="pns">
             <div class="pn">
