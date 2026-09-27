@@ -122,9 +122,9 @@
       const n=Math.min(innerWidth<700?320:950, Math.round(W*H/1050));
       const now=clk;
       P=[]; for(let i=0;i<n;i++){ const p={a:10+Math.random()*36,f:.00005+Math.random()*.0001,ph:Math.random()*6.28,
-        k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.05};
+        k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.1};
         // у каждой звезды своя фаза, чтобы они никогда не загорались разом
-        if(p.tw && Math.random()<.5){ p.st=2; p.o=0; p.at=now+R(0,40000); } else p.at=now+(p.tw?R(0,70000):R(20000,900000)); place(p); P.push(p); }
+        if(p.tw && Math.random()<.5){ p.st=2; p.o=0; p.at=now+R(0,12000); } else p.at=now+(p.tw?R(0,30000):R(20000,900000)); place(p); P.push(p); }
     };
     host.addEventListener('pointermove',e=>{const r=host.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;});
     host.addEventListener('pointerleave',()=>{mx=-1e4;my=-1e4;});
@@ -142,10 +142,10 @@
       for(const p of P){
         // мерцание: живёт, гаснет, пропадает, загорается в другом месте со вспышкой
         if(T>p.at){
-          if(p.st===0){ p.st=1; p.at=T+R(6000,10000); p.d=p.at-T; }
-          else if(p.st===1){ p.st=2; p.at=T+R(4000,14000); p.o=0; }
-          else if(p.st===2){ place(p); p.st=3; p.at=T+R(8000,13000); p.d=p.at-T; }
-          else { p.st=0; p.o=1; p.g=0; p.at=T+(p.tw?R(25000,80000):R(300000,900000)); }
+          if(p.st===0){ p.st=1; p.at=T+R(4000,7000); p.d=p.at-T; }
+          else if(p.st===1){ p.st=2; p.at=T+R(2500,9000); p.o=0; }
+          else if(p.st===2){ place(p); p.st=3; p.at=T+R(5000,8000); p.d=p.at-T; }
+          else { p.st=0; p.o=1; p.g=0; p.at=T+(p.tw?R(10000,30000):R(300000,900000)); }
         }
         if(p.st===1){ const q=Math.max(0,(p.at-T)/p.d); p.o=q*q*(3-2*q); p.g=0; }
         else if(p.st===3){ const q=Math.min(1,1-(p.at-T)/p.d), u=Math.min(1,q*1.5); p.o=u*u*(3-2*u); p.g=p.tw?Math.pow(Math.sin(Math.PI*q),2):0; }
@@ -165,7 +165,7 @@
         }
       }
       for(let i=0;i<G.length;i+=4){ const s=6+G[i+3]*2.5;
-        ctx.globalAlpha=G[i+2]*(.35+G[i+3]*.1); ctx.drawImage(GL,G[i]-s,G[i+1]-s,s*2,s*2); }
+        ctx.globalAlpha=G[i+2]*(.45+G[i+3]*.12); ctx.drawImage(GL,G[i]-s,G[i+1]-s,s*2,s*2); }
       ctx.globalAlpha=1;
     };
     // своё время: идёт только пока футер виден, поэтому после паузы звёзды не вспыхивают все сразу

@@ -103,7 +103,7 @@ const schema = [{
               <article class={`q${i === 0 ? ' on' : ''}`}>
                 <p>&ldquo;{q.text}&rdquo;</p>
                 <footer>
-                  <span class="q__l"><span class="q__who"><img src={`${M}av-${q.avatar}.jpg`} alt={q.name} loading="lazy" /><span><b>{q.name}</b><s>{q.role}</s></span></span><img class="q__co" src={`${M}logos/${q.logo}.png`} alt="" style={`height:${q.logoH}px`} loading="lazy" /></span>
+                  <span class="q__l"><span class="q__who"><img src={`${M}av-${q.avatar}.jpg`} alt={q.name} loading="lazy" /><span><b>{q.name}</b><s>{q.role}</s></span></span></span>
                   {q.url && <a href={q.url} target="_blank" rel="noopener" class="q__tp">Verified on Trustpilot <svg class="ars" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>}
                 </footer>
               </article>
@@ -134,9 +134,11 @@ const schema = [{
               <li>The $1,499 goes toward the full website if you start within 60 days</li>
               </ul>
             </div>
+            <div class="pk__r">
             <div class="pk__v" aria-label="Concept examples">
               {home.pairs.map((p, i) => <video class={i === 0 ? 'on' : ''} src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted loop playsinline preload="none" data-lazy aria-label={`${p.name} concept`}></video>)}
-              <span class="pk__vn mono">{home.pairs.map((p, i) => <span class={i === 0 ? 'on' : ''}>{p.name}</span>)}</span>
+            </div>
+              <p class="pk__vn mono">{home.pairs.map((p, i) => <span class={i === 0 ? 'on' : ''}>{p.name}</span>)}</p>
             </div>
           </div>
           <div class="pns">

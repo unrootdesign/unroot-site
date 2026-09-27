@@ -57,7 +57,7 @@
   /* концепты в карточке цены: по очереди, каждые 3 секунды */
   (()=>{
     const box=document.querySelector('.pk__v'); if(!box) return;
-    const vs=[...box.querySelectorAll('video')], ns=[...box.querySelectorAll('.pk__vn span')];
+    const vs=[...box.querySelectorAll('video')], ns=[...box.parentElement.querySelectorAll('.pk__vn span')];
     let i=0, timer=null, seen=false;
     const load=v=>{ if(!v.dataset.l){ v.dataset.l=1; v.preload='auto'; v.load(); } };
     const show=k=>{

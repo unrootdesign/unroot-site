@@ -88,8 +88,6 @@ export const home = {
    "name": "Tasnia Huque",
    "role": "Principal at Javelin VP",
    "avatar": "tasnia",
-   "logo": "javelin",
-   "logoH": 28,
    "url": "https://www.trustpilot.com/reviews/68811a779569d1770b673aba"
   },
   {
@@ -97,8 +95,6 @@ export const home = {
    "name": "Adrian Canoso",
    "role": "CEO and Co-Founder at Ambient Dreamie",
    "avatar": "adrian",
-   "logo": "ambient",
-   "logoH": 38,
    "url": "https://www.trustpilot.com/reviews/68dad10cbf77717f3c8e7895"
   },
   {
@@ -106,8 +102,6 @@ export const home = {
    "name": "Jonah Neuss",
    "role": "Wow House Studio",
    "avatar": "jonah",
-   "logo": "wowhouse",
-   "logoH": 30,
    "url": "https://www.trustpilot.com/reviews/68800cfb2b8ce173b31d4fce"
   },
   {
@@ -115,8 +109,6 @@ export const home = {
    "name": "Rokas Judickas",
    "role": "Founding designer at Sintra.ai",
    "avatar": "rokas",
-   "logo": "sintra",
-   "logoH": 22,
    "url": ""
   }
  ],
