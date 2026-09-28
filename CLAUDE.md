@@ -109,7 +109,7 @@ npm run verify   # всё вместе, гонять перед каждым д�
 
 - Токены D в `tokens.css`, общие компоненты (кнопки, метки, faq, карточки, тёмный блок `.ob`, prose) в `base.css`.
 - `Nav.astro` белая полоса, `Footer.astro` тёмный с частицами, `CtaBand.astro` тёмный блок «Want one for your website?».
-- Эффекты (курсор со звёздной пылью на canvas: фиолетовая на светлом, светлая на тёмных блоках, отпечатки на кнопке, мерцающие звёзды в футере, пятна) в `src/scripts/site.js`, подключены в `Base.astro`.
+- Эффекты (курсор: тонкая линия и узкая россыпь светящихся точек на canvas, фиолетовые на светлом, светлые на тёмных блоках, отпечатки на кнопке, мерцающие звёзды в футере, пятна) в `src/scripts/site.js`, подключены в `Base.astro`.
 - Готово в новом стиле: главная, кейсы, список блога, все статьи (`components/PostPage.astro`), услуги web-design, web-development, logo-design, services (`components/ServicePage.astro`), /call (Cal.com unrootdesign/30min), terms, privacy.
 - Все 26 страниц в новом стиле. /redesign (hero roast $129) не показываем в навигации и футере, ссылку Adam отправляет лично.
 - Careers: форма шлёт заявки через Web3Forms (бесплатно, 250 в месяц). Без `PUBLIC_WEB3FORMS_KEY` форма пишет, что не подключена.
