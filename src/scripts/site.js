@@ -1,8 +1,9 @@
-/* Общие эффекты сайта: курсор-комета, отпечатки на кнопке, пятна и звёзды в тёмных блоках.
+/* Общие эффекты сайта: курсор со звёздной пылью, отпечатки на кнопке, пятна и звёзды в тёмных блоках.
    Перенесено из превью главной (версия D). */
 (() => {
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  /* курсор: звезда с хвостом. Canvas поверх страницы, клики не перехватывает */
+  /* курсор: звёздная пыль. Мышь оставляет за собой россыпь мелких звёзд,
+     они разлетаются, мерцают и гаснут. На тёмных блоках звёзды светлые, на светлом фоне фиолетовые */
   (()=>{
     if(RM || matchMedia('(pointer:coarse)').matches) return;
     const cv=document.createElement('canvas'); cv.className='comet'; cv.setAttribute('aria-hidden','true');
@@ -11,56 +12,62 @@
     let W=0,H=0,D=1;
     const size=()=>{ D=Math.min(devicePixelRatio||1,2); W=innerWidth; H=innerHeight; cv.width=W*D; cv.height=H*D; };
     size(); addEventListener('resize',size);
-    let mx=-100,my=-100,hx=-100,hy=-100,sx=-100,sy=-100,alpha=0,last=0,running=false,seen=false,pt=0;
-    const pts=[]; const LIFE=460;
-    const start=()=>{ if(!running){ running=true; pt=performance.now(); requestAnimationFrame(tick); } };
+    const R=(a,b)=>a+Math.random()*(b-a);
+    // спрайты рисуются один раз: мягкая точка и четырёхлучевая искра, для светлого и тёмного фона
+    const sprite=(core,glow,spark)=>{
+      const s=document.createElement('canvas'); s.width=s.height=64; const c=s.getContext('2d');
+      const g=c.createRadialGradient(32,32,0,32,32,32);
+      g.addColorStop(0,core); g.addColorStop(.16,core); g.addColorStop(.42,glow); g.addColorStop(1,'rgba(0,0,0,0)');
+      c.fillStyle=g; c.fillRect(0,0,64,64);
+      if(spark){ c.fillStyle=core; c.beginPath();
+        c.moveTo(32,2); c.quadraticCurveTo(34,30,62,32); c.quadraticCurveTo(34,34,32,62); c.quadraticCurveTo(30,34,2,32); c.quadraticCurveTo(30,30,32,2); c.fill(); }
+      return s;
+    };
+    const SP={
+      light:[sprite('rgba(137,97,231,1)','rgba(137,97,231,.28)'),sprite('rgba(106,67,209,1)','rgba(137,97,231,.22)'),sprite('rgba(137,97,231,1)','rgba(185,162,245,.3)',true)],
+      dark:[sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)'),sprite('rgba(210,194,252,1)','rgba(185,162,245,.3)'),sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)',true)]
+    };
+    const MAX=700, P=[];
+    let lx=null, ly=null, dark=false, running=false, lastCheck=0;
+    const isDark=(x,y)=>{ const el=document.elementFromPoint(x,y); return !!(el && el.closest('.ft,.ob,.pk,.stage--night')); };
+    const emit=(x,y,dx,dy,dist,now)=>{
+      const n=Math.min(18,Math.max(1,Math.round(dist/4)));
+      const sp=Math.min(26,6+dist*.35);            // чем быстрее ведёшь, тем шире россыпь
+      const ux=dist?dx/dist:0, uy=dist?dy/dist:0;
+      for(let i=0;i<n;i++){
+        if(P.length>=MAX) P.shift();
+        const t=Math.random(), a=Math.random()*6.2832, r=Math.pow(Math.random(),1.6)*sp;
+        const spark=Math.random()<.14;
+        P.push({ x:x-dx*t+Math.cos(a)*r, y:y-dy*t+Math.sin(a)*r,
+          vx:Math.cos(a)*R(.05,.35)+ux*R(.1,.6), vy:Math.sin(a)*R(.05,.35)+uy*R(.1,.6)+R(-.05,.12),
+          s:spark?R(5,9):R(1.6,4.2), k:spark?2:(Math.random()<.5?0:1), set:dark?'dark':'light',
+          b:now, life:R(650,1500), f:R(.008,.02), ph:Math.random()*6.28 });
+      }
+    };
     addEventListener('pointermove',e=>{
       if(e.pointerType==='touch') return;
-      mx=e.clientX; my=e.clientY; last=performance.now();
-      if(!seen){ hx=sx=mx; hy=sy=my; seen=true; }
-      start();
+      const now=performance.now(), x=e.clientX, y=e.clientY;
+      if(now-lastCheck>120){ dark=isDark(x,y); lastCheck=now; }
+      if(lx!==null){ const dx=x-lx, dy=y-ly, dist=Math.hypot(dx,dy); if(dist>1.5) emit(x,y,dx,dy,dist,now); }
+      lx=x; ly=y;
+      if(!running){ running=true; requestAnimationFrame(tick); }
     },{passive:true});
-    document.addEventListener('pointerleave',()=>{ last=0; });
-    function tick(t){
-      // сглаживание как у кисти в графических редакторах: голова догоняет мышь,
-      // хвост догоняет голову, скорость не зависит от частоты экрана
-      const dt=Math.min(64,t-pt)/16.67; pt=t;
-      const kh=1-Math.pow(1-.42,dt), ks=1-Math.pow(1-.3,dt);
-      hx+=(mx-hx)*kh; hy+=(my-hy)*kh;
-      sx+=(hx-sx)*ks; sy+=(hy-sy)*ks;
-      const moving=t-last<120;
-      const lp=pts[pts.length-1];
-      if(!lp || Math.hypot(sx-lp.x,sy-lp.y)>1.5) pts.push({x:sx,y:sy,t});
-      else lp.t=t;
-      while(pts.length && t-pts[0].t>LIFE) pts.shift();
-      const target=(t-last<1200 && last)?1:0;
-      alpha+=(target-alpha)*.12;
+    document.addEventListener('pointerleave',()=>{ lx=ly=null; });
+    addEventListener('scroll',()=>{ lastCheck=0; },{passive:true});
+    function tick(now){
       ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
-      // хвост: плавная кривая через середины отрезков, сужается и гаснет к концу
-      ctx.lineCap='round'; ctx.lineJoin='round';
-      const all=pts.concat([{x:hx,y:hy,t}]);
-      for(let i=1;i<all.length-1;i++){
-        const a=all[i-1], b=all[i], c=all[i+1], k=1-(t-b.t)/LIFE;
-        if(k<=0) continue;
-        ctx.strokeStyle=`rgba(137,97,231,${(k*k*.55*alpha).toFixed(3)})`;
-        ctx.lineWidth=.5+k*4.5;
-        ctx.beginPath(); ctx.moveTo((a.x+b.x)/2,(a.y+b.y)/2);
-        ctx.quadraticCurveTo(b.x,b.y,(b.x+c.x)/2,(b.y+c.y)/2); ctx.stroke();
+      for(let i=P.length-1;i>=0;i--){
+        const p=P[i], age=(now-p.b)/p.life;
+        if(age>=1){ P.splice(i,1); continue; }
+        p.x+=p.vx; p.y+=p.vy; p.vx*=.985; p.vy*=.985;
+        const fin=Math.min(1,age*8), fout=1-age*age;       // быстро вспыхивает, плавно гаснет
+        const tw=.62+.38*Math.sin(now*p.f+p.ph);            // мерцание
+        const s=p.s*(p.k===2?(.7+.3*tw):1);
+        ctx.globalAlpha=fin*fout*tw;
+        ctx.drawImage(SP[p.set][p.k],p.x-s,p.y-s,s*2,s*2);
       }
-      // голова: ядро и свечение
-      const r=moving?16:12;
-      const g=ctx.createRadialGradient(hx,hy,0,hx,hy,r);
-      g.addColorStop(0,`rgba(185,162,245,${(.55*alpha).toFixed(3)})`);
-      g.addColorStop(.35,`rgba(137,97,231,${(.28*alpha).toFixed(3)})`);
-      g.addColorStop(1,'rgba(137,97,231,0)');
-      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(hx,hy,r,0,6.2832); ctx.fill();
-      ctx.fillStyle=`rgba(255,255,255,${alpha.toFixed(3)})`;
-      ctx.beginPath(); ctx.arc(hx,hy,1.6,0,6.2832); ctx.fill();
-      ctx.strokeStyle=`rgba(137,97,231,${alpha.toFixed(3)})`; ctx.lineWidth=1.2;
-      ctx.beginPath(); ctx.arc(hx,hy,2.6,0,6.2832); ctx.stroke();
-      if(alpha<.01 && !pts.length){ running=false; ctx.clearRect(0,0,W,H); return; }
-      if(alpha<.01 && t-last>1200){ pts.length=0; }
-      requestAnimationFrame(tick);
+      ctx.globalAlpha=1;
+      if(P.length) requestAnimationFrame(tick); else { running=false; ctx.clearRect(0,0,W,H); }
     }
   })();
 
