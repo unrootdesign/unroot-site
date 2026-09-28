@@ -81,24 +81,6 @@
     }
   })();
 
-  /* отпечатки на фиолетовой кнопке */
-  const rnd=(a,b)=>a+Math.random()*(b-a);
-  const HERE=import.meta.url; const FPS=[1,2,3,4].map(i=>new URL("../fp/fp"+i+".webp", HERE).href); FPS.forEach(u=>{const i=new Image(); i.src=u;});
-  document.querySelectorAll('.btn--main').forEach(btn=>{
-    const box=btn.querySelector('.prints'); if(!box) return;
-    btn.addEventListener('pointerdown',e=>{
-      const r=btn.getBoundingClientRect();
-      const s=document.createElement('span'); s.className='print';
-      s.style.left=(e.clientX-r.left)+'px'; s.style.top=(e.clientY-r.top)+'px';
-      s.style.backgroundImage=`url("${FPS[(Math.random()*FPS.length)|0]}")`;
-      s.style.setProperty('--rot',rnd(-180,180).toFixed(0)+'deg');
-      s.style.setProperty('--sc',rnd(.6,1).toFixed(2));
-      s.style.setProperty('--op',rnd(.3,.5).toFixed(2));
-      box.appendChild(s); requestAnimationFrame(()=>s.classList.add('on'));
-      if(box.children.length>12) box.firstChild.remove();
-      setTimeout(()=>{s.classList.remove('on');s.classList.add('fade');setTimeout(()=>s.remove(),2200);},rnd(3000,5000));
-    });
-  });
 
 
   /* пятна в футере: плывут сами и чуть тянутся за курсором */

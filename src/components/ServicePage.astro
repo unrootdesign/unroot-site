@@ -35,7 +35,7 @@ const itemD = (i: Item) => typeof i === 'string' ? '' : (i.d ?? '');
       <h1 class="h1 sv__h1">{p.h1}{p.acc && <> <span class="acc">{p.acc}</span></>}</h1>
       <p class="lede">{p.lede}</p>
       <div class="ctas">
-        <a class="btn btn--main" href={BUY_CONCEPT}><span class="prints"></span><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
+        <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
         <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
       </div>
       {p.hero && <img class="sv__hero" src={p.hero.src} alt={p.hero.alt ?? ''} loading="eager" decoding="async" />}

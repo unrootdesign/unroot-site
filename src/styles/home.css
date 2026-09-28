@@ -128,7 +128,6 @@
   .pk .btn{margin-top:28px}
   .pk .btn--main{background:#fff;color:var(--ink)}
   .pk .btn--main:hover{background:var(--violet-hi);color:#fff}
-  .pk .print{mix-blend-mode:multiply}
   .pk__list{list-style:none;margin:32px 0 0;padding:0;display:grid;border-top:1px solid rgba(255,255,255,.25)}
   .pk{align-items:start}
   .pk__v{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--night);box-shadow:0 0 0 1px rgba(255,255,255,.28),0 30px 60px -30px rgba(29,19,54,.6)}
