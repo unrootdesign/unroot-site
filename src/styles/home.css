@@ -35,9 +35,6 @@
   .stream{position:relative;isolation:isolate;background:var(--bg);clip-path:inset(0)}
   .home .sec{z-index:1;background:transparent}
   .home .sec .tag{background:var(--white)}
-  /* звёзды на светлом фоне: стоят на месте, тихо гаснут и загораются */
-  .sky{position:fixed;top:0;right:0;width:100%;height:100vh;height:100lvh;z-index:0;pointer-events:none;display:block}
-  @media(min-width:961px){.sky{width:calc(100% - var(--rw))}}
   .bd{margin-top:clamp(32px,4vw,48px)}
 
 

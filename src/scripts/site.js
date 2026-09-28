@@ -177,51 +177,7 @@
   };
   document.querySelectorAll('.stars').forEach(cv=>stars(cv.parentElement,cv));
 
-  /* звёзды на светлом фоне главной: белые, стоят на месте, медленно гаснут и загораются в другом месте */
-  document.querySelectorAll('.sky').forEach(cv=>{
-    const ctx=cv.getContext('2d'); if(!ctx) return;
-    let W=0,H=0,D=1,P=[],run=true,clk=0,lt=0;
-    const R=(a,b)=>a+Math.random()*(b-a);
-    // белая звезда с белым свечением, спрайт рисуется один раз
-    const GL=document.createElement('canvas'); GL.width=GL.height=64;
-    { const c=GL.getContext('2d'), g=c.createRadialGradient(32,32,0,32,32,32);
-      g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.14,'rgba(255,255,255,.9)');
-      g.addColorStop(.35,'rgba(255,255,255,.25)'); g.addColorStop(1,'rgba(255,255,255,0)');
-      c.fillStyle=g; c.fillRect(0,0,64,64); }
-    const place=p=>{ p.x=Math.random()*W; p.y=Math.random()*H; p.s=R(4,9); p.m=R(.55,1); p.f=R(.0008,.0022); p.ph=Math.random()*6.28; };
-    const size=()=>{
-      D=Math.min(devicePixelRatio||1,2); W=cv.offsetWidth; H=cv.offsetHeight;
-      cv.width=Math.round(W*D); cv.height=Math.round(H*D);
-      const n=Math.round(W*H/12000), now=clk;
-      P=[]; for(let i=0;i<n;i++){ const p={st:3,d:R(1800,3200)}; p.at=now+R(0,p.d*3); place(p); P.push(p); }
-    };
-    const frame=T=>{
-      ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
-      for(const p of P){
-        // живёт, гаснет, пропадает, загорается в другом месте; пока светит, слегка мерцает
-        if(T>p.at){
-          if(p.st===0){ p.st=1; p.d=R(1800,3200); p.at=T+p.d; }
-          else if(p.st===1){ p.st=2; p.at=T+R(1000,4000); }
-          else if(p.st===2){ place(p); p.st=3; p.d=R(1800,3200); p.at=T+p.d; }
-          else { p.st=0; p.at=T+R(3000,11000); }
-        }
-        let o=1;
-        if(p.st===1){ const q=Math.max(0,(p.at-T)/p.d); o=q*q*(3-2*q); }
-        else if(p.st===2) continue;
-        else if(p.st===3){ const q=Math.min(1,1-(p.at-T)/p.d); o=q*q*(3-2*q); }
-        o*=p.m*(.75+.25*Math.sin(T*p.f+p.ph));
-        ctx.globalAlpha=o; ctx.drawImage(GL,p.x-p.s,p.y-p.s,p.s*2,p.s*2);
-      }
-      ctx.globalAlpha=1;
-    };
-    let last=0;
-    const tick=t=>{ if(!run) return; if(t-last>33){ clk+=Math.min(66,t-last); frame(clk); last=t; } requestAnimationFrame(tick); };
-    size(); frame(clk);
-    let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if(cv.offsetWidth===W) return; size(); frame(clk); },150); });
-    if(RM) return;
-    requestAnimationFrame(tick);
-    document.addEventListener('visibilitychange',()=>{ const was=run; run=!document.hidden; if(run&&!was) requestAnimationFrame(t=>{ last=t; tick(t); }); });
-  });
+
 
 
 })();
