@@ -16,6 +16,8 @@ const others = (await getCollection('case-studies'))
   .sort((a, b) => a.data.order - b.data.order);
 const host = d.liveUrl ? d.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
 const label = (t: string) => t.replace(/-/g, ' ');
+// превью в «Other projects»: те же кадры 16:9, что на главной, чтобы ничего не обрезалось
+const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch: '/home/w-switch-1.jpg', javelinvp: '/home/w-javelin-1.jpg', trustyfy: '/home/w-trustyfy-1.jpg', 'workshop-film-co': '/home/w-workshop-1.jpg', 'epsilon-health': '/home/w-epsilon-1.jpg' };
 ---
 <Base title={d.seoTitle} description={d.seoDescription} ogImage={d.ogImage} noindex={d.noindex}
   schema={[{
@@ -85,7 +87,7 @@ const label = (t: string) => t.replace(/-/g, ' ');
       <ul class="cards cs__more">
         {others.map(o => (
           <li class="card"><a href={`/case-studies/${o.data.slug}`}>
-            {(o.data.cover || o.data.gallery[0]) && <img class="card__img" src={o.data.cover ?? o.data.gallery[0].src} alt={o.data.coverAlt} loading="lazy" decoding="async" />}
+            {(THUMB[o.data.slug] || o.data.cover || o.data.gallery[0]) && <img class="card__img cs__thumb" src={THUMB[o.data.slug] ?? o.data.cover ?? o.data.gallery[0].src} alt={o.data.coverAlt || o.data.title} loading="lazy" decoding="async" />}
             <p class="card__k mono">{o.data.tags.slice(0, 2).map(label).join(' · ')}</p>
             <h3 class="card__t">{o.data.title}</h3>
             <p class="card__d">{o.data.cardDescription}</p>
@@ -106,5 +108,6 @@ const label = (t: string) => t.replace(/-/g, ' ');
   .cs__grid { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
   @media (max-width: 960px) { .cs__grid { grid-template-columns: 1fr; } }
   .cs__more { margin-top: clamp(32px, 4vw, 48px); }
+  .cs__thumb { aspect-ratio: 16/9; }
   :global(.facts-list) { align-self: end; }
 </style>

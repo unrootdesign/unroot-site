@@ -84,11 +84,15 @@ const schema = [{
         <h2 class="h2 rv">Concepts that turned <span class="acc">into websites</span></h2>
         <div class="ans wk bd">
           {home.work.map(w => (
-            <a class="an wk__c" href={w.url} target="_blank" rel="noopener">
-              <span class="an__stage win__v">{[1, 2, 3].map(i => <img src={`${M}w-${w.slug}-${i}.jpg`} alt={w.name} class={i === 1 ? 'on' : ''} loading="lazy" />)}</span>
-              <span class="wk__cap"><span class="wk__t"><span class="wk__n">{w.name}</span><span class="wk__k">{w.kind}</span></span><span class="wk__go">Visit the website <Tri /></span></span>
+            <article class="an wk__c">
+              <a class="an__stage win__v" href={w.cs ? `/case-studies/${w.cs}` : w.url} target={w.cs ? undefined : '_blank'} rel={w.cs ? undefined : 'noopener'} aria-label={`${w.name}, ${w.cs ? 'case study' : 'website'}`}>{[1, 2, 3].map(i => <img src={`${M}w-${w.slug}-${i}.jpg`} alt={w.name} class={i === 1 ? 'on' : ''} loading="lazy" />)}</a>
+              <span class="wk__cap"><span class="wk__t"><span class="wk__n">{w.name}</span><span class="wk__k">{w.kind}</span></span>
+                <span class="wk__acts">
+                  {w.cs && <a class="wk__web" href={w.url} target="_blank" rel="noopener">Website <svg class="ars" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>}
+                  <a class="wk__go" href={w.cs ? `/case-studies/${w.cs}` : w.url} target={w.cs ? undefined : '_blank'} rel={w.cs ? undefined : 'noopener'}>{w.cs ? 'View case study' : 'Visit the website'} <Tri /></a>
+                </span></span>
               <span class="wk__b">{w.desc}</span>
-            </a>
+            </article>
           ))}
         </div>
       </section>
@@ -127,9 +131,9 @@ const schema = [{
               <p class="pk__d">1 animated, interactive homepage direction. Figma plus vibe coding, delivered in 7&nbsp;days.</p>
               <a class="btn btn--main" href={BUY_CONCEPT}><span class="prints"></span><span>Get a concept</span><Tri /></a>
               <ul class="pk__list">
-              <li>Hero plus 3 sections, designed the way we would build it</li>
-              <li>A live preview you can click and scroll, not a flat mockup</li>
-              <li>The files are yours whatever you decide</li>
+              <li>3 to 4 homepage sections with our direction for your product</li>
+              <li>An interactive, animated prototype. Figma and vibe code</li>
+              <li>The files are yours: use them as they are or as the base for the full website</li>
               <li>The $1,499 goes toward the full website if you start within 60 days</li>
               </ul>
             </div>

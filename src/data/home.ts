@@ -35,6 +35,7 @@ export const home = {
  "work": [
   {
    "slug": "dreamie",
+   "cs": "dreamie",
    "name": "Ambient Dreamie",
    "year": "2025",
    "kind": "Healthtech, brand, 3D",
@@ -43,6 +44,7 @@ export const home = {
   },
   {
    "slug": "switch",
+   "cs": "switch",
    "name": "Switch",
    "year": "2025",
    "kind": "Fintech",
@@ -51,6 +53,7 @@ export const home = {
   },
   {
    "slug": "javelin",
+   "cs": "javelinvp",
    "name": "Javelin VP",
    "year": "2024",
    "kind": "Venture capital",
@@ -59,6 +62,7 @@ export const home = {
   },
   {
    "slug": "trustyfy",
+   "cs": "trustyfy",
    "name": "Trustyfy",
    "year": "2025",
    "kind": "Fintech",
@@ -67,6 +71,7 @@ export const home = {
   },
   {
    "slug": "workshop",
+   "cs": "workshop-film-co",
    "name": "Workshop Film Co.",
    "year": "2025",
    "kind": "Film, brand",
@@ -75,6 +80,7 @@ export const home = {
   },
   {
    "slug": "epsilon",
+   "cs": "epsilon-health",
    "name": "Epsilon Health",
    "year": "2025",
    "kind": "Medtech",

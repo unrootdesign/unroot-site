@@ -3,25 +3,27 @@ import Tri from './Tri.astro';
 import { BUY_CONCEPT } from '../data/links';
 import logo from './logo.svg?raw';
 const links = [
-  { href: '/#concept', label: 'Concept' },
   { href: '/#work',    label: 'Work' },
   { href: '/#pricing', label: 'Pricing' },
   { href: '/blog',     label: 'Blog' },
+  { href: '/careers',  label: 'Careers' },
 ];
 const path = Astro.url.pathname;
 const logoSvg = logo.replace('<svg ', '<svg class="logo" aria-hidden="true" ');
 ---
 <header class="bar">
+  <a href="/" class="bar__logo" aria-label="Unroot Design, home" set:html={logoSvg} />
   <nav aria-label="Main">
     {links.map(l => <a href={l.href} aria-current={path.startsWith(l.href) && l.href !== '/' ? 'page' : undefined}>{l.label}</a>)}
   </nav>
-  <a href="/" class="bar__logo" aria-label="Unroot Design, home" set:html={logoSvg} />
   <a class="bar__cta" href={BUY_CONCEPT}>Get a concept <Tri /></a>
 </header>
 
 <style>
   .bar { position: sticky; top: 0; z-index: 50; height: var(--bar); background: var(--white); color: var(--ink);
-    border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 clamp(12px, 2vw, 28px); }
+    border-bottom: 1px solid var(--line); display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 28px; padding: 0 clamp(12px, 2vw, 28px); }
+  /* на широком экране ссылки встают у правого края левой колонки главной */
+  @media (min-width: 1200px) { .bar { grid-template-columns: calc(var(--rw) - clamp(12px, 2vw, 28px)) 1fr auto; } .bar nav { grid-column: 1; grid-row: 1; justify-self: end; padding-right: 28px; } .bar__logo { grid-column: 1; grid-row: 1; justify-self: start; } .bar__cta { grid-column: 3; } }
   nav { display: flex; gap: 28px; }
   nav a, .bar__cta { font: 500 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 6px 0; transition: color var(--t) var(--ease); }
   nav a:hover, nav a[aria-current] { color: var(--violet); }
@@ -32,5 +34,6 @@ const logoSvg = logo.replace('<svg ', '<svg class="logo" aria-hidden="true" ');
   .bar__cta :global(.tri) { width: 7px; height: 7px; color: var(--violet); transition: color var(--t) var(--ease); }
   .bar__cta:hover { background: var(--violet); color: #fff; }
   .bar__cta:hover :global(.tri) { color: #fff; }
+  @media (max-width: 1199px) { nav { justify-self: end; } }
   @media (max-width: 760px) { .bar { grid-template-columns: auto 1fr; } nav { display: none; } .bar__logo :global(.logo) { height: 15px; } }
 </style>

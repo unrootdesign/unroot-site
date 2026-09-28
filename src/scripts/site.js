@@ -2,8 +2,8 @@
    Перенесено из превью главной (версия D). */
 (() => {
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  /* курсор: тонкая линия и узкая россыпь светящихся точек вдоль неё,
-     точки мерцают и гаснут, как звёзды в футере. На тёмных блоках звёзды светлые, на светлом фоне фиолетовые */
+  /* курсор: плотная цепочка светящихся точек бежит за мышью,
+     сначала держит линию, потом распадается и гаснет, как звёзды в футере. На тёмных блоках звёзды светлые, на светлом фоне фиолетовые */
   (()=>{
     if(RM || matchMedia('(pointer:coarse)').matches) return;
     const cv=document.createElement('canvas'); cv.className='comet'; cv.setAttribute('aria-hidden','true');
@@ -27,29 +27,28 @@
       light:[sprite('rgba(137,97,231,1)','rgba(137,97,231,.28)'),sprite('rgba(106,67,209,1)','rgba(137,97,231,.22)'),sprite('rgba(137,97,231,1)','rgba(185,162,245,.3)',true)],
       dark:[sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)'),sprite('rgba(210,194,252,1)','rgba(185,162,245,.3)'),sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)',true)]
     };
-    const MAX=500, P=[], L=[]; const LLIFE=520;   // P: точки, L: линия за курсором
+    const MAX=900, P=[];
     let lx=null, ly=null, dark=false, running=false, lastCheck=0;
     const isDark=(x,y)=>{ const el=document.elementFromPoint(x,y); return !!(el && el.closest('.ft,.ob,.pk,.stage--night')); };
     const emit=(x,y,dx,dy,dist,now)=>{
-      const n=Math.min(10,Math.max(1,Math.round(dist/5.5)));
-      const sp=Math.min(9,2.5+dist*.1);             // узкая россыпь, чтобы читалась полоса
+      const n=Math.min(40,Math.max(1,Math.round(dist/2.2)));  // плотно, точки выстраиваются в линию
+      const sp=Math.min(3,.6+dist*.03);
       const ux=dist?dx/dist:0, uy=dist?dy/dist:0;
       for(let i=0;i<n;i++){
         if(P.length>=MAX) P.shift();
         const t=Math.random(), a=Math.random()*6.2832, r=Math.pow(Math.random(),1.6)*sp;
         const spark=false;
         P.push({ x:x-dx*t+Math.cos(a)*r, y:y-dy*t+Math.sin(a)*r,
-          vx:Math.cos(a)*R(.02,.12)+ux*R(0,.15), vy:Math.sin(a)*R(.02,.12)+uy*R(0,.15)+R(0,.06),
-          s:spark?R(5,9):R(1.8,3.8), k:spark?2:(Math.random()<.5?0:1), set:dark?'dark':'light',
-          b:now, life:R(600,1300), f:R(.008,.02), ph:Math.random()*6.28 });
+          vx:Math.cos(a)*R(.04,.3), vy:Math.sin(a)*R(.04,.3)+R(0,.05), hold:R(120,320),
+          s:spark?R(5,9):R(1.4,2.8), k:spark?2:(Math.random()<.5?0:1), set:dark?'dark':'light',
+          b:now, life:R(650,1250), f:R(.008,.02), ph:Math.random()*6.28 });
       }
     };
     addEventListener('pointermove',e=>{
       if(e.pointerType==='touch') return;
       const now=performance.now(), x=e.clientX, y=e.clientY;
       if(now-lastCheck>120){ dark=isDark(x,y); lastCheck=now; }
-      if(lx!==null){ const dx=x-lx, dy=y-ly, dist=Math.hypot(dx,dy); if(dist>1.5){ emit(x,y,dx,dy,dist,now); L.push({x,y,t:now,d:dark}); } }
-      else L.push({x,y,t:now,d:dark});
+      if(lx!==null){ const dx=x-lx, dy=y-ly, dist=Math.hypot(dx,dy); if(dist>1.5){ emit(x,y,dx,dy,dist,now); } }
       lx=x; ly=y;
       if(!running){ running=true; requestAnimationFrame(tick); }
     },{passive:true});
@@ -57,29 +56,18 @@
     addEventListener('scroll',()=>{ lastCheck=0; },{passive:true});
     function tick(now){
       ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
-      // линия: плавная кривая через середины отрезков, тоньше и прозрачнее к хвосту
-      while(L.length && now-L[0].t>LLIFE) L.shift();
-      ctx.lineCap='round'; ctx.lineJoin='round';
-      for(let i=1;i<L.length-1;i++){
-        const a=L[i-1], b=L[i], c=L[i+1], k=1-(now-b.t)/LLIFE;
-        if(k<=0) continue;
-        ctx.globalAlpha=k*k*.7;
-        ctx.strokeStyle=b.d?'rgb(210,194,252)':'rgb(137,97,231)';
-        ctx.lineWidth=.4+k*2.2;
-        ctx.beginPath(); ctx.moveTo((a.x+b.x)/2,(a.y+b.y)/2); ctx.quadraticCurveTo(b.x,b.y,(b.x+c.x)/2,(b.y+c.y)/2); ctx.stroke();
-      }
       for(let i=P.length-1;i>=0;i--){
         const p=P[i], age=(now-p.b)/p.life;
         if(age>=1){ P.splice(i,1); continue; }
-        p.x+=p.vx; p.y+=p.vy; p.vx*=.985; p.vy*=.985;
-        const fin=Math.min(1,age*8), fout=1-age*age;       // быстро вспыхивает, плавно гаснет
+        if(now-p.b>p.hold){ p.x+=p.vx; p.y+=p.vy; }   // сначала держат линию, потом распадаются
+        const fin=Math.min(1,age*14), fout=1-age*age;       // быстро вспыхивает, плавно гаснет
         const tw=.62+.38*Math.sin(now*p.f+p.ph);            // мерцание
         const s=p.s*(p.k===2?(.7+.3*tw):1);
         ctx.globalAlpha=fin*fout*tw;
         ctx.drawImage(SP[p.set][p.k],p.x-s,p.y-s,s*2,s*2);
       }
       ctx.globalAlpha=1;
-      if(P.length||L.length>1) requestAnimationFrame(tick); else { running=false; L.length=0; ctx.clearRect(0,0,W,H); }
+      if(P.length) requestAnimationFrame(tick); else { running=false; ctx.clearRect(0,0,W,H); }
     }
   })();
 

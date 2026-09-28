@@ -37,6 +37,7 @@
 
   /* ритм */
   --bar: 52px;
+  --rw: min(450px, max(360px, 34vw));   /* ширина левой колонки главной, не шире 450 */
   --gut: clamp(20px, 4vw, 56px);
   --sec-y: clamp(64px, 8vw, 104px);
   --wrap: 1240px;
