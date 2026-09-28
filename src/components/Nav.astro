@@ -13,27 +13,65 @@ const logoSvg = logo.replace('<svg ', '<svg class="logo" aria-hidden="true" ');
 ---
 <header class="bar">
   <a href="/" class="bar__logo" aria-label="Unroot Design, home" set:html={logoSvg} />
-  <nav aria-label="Main">
+  <nav class="bar__nav" aria-label="Main">
     {links.map(l => <a href={l.href} aria-current={path.startsWith(l.href) && l.href !== '/' ? 'page' : undefined}>{l.label}</a>)}
   </nav>
   <a class="bar__cta" href={BUY_CONCEPT}>Get a concept <Tri /></a>
+  <button class="bar__burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="barMenu"><i></i><i></i></button>
+  <nav class="bar__menu" id="barMenu" aria-label="Mobile">
+    {links.map(l => <a href={l.href} aria-current={path.startsWith(l.href) && l.href !== '/' ? 'page' : undefined}>{l.label}</a>)}
+  </nav>
 </header>
 
+<script>
+  const bar = document.querySelector('.bar');
+  const btn = bar?.querySelector('.bar__burger');
+  const set = (open: boolean) => { bar?.classList.toggle('is-open', open); btn?.setAttribute('aria-expanded', String(open)); };
+  btn?.addEventListener('click', () => set(!bar?.classList.contains('is-open')));
+  bar?.querySelectorAll('.bar__menu a').forEach(a => a.addEventListener('click', () => set(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+  addEventListener('resize', () => { if (innerWidth > 760) set(false); });
+</script>
+
 <style>
+  /* отступы навбара совпадают с контейнером: слева как у левой колонки, справа как у правой */
   .bar { position: sticky; top: 0; z-index: 50; height: var(--bar); background: var(--white); color: var(--ink);
-    border-bottom: 1px solid var(--line); display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 28px; padding: 0 clamp(12px, 2vw, 28px); }
-  /* на широком экране ссылки встают у правого края левой колонки главной */
-  @media (min-width: 1200px) { .bar { grid-template-columns: calc(var(--rw) - clamp(12px, 2vw, 28px)) 1fr auto; } .bar nav { grid-column: 1; grid-row: 1; justify-self: end; padding-right: 28px; } .bar__logo { grid-column: 1; grid-row: 1; justify-self: start; } .bar__cta { grid-column: 3; } }
-  nav { display: flex; gap: 28px; }
-  nav a, .bar__cta { font: 500 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 6px 0; transition: color var(--t) var(--ease); }
-  nav a:hover, nav a[aria-current] { color: var(--violet); }
+    border-bottom: 1px solid var(--line); display: grid; grid-template-columns: auto 1fr auto; align-items: center; column-gap: 28px;
+    padding: 0 var(--sx) 0 var(--rp); }
+  .bar__nav { display: flex; gap: 28px; justify-self: end; }
+  /* на широком экране ссылки кончаются ровно там, где кончается контент левой колонки */
+  @media (min-width: 1200px) {
+    .bar { grid-template-columns: calc(var(--rw) - 2 * var(--rp)) 1fr auto; column-gap: 0; }
+    .bar__logo { grid-column: 1; grid-row: 1; justify-self: start; }
+    .bar__nav { grid-column: 1; grid-row: 1; justify-self: end; }
+    .bar__cta { grid-column: 3; }
+  }
+  @media (min-width: 1200px) and (max-width: 1399px) { .bar__nav { gap: 22px; } }
+  .bar__nav a, .bar__cta, .bar__menu a { font: 500 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 6px 0; transition: color var(--t) var(--ease); }
+  .bar__nav a:hover, .bar__nav a[aria-current], .bar__menu a:hover, .bar__menu a[aria-current] { color: var(--violet); }
   .bar__logo { color: var(--violet); display: block; }
   .bar__logo :global(.logo) { height: 17px; width: auto; display: block; }
-  .bar__cta { justify-self: end; display: inline-flex; align-items: center; gap: 9px; color: var(--ink); padding: 11px 14px; margin-right: -8px;
+  /* текст кнопки встаёт по правому краю контента, фон при наведении выходит за него */
+  .bar__cta { justify-self: end; display: inline-flex; align-items: center; gap: 9px; color: var(--ink); padding: 11px 14px; margin-right: -14px;
     transition: background var(--t) var(--ease), color var(--t) var(--ease); }
   .bar__cta :global(.tri) { width: 7px; height: 7px; color: var(--violet); transition: color var(--t) var(--ease); }
   .bar__cta:hover { background: var(--violet); color: #fff; }
   .bar__cta:hover :global(.tri) { color: #fff; }
-  @media (max-width: 1199px) { nav { justify-self: end; } }
-  @media (max-width: 760px) { .bar { grid-template-columns: auto 1fr; } nav { display: none; } .bar__logo :global(.logo) { height: 15px; } }
+
+  /* бургер и выпадающее меню, только на телефоне */
+  .bar__burger, .bar__menu { display: none; }
+  @media (max-width: 760px) {
+    .bar { grid-template-columns: auto 1fr auto; column-gap: 12px; }
+    .bar__nav { display: none; }
+    .bar__logo :global(.logo) { height: 15px; }
+    .bar__cta { margin-right: 0; padding-inline: 10px; }
+    .bar__burger { display: grid; place-content: center; gap: 6px; width: 40px; height: 40px; margin-right: -10px; background: none; border: 0; cursor: pointer; color: var(--ink); }
+    .bar__burger i { display: block; width: 18px; height: 1.5px; background: currentColor; transition: transform var(--t) var(--ease); }
+    .bar.is-open .bar__burger i:first-child { transform: translateY(3.75px) rotate(45deg); }
+    .bar.is-open .bar__burger i:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+    .bar__menu { display: block; position: absolute; left: 0; right: 0; top: 100%; background: var(--white); border-bottom: 1px solid var(--line);
+      visibility: hidden; opacity: 0; transform: translateY(-6px); transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s linear .2s; }
+    .bar.is-open .bar__menu { visibility: visible; opacity: 1; transform: none; transition: opacity .2s var(--ease), transform .2s var(--ease); }
+    .bar__menu a { display: block; padding: 20px var(--sx); font-size: .78rem; color: var(--ink); border-top: 1px solid var(--line); }
+  }
 </style>

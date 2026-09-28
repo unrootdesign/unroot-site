@@ -38,6 +38,8 @@
   /* ритм */
   --bar: 52px;
   --rw: min(450px, max(360px, 34vw));   /* ширина левой колонки главной, не шире 450 */
+  --rp: 40px;                          /* внутренний отступ левой колонки, по нему же встаёт навбар */
+  --sx: clamp(16px, calc(4vw - 10px), 46px); /* боковой отступ правой колонки и навбара справа */
   --gut: clamp(20px, 4vw, 56px);
   --sec-y: clamp(64px, 8vw, 104px);
   --wrap: 1240px;
@@ -61,4 +63,5 @@
   --container: var(--wrap); --container-narrow: 760px; --gutter: var(--gut);
   --dur: 200ms;
 }
-@media (max-width: 960px) { :root { --bar: 48px; } }
+@media (min-width: 1200px) and (max-width: 1399px) { :root { --rp: 32px; } }
+@media (max-width: 960px) { :root { --bar: 48px; --rp: var(--sx); } }

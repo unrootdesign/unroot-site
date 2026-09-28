@@ -120,7 +120,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (max-width: 760px) { .cr__grid { grid-template-columns: 1fr; } }
   .cr__grid li { border: 1px solid var(--line); margin: -1px 0 0 -1px; padding: clamp(20px, 2.4vw, 32px); }
   .cr__grid span { color: var(--violet-d); }
-  .cr__grid b { display: block; margin-top: 18px; font-size: 1.25rem; font-weight: 500; letter-spacing: -.025em; }
+  .cr__grid b { display: block; margin-top: 18px; font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -.03em; line-height: 1.2; }
   .cr__grid p { margin-top: 10px; color: var(--ink-2); line-height: 1.6; max-width: 52ch; }
   .cr__roles { list-style: none; padding: 0; margin: clamp(32px, 4vw, 48px) 0 0; border-top: 1px solid var(--line); }
   .cr__roles a { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; grid-template-areas: "dep t go" "dep d go" "dep m go"; column-gap: clamp(20px, 3vw, 40px); row-gap: 8px;
@@ -144,7 +144,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .cr__values span { display: block; margin-top: 4px; color: var(--ink-2); }
   .cr__form { display: grid; gap: 18px; }
   .f { display: grid; gap: 8px; }
-  .f span { color: var(--ink-2); text-transform: none; letter-spacing: .02em; font-size: .72rem; }
+  .f span { font: 500 .7rem/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
   .f input, .f select, .f textarea { width: 100%; padding: 13px 14px; border: 1px solid var(--line-b); border-radius: 0; background: var(--white); font-size: 1rem; color: var(--ink);
     transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease); }
   .f input:hover, .f select:hover, .f textarea:hover { border-color: var(--ink-3); }

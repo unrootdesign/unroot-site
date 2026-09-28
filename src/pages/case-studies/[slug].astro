@@ -11,6 +11,8 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const { Content } = await render(item);
 const d = item.data;
+// секция «The project» показывается, только если в кейсе есть текст
+const hasBody = !!(item.body && item.body.replace(/<!--[\s\S]*?-->/g, '').trim());
 const others = (await getCollection('case-studies'))
   .filter(i => i.data.slug !== d.slug)
   .sort((a, b) => a.data.order - b.data.order);
@@ -58,12 +60,14 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
     </section>
   )}
 
-  <section class="sec sec--white">
-    <div class="wrap cs__grid">
-      <div><p class="tag"><i></i>The project</p></div>
-      <div class="prose"><Content /></div>
-    </div>
-  </section>
+  {hasBody && (
+    <section class="sec sec--white">
+      <div class="wrap cs__grid">
+        <div><p class="tag"><i></i>The project</p></div>
+        <div class="prose"><Content /></div>
+      </div>
+    </section>
+  )}
 
   {d.testimonial && (
     <section class="sec">

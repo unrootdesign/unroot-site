@@ -27,44 +27,54 @@
       light:[sprite('rgba(137,97,231,1)','rgba(137,97,231,.28)'),sprite('rgba(106,67,209,1)','rgba(137,97,231,.22)'),sprite('rgba(137,97,231,1)','rgba(185,162,245,.3)',true)],
       dark:[sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)'),sprite('rgba(210,194,252,1)','rgba(185,162,245,.3)'),sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)',true)]
     };
-    const MAX=900, P=[];
-    let lx=null, ly=null, dark=false, running=false, lastCheck=0;
+    const MAX=1100, P=[];
+    let dark=false, running=false, lastCheck=0, H4=[], last=0;
     const isDark=(x,y)=>{ const el=document.elementFromPoint(x,y); return !!(el && el.closest('.ft,.ob,.pk,.stage--night')); };
-    const emit=(x,y,dx,dy,dist,now)=>{
-      const n=Math.min(40,Math.max(1,Math.round(dist/2.2)));  // плотно, точки выстраиваются в линию
-      const sp=Math.min(3,.6+dist*.03);
-      const ux=dist?dx/dist:0, uy=dist?dy/dist:0;
-      for(let i=0;i<n;i++){
-        if(P.length>=MAX) P.shift();
-        const t=Math.random(), a=Math.random()*6.2832, r=Math.pow(Math.random(),1.6)*sp;
-        const spark=false;
-        P.push({ x:x-dx*t+Math.cos(a)*r, y:y-dy*t+Math.sin(a)*r,
-          vx:Math.cos(a)*R(.04,.3), vy:Math.sin(a)*R(.04,.3)+R(0,.05), hold:R(120,320),
-          s:spark?R(5,9):R(1.4,2.8), k:spark?2:(Math.random()<.5?0:1), set:dark?'dark':'light',
-          b:now, life:R(650,1250), f:R(.008,.02), ph:Math.random()*6.28 });
-      }
+    // Catmull-Rom: путь мыши сглаживается кривой через точки, поэтому быстрый круг выходит кругом, а не многоугольником
+    const cr=(a,b,c,d,t)=>{ const t2=t*t,t3=t2*t; return .5*((2*b)+(-a+c)*t+(2*a-5*b+4*c-d)*t2+(-a+3*b-3*c+d)*t3); };
+    const put=(x,y,sp,now)=>{
+      if(P.length>=MAX) P.shift();
+      const a=Math.random()*6.2832, r=Math.pow(Math.random(),1.6)*sp, v=R(.16,.7);
+      P.push({ x:x+Math.cos(a)*r, y:y+Math.sin(a)*r,
+        vx:Math.cos(a)*v, vy:Math.sin(a)*v+R(0,.06), hold:R(110,300),
+        s:R(2.6,4.8), k:Math.random()<.5?0:1, set:dark?'dark':'light',
+        b:now, life:R(800,1500), f:R(.008,.02), ph:Math.random()*6.28 });
+    };
+    // точки ставятся вдоль сглаженного отрезка между двумя предыдущими замерами
+    const seg=(p0,p1,p2,p3,now)=>{
+      const dist=Math.hypot(p2.x-p1.x,p2.y-p1.y); if(dist<1) return;
+      const n=Math.min(48,Math.max(1,Math.round(dist/2.6)));
+      const sp=Math.min(4,.9+dist*.035);
+      for(let i=0;i<n;i++){ const t=(i+Math.random())/n; put(cr(p0.x,p1.x,p2.x,p3.x,t),cr(p0.y,p1.y,p2.y,p3.y,t),sp,now); }
+    };
+    const add=(x,y,now)=>{
+      const q=H4[H4.length-1]; if(q && Math.hypot(x-q.x,y-q.y)<2) return;
+      H4.push({x,y}); if(H4.length>4) H4.shift();
+      if(H4.length===4) seg(H4[0],H4[1],H4[2],H4[3],now);
+      else if(H4.length===3) seg(H4[0],H4[0],H4[1],H4[2],now);
     };
     addEventListener('pointermove',e=>{
       if(e.pointerType==='touch') return;
-      const now=performance.now(), x=e.clientX, y=e.clientY;
-      if(now-lastCheck>120){ dark=isDark(x,y); lastCheck=now; }
-      if(lx!==null){ const dx=x-lx, dy=y-ly, dist=Math.hypot(dx,dy); if(dist>1.5){ emit(x,y,dx,dy,dist,now); } }
-      lx=x; ly=y;
-      if(!running){ running=true; requestAnimationFrame(tick); }
+      const now=performance.now();
+      if(now-lastCheck>120){ dark=isDark(e.clientX,e.clientY); lastCheck=now; }
+      const list=e.getCoalescedEvents?e.getCoalescedEvents():[];   // все промежуточные замеры мыши, не только раз в кадр
+      if(list.length) for(const c of list) add(c.clientX,c.clientY,now); else add(e.clientX,e.clientY,now);
+      if(!running){ running=true; last=now; requestAnimationFrame(tick); }
     },{passive:true});
-    document.addEventListener('pointerleave',()=>{ lx=ly=null; });
-    addEventListener('scroll',()=>{ lastCheck=0; },{passive:true});
+    document.addEventListener('pointerleave',()=>{ H4=[]; });
+    addEventListener('scroll',()=>{ lastCheck=0; H4=[]; },{passive:true});
     function tick(now){
+      const k=Math.min(3,(now-last)/16.67); last=now;   // движение не зависит от частоты кадров
+      const damp=Math.pow(.986,k);
       ctx.setTransform(D,0,0,D,0,0); ctx.clearRect(0,0,W,H);
       for(let i=P.length-1;i>=0;i--){
         const p=P[i], age=(now-p.b)/p.life;
         if(age>=1){ P.splice(i,1); continue; }
-        if(now-p.b>p.hold){ p.x+=p.vx; p.y+=p.vy; }   // сначала держат линию, потом распадаются
+        if(now-p.b>p.hold){ p.x+=p.vx*k; p.y+=p.vy*k; p.vx*=damp; p.vy*=damp; }   // сначала держат линию, потом разлетаются
         const fin=Math.min(1,age*14), fout=1-age*age;       // быстро вспыхивает, плавно гаснет
         const tw=.62+.38*Math.sin(now*p.f+p.ph);            // мерцание
-        const s=p.s*(p.k===2?(.7+.3*tw):1);
         ctx.globalAlpha=fin*fout*tw;
-        ctx.drawImage(SP[p.set][p.k],p.x-s,p.y-s,s*2,s*2);
+        ctx.drawImage(SP[p.set][p.k],p.x-p.s,p.y-p.s,p.s*2,p.s*2);
       }
       ctx.globalAlpha=1;
       if(P.length) requestAnimationFrame(tick); else { running=false; ctx.clearRect(0,0,W,H); }

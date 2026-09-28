@@ -7,11 +7,10 @@
   /* ── левая колонка ───────────────────────── */
   .rail{position:sticky;top:var(--bar);min-height:calc(100vh - var(--bar));min-height:calc(100svh - var(--bar));
     display:flex;flex-direction:column;background:var(--white);border-right:1px solid var(--line)}
-  .rail__top{display:flex;justify-content:space-between;gap:16px;padding:18px 40px;border-bottom:1px solid var(--line);
+  .rail__top{display:flex;justify-content:space-between;gap:16px;padding:18px var(--rp);border-bottom:1px solid var(--line);
     color:var(--ink-3)}
-  .rail__mid{margin-block:auto;padding:48px 40px}
+  .rail__mid{margin-block:auto;padding:48px var(--rp)}
   @media(min-width:961px){.rail .ctas .btn{padding-inline:13px;letter-spacing:.03em;gap:9px}}
-  @media(min-width:1200px) and (max-width:1399px){.rail__mid{padding-inline:32px}}
   .rail{min-width:0}
   @media(min-width:961px){
     .shell{grid-template-columns:var(--rw) minmax(0,1fr)}
@@ -22,7 +21,7 @@
   }
   .facts{display:grid;grid-template-columns:1fr 1fr 1.35fr;border-top:1px solid var(--line)}
   .facts div{padding:20px 16px 22px;border-right:1px solid var(--line)}
-  .facts div:first-child{padding-left:40px}
+  .facts div:first-child{padding-left:var(--rp)}
   .facts div:last-child{border-right:0}
   .facts b{display:block;font-size:1.35rem;font-weight:500;letter-spacing:-.035em;line-height:1.1}
   .facts s{text-decoration:none;display:block;margin-top:7px;font:500 .62rem/1.3 var(--mono);white-space:nowrap;
@@ -30,7 +29,6 @@
 
   /* ── правая колонка ──────────────────────── */
   .stream{display:grid;min-width:0}
-  .home{--sx:clamp(16px,calc(4vw - 10px),46px)}
   .home .sec{position:relative;padding:clamp(64px,8vw,104px) var(--sx);border-bottom:1px solid var(--line)}
   .stream{position:relative;isolation:isolate;background:var(--bg);clip-path:inset(0)}
   .home .sec{z-index:1;background:transparent}
@@ -122,7 +120,7 @@
   @media(max-width:1180px) and (min-width:961px){.pk{grid-template-columns:1fr}}
   @media(max-width:720px){.pk{grid-template-columns:1fr}}
   .pk__top{display:flex;align-items:center;gap:12px;font:500 .66rem/1 var(--mono);letter-spacing:.09em;text-transform:uppercase}
-  .pk__flag{padding:6px 8px;background:#fff;color:var(--violet-d);border-radius:3px;font-size:.58rem}
+  .pk__flag{padding:6px 8px;background:var(--violet-lt);color:var(--night);border-radius:3px;font-size:.58rem}
   .pk__p{margin-top:24px;font-size:clamp(3rem,5vw,4.4rem);font-weight:500;letter-spacing:-.05em;line-height:.95;
     display:flex;align-items:baseline;gap:10px;white-space:nowrap}
   .pk__p small{font:500 .66rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)}
@@ -158,10 +156,13 @@
   .svx{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,3.4vw,48px);align-items:start}
   @media(max-width:1100px){.svx{grid-template-columns:1fr}.svm{order:-1}}
   .svl{list-style:none;margin:0;padding:0;display:grid}
-  .sv{display:flex;align-items:baseline;gap:16px;padding:15px 0 15px 20px;cursor:pointer;
-    border-left:1px solid var(--line);position:relative;transition:color .3s var(--ease)}
-  .sv::before{content:"";position:absolute;left:-1px;top:0;bottom:0;width:2px;background:var(--violet);
+  /* линии между пунктами как в вопросах и ответах */
+  .sv{display:flex;align-items:baseline;gap:16px;padding:18px 0;cursor:pointer;border-bottom:1px solid var(--line);
+    position:relative;transition:color .3s var(--ease),padding var(--t) var(--ease)}
+  .sv:first-child{border-top:1px solid var(--line)}
+  .sv::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--violet);
     transform:scaleY(0);transition:transform .35s var(--ease)}
+  .sv.on{padding-left:22px}
   .sv b{font-size:1.1rem;font-weight:500;letter-spacing:-.02em;line-height:1.3;color:var(--ink-3);transition:color .3s var(--ease)}
   .sv:hover b{color:var(--ink)}
   .sv.on::before{transform:scaleY(1)}
@@ -190,20 +191,24 @@
   /* ── мобильная ───────────────────────────── */
   @media(max-width:960px){
     .rail{position:static;min-height:0;border-right:0;border-bottom:1px solid var(--line)}
-    .rail__top{padding:14px 20px}
-    .rail__mid{margin:0;padding:40px 20px 36px}
+    .rail__top{padding:14px var(--rp)}
+    .rail__mid{margin:0;padding:40px var(--rp) 36px}
     @media(min-width:621px){.rail__mid{padding-bottom:108px}}
       .facts div{padding:16px 12px 18px}
-    .facts div:first-child{padding-left:20px}
+    .facts div:first-child{padding-left:var(--rp)}
     .home .sec{padding:64px var(--sx)}
   }
 
   /* глобальные поправки для главной */
   .home .lede{margin-top:24px;color:var(--ink-2);font-size:1.08rem;line-height:1.5;max-width:34ch}
   .home .ob{margin-top:clamp(36px,4vw,52px);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;min-height:clamp(300px,30vw,380px);padding:clamp(28px,4vw,52px)}
-  .home .ob > div{align-self:start}
-  .home .ob > .btn{align-self:end;justify-self:end}
-  @media(max-width:620px){.home .ob{grid-template-columns:1fr;min-height:0;gap:36px}.home .ob > .btn{justify-self:start}}
+  /* метка наверху, заголовок с описанием внизу слева на одной линии с кнопкой справа */
+  .home .ob{grid-template-rows:auto 1fr;column-gap:32px}
+  .home .ob > .ob__k{grid-column:1/-1;align-self:start;margin:0}
+  .home .ob > .ob__b{grid-row:2;align-self:end}
+  .home .ob > .ob__b .ob__h{margin-top:0}
+  .home .ob > .btn{grid-row:2;align-self:end;justify-self:end}
+  @media(max-width:620px){.home .ob{grid-template-columns:1fr;grid-template-rows:auto;min-height:0;gap:36px}.home .ob > .ob__b,.home .ob > .btn{grid-row:auto}.home .ob > .btn{justify-self:start}}
   .home .h1{font-size:clamp(2.5rem,4vw,3.9rem)}
   .home .rail .ctas{margin-top:40px}
   .rv .w{opacity:.1;transition:opacity .6s var(--ease)}
