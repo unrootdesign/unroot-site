@@ -4,28 +4,25 @@ import Tri from '../components/Tri.astro';
 
 // title дословно из Webflow, description написан заново (в Webflow не было)
 const title = "Careers | Unroot.design";
-const description = "Open roles at Unroot Design. We are a small remote studio designing and building websites for AI and tech startups. Designers, Webflow and Framer developers, project managers.";
+const description = "Open roles at Unroot Design. We are a small remote studio designing and building websites for AI and tech startups. AI-native designers, Webflow and Framer developers, project managers.";
 
 /* Заявки уходят через Web3Forms на почту владельца ключа.
    Ключ в переменной PUBLIC_WEB3FORMS_KEY в настройках Cloudflare Pages. */
 const FORM_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 
+// «Our principles» и «What we value» объединены в один блок «How we work»
 const principles = [
-  { t: 'We create experiences that last', d: 'Our clients are funded startups, and they expect premium work. Just enough is not finished for us.' },
-  { t: 'We aim higher than the minimum', d: 'If work-life balance in the corporate sense of doing the bare minimum is what you are after, this is not the place for you.' },
-  { t: 'We take the driver’s seat', d: 'We are looking for drivers, not passengers. If you only want to do exactly what is asked and nothing more, you will not last long here.' },
-  { t: 'We thrive on curiosity and craft', d: 'But if design excites you, if you push a project further than expected, experiment, learn and care about craft, then welcome. You will fit right in.' },
+  { t: 'AI is part of the job', d: 'We vibe code concepts, prototype with AI and let it take the routine. You already work this way, not plan to start.' },
+  { t: 'You ship, not hand off', d: 'Designers here build live prototypes. Developers fix small design gaps themselves. Nobody waits for the next person in the chain.' },
+  { t: 'A premium bar', d: 'Our clients are AI and tech startups with investors watching. Work that is just enough does not leave the team.' },
+  { t: 'You drive', d: 'You notice what is missing before anyone asks and say it out loud. If you want a task list and nothing more, this will not be a fit.' },
+  { t: 'Fast because you are good', d: 'We send a homepage concept in 7 days. That speed comes from knowing the tools, not from rushing.' },
+  { t: 'You are already learning', d: 'Show us what you tried last month. We invest in people who push their craft now, not someday.' },
 ];
 const roles = [
-  { dep: 'Design', t: 'Web Designer', d: 'A web designer skilled in Figma, animation and storytelling, to create engaging, impactful product experiences.' },
-  { dep: 'Development', t: 'Webflow / Framer Developer', d: 'A Webflow developer to deliver clean, responsive builds with thoughtful structure and custom touches.' },
-  { dep: 'Management', t: 'Project Manager', d: 'A project manager fluent in design and development logic. Proactive, strategic, and far beyond just forwarding messages.' },
-];
-const values = [
-  { t: 'Proactivity', d: 'You think ahead. You notice what is missing before we say it.' },
-  { t: 'Craft', d: 'You care about the work as much as we do. Pixel-perfect is your default.' },
-  { t: 'Responsibility', d: 'You do not say “this wasn’t in the task.” You say “got it.”' },
-  { t: 'Speed through skill', d: 'You know what you are doing, and you do it fast. Not by rushing, by mastery.' },
+  { dep: 'Design', t: 'AI-Native Product Designer', d: 'Web, brand and motion in 1 person. You design in Figma, then vibe code the concept into a live prototype yourself, with whatever AI tools get it there fastest.' },
+  { dep: 'Development', t: 'AI-First Webflow / Framer Developer', d: 'You turn a Figma file into a clean, responsive build in days, not weeks. AI writes the custom code and animations with you, and you check every breakpoint yourself.' },
+  { dep: 'Management', t: 'Project Manager', d: 'A project manager fluent in design and development logic. You keep projects moving on your own, far beyond forwarding messages.' },
 ];
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
@@ -41,8 +38,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   <section class="sec">
     <div class="wrap">
-      <p class="tag"><i></i>Our principles</p>
-      <h2 class="h2">How we work <span class="acc">and what we believe in</span></h2>
+      <p class="tag"><i></i>How we work</p>
+      <h2 class="h2">What it takes <span class="acc">to work with us</span></h2>
       <ol class="cr__grid">
         {principles.map((p, i) => <li><span class="mono">{pad(i + 1)}</span><b>{p.t}</b><p>{p.d}</p></li>)}
       </ol>
@@ -65,22 +62,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
             </a>
           </li>
         ))}
-      </ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap cr__two">
-      <div>
-        <p class="tag"><i></i>What we value</p>
-        <h2 class="h2">Who belongs <span class="acc">with us</span></h2>
-        <div class="cr__text">
-          <p>We only hire people who are already pushing their craft forward, not those who wait to be told to.</p>
-          <p>If you are not already experimenting, learning and exploring new ways, you will not enjoy working with us. We do not pay people to maybe learn someday. We work with those who already prove their value, and we invest in them because they are all-in.</p>
-        </div>
-      </div>
-      <ul class="cr__values">
-        {values.map(v => <li><b>{v.t}</b><span>{v.d}</span></li>)}
       </ul>
     </div>
   </section>
@@ -116,7 +97,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <style>
   .cr__h1 { max-width: 18ch; }
-  .cr__grid { list-style: none; margin: clamp(32px, 4vw, 48px) 0 0; padding: 1px 0 0 1px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cr__grid { list-style: none; margin: clamp(32px, 4vw, 48px) 0 0; padding: 1px 0 0 1px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (max-width: 1100px) { .cr__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 760px) { .cr__grid { grid-template-columns: 1fr; } }
   .cr__grid li { border: 1px solid var(--line); margin: -1px 0 0 -1px; padding: clamp(20px, 2.4vw, 32px); }
   .cr__grid span { color: var(--violet-d); }
@@ -137,11 +119,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (max-width: 760px) { .cr__roles a { grid-template-columns: 1fr; grid-template-areas: "dep" "t" "d" "m" "go"; } .cr__go { justify-self: start; margin-top: 8px; } }
   .cr__two { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
   @media (max-width: 900px) { .cr__two { grid-template-columns: 1fr; } }
-  .cr__text p { margin-top: 18px; color: var(--ink-2); font-size: 1.04rem; line-height: 1.65; max-width: 52ch; }
-  .cr__values { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
-  .cr__values li { padding: 18px 0; border-bottom: 1px solid var(--line); }
-  .cr__values b { display: block; font-weight: 500; font-size: 1.1rem; letter-spacing: -.02em; }
-  .cr__values span { display: block; margin-top: 4px; color: var(--ink-2); }
   .cr__form { display: grid; gap: 18px; }
   .f { display: grid; gap: 8px; }
   .f span { font: 500 .7rem/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
