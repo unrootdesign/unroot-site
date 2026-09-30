@@ -28,7 +28,7 @@
 
   /* шрифты */
   --f:    "Google Sans", ui-sans-serif, system-ui, sans-serif;
-  --mono: "JB Mono", ui-monospace, Menlo, Consolas, monospace;
+  --mono: var(--f);   /* метки, навигация, подписи: Google Sans капсом (раньше был JB Mono) */
 
   /* размеры заголовков */
   --h1: clamp(2.5rem, 4vw, 3.9rem);

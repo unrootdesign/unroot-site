@@ -8,7 +8,7 @@
   const chipsBox = root.querySelector('.chat__chips');
   const form = root.querySelector('.chat__in');
   const input = form.querySelector('input');
-  const rail = root.closest('.rail');
+  const rail = root;
   const sugList = root.querySelector('.chat__sug ul');
   const BUY = root.dataset.buy;
   const FAQ = JSON.parse(document.getElementById('chat-faq')?.textContent || '[]');
@@ -22,7 +22,7 @@
   const T = {
     concepts: { chip: 'Show me concepts', re: /concept|example|before|after|redesign|sample|mock|prototype|preview/,
       say: 'These are homepages we redesigned from scratch, 7 days each. Drag the slider to compare before and after.',
-      go: 'examples', next: ['price', 'work'] },
+      go: 'concept', next: ['price', 'work'] },
     work: { chip: 'Show me case studies', re: /work|portfolio|case|project|website[s]? you|built|launch|live|client[s]? (site|website)/,
       say: 'These started as concepts and are live websites now. Open any card for the full case study.',
       go: 'work', next: ['reviews', 'start'] },
@@ -144,7 +144,7 @@
     if (r?.key) {
       const t = T[r.key];
       await bot(t.say, t.btn || []);
-      if (t.go) setTimeout(() => { if (!wide()) sheet(false); show(t.go); }, wide() ? 120 : 900);
+      if (t.go) setTimeout(() => { if (!matchMedia('(min-width:621px)').matches) sheet(false); show(t.go); }, 400);
       chips(t.next || FIRST);
     } else if (r?.faq) {
       await bot(r.faq.a);

@@ -80,7 +80,7 @@
     let i=0;
     setTimeout(()=>setInterval(()=>{
       ims[i].classList.remove('on'); i=(i+1)%ims.length; ims[i].classList.add('on');
-    },420), bi*140);
+    },1600), bi*260);
   });
 
   /* отзывы */
