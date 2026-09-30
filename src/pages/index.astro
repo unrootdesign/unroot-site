@@ -45,12 +45,14 @@ const schema = [{
     <div class="stream">
       <section class="sec" id="concept">
         <div class="hero">
-          <p class="tag"><i></i>Website design and build</p>
-          <h1 class="h1 rv">Your new homepage <span class="acc">in <span class="nw">7 days</span></span></h1>
-          <p class="lede">Click through your new homepage first. Then we build the full website, and your team runs it with AI.</p>
-          <div class="ctas">
-            <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
-            <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+          <div class="hero__main">
+            <p class="tag"><i></i>Website design and build</p>
+            <h1 class="h1 rv">Your new homepage <span class="acc">in <span class="nw">7 days</span></span></h1>
+            <p class="lede">Click through your new homepage first. Then we build the full website, and your team runs it with AI.</p>
+            <div class="ctas">
+              <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
+              <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+            </div>
           </div>
           <div class="facts">
             <div><b>9</b><s>years</s></div>
@@ -59,12 +61,7 @@ const schema = [{
           </div>
         </div>
 
-        <div class="cpt" id="examples">
-          <p class="tag"><i></i>Concept</p>
-          <h2 class="h2 rv">See the direction <span class="acc">before you commit</span></h2>
-          <p class="sub">You send a link, we redesign the homepage from scratch. Drag the slider to see what changed.</p>
-        </div>
-
+        <p class="cpt mono" id="examples">Recent concepts, drag the slider to compare</p>
         <div class="tabs" role="tablist">
           <button data-tab="ba" aria-selected="true" role="tab" type="button">Before / after</button>
           <button data-tab="anim" aria-selected="false" role="tab" type="button">Animated</button>

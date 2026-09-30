@@ -23,7 +23,7 @@
     concepts: { chip: 'Show me concepts', re: /concept|example|before|after|redesign|sample|mock|prototype|preview/,
       say: 'These are homepages we redesigned from scratch, 7 days each. Drag the slider to compare before and after.',
       go: 'examples', next: ['price', 'work'] },
-    work: { chip: 'Show me live websites', re: /work|portfolio|case|project|website[s]? you|built|launch|live|client[s]? (site|website)/,
+    work: { chip: 'Show me case studies', re: /work|portfolio|case|project|website[s]? you|built|launch|live|client[s]? (site|website)/,
       say: 'These started as concepts and are live websites now. Open any card for the full case study.',
       go: 'work', next: ['reviews', 'start'] },
     reviews: { chip: 'What do clients say?', re: /review|testimonial|say about|feedback|trust|reference|recommend|trustpilot|happy/,
@@ -58,9 +58,8 @@
   const FIRST = ['concepts', 'work', 'reviews', 'price', 'start', 'call'];
   /* список «частые вопросы» под полем ввода: как пишет посетитель */
   const SUG = [
-    ['Show me your concepts', 'concepts'], ['Show me live websites', 'work'], ['What do your clients say?', 'reviews'],
-    ['How much does it cost?', 'price'], ['How fast can you do it?', 'speed'], ['I don\u2019t know where to start', 'start'],
-    ['Can my team edit the website later?', 'handover'], ['What do you do?', 'services'], ['I\u2019d like to talk', 'call'],
+    ['Show me your case studies', 'work'], ['How much does it cost?', 'price'],
+    ['What do your clients say?', 'reviews'], ['I\u2019d like to talk', 'call'],
   ];
 
   const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
