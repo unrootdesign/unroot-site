@@ -34,6 +34,7 @@ export const home = {
  ],
  /* до и после со слайдером; анимированные концепты выше в pairs */
  "ba": [
+  { "slug": "chatarmin", "name": "Chatarmin" },
   { "slug": "javelin", "name": "Javelin VP" },
   { "slug": "switch", "name": "Switch" },
   { "slug": "epsilon", "name": "Epsilon Health" },
@@ -81,16 +82,6 @@ export const home = {
    "kind": "Fintech",
    "url": "https://www.trustyfy.com/",
    "desc": "Website for a payments startup with $6.8M in funding: crypto and fiat, wallets and cards in one app."
-  },
-  {
-   "slug": "workshop",
-   "shots": 4,
-   "cs": "workshop-film-co",
-   "name": "Workshop Film Co.",
-   "year": "2025",
-   "kind": "Film, brand",
-   "url": "https://www.workshopfilmcompany.com/",
-   "desc": "Brand and website for a production studio that makes $770K a year on brand films and ad campaigns."
   },
   {
    "slug": "epsilon",

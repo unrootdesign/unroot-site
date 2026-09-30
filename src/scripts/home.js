@@ -34,6 +34,12 @@
     document.querySelectorAll('.pane').forEach(p=>p.hidden=p.dataset.pane!==b.dataset.tab);
   }));
 
+  /* до и после: кнопка «Show more» открывает остальные пары */
+  document.querySelectorAll('.bas__more').forEach(b=>b.addEventListener('click',()=>{
+    const g=b.previousElementSibling; g.classList.add('is-all'); b.setAttribute('aria-expanded','true');
+    g.querySelector('.ba--more')?.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }));
+
   /* до и после */
   document.querySelectorAll('.ba__stage').forEach(st=>{
     const set=x=>{const r=st.getBoundingClientRect();

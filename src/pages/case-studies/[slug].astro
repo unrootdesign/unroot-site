@@ -19,7 +19,7 @@ const others = (await getCollection('case-studies'))
 const host = d.liveUrl ? d.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
 const label = (t: string) => t.replace(/-/g, ' ');
 // превью в «Other projects»: те же кадры 16:9, что на главной, чтобы ничего не обрезалось
-const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch: '/home/w-switch-1.jpg', javelinvp: '/home/w-javelin-1.jpg', trustyfy: '/home/w-trustyfy-1.jpg', 'workshop-film-co': '/home/w-workshop-1.jpg', 'epsilon-health': '/home/w-epsilon-1.jpg' };
+const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch: '/home/w-switch-1.jpg', javelinvp: '/home/w-javelin-1.jpg', trustyfy: '/home/w-trustyfy-1.jpg', 'epsilon-health': '/home/w-epsilon-1.jpg' };
 ---
 <Base title={d.seoTitle} description={d.seoDescription} ogImage={d.ogImage} noindex={d.noindex}
   schema={[{

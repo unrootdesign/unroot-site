@@ -10,6 +10,7 @@ const title = "Design partner for AI and Tech founders | Unroot Design";
 const description = "We design and build premium, custom websites with 3D & motion. We clarify complex products, ship in Webflow, and lift conversions with fast weekly sprints.";
 
 const M = '/home/';
+const BA_FIRST = 4;   // до и после: сколько пар видно сразу
 const host = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
 const pad = (n: number) => String(n).padStart(2, '0');
 const schema = [{
@@ -47,8 +48,8 @@ const schema = [{
           <button data-tab="anim" aria-selected="false" role="tab" type="button">Animated</button>
         </div>
         <div class="pane" data-pane="ba"><div class="bas">
-          {home.ba.map(p => (
-            <figure class="ba">
+          {home.ba.map((p, i) => (
+            <figure class={i < BA_FIRST ? 'ba' : 'ba ba--more'}>
               <div class="ba__stage">
                 <img class="ba__l" src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} loading="lazy" />
                 <img class="ba__r" src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} loading="lazy" />
@@ -58,7 +59,11 @@ const schema = [{
               <figcaption><span>{p.name}</span><span>7 day concept</span></figcaption>
             </figure>
           ))}
-        </div></div>
+        </div>
+        {home.ba.length > BA_FIRST && (
+          <button class="btn btn--line bas__more" type="button" aria-expanded="false">Show {home.ba.length - BA_FIRST} more</button>
+        )}
+        </div>
         <div class="pane" data-pane="anim" hidden><div class="ans">
           {home.pairs.map(p => (
             <figure class="an">

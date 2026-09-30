@@ -48,6 +48,12 @@
   .pane[hidden]{display:none}
   .bas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
   @media(max-width:620px){.bas{grid-template-columns:1fr}}
+  /* до и после: сначала 4, остальные по кнопке */
+  .bas:not(.is-all) .ba--more{display:none}
+  .bas__more{margin-top:20px}
+  .bas.is-all + .bas__more{display:none}
+  /* нечётное число пар: пустая клетка справа белая, а не серая */
+  @media(min-width:621px){.bas.is-all:has(> .ba:last-child:nth-child(odd))::after{content:"";background:var(--white)}}
   .ba{margin:0;background:var(--white);padding:clamp(12px,1.6vw,20px)}
   .ba__stage{position:relative;overflow:hidden;background:#fff;aspect-ratio:620/1033;
     cursor:ew-resize;user-select:none;touch-action:pan-y}

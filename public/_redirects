@@ -7,3 +7,6 @@
 
 # старый адрес карты сайта из Webflow (он может быть указан в Search Console)
 /sitemap.xml  /sitemap-index.xml  301
+
+# кейс Workshop Film Co. убран с сайта, старый адрес ведёт к работам на главной
+/case-studies/workshop-film-co  /#work  301
