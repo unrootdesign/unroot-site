@@ -47,7 +47,7 @@ const schema = [{
           <button data-tab="anim" aria-selected="false" role="tab" type="button">Animated</button>
         </div>
         <div class="pane" data-pane="ba"><div class="bas">
-          {home.pairs.map(p => (
+          {home.ba.map(p => (
             <figure class="ba">
               <div class="ba__stage">
                 <img class="ba__l" src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} loading="lazy" />
@@ -85,7 +85,7 @@ const schema = [{
         <div class="ans wk bd">
           {home.work.map(w => (
             <article class="an wk__c">
-              <a class="an__stage win__v" href={w.cs ? `/case-studies/${w.cs}` : w.url} target={w.cs ? undefined : '_blank'} rel={w.cs ? undefined : 'noopener'} aria-label={`${w.name}, ${w.cs ? 'case study' : 'website'}`}>{[1, 2, 3].map(i => <img src={`${M}w-${w.slug}-${i}.jpg`} alt={w.name} class={i === 1 ? 'on' : ''} loading="lazy" />)}</a>
+              <a class="an__stage win__v" href={w.cs ? `/case-studies/${w.cs}` : w.url} target={w.cs ? undefined : '_blank'} rel={w.cs ? undefined : 'noopener'} aria-label={`${w.name}, ${w.cs ? 'case study' : 'website'}`}>{Array.from({ length: w.shots }, (_, k) => k + 1).map(i => <img src={`${M}w-${w.slug}-${i}.jpg`} alt={w.name} class={i === 1 ? 'on' : ''} loading="lazy" />)}</a>
               <span class="wk__cap"><span class="wk__t"><span class="wk__n">{w.name}</span><span class="wk__k">{w.kind}</span></span>
                 <span class="wk__acts">
                   {w.cs && <a class="wk__web" href={w.url} target="_blank" rel="noopener">Website <svg class="ars" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg></a>}

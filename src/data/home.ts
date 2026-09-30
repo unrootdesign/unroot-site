@@ -32,9 +32,19 @@ export const home = {
    "label": "Clickable preview"
   }
  ],
+ /* до и после со слайдером; анимированные концепты выше в pairs */
+ "ba": [
+  { "slug": "javelin", "name": "Javelin VP" },
+  { "slug": "switch", "name": "Switch" },
+  { "slug": "epsilon", "name": "Epsilon Health" },
+  { "slug": "dreamie", "name": "Ambient Dreamie" },
+  { "slug": "rezi", "name": "Rezi" },
+  { "slug": "burd", "name": "Burd Home Health" }
+ ],
  "work": [
   {
    "slug": "dreamie",
+   "shots": 4,
    "cs": "dreamie",
    "name": "Ambient Dreamie",
    "year": "2025",
@@ -44,6 +54,7 @@ export const home = {
   },
   {
    "slug": "switch",
+   "shots": 4,
    "cs": "switch",
    "name": "Switch",
    "year": "2025",
@@ -53,6 +64,7 @@ export const home = {
   },
   {
    "slug": "javelin",
+   "shots": 4,
    "cs": "javelinvp",
    "name": "Javelin VP",
    "year": "2024",
@@ -62,6 +74,7 @@ export const home = {
   },
   {
    "slug": "trustyfy",
+   "shots": 3,
    "cs": "trustyfy",
    "name": "Trustyfy",
    "year": "2025",
@@ -71,6 +84,7 @@ export const home = {
   },
   {
    "slug": "workshop",
+   "shots": 4,
    "cs": "workshop-film-co",
    "name": "Workshop Film Co.",
    "year": "2025",
@@ -80,6 +94,7 @@ export const home = {
   },
   {
    "slug": "epsilon",
+   "shots": 4,
    "cs": "epsilon-health",
    "name": "Epsilon Health",
    "year": "2025",
