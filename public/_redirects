@@ -4,3 +4,6 @@
 
 # /concept дублировал главную, всё это теперь в секции Concept на главной
 /concept  /#concept  301
+
+# старый адрес карты сайта из Webflow (он может быть указан в Search Console)
+/sitemap.xml  /sitemap-index.xml  301
