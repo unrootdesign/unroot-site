@@ -134,3 +134,6 @@ npm run verify   # всё вместе, гонять перед каждым д�
 - Токен `--mono` теперь указывает на Google Sans: все метки, навигация, подписи и кнопки набраны Google Sans капсом. JB Mono больше нигде не используется.
 - Кейсы на главной: белые карточки с отступом 10px, у каждой своя рамка, у сменяющихся кадров тонкий бордер, кадры меняются раз в 1.6 секунды. Кадры `public/home/w-*` 1600×900, без зума.
 - Календарь Cal на главной: у iframe срезано по 16px пустого поля сверху и снизу.
+- До и после на главной: сразу видно 4 пары (`BA_FIRST` в `index.astro`), остальные по кнопке «Show N more». Первая пара Chatarmin.
+- Кейс Workshop Film Co. убран целиком, `/case-studies/workshop-film-co` ведёт 301 на `/#work`.
+- Запуск 30.09.2026: unroot.design и www.unroot.design подключены к Worker unroot-site как custom domains, www уходит 301 на корень (Redirect Rule в зоне). Почта Google Workspace (MX, SPF, DKIM, DMARC) перенесена в Cloudflare DNS без изменений.
