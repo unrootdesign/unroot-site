@@ -223,3 +223,11 @@
   .tmcal__load{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-3);font-size:.66rem;letter-spacing:.09em;text-transform:uppercase}
   .tmcal:has(iframe) .tmcal__load{display:none}
 
+
+  /* ── после запуска: 3 пункта в сетке с линиями, как тарифы ── */
+  .yr{list-style:none;margin:clamp(32px,4vw,48px) 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:1180px){.yr{grid-template-columns:1fr}}
+  .yr li{background:var(--white);padding:clamp(20px,2.2vw,28px)}
+  .yr span{color:var(--violet-d);font-size:.7rem}
+  .yr b{display:block;margin-top:18px;font-size:clamp(1.2rem,1.6vw,1.4rem);font-weight:500;letter-spacing:-.03em;line-height:1.2}
+  .yr p{margin-top:10px;color:var(--ink-2);font-size:.95rem;line-height:1.55}

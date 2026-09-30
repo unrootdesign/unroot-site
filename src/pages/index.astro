@@ -23,7 +23,7 @@ const schema = [{
       <div class="rail__mid">
         <p class="tag"><i></i>Website design and build</p>
         <h1 class="h1 rv">Your new homepage <span class="acc">in <span class="nw">7 days</span></span></h1>
-        <p class="lede">An animated homepage concept you can click through. Figma plus vibe coding. Then decide if we build the rest.</p>
+        <p class="lede">Click through your new homepage first. Then we build the full website, and your team runs it with AI.</p>
         <div class="ctas">
           <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
           <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
@@ -128,11 +128,11 @@ const schema = [{
             <div>
               <p class="pk__top"><span>Homepage concept</span><span class="pk__flag">Start here</span></p>
               <p class="pk__p">$1,499<small>one-off</small></p>
-              <p class="pk__d">1 animated, interactive homepage direction. Figma plus vibe coding, delivered in 7&nbsp;days.</p>
+              <p class="pk__d">1 animated, interactive homepage direction, delivered in 7&nbsp;days.</p>
               <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept</span><Tri /></a>
               <ul class="pk__list">
-              <li>3-4 homepage sections with our direction for your product</li>
-              <li>An interactive, animated prototype. Figma and vibe code</li>
+              <li>3–4 homepage sections with our direction for your product</li>
+              <li>A live preview you can click through and share with your team</li>
               <li>The files are yours to keep and build on</li>
               <li>The $1,499 goes toward the full website if you start within 60 days</li>
               </ul>
@@ -154,7 +154,7 @@ const schema = [{
             <div class="pn">
               <p class="pn__n">Monthly Design and Build</p>
               <p class="pn__p">$7,899<small>/ month</small></p>
-              <p class="pn__d">4 weeks with a senior designer and a senior developer. Pause or stop after any month.</p>
+              <p class="pn__d">4 weeks with a senior designer and a senior developer. Handover and AI setup included. Pause or stop after any month.</p>
               <a class="pn__go" href={CALL}>Discuss a project <Tri /></a>
             </div>
           </div>
@@ -181,6 +181,14 @@ const schema = [{
             ))}
           </div>
         </div>
+      </section>
+
+      <section class="sec" id="handover">
+        <p class="tag"><i></i>After launch</p>
+        <h2 class="h2 rv">A website your team runs <span class="acc">without us</span></h2>
+        <ol class="yr bd">
+          {home.handover.map((h, i) => <li><span class="mono">{pad(i + 1)}</span><b>{h.t}</b><p>{h.d}</p></li>)}
+        </ol>
       </section>
 
       <section class="sec" id="team">

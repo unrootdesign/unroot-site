@@ -137,7 +137,11 @@ export const home = {
   },
   {
    "q": "Will I be able to edit the website myself afterwards?",
-   "a": "Yes. We build in Webflow or Framer with a real CMS. Your marketing person can swap copy, add a post and publish without calling us."
+   "a": "Yes. We set it up so you change copy, pages and posts by asking AI in plain words, and we show your team how on a handover call. One of our clients runs his website this way and has not needed to hire anyone for it."
+  },
+  {
+   "q": "Can you help automate other things?",
+   "a": "Yes, when it sits close to your website or sales: leads into your CRM, follow-ups, reports, content. Tell us on a call what takes your team the most time, and we will tell you if AI can take it over."
   },
   {
    "q": "What happens if you go quiet for a week?",
@@ -162,6 +166,20 @@ export const home = {
   {
    "q": "Who owns the files?",
    "a": "You do. Figma files, the Webflow or Framer project, code and assets: everything is yours once the project is paid."
+  }
+ ],
+ "handover": [
+  {
+   "t": "Edit it by asking AI",
+   "d": "We set up the website so you change copy, pages and posts in plain words. One of our clients runs his website this way and has not needed to hire anyone for it."
+  },
+  {
+   "t": "Handover and training",
+   "d": "1 call with your team and short video guides: how to edit, publish and add a page. After that you do not need us for everyday changes."
+  },
+  {
+   "t": "Automation around it",
+   "d": "Leads go straight to your CRM or Slack, routine content runs on templates. If more of your work can run on AI, we help set that up too."
   }
  ],
  "services": [
@@ -232,11 +250,11 @@ export const home = {
    "ratio": "2886/1860"
   },
   {
-   "name": "Vibe coding",
+   "name": "Vibe coding and AI setup",
    "tags": [
-    "AI-assisted",
-    "rapid prototyping",
-    "MVP-ready"
+    "AI-assisted build",
+    "edit with AI",
+    "workflow automation"
    ],
    "images": [],
    "video": "s-vibe",
