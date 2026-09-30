@@ -73,14 +73,6 @@
     }));
   }
 
-  /* приветствие: первое сообщение, чтобы окно сразу выглядело как чат */
-  function greet() {
-    const m = el('div', 'msg msg--bot');
-    m.append(el('span', 'msg__who mono', 'Unroot'), el('p', null, 'Hi. Ask about prices, case studies or timelines. We answer here and show you the right part of the page.'));
-    log.append(m);
-  }
-  greet();
-
   function you(text) {
     const m = el('div', 'msg msg--you'); m.append(el('p', null, text)); log.append(m); down();
   }
@@ -182,7 +174,7 @@
   });
 
   root.querySelector('.chat__reset')?.addEventListener('click', () => {
-    log.replaceChildren(); greet(); chipsBox.replaceChildren(); rail?.classList.remove('is-chat'); input.value = '';
+    log.replaceChildren(); chipsBox.replaceChildren(); rail?.classList.remove('is-chat'); input.value = '';
     window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' });
   });
 

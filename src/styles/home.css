@@ -283,7 +283,7 @@
   @keyframes dot{50%{opacity:.25;transform:translateY(-2px)}}
   .msg__acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
   .btn--sm{min-height:0;padding:11px 14px;font-size:.66rem}
-  .chat__chips{flex:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .chat__chips{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:12px}
   .chat__chips:empty{display:none}
   /* варианты ответа: как наши метки, только без точки */
   .chip,.sug{display:inline-flex;align-items:center;text-align:left;border:0;border-radius:3px;padding:8px 10px;background:var(--pale);color:var(--violet-d);
@@ -298,11 +298,13 @@
   .chat__in button{flex:none;width:46px;border:0;background:var(--violet);color:#fff;cursor:pointer;display:grid;place-items:center;transition:background var(--t) var(--ease)}
   .chat__in button:hover{background:var(--violet-hi)}
   .chat__in svg{width:16px;height:16px}
-  .chat__sug{margin-bottom:12px}
-  .chat__sug ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
-  /* до разговора: приветствие, варианты и поле, как в обычном чате; потом варианты всплывают по клику в пустое поле */
+  /* варианты: под полем, в одну колонку */
+  .chat__sug{margin-top:12px}
+  .chat__sug ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  /* до разговора: заголовок, поле и варианты под ним; потом варианты всплывают над полем по клику в пустое поле */
   .chat:not(.is-chat){height:auto}
-  .chat:not(.is-chat) .chat__log{flex:none;padding-bottom:16px}
+  .chat:not(.is-chat) .chat__log{display:none}
+  .chat:not(.is-chat) .chat__box{margin-top:18px}
   .chat.is-chat .chat__sug{display:none;position:absolute;left:0;right:0;bottom:calc(100% + 8px);margin:0;z-index:5;background:var(--white);border:1px solid var(--line);
     box-shadow:0 20px 40px -20px rgba(29,19,54,.35);padding:12px}
   .chat.is-chat .chat__box.open .chat__sug{display:block}
