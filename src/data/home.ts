@@ -2,6 +2,11 @@
 export const home = {
  "pairs": [
   {
+   "slug": "chatarmin",
+   "name": "Chatarmin",
+   "label": "Scroll animation"
+  },
+  {
    "slug": "javelin",
    "name": "Javelin VP",
    "label": "Animated concept"

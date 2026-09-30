@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import CtaBand from '../components/CtaBand.astro';
+import Tri from '../components/Tri.astro';
+import { BUY_CONCEPT } from '../data/links';
 
 // title дословно из Webflow, description в Webflow не было
 const title = "Book a Call | Unroot Design";
@@ -22,7 +23,8 @@ const VIDEO = 'https://cdn.prod.website-files.com/63b1a61bccd2eafa936ec2d8/69eb6
           </div>
         </div>
         <div class="call__cta">
-          <CtaBand kicker="Not ready for a call?" title="Get a concept first" text="Send us a link. Get an animated, interactive homepage concept in 7 days. $1,499." />
+          <h2 class="call__q">Not ready for a call? <span class="acc">Get a concept first.</span></h2>
+          <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
         </div>
       </div>
       <div class="call__cal" id="my-cal-inline" aria-label="Booking calendar"></div>
@@ -40,7 +42,10 @@ const VIDEO = 'https://cdn.prod.website-files.com/63b1a61bccd2eafa936ec2d8/69eb6
   .call__play svg { width: 44px; height: 44px; padding: 16px 14px 16px 18px; box-sizing: content-box; background: var(--violet); }
   .call__play:hover svg { background: var(--violet-hi); }
   .call__play.off { opacity: 0; }
-  .call__cta { margin-top: 28px; }
+  /* простой белый блок: вопрос и кнопка, без тёмного фона и эффектов */
+  .call__cta { margin-top: 28px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--line); background: var(--white);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 24px; }
+  .call__q { font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; max-width: 22ch; }
   .call__cal { min-height: 640px; border: 1px solid var(--line); background: var(--white); overflow: auto; }
 </style>
 

@@ -137,3 +137,7 @@ npm run verify   # всё вместе, гонять перед каждым д�
 - До и после на главной: сразу видно 4 пары (`BA_FIRST` в `index.astro`), остальные по кнопке «Show N more». Первая пара Chatarmin.
 - Кейс Workshop Film Co. убран целиком, `/case-studies/workshop-film-co` ведёт 301 на `/#work`.
 - Запуск 30.09.2026: unroot.design и www.unroot.design подключены к Worker unroot-site как custom domains, www уходит 301 на корень (Redirect Rule в зоне). Почта Google Workspace (MX, SPF, DKIM, DMARC) перенесена в Cloudflare DNS без изменений.
+- Чат: без метки и подзаголовка, сразу приветствие от Unroot, варианты ответа оформлены как наши метки без точки, крестик в правом верхнем углу.
+- Кейсы на главной: вся карточка ведёт на кейс и при наведении подсвечивает кнопку «View case study», ссылка «Website» работает отдельно.
+- Animated: первым идёт Chatarmin (`v-chatarmin.mp4`, 1280×720, без звука).
+- /call: под видео простой белый блок «Not ready for a call? Get a concept first.» с одной кнопкой, без тёмной секции.

@@ -213,19 +213,17 @@ const schema = [{
   <button class="chat-fab" type="button" aria-expanded="false" aria-controls="chat"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/></svg>Ask us anything</button>
   <div class="chat" id="chat" data-buy={BUY_CONCEPT} role="dialog" aria-label="Ask Unroot">
     <div class="chat__head">
-      <p class="tag"><i></i>Ask Unroot</p>
       <button class="chat__x" type="button" aria-label="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg></button>
       <p class="chat__h">Ask us anything</p>
-      <p class="chat__s">Prices, case studies, timelines. We answer here and show you the right part of the page.</p>
     </div>
     <div class="chat__log" aria-live="polite"></div>
     <div class="chat__chips"></div>
     <div class="chat__box">
+      <div class="chat__sug"><ul></ul></div>
       <form class="chat__in" autocomplete="off">
         <input type="text" name="q" placeholder="Ask us anything..." aria-label="Ask us anything" maxlength="200" />
         <button type="submit" aria-label="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></button>
       </form>
-      <div class="chat__sug"><p class="mono">Common questions</p><ul></ul></div>
     </div>
     <button class="chat__reset mono" type="button">Start over</button>
   </div>
