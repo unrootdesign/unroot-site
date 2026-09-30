@@ -47,12 +47,12 @@ const logoSvg = logo.replace('<svg ', '<svg class="logo" aria-hidden="true" ');
     .bar__cta { grid-column: 3; }
   }
   @media (min-width: 1200px) and (max-width: 1399px) { .bar__nav { gap: 22px; } }
-  .bar__nav a, .bar__cta, .bar__menu a { font: 500 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 6px 0; transition: color var(--t) var(--ease); }
+  .bar__nav a, .bar__menu a { font: 500 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 6px 0; transition: color var(--t) var(--ease); }
   .bar__nav a:hover, .bar__nav a[aria-current], .bar__menu a:hover, .bar__menu a[aria-current] { color: var(--violet); }
   .bar__logo { color: var(--violet); display: block; }
   .bar__logo :global(.logo) { height: 17px; width: auto; display: block; }
   /* текст кнопки встаёт по правому краю контента, фон при наведении выходит за него */
-  .bar__cta { justify-self: end; display: inline-flex; align-items: center; gap: 9px; color: var(--ink); padding: 11px 14px; margin-right: -14px;
+  .bar__cta { font: 500 .74rem/1 var(--f); letter-spacing: .06em; text-transform: uppercase; justify-self: end; display: inline-flex; align-items: center; gap: 9px; color: var(--ink); padding: 11px 14px; margin-right: -14px;
     transition: background var(--t) var(--ease), color var(--t) var(--ease); }
   .bar__cta :global(.tri) { width: 7px; height: 7px; color: var(--violet); transition: color var(--t) var(--ease); }
   .bar__cta:hover { background: var(--violet); color: #fff; }

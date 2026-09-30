@@ -74,7 +74,7 @@ export const home = {
   },
   {
    "slug": "trustyfy",
-   "shots": 3,
+   "shots": 4,
    "cs": "trustyfy",
    "name": "Trustyfy",
    "year": "2025",

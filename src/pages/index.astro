@@ -20,36 +20,50 @@ const schema = [{
 <Base title={title} description={description} schema={schema} bodyClass="home">
   <div class="shell">
     <aside class="rail">
-      <div class="rail__mid">
-        <p class="tag"><i></i>Website design and build</p>
-        <h1 class="h1 rv">Your new homepage <span class="acc">in <span class="nw">7 days</span></span></h1>
-        <p class="lede">Click through your new homepage first. Then we build the full website, and your team runs it with AI.</p>
-        <div class="ctas">
-          <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
-          <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+      <div class="chat" id="chat" data-buy={BUY_CONCEPT} role="complementary" aria-label="Ask Unroot">
+        <div class="chat__head">
+          <p class="tag"><i></i>Ask Unroot</p>
+          <button class="chat__x" type="button" aria-label="Close">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></svg>
+          </button>
+          <p class="chat__h">Ask us anything</p>
+          <p class="chat__s">Prices, examples, timelines. We answer here and show you the right part of the page.</p>
         </div>
-      </div>
-      <div class="chat" id="chat" data-buy={BUY_CONCEPT}>
-        <div class="chat__top"><p class="chat__k mono">Ask us anything</p><button class="chat__reset mono" type="button">Start over</button></div>
         <div class="chat__log" aria-live="polite"></div>
         <div class="chat__chips"></div>
-        <form class="chat__in" autocomplete="off">
-          <input type="text" name="q" placeholder="Prices, examples, how it works..." aria-label="Ask us anything" maxlength="200" />
-          <button type="submit" aria-label="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></button>
-        </form>
-      </div>
-      <div class="facts">
-        <div><b>9</b><s>years</s></div>
-        <div><b>100+</b><s>brands</s></div>
-        <div><b>$130M+</b><s>raised by clients</s></div>
+        <div class="chat__box">
+          <form class="chat__in" autocomplete="off">
+            <input type="text" name="q" placeholder="Ask us anything..." aria-label="Ask us anything" maxlength="200" />
+            <button type="submit" aria-label="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></button>
+          </form>
+          <div class="chat__sug"><p class="mono">Common questions</p><ul></ul></div>
+        </div>
+        <button class="chat__reset mono" type="button">Start over</button>
       </div>
     </aside>
 
     <div class="stream">
       <section class="sec" id="concept">
-        <p class="tag"><i></i>Concept</p>
-        <h2 class="h2 rv">See the direction <span class="acc">before you commit</span></h2>
-        <p class="sub">You send a link, we redesign the homepage from scratch. Drag the slider to see what changed.</p>
+        <div class="hero">
+          <p class="tag"><i></i>Website design and build</p>
+          <h1 class="h1 rv">Your new homepage <span class="acc">in <span class="nw">7 days</span></span></h1>
+          <p class="lede">Click through your new homepage first. Then we build the full website, and your team runs it with AI.</p>
+          <div class="ctas">
+            <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
+            <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+          </div>
+          <div class="facts">
+            <div><b>9</b><s>years</s></div>
+            <div><b>100+</b><s>brands</s></div>
+            <div><b>$130M+</b><s>raised by clients</s></div>
+          </div>
+        </div>
+
+        <div class="cpt" id="examples">
+          <p class="tag"><i></i>Concept</p>
+          <h2 class="h2 rv">See the direction <span class="acc">before you commit</span></h2>
+          <p class="sub">You send a link, we redesign the homepage from scratch. Drag the slider to see what changed.</p>
+        </div>
 
         <div class="tabs" role="tablist">
           <button data-tab="ba" aria-selected="true" role="tab" type="button">Before / after</button>
@@ -214,7 +228,7 @@ const schema = [{
       </section>
     </div>
   </div>
-  <button class="chat-fab mono" type="button">Ask us</button>
+  <button class="chat-fab" type="button" aria-expanded="false" aria-controls="chat"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 3.5h11v7h-6l-3 2.5v-2.5h-2z"/></svg>Ask us</button>
   <script type="application/json" id="chat-faq" set:html={JSON.stringify(home.faq)}></script>
 </Base>
 

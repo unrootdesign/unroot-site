@@ -9,6 +9,7 @@
   const form = root.querySelector('.chat__in');
   const input = form.querySelector('input');
   const rail = root.closest('.rail');
+  const sugList = root.querySelector('.chat__sug ul');
   const BUY = root.dataset.buy;
   const FAQ = JSON.parse(document.getElementById('chat-faq')?.textContent || '[]');
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -21,7 +22,7 @@
   const T = {
     concepts: { chip: 'Show me concepts', re: /concept|example|before|after|redesign|sample|mock|prototype|preview/,
       say: 'These are homepages we redesigned from scratch, 7 days each. Drag the slider to compare before and after.',
-      go: 'concept', next: ['price', 'work'] },
+      go: 'examples', next: ['price', 'work'] },
     work: { chip: 'Show me live websites', re: /work|portfolio|case|project|website[s]? you|built|launch|live|client[s]? (site|website)/,
       say: 'These started as concepts and are live websites now. Open any card for the full case study.',
       go: 'work', next: ['reviews', 'start'] },
@@ -55,6 +56,12 @@
       say: 'Hi. What would you like to see first?', next: ['concepts', 'work', 'price', 'start'] },
   };
   const FIRST = ['concepts', 'work', 'reviews', 'price', 'start', 'call'];
+  /* список «частые вопросы» под полем ввода: как пишет посетитель */
+  const SUG = [
+    ['Show me your concepts', 'concepts'], ['Show me live websites', 'work'], ['What do your clients say?', 'reviews'],
+    ['How much does it cost?', 'price'], ['How fast can you do it?', 'speed'], ['I don\u2019t know where to start', 'start'],
+    ['Can my team edit the website later?', 'handover'], ['What do you do?', 'services'], ['I\u2019d like to talk', 'call'],
+  ];
 
   const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
   const down = () => { log.scrollTop = log.scrollHeight; };
@@ -138,7 +145,7 @@
     if (r?.key) {
       const t = T[r.key];
       await bot(t.say, t.btn || []);
-      if (t.go) setTimeout(() => show(t.go), wide() ? 120 : 700);
+      if (t.go) setTimeout(() => { if (!wide()) sheet(false); show(t.go); }, wide() ? 120 : 900);
       chips(t.next || FIRST);
     } else if (r?.faq) {
       await bot(r.faq.a);
@@ -151,24 +158,44 @@
     busy = false;
   }
 
+  /* всплывающие частые вопросы: по клику в пустое поле, прячутся при наборе и после отправки */
+  const box = root.querySelector('.chat__box');
+  const pop = open => box?.classList.toggle('open', open);
+  input.addEventListener('focus', () => pop(!input.value));
+  input.addEventListener('click', () => pop(!input.value));
+  input.addEventListener('input', () => pop(!input.value));
+  input.addEventListener('blur', () => pop(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape') pop(false); });
+
   form.addEventListener('submit', e => {
     e.preventDefault();
+    pop(false);
     const v = input.value; input.value = '';
     ask(v);
   });
 
   root.querySelector('.chat__reset')?.addEventListener('click', () => {
-    log.replaceChildren(); rail?.classList.remove('is-chat'); chips(FIRST); input.value = '';
+    log.replaceChildren(); chipsBox.replaceChildren(); rail?.classList.remove('is-chat'); input.value = '';
     window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' });
   });
 
-  chips(FIRST);
+  /* частые вопросы: видны до начала разговора, потом по клику в поле */
+  sugList?.replaceChildren(...SUG.map(([q, k]) => {
+    const li = el('li'), b = el('button', 'sug', q); b.type = 'button';
+    b.addEventListener('mousedown', e => e.preventDefault());
+    b.addEventListener('click', () => { pop(false); input.blur(); ask(q, k); });
+    li.append(b); return li;
+  }));
   addEventListener('resize', down);
 
-  /* на телефоне: кнопка «Ask us» возвращает к чату, когда он ушёл из вида */
+  /* на телефоне чат живёт в шторке снизу, открывается кнопкой «Ask us» */
   const fab = document.querySelector('.chat-fab');
-  if (fab && 'IntersectionObserver' in window) {
-    new IntersectionObserver(([e]) => fab.classList.toggle('on', !e.isIntersecting && !wide()), { threshold: 0 }).observe(root);
-    fab.addEventListener('click', () => { root.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' }); setTimeout(() => input.focus({ preventScroll: true }), 500); });
+  function sheet(open) {
+    document.body.classList.toggle('chat-open', open);
+    fab?.setAttribute('aria-expanded', String(open));
+    if (open) setTimeout(() => input.focus({ preventScroll: true }), 300);
   }
+  fab?.addEventListener('click', () => sheet(!document.body.classList.contains('chat-open')));
+  root.querySelector('.chat__x')?.addEventListener('click', () => sheet(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape') sheet(false); });
 })();

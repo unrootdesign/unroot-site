@@ -44,7 +44,7 @@ p { text-wrap: pretty; }
 .ctas { display: flex; gap: 0; flex-wrap: wrap; margin-top: 36px; width: fit-content; max-width: 100%; }
 .ctas .btn { flex: 1 1 auto; }
 .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-  font: 500 .72rem/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; white-space: nowrap;
+  font: 500 .76rem/1 var(--f); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
   padding: 17px 20px; border: 0; border-radius: 0; cursor: pointer; overflow: hidden; isolation: isolate;
   -webkit-tap-highlight-color: transparent;
   transition: background var(--t) var(--ease), color var(--t) var(--ease), box-shadow var(--t) var(--ease); }
