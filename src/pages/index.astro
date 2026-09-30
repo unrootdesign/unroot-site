@@ -29,6 +29,15 @@ const schema = [{
           <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
         </div>
       </div>
+      <div class="chat" id="chat" data-buy={BUY_CONCEPT}>
+        <div class="chat__top"><p class="chat__k mono">Ask us anything</p><button class="chat__reset mono" type="button">Start over</button></div>
+        <div class="chat__log" aria-live="polite"></div>
+        <div class="chat__chips"></div>
+        <form class="chat__in" autocomplete="off">
+          <input type="text" name="q" placeholder="Prices, examples, how it works..." aria-label="Ask us anything" maxlength="200" />
+          <button type="submit" aria-label="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></button>
+        </form>
+      </div>
       <div class="facts">
         <div><b>9</b><s>years</s></div>
         <div><b>100+</b><s>brands</s></div>
@@ -205,9 +214,11 @@ const schema = [{
       </section>
     </div>
   </div>
+  <button class="chat-fab mono" type="button">Ask us</button>
+  <script type="application/json" id="chat-faq" set:html={JSON.stringify(home.faq)}></script>
 </Base>
 
-<script>import '../scripts/home.js';</script>
+<script>import '../scripts/home.js'; import '../scripts/chat.js';</script>
 <script is:inline>
   /* Cal.com unrootdesign/30min, грузится только когда секция близко */
   (function () {
