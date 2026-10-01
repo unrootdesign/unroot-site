@@ -41,12 +41,15 @@
   }));
 
   /* до и после */
+  /* мышь ведёт слайдер по всей карточке, включая белые поля, так что он доходит до края;
+     когда мышь уходит, слайдер остаётся там, где его оставили */
   document.querySelectorAll('.ba__stage').forEach(st=>{
+    const card=st.closest('.ba')||st;
     const set=x=>{const r=st.getBoundingClientRect();
       st.style.setProperty('--sp',Math.max(0,Math.min(100,((x-r.left)/r.width)*100))+'%');};
-    st.addEventListener('pointermove',e=>set(e.clientX));
+    card.addEventListener('pointermove',e=>{ if(e.pointerType==='mouse'||st.hasPointerCapture(e.pointerId)) set(e.clientX); });
     st.addEventListener('pointerdown',e=>{st.setPointerCapture(e.pointerId);set(e.clientX);});
-    st.addEventListener('pointerleave',()=>st.style.setProperty('--sp','50%'));
+    st.addEventListener('pointermove',e=>{ if(st.hasPointerCapture(e.pointerId)) set(e.clientX); });
   });
 
   /* видео: грузим и играем то, что в кадре */
