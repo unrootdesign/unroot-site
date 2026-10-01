@@ -11,7 +11,7 @@ author: "Adam"
 featured: false
 cover: "/cms/george-west-logo-embossed-design.avif"
 coverAlt: ""   # TODO alt не было в Webflow
-ogImage: "/cms/OG-Unroot-Design.jpg"
+ogImage: "/images/og-default.jpg"
 faq:
   - q: "What are the 7 types of logos?"
     a: "The seven types of logos are: Wordmark: Text-only logos (e.g., Google). Lettermark: Initial-based logos (e.g., HBO). Pictorial Mark: Symbol or icon (e.g., Apple). A bstract Mark: Unique, abstract design (e.g., Nike swoosh). Combination Mark: Text and symbol together (e.g., Adidas). Emblem: Text inside a symbol or shape (e.g., Starbucks). Mascot: Illustrated character representing the brand (e.g., KFC)."

@@ -11,7 +11,7 @@ author: "Adam"
 featured: false
 cover: "/cms/Formline-logo-on-blue-abstract-background.avif"
 coverAlt: ""   # TODO alt не было в Webflow
-ogImage: "/cms/OG-Unroot-Design.jpg"
+ogImage: "/images/og-default.jpg"
 faq:
   - q: "How do I legally create a logo?"
     a: "To legally create a logo, start by ensuring it is original and doesn’t infringe on existing trademarks. Conduct a trademark search through your country’s trademark office (e.g., USPTO or EUIPO) to verify its uniqueness. Once finalized, register your logo to secure legal protection and prevent unauthorized use."

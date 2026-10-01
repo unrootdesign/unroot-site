@@ -11,7 +11,7 @@ author: "Adam"
 featured: false
 cover: "/cms/Cover-Image-Webflow-VS-Framer.avif"
 coverAlt: ""   # TODO alt не было в Webflow
-ogImage: "/cms/OG-Unroot-Design.jpg"
+ogImage: "/images/og-default.jpg"
 faq:
   - q: "Which platform is better for professional websites, not just portfolios?"
     a: "Both platforms can handle professional websites, but they serve different needs. Webflow is better suited for structured, scalable websites that grow over time—especially when content, SEO, and long-term maintenance matter. Framer works best for visually strong marketing sites where speed and presentation are the main priorities."

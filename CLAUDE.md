@@ -142,3 +142,4 @@ npm run verify   # всё вместе, гонять перед каждым д�
 - Animated: первым идёт Chatarmin (`v-chatarmin.mp4`, 1280×720, без звука).
 - /call: под видео простой белый блок «Not ready for a call? Get a concept first.» с одной кнопкой, без тёмной секции.
 - До и после: слайдер ведётся мышью по всей карточке, включая белые поля, поэтому доходит до самого края. Когда мышь уходит, слайдер остаётся на месте, в центр не возвращается.
+- OG-картинки (1200×630) в `public/images/og-*.jpg`: общая og-default (Premium websites that earn trust and drive sales) на всех страницах, где нет своей; og-call для /call, og-templates для /templates, og-framer-templates для статьи framer-templates-for-ai. Favicon `favicon.png` 64px и `favicon.ico`, webclip `apple-touch-icon.png` 180px на белом фоне.

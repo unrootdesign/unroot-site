@@ -11,7 +11,7 @@ author: "Adam"
 featured: false
 cover: "/cms/Cover-Image-Framer-Templates-for-AI-and-SaaS-Startups.jpg"
 coverAlt: ""   # TODO alt не было в Webflow
-ogImage: "/cms/OG-Unroot-Design-4.jpg"
+ogImage: "/images/og-framer-templates.jpg"
 faq:
   - q: "Are Framer templates SEO-friendly out of the box?"
     a: "Mostly yes. Framer handles the technical SEO basics (page speed, mobile responsiveness, structured data) automatically. What you still need to do manually is fill in title tags, meta descriptions, OG images, and a sitemap. Templates with a built-in CMS for blogging give you a meaningful head start on the content side."
