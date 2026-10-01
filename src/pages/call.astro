@@ -6,67 +6,31 @@ import { BUY_CONCEPT } from '../data/links';
 // title дословно из Webflow, description в Webflow не было
 const title = "Book a Call | Unroot Design";
 const description = "Book a 30 minute call with Unroot Design to talk about your website, brand or product design project.";
-const VIDEO = 'https://cdn.prod.website-files.com/63b1a61bccd2eafa936ec2d8/69eb635eec55b0b94490f70c_11440b15bb7bcf08d33c7cfd0084cb56_playlist.txt';
 ---
 <Base title={title} description={description} ogImage="/images/og-call.jpg">
   <header class="phead call">
-    <div class="wrap call__grid">
-      <div>
-        <p class="tag"><i></i>Book a call</p>
-        <h1 class="h1">Let&rsquo;s talk about <span class="acc">your project</span></h1>
-        <p class="lede">Pick a time for a 30 minute call. Tell us what you are building and where the website should go next.</p>
-        <div class="win frame call__video">
-          <span class="win__bar"><i></i><i></i><i></i></span>
-          <div class="call__stage">
-            <video id="callVideo" playsinline loop preload="none" poster="/images/call-poster.webp" data-src={VIDEO}></video>
-            <button class="call__play" id="callPlay" type="button" aria-label="Play video"><svg viewBox="0 0 99 114" aria-hidden="true"><path d="M98.25 56.72L0 113.45V0z" fill="currentColor"/></svg></button>
-          </div>
-        </div>
-        <div class="call__cta">
-          <h2 class="call__q">Not ready for a call? <span class="acc">Get a concept first.</span></h2>
-          <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
-        </div>
-      </div>
+    <div class="wrap">
+      <p class="tag"><i></i>Book a call</p>
+      <h1 class="h1">Let&rsquo;s talk about <span class="acc">your project</span></h1>
+      <p class="lede">Pick a time for a 30 minute call. Tell us what you are building and where the website should go next.</p>
       <div class="call__cal" id="my-cal-inline" aria-label="Booking calendar"></div>
+      <div class="call__cta">
+        <h2 class="call__q">Not ready for a call? <span class="acc">Get a concept first.</span></h2>
+        <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
+      </div>
     </div>
   </header>
 </Base>
 
 <style>
-  .call__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
-  @media (max-width: 1000px) { .call__grid { grid-template-columns: 1fr; } }
-  .call__video { margin-top: 36px; }
-  .call__stage { position: relative; aspect-ratio: 16/9; background: var(--night); }
-  .call__stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .call__play { position: absolute; inset: 0; display: grid; place-items: center; border: 0; background: rgba(29,19,54,.35); color: #fff; cursor: pointer; transition: opacity var(--t) var(--ease); }
-  .call__play svg { width: 44px; height: 44px; padding: 16px 14px 16px 18px; box-sizing: content-box; background: var(--violet); }
-  .call__play:hover svg { background: var(--violet-hi); }
-  .call__play.off { opacity: 0; }
-  /* простой белый блок: вопрос и кнопка, без тёмного фона и эффектов */
-  .call__cta { margin-top: 28px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--line); background: var(--white);
+  /* календарь сразу под заголовком, под ним простой белый блок про концепт на всю ширину */
+  .call__cal { margin-top: 36px; min-height: 640px; border: 1px solid var(--line); background: var(--white); overflow: auto; }
+  .call__cta { margin-top: 16px; padding: clamp(22px, 3vw, 32px); border: 1px solid var(--line); background: var(--white);
     display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 24px; }
-  .call__q { font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; max-width: 22ch; }
-  .call__cal { min-height: 640px; border: 1px solid var(--line); background: var(--white); overflow: auto; }
+  .call__q { font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
 </style>
 
-<script is:inline src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
 <script is:inline>
-  (function () {
-    var v = document.getElementById('callVideo'), btn = document.getElementById('callPlay');
-    if (!v) return;
-    var url = v.dataset.src, ready = false;
-    function load() {
-      if (ready) return; ready = true;
-      if (window.Hls && Hls.isSupported()) { var h = new Hls(); h.loadSource(url); h.attachMedia(v); }
-      else if (v.canPlayType('application/vnd.apple.mpegurl')) { v.src = url; }
-    }
-    btn.addEventListener('click', function () {
-      load();
-      if (v.paused) { v.play().catch(function(){}); btn.classList.add('off'); } else { v.pause(); btn.classList.remove('off'); }
-    });
-    v.addEventListener('click', function () { if (!v.paused) { v.pause(); btn.classList.remove('off'); } });
-  })();
-
   /* Cal.com, как на текущем сайте: unrootdesign/30min */
   (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
   Cal("init", "30min", { origin: "https://cal.com" });

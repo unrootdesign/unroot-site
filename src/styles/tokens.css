@@ -7,8 +7,6 @@
 @font-face { font-family: "Google Sans"; src: url("/fonts/google-sans-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Google Sans"; src: url("/fonts/google-sans-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 @font-face { font-family: "Google Sans"; src: url("/fonts/google-sans-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
-@font-face { font-family: "JB Mono"; src: url("/fonts/jb-mono-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "JB Mono"; src: url("/fonts/jb-mono-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 
 :root {
   /* цвет */
@@ -28,7 +26,10 @@
 
   /* шрифты */
   --f:    "Google Sans", ui-sans-serif, system-ui, sans-serif;
-  --mono: var(--f);   /* метки, навигация, подписи: Google Sans капсом (раньше был JB Mono) */
+  /* все надписи капсом (метки, навигация, кнопки, подписи): один размер, вес и разрядка, отличаются только цветом */
+  --caps-fs: .68rem;
+  --caps-ls: .08em;
+  --mono: var(--f);   /* метки, навигация, подписи: Google Sans капсом */
 
   /* размеры заголовков */
   --h1: clamp(2.5rem, 4vw, 3.9rem);

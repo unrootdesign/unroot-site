@@ -67,12 +67,12 @@ const ext = (h: string) => h.startsWith('http');
   .ft .btn--line { color: #fff; }
   .ft__cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1240px; margin: clamp(80px, 10vw, 120px) auto 0; padding-top: 48px; border-top: 1px solid rgba(255,255,255,.14); }
   @media (max-width: 760px) { .ft__cols { grid-template-columns: 1fr 1fr; } }
-  h3 { font: 500 .64rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--violet-lt); margin-bottom: 22px; }
+  h3 { font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--violet-lt); margin-bottom: 22px; }
   ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 20px; font-size: .95rem; line-height: 1.25; }
   ul a { color: rgba(255,255,255,.86); transition: color var(--t) var(--ease); }
   ul a:hover { color: var(--violet-lt); }
   .ft__bar { max-width: 1240px; margin: 64px auto 0; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.14);
-    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font: 500 .64rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: rgba(255,255,255,.5); }
   .ft__bar nav { display: flex; gap: 24px; }
   .ft__bar a { transition: color var(--t) var(--ease); }
   .ft__bar a:hover { color: var(--violet-lt); }
