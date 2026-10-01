@@ -14,7 +14,8 @@
   .rail{min-width:0}
   @media(min-width:961px){
     .shell{grid-template-columns:var(--rw) minmax(0,1fr)}
-    .rail{position:fixed;left:0;top:var(--bar);width:var(--rw);height:calc(100vh - var(--bar));height:calc(100svh - var(--bar));
+    /* левая колонка липкая только внутри .shell: доходит до футера и уезжает вместе со страницей */
+    .rail{position:sticky;grid-column:1;align-self:start;top:var(--bar);height:calc(100vh - var(--bar));height:calc(100svh - var(--bar));
       min-height:0;z-index:1;overflow-y:auto;scrollbar-width:none}
     .rail::-webkit-scrollbar{display:none}
     .stream{grid-column:2}
