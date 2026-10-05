@@ -11,11 +11,13 @@ cardDescription: "Fintech platform for managing crypto and fiat payments, wallet
 fullPage: false
 liveUrl: "https://www.trustyfy.com/"
 gallery:
-  - src: "/cms/Trustyfy1.jpg"
-    alt: ""
-  - src: "/cms/Trustyfy2.jpg"
-    alt: ""
-  - src: "/cms/Trustyfy3.jpg"
-    alt: ""
+  - src: "/cases/trustyfy-1.jpg"
+    alt: "Trustyfy website, screen 1"
+  - src: "/cases/trustyfy-2.jpg"
+    alt: "Trustyfy website, screen 2"
+  - src: "/cases/trustyfy-3.jpg"
+    alt: "Trustyfy website, screen 3"
+  - src: "/cases/trustyfy-4.jpg"
+    alt: "Trustyfy website, screen 4"
 ---
 

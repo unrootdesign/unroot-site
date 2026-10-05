@@ -11,11 +11,13 @@ cardDescription: "Group finance platform with shared accounts, MoneyPools, and i
 fullPage: false
 liveUrl: "https://www.joinswitch.co"
 gallery:
-  - src: "/cms/switch2.jpg"
-    alt: ""
-  - src: "/cms/switch3.jpg"
-    alt: ""
-  - src: "/cms/switch1.jpg"
-    alt: ""
+  - src: "/cases/switch-1.jpg"
+    alt: "Switch website, screen 1"
+  - src: "/cases/switch-2.jpg"
+    alt: "Switch website, screen 2"
+  - src: "/cases/switch-3.jpg"
+    alt: "Switch website, screen 3"
+  - src: "/cases/switch-4.jpg"
+    alt: "Switch website, screen 4"
 ---
 

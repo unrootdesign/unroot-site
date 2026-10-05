@@ -1,4 +1,4 @@
-/* Чат в левой колонке главной. Без AI: понимает тему по ключевым словам,
+/* Плавающий чат главной. Без AI: понимает тему по ключевым словам,
    ищет ответ в FAQ и прокручивает правую колонку к нужному блоку.
    Ничего на странице не прячет, только ведёт к секциям. */
 (() => {
@@ -21,7 +21,7 @@
   /* темы: подписи кнопок, слова для распознавания, ответ, куда вести */
   const T = {
     concepts: { chip: 'Show me concepts', re: /concept|example|before|after|redesign|sample|mock|prototype|preview/,
-      say: 'These are homepages we redesigned from scratch, 7 days each. Drag the slider to compare before and after.',
+      say: 'These are homepages we redesigned from scratch, 7 days each. Before on the left, after on the right.',
       go: 'concept', next: ['price', 'work'] },
     work: { chip: 'Show me case studies', re: /work|portfolio|case|project|website[s]? you|built|launch|live|client[s]? (site|website)/,
       say: 'These started as concepts and are live websites now. Open any card for the full case study.',
@@ -30,11 +30,11 @@
       say: 'Here is what founders say after working with us.',
       go: 'reviews', next: ['price', 'call'] },
     price: { chip: 'How much is it?', re: /price|pricing|cost|how much|budget|\$|pay|rate|expensive|cheap|afford|plan/,
-      say: 'A homepage concept is $1,499 and takes 7 days. If you start the full website within 60 days, the $1,499 goes toward it. Weekly and monthly plans are right below.',
+      say: 'A homepage concept is $1,499 and takes 7 days. If you start the full website within 60 days, the $1,499 goes toward it. Weekly and monthly plans are right next to it.',
       go: 'pricing', btn: [BUY_BTN], next: ['start', 'call'] },
     start: { chip: 'Not sure where to start', re: /start|begin|don.?t know|not sure|where to|first step|confus|advice|what should/,
       say: 'Start with a concept. Send us your website, and in 7 days you click through your new homepage. Then you decide if we build the rest.',
-      go: 'offer', btn: [BUY_BTN], next: ['concepts', 'call'] },
+      go: 'pricing', btn: [BUY_BTN], next: ['concepts', 'call'] },
     call: { chip: 'Let’s talk', re: /call|talk|meet|book|contact|email|reach|human|person|discuss|chat with/,
       say: '30 minutes with the people who do the work. You tell us what you are building, we tell you what we would change on your website. No sales pitch.',
       go: 'team', next: ['price'] },

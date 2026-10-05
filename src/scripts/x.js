@@ -1,5 +1,5 @@
 /* Экспериментальная главная: до и после в герое сменяются сами, ряд работ тянется мышью,
-   при наведении на маленький кадр он встаёт на место главного. Док подсвечивает текущую секцию. */
+   при наведении на маленький кадр он встаёт на место главного. Подпись в шапке показывает текущую секцию. */
 (() => {
   if (!document.body.classList.contains('x')) return;
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -87,27 +87,22 @@
     Cal.ns['30min']('ui', { theme: 'light', hideEventTypeDetails: false, layout: 'month_view', cssVarsPerTheme: { light: { 'cal-brand': '#8961E7' } } });
   }
 
-  /* ── док и подпись сверху следят за секцией, у футера прячутся ── */
-  const links = $$('.x-dock a'), dock = $('.x-dock'), top = $('.x-top'), crumb = $('#xCrumb'), footer = $('footer.ft');
-  const ids = links.map(a => a.dataset.t);
-  const NAMES = { concept: 'concept', work: 'work', reviews: 'reviews', pricing: 'pricing', services: 'services', handover: 'services', team: 'contact', faq: 'faq' };
+  /* ── подпись после логотипа следит за секцией ── */
+  const crumb = $('#xCrumb');
+  const NAMES = { concept: 'concept', work: 'work', reviews: 'reviews', pricing: 'pricing', services: 'services', handover: 'after launch', team: 'contact', faq: 'faq' };
   const secs = $$('main .xs');
   function spy() {
     const y = innerHeight * .4;
     let cur = 'concept';
     secs.forEach(s => { if (s.getBoundingClientRect().top <= y) cur = s.id; });
-    const dockId = ids.includes(cur) ? cur : cur === 'handover' ? 'services' : cur === 'faq' ? 'team' : cur;
-    links.forEach(a => { if (a.dataset.t === dockId) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
-    crumb.textContent = NAMES[cur] || cur;
+    if (crumb) crumb.textContent = NAMES[cur] || cur;
     const hr = hero.getBoundingClientRect(), nowVis = hr.bottom > 0;
     if (nowVis !== heroVisible) { heroVisible = nowVis; show(idx[mode]); }
     if ($('#team').getBoundingClientRect().top < innerHeight * 2) bootCal();
-    if (footer) { const ft = footer.getBoundingClientRect().top; dock.classList.toggle('off', ft < innerHeight - 40); top.classList.toggle('off', ft < 90); }
   }
   let st = false;
   addEventListener('scroll', () => { if (!st) { st = true; requestAnimationFrame(() => { st = false; spy(); }); } }, { passive: true });
   spy();
-  links[0].addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' }); history.replaceState(null, '', location.pathname); });
   // старые ссылки вида /#offer, /#concepts ведут к нужной секции
   const ALIAS = { offer: 'concept', concepts: 'concept', about: 'team', contact: 'team' };
   const h = location.hash.slice(1);

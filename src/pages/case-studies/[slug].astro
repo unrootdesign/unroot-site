@@ -27,35 +27,33 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
     name: d.title, about: d.client, creator: { '@type': 'Organization', name: 'Unroot Design' },
   }]}>
 
+  <!-- кейс в 2 колонки: слева название, справа описание, факты и все картинки в одной ширине -->
   <header class="phead">
-    <div class="wrap phead__grid">
+    <div class="wrap cs__grid">
       <div>
         <nav class="crumbs mono" aria-label="Breadcrumb"><a href="/#work">Work</a><span aria-hidden="true">/</span><span>Case study</span></nav>
-        <h1 class="h1">{d.title}</h1>
-        {d.cardDescription && <p class="lede">{d.cardDescription}</p>}
-        {d.liveUrl && (
-          <div class="ctas">
-            <a class="btn btn--line" href={d.liveUrl} target="_blank" rel="noopener"><span>Visit the website</span><Tri /></a>
-          </div>
-        )}
+        <h1 class="h1 cs__h">{d.title}</h1>
       </div>
-      <ul class="facts-list mono">
-        <li><span>Client</span><span>{d.client}</span></li>
-        {d.year && <li><span>Year</span><span>{d.year}</span></li>}
-        {d.tags.length > 0 && <li><span>Scope</span><span>{d.tags.map(label).join(', ')}</span></li>}
-        {host && <li><span>Website</span><span><a class="cs__host" href={d.liveUrl} target="_blank" rel="noopener">{host}</a></span></li>}
-      </ul>
+      <div class="cs__r">
+        {d.cardDescription && <p class="lede cs__lede">{d.cardDescription}</p>}
+        <ul class="facts-list mono">
+          <li><span>Client</span><span>{d.client}</span></li>
+          {d.year && <li><span>Year</span><span>{d.year}</span></li>}
+          {d.tags.length > 0 && <li><span>Scope</span><span>{d.tags.map(label).join(', ')}</span></li>}
+          {host && <li><span>Website</span><span><a class="cs__host" href={d.liveUrl} target="_blank" rel="noopener">{host} ↗</a></span></li>}
+        </ul>
+      </div>
     </div>
   </header>
 
   {(d.video || d.gallery.length > 0) && (
     <section class="sec cs__media">
-      <div class="wrap cs__stack">
-        {d.video && (
-          <div class="win frame"><span class="win__bar"><i></i><i></i><i></i></span>
-            <video src={d.video} muted loop playsinline autoplay preload="metadata"></video></div>
-        )}
-        {d.gallery.map(g => <img class="cs__img" src={g.src} alt={g.alt} loading="lazy" decoding="async" />)}
+      <div class="wrap cs__grid">
+        <div></div>
+        <div class="cs__r cs__stack">
+          {d.video && <video class="cs__img" src={d.video} muted loop playsinline autoplay preload="metadata"></video>}
+          {d.gallery.map(g => <img class="cs__img" src={g.src} alt={g.alt} loading="lazy" decoding="async" />)}
+        </div>
       </div>
     </section>
   )}
@@ -64,7 +62,7 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
     <section class="sec sec--white">
       <div class="wrap cs__grid">
         <div><p class="tag"><i></i>The project</p></div>
-        <div class="prose"><Content /></div>
+        <div class="prose cs__r"><Content /></div>
       </div>
     </section>
   )}
@@ -106,12 +104,15 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
 <style>
   .cs__host { color: var(--violet-d); }
   .cs__host:hover { color: var(--ink); }
-  .cs__stack { display: grid; gap: clamp(28px, 4vw, 48px); }
-  .cs__media video { width: 100%; display: block; }
-  .cs__img { width: 100%; border: 1px solid var(--line); background: #fff; }
+  /* правая колонка одной ширины для текста и картинок; картинки в своих пропорциях */
+  .cs__r { width: 100%; max-width: 44rem; justify-self: end; }
+  .cs__media { border-top: 0; padding-top: 0; }
+  .cs__h { font-size: clamp(2.4rem, 4vw, 3.4rem); }
+  .cs__lede { margin-top: 0; margin-bottom: 28px; max-width: none; }
+  .cs__stack { display: grid; gap: clamp(20px, 3vw, 32px); align-content: start; }
+  .cs__img { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: #fff; }
   .cs__grid { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
   @media (max-width: 960px) { .cs__grid { grid-template-columns: 1fr; } }
   .cs__more { margin-top: clamp(32px, 4vw, 48px); }
   .cs__thumb { aspect-ratio: 16/9; }
-  :global(.facts-list) { align-self: end; }
 </style>

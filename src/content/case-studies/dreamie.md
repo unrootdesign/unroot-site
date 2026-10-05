@@ -12,12 +12,14 @@ fullPage: true
 liveUrl: "https://www.helloambient.com/"
 video: "/cms/Dreamie-section.mp4"
 gallery:
-  - src: "/cms/Dreamie1.jpg"
-    alt: ""
-  - src: "/cms/Dreamie3.jpg"
-    alt: ""
-  - src: "/cms/Dreamie2.jpg"
-    alt: ""
+  - src: "/cases/dreamie-1.jpg"
+    alt: "Dreamie website, screen 1"
+  - src: "/cases/dreamie-2.jpg"
+    alt: "Dreamie website, screen 2"
+  - src: "/cases/dreamie-3.jpg"
+    alt: "Dreamie website, screen 3"
+  - src: "/cases/dreamie-4.jpg"
+    alt: "Dreamie website, screen 4"
 testimonial:
   quote: "Adam and the Unroot team delivered a standout launch site for us. Collaboration was smooth from design through build, and they handled every detail with care. As a designer, I appreciated their can-do approach to exploring and refining ideas, then implementing them faithfully in production. Their post-launch support has been prompt and reliable. Strongly recommend."
   name: "Adrian Canoso"
@@ -32,7 +34,13 @@ When we joined, the website didn’t really show the product. No device, no cl
 
 ## What we delivered
 
-We worked with the team through 2024 and 2025 and turned an early, vague “whitelist-style” page into a clear product story and a launch-ready website. One small team did the brand, the 3D and the website.
+We worked with the team through 2024 and 2025 and turned an early, vague “whitelist-style” page into a clear product story and a launch-ready website.
+
+One small team did all of it:
+
+- 3D renders of the device
+- A compact brand: logo, colors and social media templates
+- The full website, from the first concept to launch
 
 ![](/cms/dreame.avif)
 
@@ -54,10 +62,6 @@ The website went through several rounds. 3 decisions shaped it:
 
 *Final result after our collaboration with the client*
 
-![](/cms/Dreamie.avif)
-
-*A minimalist logo with an abstract rising sun*
-
 ![](/cms/Dreamie6.avif)
 
 *A social media branding system*
@@ -74,6 +78,4 @@ The website went through several rounds. 3 decisions shaped it:
 
 ### Raised $44K on Kickstarter
 
-158 people backed the launch
-
-![](/cms/Dreamie.avif)
+158 people backed the launch. After the campaign, the website moved to Shopify.

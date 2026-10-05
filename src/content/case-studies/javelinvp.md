@@ -12,12 +12,14 @@ fullPage: true
 liveUrl: "https://www.javelinvp.com/"
 video: "/cms/Javelin-Concept.mp4"
 gallery:
-  - src: "/cms/JavelinVP3.jpg"
-    alt: ""
-  - src: "/cms/JavelinVP2.jpg"
-    alt: ""
-  - src: "/cms/JavelinVP1.jpg"
-    alt: ""
+  - src: "/cases/javelinvp-1.jpg"
+    alt: "Javelin VP website, screen 1"
+  - src: "/cases/javelinvp-2.jpg"
+    alt: "Javelin VP website, screen 2"
+  - src: "/cases/javelinvp-3.jpg"
+    alt: "Javelin VP website, screen 3"
+  - src: "/cases/javelinvp-4.jpg"
+    alt: "Javelin VP website, screen 4"
 testimonial:
   quote: "Javelin worked with Adam at Unroot on the re-design and development of our website, transitioning from WordPress to WebFlow. We could not have been happier with his work and strongly recommend him to any future clients. We went through several iterations throughout which Adam was patient and provided outputs as per our ask and often beyond our expectations. He is creative and very timely with responses, which we really appreciated. If you want to get an awesome website, I highly recommend working with Adam at Unroot."
   name: "Tasnia Huque"
@@ -32,13 +34,13 @@ The old website worked, but it did not match the level of the firm. It needed a 
 
 ## What we delivered
 
-We redesigned the website and rebuilt it in Webflow. It is easy to navigate and stays fast with video and rich media on the homepage.
+We redesigned the whole website and rebuilt it in Webflow: homepage, portfolio, team, news and insights, investor portal, careers and contact. It is easy to navigate and stays fast with video and rich media on the homepage. Custom animations run through every page.
 
 ![](/cms/Javelin9.avif)
 
 ## How we worked
 
-We removed decorative elements and focused on clarity and speed.
+We worked in rounds. The team did not like every version, so we kept going: tried new directions and made more variants until it felt right. We removed decorative elements and focused on clarity and speed.
 
 - Cut all stock photography and commissioned custom shoots, so the firm looks real, not templated.
 - Built a portfolio section the team keeps up to date on its own.
@@ -67,3 +69,5 @@ We removed decorative elements and focused on clarity and speed.
 ### A new identity for Javelin VP
 
 A fast website with rich media that is still easy to navigate.
+
+*After launch, the team sent us a $500 bonus as a thank you.*

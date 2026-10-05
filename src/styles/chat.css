@@ -1,0 +1,64 @@
+/* Плавающий чат «Ask us anything»: кнопка справа внизу и окно над ней. Общий для главной. */
+  .chat-fab{position:fixed;right:20px;bottom:20px;z-index:55;display:inline-flex;align-items:center;gap:10px;background:var(--violet);color:#fff;border:0;border-radius:3px;
+    padding:15px 18px;font:500 var(--caps-fs)/1 var(--f);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
+    box-shadow:0 14px 34px -12px rgba(29,19,54,.55);transition:background var(--t) var(--ease),opacity .2s var(--ease),transform .2s var(--ease)}
+  .chat-fab:hover{background:var(--violet-hi)}
+  .chat-fab svg{width:16px;height:16px}
+  body.chat-open .chat-fab{opacity:0;transform:translateY(8px);pointer-events:none}
+  .chat{position:fixed;right:20px;bottom:20px;z-index:60;width:min(400px,calc(100vw - 40px));height:min(640px,calc(100svh - var(--bar) - 40px));
+    display:flex;flex-direction:column;padding:22px 22px 16px;background:var(--white);border:1px solid var(--line);
+    box-shadow:0 30px 70px -30px rgba(29,19,54,.5);opacity:0;visibility:hidden;transform:translateY(12px);
+    transition:opacity .25s var(--ease),transform .25s var(--ease),visibility 0s linear .25s}
+  body.chat-open .chat{opacity:1;visibility:visible;transform:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
+  .chat__head{position:relative;flex:none;padding-right:36px}
+  .chat__h{font-size:1.7rem;font-weight:500;letter-spacing:-.04em;line-height:1.05}
+  .chat__x{position:absolute;top:-18px;right:-18px;width:40px;height:40px;border:0;background:none;color:var(--ink);cursor:pointer;display:grid;place-items:center}
+  .chat__x svg{width:18px;height:18px}
+  .chat__log{flex:1 1 0;min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:14px;padding-top:18px}
+  .chat__log::-webkit-scrollbar{display:none}
+  .chat__log > :first-child{margin-top:auto}
+  .msg{animation:msgIn .35s var(--ease) both}
+  @keyframes msgIn{from{opacity:0;transform:translateY(6px)}}
+  .msg p{font-size:.95rem;line-height:1.5}
+  .msg--you{align-self:flex-end;max-width:85%;background:var(--pale);color:var(--violet-d);padding:9px 13px;border-radius:3px}
+  .msg__who{display:block;margin-bottom:6px;color:var(--violet)}
+  .msg--bot p{color:var(--ink-2)}
+  .msg__dots{display:inline-flex;gap:4px;padding:6px 0}
+  .msg__dots i{width:5px;height:5px;border-radius:50%;background:var(--violet-lt);animation:dot 1s var(--ease) infinite}
+  .msg__dots i:nth-child(2){animation-delay:.15s}.msg__dots i:nth-child(3){animation-delay:.3s}
+  @keyframes dot{50%{opacity:.25;transform:translateY(-2px)}}
+  .msg__acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .btn--sm{min-height:0;padding:11px 14px}
+  .chat__chips{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:12px}
+  .chat__chips:empty{display:none}
+  /* варианты ответа: как наши метки, только без точки */
+  .chip,.sug{display:inline-flex;align-items:center;text-align:left;border:0;border-radius:3px;padding:8px 10px;background:var(--pale);color:var(--violet-d);
+    font:500 var(--caps-fs)/1.25 var(--mono);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
+    transition:color var(--t) var(--ease),background var(--t) var(--ease)}
+  .chip:hover,.sug:hover{background:var(--violet);color:#fff}
+  .chat__box{position:relative;flex:none;margin-top:14px}
+  .chat__in{display:flex;border:1px solid var(--line-b);border-radius:3px;background:var(--white);transition:border-color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+  .chat__in:focus-within{border-color:var(--violet);box-shadow:0 0 0 3px var(--pale)}
+  .chat__in input{flex:1;min-width:0;border:0;background:none;padding:13px 14px;font:inherit;font-size:1rem;color:var(--ink);outline:none}
+  .chat__in input::placeholder{color:var(--ink-3)}
+  .chat__in button{flex:none;width:46px;border:0;background:var(--violet);color:#fff;cursor:pointer;display:grid;place-items:center;transition:background var(--t) var(--ease)}
+  .chat__in button:hover{background:var(--violet-hi)}
+  .chat__in svg{width:16px;height:16px}
+  /* варианты: под полем, в одну колонку */
+  .chat__sug{margin-top:12px}
+  .chat__sug ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  /* до разговора: заголовок, поле и варианты под ним; потом варианты всплывают над полем по клику в пустое поле */
+  .chat:not(.is-chat){height:auto}
+  .chat:not(.is-chat) .chat__log{display:none}
+  .chat:not(.is-chat) .chat__box{margin-top:18px}
+  .chat.is-chat .chat__sug{display:none;position:absolute;left:0;right:0;bottom:calc(100% + 8px);margin:0;z-index:5;background:var(--white);border:1px solid var(--line);
+    box-shadow:0 20px 40px -20px rgba(29,19,54,.35);padding:12px}
+  .chat.is-chat .chat__box.open .chat__sug{display:block}
+  .chat__reset{flex:none;align-self:flex-start;display:none;margin-top:10px;background:none;border:0;padding:4px 0;cursor:pointer;color:var(--ink-3);transition:color var(--t) var(--ease)}
+  .chat__reset:hover{color:var(--violet)}
+  .chat.is-chat .chat__reset{display:block}
+  @media(max-width:620px){
+    .chat{right:0;left:0;bottom:0;width:100%;height:min(86svh,680px);border-width:1px 0 0;padding:20px var(--sx) 14px}
+    .chat-fab{right:16px;bottom:16px}
+  }
+  html.menu-open .chat-fab{display:none}

@@ -1,23 +1,9 @@
-/* Экспериментальная главная (ветка next): одна страница с прокруткой, навигация снизу по центру.
+/* Экспериментальная главная (ветка next): одна страница с прокруткой, сверху общая навигация с мега-меню (Nav.astro).
    Все секции в одном контейнере: ширина --wrap, боковые поля как у футера. Цвета только из токенов. */
 
 body.x { --xbg: color-mix(in srgb, var(--ink) 4.5%, var(--white)); --xr: 12px; --xpad: clamp(20px, 5vw, 70px);
   --xedge: max(var(--xpad), calc((100vw - var(--wrap)) / 2)); background: var(--xbg); }
 html:has(body.x) { scroll-behavior: smooth; }
-
-/* ── верх: логотип / секция строчными, справа главная кнопка, без подложки ── */
-.x-top { position: fixed; top: 0; left: 0; right: 0; z-index: 30; display: flex; align-items: center; gap: 8px;
-  padding: 20px clamp(16px, 2.4vw, 32px); pointer-events: none; transition: opacity .3s var(--ease), transform .3s var(--ease); }
-.x-top > * { pointer-events: auto; }
-.x-top.off { opacity: 0; transform: translateY(-100%); pointer-events: none; }
-.x-logo { display: block; color: var(--violet); }
-.x-logo__svg { display: block; height: 18px; width: auto; }
-.x-crumb { font-size: .98rem; line-height: 1; color: var(--ink-3); letter-spacing: -.01em; transform: translateY(1px); }
-.x-topcta { margin-left: auto; display: inline-flex; align-items: center; gap: 9px; padding: 10px 13px; border-radius: 10px;
-  background: var(--violet); color: #fff; font-size: .88rem; font-weight: 500; letter-spacing: -.01em;
-  transition: background var(--t) var(--ease), transform .2s var(--ease); }
-.x-topcta .tri { color: #fff; }
-.x-topcta:hover { background: var(--violet-hi); }
 
 /* кнопки */
 .x-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 17px; border-radius: var(--xr);
@@ -33,13 +19,13 @@ html:has(body.x) { scroll-behavior: smooth; }
 .x-btn--full { width: 100%; }
 
 /* секции и контейнер */
-.xs { position: relative; padding: clamp(80px, 9vw, 128px) var(--xpad) 0; scroll-margin-top: 0; }
+.xs { position: relative; padding: clamp(80px, 9vw, 128px) var(--xpad) 0; scroll-margin-top: var(--bar); }
 .xw { max-width: var(--wrap); margin-inline: auto; }
 .xh2 { font-size: clamp(2rem, 3.4vw, 3rem); font-weight: 500; letter-spacing: -.045em; line-height: 1.02; max-width: 18ch; }
 .xh2 span { color: var(--ink-3); }
 
 /* ── 1. герой: текст слева, до и после справа ── */
-.xhero { min-height: 100dvh; display: flex; align-items: center; padding-top: 80px; padding-bottom: 90px; }
+.xhero { min-height: calc(100dvh - var(--bar)); display: flex; align-items: center; padding-top: 40px; padding-bottom: 72px; }
 .xhero__in { width: 100%; display: grid; grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
 .xhero__k { font-size: .95rem; color: var(--ink-3); }
 .xhero__h { margin-top: 14px; font-size: clamp(2.8rem, 4.8vw, 4.6rem); font-weight: 500; letter-spacing: -.055em; line-height: .96; }
@@ -182,21 +168,10 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xfaq { display: grid; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: start;
   padding-bottom: clamp(100px, 10vw, 140px); }
 
-/* ── док снизу ── */
-.x-dock { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 40; display: flex; gap: 2px; padding: 4px; max-width: calc(100vw - 24px);
-  overflow-x: auto; scrollbar-width: none; background: var(--white); border-radius: 13px;
-  box-shadow: 0 0 0 1px var(--line), 0 14px 32px -18px color-mix(in srgb, var(--night) 40%, transparent); transition: opacity .3s var(--ease), transform .3s var(--ease); }
-.x-dock::-webkit-scrollbar { display: none; }
-.x-dock.off { opacity: 0; transform: translate(-50%, 16px); pointer-events: none; }
-.x-dock a { flex: none; padding: 8px 12px; border-radius: 9px; font-size: .88rem; font-weight: 500; letter-spacing: -.015em; color: var(--ink);
-  transition: background .2s var(--ease), color .2s var(--ease); }
-.x-dock a:hover { background: var(--xbg); }
-.x-dock a[aria-current="true"] { background: var(--violet); color: #fff; }
-
 /* ── планшет ── */
 @media (max-width: 1000px) {
   .xhero__in { grid-template-columns: 1fr; }
-  .xhero { padding-top: 96px; }
+  .xhero { padding-top: 56px; }
   .xp { grid-template-columns: 1fr 1fr; }
   .xp__c--concept { grid-column: 1 / -1; }
   .xsv, .xt, .xfaq { grid-template-columns: 1fr; }
@@ -204,9 +179,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 }
 /* ── телефон ── */
 @media (max-width: 760px) {
-  .x-top { padding: 14px 16px; }
-  .x-topcta { padding: 9px 11px; font-size: .8rem; }
-  .xhero { min-height: 0; padding-top: 84px; }
+  .xhero { min-height: 0; padding-top: 40px; }
   .xhero__h { font-size: 2.8rem; }
   .xc__stage { height: min(560px, 72svh); }
   .xc__pair { gap: 6px; }
@@ -215,9 +188,6 @@ html:has(body.x) { scroll-behavior: smooth; }
   .xp { grid-template-columns: 1fr; }
   .xq footer { flex-wrap: wrap; padding-right: 0; padding-bottom: 54px; }
   .xq footer a { margin-left: 0; width: 100%; }
-  .x-dock { bottom: 12px; }
-  .x-dock a { padding: 8px 10px; font-size: .84rem; }
-  .x-dock a[data-t="reviews"] { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   html:has(body.x) { scroll-behavior: auto; }
