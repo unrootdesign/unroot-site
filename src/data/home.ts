@@ -50,6 +50,8 @@ export const home = {
  "work": [
   {
    "slug": "dreamie",
+   "stat": "$550K",
+   "statLabel": "raised, plus $44K on Kickstarter",
    "shots": 4,
    "cs": "dreamie",
    "name": "Ambient Dreamie",
@@ -60,6 +62,8 @@ export const home = {
   },
   {
    "slug": "switch",
+   "stat": "100K+",
+   "statLabel": "active users",
    "shots": 4,
    "cs": "switch",
    "name": "Switch",
@@ -70,6 +74,8 @@ export const home = {
   },
   {
    "slug": "javelin",
+   "stat": "$125M",
+   "statLabel": "seed and Series A fund",
    "shots": 4,
    "cs": "javelinvp",
    "name": "Javelin VP",
@@ -80,6 +86,8 @@ export const home = {
   },
   {
    "slug": "trustyfy",
+   "stat": "$6.8M",
+   "statLabel": "in funding",
    "shots": 4,
    "cs": "trustyfy",
    "name": "Trustyfy",

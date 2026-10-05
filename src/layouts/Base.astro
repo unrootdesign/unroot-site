@@ -14,6 +14,7 @@ export interface Props {
   modifiedTime?: string;
   schema?: unknown[];            // JSON-LD: FAQPage, Article, BreadcrumbList
   bodyClass?: string;
+  bare?: boolean;                // без шапки и футера (экспериментальная главная)
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   publishedTime, modifiedTime,
   schema = [],
   bodyClass = '',
+  bare = false,
 } = Astro.props;
 
 const site = 'https://unroot.design';
@@ -36,6 +38,9 @@ const cleanPath = canonical
 const canonicalURL = new URL(cleanPath, site).href.replace(/\/$/, '') || site;
 const ogImageURL = new URL(ogImage, site).href;
 const GTM = 'GTM-WSGJLFR';
+// превью-сборки Cloudflare (любая ветка, кроме main) закрыты от поиска и не пишут аналитику
+const BRANCH = process.env.WORKERS_CI_BRANCH || '';
+const PREVIEW = BRANCH !== '' && BRANCH !== 'main';
 ---
 <!doctype html>
 <html lang="en">
@@ -46,7 +51,7 @@ const GTM = 'GTM-WSGJLFR';
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
-  {noindex && <meta name="robots" content="noindex, nofollow" />}
+  {(noindex || PREVIEW) && <meta name="robots" content="noindex, nofollow" />}
 
   <meta property="og:type" content={ogType} />
   <meta property="og:site_name" content="Unroot Design" />
@@ -73,21 +78,21 @@ const GTM = 'GTM-WSGJLFR';
     <script type="application/ld+json" set:html={JSON.stringify(s)} />
   ))}
 
-  <script is:inline define:vars={{ GTM }}>
+  {!PREVIEW && <script is:inline define:vars={{ GTM }}>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
     var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer',GTM);
-  </script>
+  </script>}
 </head>
 <body class={bodyClass}>
-  <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM}`}
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  {!PREVIEW && <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM}`}
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>}
 
   <a class="skip-link" href="#main">Skip to content</a>
-  <Nav />
+  {!bare && <Nav />}
   <main id="main"><slot /></main>
-  <Footer />
+  {!bare && <Footer />}
   <script>import '../scripts/site.js';</script>
 </body>
 </html>

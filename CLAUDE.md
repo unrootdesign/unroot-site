@@ -145,3 +145,10 @@ npm run verify   # всё вместе, гонять перед каждым д�
 - OG-картинки (1200×630) в `public/images/og-*.jpg`: общая og-default (Premium websites that earn trust and drive sales) на всех страницах, где нет своей; og-call для /call, og-templates для /templates, og-framer-templates для статьи framer-templates-for-ai. Favicon `favicon.png` 64px и `favicon.ico`, webclip `apple-touch-icon.png` 180px на белом фоне.
 - Все надписи капсом (метки, навигация, кнопки, подписи, табы, футер) берут размер и разрядку из токенов `--caps-fs` (.68rem) и `--caps-ls` (.08em), вес 500. Отличаются только цветом. Свои размеры для капса не задавать.
 - Левая колонка главной на десктопе: position sticky внутри .shell (не fixed). Доходит до футера и уезжает вместе со страницей, футер на неё не наезжает.
+
+## Ветка next (эксперимент, октябрь 2026)
+- Главная как пространство из 4 экранов без прокрутки страницы: Works (коридор из 20 кадров работ в CSS-перспективе, движется колесом, перетаскиванием и стрелками), Concepts (до и после, список проектов), About (4 карточки: студия, цифры, отзывы, цены), Contact (концепт и календарь Cal). Навигация плавает снизу по центру, счётчик кадров и стрелки, подсказка «?».
+- Файлы: `pages/index.astro`, `styles/x.css`, `scripts/x.js`. `Base.astro` принимает `bare` (без шапки и футера).
+- Кадры работ `public/home/w-*-1..4.jpg` заменены на картинки из папки oct 5 (1600×900).
+- Сборки не из main получают noindex и не грузят GTM (`WORKERS_CI_BRANCH`).
+- Превью: https://next-unroot-site.purple-union-b268.workers.dev
