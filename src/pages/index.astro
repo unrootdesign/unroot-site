@@ -1,6 +1,6 @@
 ---
 /* Экспериментальная главная (ветка next): одна страница с прокруткой, сверху общая навигация с мега-меню.
-   Герой: концепты в центре сменяются сами, текст и кнопки маленькие снизу слева. Дальше бегущая лента работ,
+   Герой: текст слева, концепты справа сменяются сами, под ними названия проектов. Дальше бегущая лента работ,
    отзывы, цены, услуги, после запуска, созвон, FAQ и обычный футер. Все секции в одном контейнере --wrap. */
 import Base from '../layouts/Base.astro';
 import Tri from '../components/Tri.astro';
@@ -15,53 +15,53 @@ const description = "We design and build premium, custom websites with 3D & moti
 
 const M = '/home/';
 const pad = (n: number) => String(n).padStart(2, '0');
+// короткие названия под концептами в герое
+const short = (n: string) => ({ 'Ambient Dreamie': 'Dreamie', 'Burd Home Health': 'Burd', 'Epsilon Health': 'Epsilon', 'Javelin VP': 'Javelin' } as Record<string, string>)[n] ?? n;
 const schema = [{
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: home.faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 }];
 ---
 <Base title={title} description={description} schema={schema} bodyClass="x">
-  <!-- 1. Герой: в центре концепты (сначала анимированные, по клику до и после), под ними маленький текст с кнопками и список проектов -->
+  <!-- 1. Герой: слева текст и кнопки, справа концепты (сначала анимированные, по клику до и после), под ними названия проектов -->
   <section class="xs xhero" id="concept" data-mode="anim" aria-label="Concept">
     <div class="xw xhero__in">
-      <div class="xhero__stage">
-        <div class="xc__stage xc__stage--anim">
-          {home.pairs.map((p, i) => (
-            <div class={`xc__vid${i === 0 ? ' on' : ''}`} data-i={i} data-name={p.name}>
-              <video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted playsinline preload={i === 0 ? 'auto' : 'none'}></video>
-            </div>
-          ))}
-        </div>
-        <div class="xc__stage xc__stage--ba">
-          {home.ba.map((p, i) => (
-            <div class={`xc__pair${i === 0 ? ' on' : ''}`} data-i={i} data-name={p.name}>
-              <figure><figcaption>Before</figcaption><img src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} width="620" height="1033" loading="lazy" /></figure>
-              <span class="xc__arrow" aria-hidden="true">→</span>
-              <figure><figcaption class="after">After, 7 days later</figcaption><img src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} width="620" height="1033" loading="lazy" /></figure>
-            </div>
-          ))}
+      <div class="xhero__txt">
+        <p class="xhero__k">Website design and build for AI and tech startups</p>
+        <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
+        <p class="xhero__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
+        <div class="xhero__ctas">
+          <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
+          <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
         </div>
       </div>
 
-      <div class="xhero__names">
-        <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{p.name}<i></i></button></li>)}</ol>
-        <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{p.name}<i></i></button></li>)}</ol>
-      </div>
-
-      <div class="xhero__foot">
-        <div class="xhero__txt">
-          <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
-          <p class="xhero__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
-          <div class="xhero__ctas">
-            <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
-            <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+      <div class="xhero__vis">
+        <div class="xc__mode" role="tablist" aria-label="Show">
+          <button type="button" role="tab" data-mode="anim" aria-selected="true">Animated</button>
+          <button type="button" role="tab" data-mode="ba" aria-selected="false">Before / after</button>
+        </div>
+        <div class="xhero__stage">
+          <div class="xc__stage xc__stage--anim">
+            {home.pairs.map((p, i) => (
+              <div class={`xc__vid${i === 0 ? ' on' : ''}`} data-i={i}>
+                <video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted playsinline preload={i === 0 ? 'auto' : 'none'}></video>
+              </div>
+            ))}
+          </div>
+          <div class="xc__stage xc__stage--ba">
+            {home.ba.map((p, i) => (
+              <div class={`xc__pair${i === 0 ? ' on' : ''}`} data-i={i}>
+                <figure><figcaption>Before</figcaption><img src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} width="620" height="1033" loading="lazy" /></figure>
+                <span class="xc__arrow" aria-hidden="true">→</span>
+                <figure><figcaption class="after">After, 7 days later</figcaption><img src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} width="620" height="1033" loading="lazy" /></figure>
+              </div>
+            ))}
           </div>
         </div>
-        <div class="xhero__nav">
-          <div class="xc__mode" role="tablist" aria-label="Show">
-            <button type="button" role="tab" data-mode="anim" aria-selected="true">Animated</button>
-            <button type="button" role="tab" data-mode="ba" aria-selected="false">Before / after</button>
-          </div>
+        <div class="xhero__names">
+          <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
+          <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
         </div>
       </div>
     </div>
@@ -94,15 +94,11 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 3. Отзывы: слева логотипы клиентов, справа отзыв в узкой колонке -->
+  <!-- 3. Отзывы: слева отзыв в узкой колонке, справа логотипы клиентов -->
   <section class="xs" id="reviews" aria-label="Reviews">
     <div class="xw">
       <h2 class="xh2">What they say <span>after</span></h2>
       <div class="xr">
-        <div class="xr__logos">
-          <p class="xr__k">Teams we have worked with</p>
-          <ul>{home.logos.map(l => <li><img src={`${M}logos/${l.slug}.png`} alt={l.name} style={`height:${l.h}px`} loading="lazy" /></li>)}</ul>
-        </div>
         <div class="xq" id="xq">
           {home.quotes.map((q, i) => (
             <blockquote class={i === 0 ? 'on' : ''}>
@@ -119,6 +115,10 @@ const schema = [{
             <button type="button" class="xq__arr" data-d="1" aria-label="Next review">→</button>
             <span id="xqn">{pad(1)} / {pad(home.quotes.length)}</span>
           </div>
+        </div>
+        <div class="xr__logos">
+          <p class="xr__k">Teams we have worked with</p>
+          <ul>{home.logos.map(l => <li><img src={`${M}logos/${l.slug}.png`} alt={l.name} style={`height:${l.h}px`} loading="lazy" /></li>)}</ul>
         </div>
       </div>
     </div>

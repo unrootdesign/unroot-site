@@ -49,17 +49,9 @@ The website went through several rounds. 3 decisions shaped it:
 
 *Final result after our collaboration with the client*
 
-![](/cms/Dreamie6.avif)
-
-*A social media branding system*
-
 ![](/cms/Dreamie4.avif)
 
 *Color palette that complements the product*
-
-![](/cms/Dreamie7.avif)
-
-*3D renders of the device*
 
 ## Result
 
