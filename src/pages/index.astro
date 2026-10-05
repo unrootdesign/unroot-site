@@ -1,7 +1,7 @@
 ---
 /* Экспериментальная главная (ветка next): одна страница с прокруткой, сверху общая навигация с мега-меню.
-   Герой: заголовок и до/после, которые сменяются сами. Дальше ряд работ (тянется мышью), отзывы, цены,
-   услуги, после запуска, созвон, FAQ и обычный футер. Все секции в одном контейнере --wrap. */
+   Герой: концепты в центре сменяются сами, текст и кнопки маленькие снизу слева. Дальше бегущая лента работ,
+   отзывы, цены, услуги, после запуска, созвон, FAQ и обычный футер. Все секции в одном контейнере --wrap. */
 import Base from '../layouts/Base.astro';
 import Tri from '../components/Tri.astro';
 import { home } from '../data/home';
@@ -20,103 +20,105 @@ const schema = [{
   mainEntity: home.faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 }];
 ---
-<Base title={title} description={description} schema={schema} bodyClass="x" crumb="concept">
-  <!-- 1. Герой: заголовок слева, до и после справа, сменяются сами -->
-  <section class="xs xhero" id="concept" data-mode="ba" aria-label="Concept">
+<Base title={title} description={description} schema={schema} bodyClass="x">
+  <!-- 1. Герой: в центре концепты (сначала анимированные, по клику до и после), под ними маленький текст с кнопками и список проектов -->
+  <section class="xs xhero" id="concept" data-mode="anim" aria-label="Concept">
     <div class="xw xhero__in">
-      <div class="xhero__txt">
-        <p class="xhero__k">Website design and build for AI and tech startups</p>
-        <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
-        <p class="xhero__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
-        <div class="xhero__ctas">
-          <a class="x-btn" href={BUY_CONCEPT}>Get a concept, $1,499 <Tri /></a>
-          <a class="x-btn x-btn--line" href={CALL}>Discuss a project <Tri /></a>
-        </div>
-        <div class="xhero__nums">
-          <div><b>9</b><span>years</span></div>
-          <div><b>100+</b><span>brands</span></div>
-          <div><b>$130M+</b><span>raised by clients</span></div>
-        </div>
-      </div>
-
-      <div class="xhero__vis">
-        <div class="xhero__bar">
-          <div class="xc__mode" role="tablist" aria-label="Show">
-            <button type="button" role="tab" data-mode="ba" aria-selected="true">Before / after</button>
-            <button type="button" role="tab" data-mode="anim" aria-selected="false">Animated</button>
-          </div>
-          <p class="xhero__name" id="xName">{home.ba[0].name}</p>
+      <div class="xhero__stage">
+        <div class="xc__stage xc__stage--anim">
+          {home.pairs.map((p, i) => (
+            <div class={`xc__vid${i === 0 ? ' on' : ''}`} data-i={i} data-name={p.name}>
+              <video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted playsinline preload={i === 0 ? 'auto' : 'none'}></video>
+            </div>
+          ))}
         </div>
         <div class="xc__stage xc__stage--ba">
           {home.ba.map((p, i) => (
             <div class={`xc__pair${i === 0 ? ' on' : ''}`} data-i={i} data-name={p.name}>
-              <figure><figcaption>Before</figcaption><img src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} width="620" height="1033" loading={i === 0 ? 'eager' : 'lazy'} /></figure>
+              <figure><figcaption>Before</figcaption><img src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} width="620" height="1033" loading="lazy" /></figure>
               <span class="xc__arrow" aria-hidden="true">→</span>
-              <figure><figcaption class="after">After, 7 days later</figcaption><img src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} width="620" height="1033" loading={i === 0 ? 'eager' : 'lazy'} /></figure>
+              <figure><figcaption class="after">After, 7 days later</figcaption><img src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} width="620" height="1033" loading="lazy" /></figure>
             </div>
           ))}
         </div>
-        <div class="xc__stage xc__stage--anim">
-          {home.pairs.map((p, i) => (
-            <div class={`xc__vid${i === 0 ? ' on' : ''}`} data-i={i} data-name={p.name}>
-              <video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted loop playsinline preload="none"></video>
-            </div>
-          ))}
+      </div>
+
+      <div class="xhero__names">
+        <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{p.name}<i></i></button></li>)}</ol>
+        <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{p.name}<i></i></button></li>)}</ol>
+      </div>
+
+      <div class="xhero__foot">
+        <div class="xhero__txt">
+          <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
+          <p class="xhero__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
+          <div class="xhero__ctas">
+            <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
+            <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+          </div>
         </div>
-        <div class="xhero__dots xhero__dots--ba">{home.ba.map((p, i) => <button type="button" class={i === 0 ? 'on' : ''} data-i={i} aria-label={p.name}><i></i></button>)}</div>
-        <div class="xhero__dots xhero__dots--anim">{home.pairs.map((p, i) => <button type="button" class={i === 0 ? 'on' : ''} data-i={i} aria-label={p.name}><i></i></button>)}</div>
+        <div class="xhero__nav">
+          <div class="xc__mode" role="tablist" aria-label="Show">
+            <button type="button" role="tab" data-mode="anim" aria-selected="true">Animated</button>
+            <button type="button" role="tab" data-mode="ba" aria-selected="false">Before / after</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- 2. Работы: без заголовка, ряд тянется мышью -->
+  <!-- 2. Работы: медленная бегущая лента слева направо, при наведении стоит -->
   <section class="xs xwork" id="work" aria-label="Work">
-    <div class="xwork__row" id="xRow">
-      {home.work.map(w => {
-        const href = w.cs ? `/case-studies/${w.cs}` : w.url;
-        return (
-          <article class="xg">
-            <a class="xg__head" href={href}><b>{w.name}</b> {w.kind}</a>
-            <a class="xg__main" href={href} aria-label={`${w.name}, case study`}>
-              {[1, 2, 3, 4].map(k => <img src={`${M}w-${w.slug}-${k}.jpg`} alt={k === 1 ? w.name : ''} class={k === 1 ? 'on' : ''} data-k={k} width="1600" height="900" loading="lazy" decoding="async" draggable="false" />)}
-            </a>
-            <div class="xg__thumbs">
-              {[2, 3, 4].map(k => <button type="button" data-k={k} aria-label={`${w.name}, image ${k}`}><img src={`${M}w-${w.slug}-${k}.jpg`} alt="" width="1600" height="900" loading="lazy" decoding="async" draggable="false" /></button>)}
-            </div>
-            <div class="xg__foot">
-              {w.stat ? <p class="xg__stat"><b>{w.stat}</b> {w.statLabel}</p> : <p class="xg__stat">{w.desc.split('.')[0]}</p>}
-              <a class="xg__go" href={href}>View case study <Tri /></a>
-            </div>
-          </article>
-        );
-      })}
-      <div class="xg xg--next">
-        <p class="xg__nk">Your website</p>
-        <p class="xg__nh">Could be next in this row</p>
-        <a class="x-btn" href={BUY_CONCEPT}>Get a concept, $1,499 <Tri /></a>
+    <div class="xmq" id="xRow">
+      <div class="xmq__t">
+        {[0, 1].map(copy => home.work.map(w => {
+          const href = w.cs ? `/case-studies/${w.cs}` : w.url;
+          const hide = copy === 1;
+          return (
+            <article class="xg" aria-hidden={hide ? 'true' : undefined}>
+              <a class="xg__head" href={href} tabindex={hide ? -1 : undefined}><b>{w.name}</b> {w.kind}</a>
+              <a class="xg__main" href={href} aria-label={`${w.name}, case study`} tabindex={hide ? -1 : undefined}>
+                {[1, 2, 3, 4].map(k => <img src={`${M}w-${w.slug}-${k}.jpg`} alt={k === 1 && !hide ? w.name : ''} class={k === 1 ? 'on' : ''} data-k={k} width="1600" height="900" loading="lazy" decoding="async" draggable="false" />)}
+              </a>
+              <div class="xg__thumbs">
+                {[2, 3, 4].map(k => <button type="button" data-k={k} tabindex={hide ? -1 : undefined} aria-label={`${w.name}, image ${k}`}><img src={`${M}w-${w.slug}-${k}.jpg`} alt="" width="1600" height="900" loading="lazy" decoding="async" draggable="false" /></button>)}
+              </div>
+              <div class="xg__foot">
+                <p class="xg__stat"><b>{w.stat}</b> {w.statLabel}</p>
+                <a class="link xg__go" href={href} tabindex={hide ? -1 : undefined}>View case study <Tri /></a>
+              </div>
+            </article>
+          );
+        }))}
       </div>
     </div>
   </section>
 
-  <!-- 3. Отзывы -->
+  <!-- 3. Отзывы: слева логотипы клиентов, справа отзыв в узкой колонке -->
   <section class="xs" id="reviews" aria-label="Reviews">
     <div class="xw">
       <h2 class="xh2">What they say <span>after</span></h2>
-      <div class="xq" id="xq">
-        {home.quotes.map((q, i) => (
-          <blockquote class={i === 0 ? 'on' : ''}>
-            <p>&ldquo;{q.text}&rdquo;</p>
-            <footer>
-              <img src={`${M}av-${q.avatar}.jpg`} alt="" width="44" height="44" loading="lazy" />
-              <span><b>{q.name}</b>{q.role}</span>
-              {q.url && <a href={q.url} target="_blank" rel="noopener">Verified on Trustpilot ↗</a>}
-            </footer>
-          </blockquote>
-        ))}
-        <div class="xq__nav">
-          <button type="button" class="xq__arr" data-d="-1" aria-label="Previous review">←</button>
-          <button type="button" class="xq__arr" data-d="1" aria-label="Next review">→</button>
-          <span id="xqn">{pad(1)} / {pad(home.quotes.length)}</span>
+      <div class="xr">
+        <div class="xr__logos">
+          <p class="xr__k">Teams we have worked with</p>
+          <ul>{home.logos.map(l => <li><img src={`${M}logos/${l.slug}.png`} alt={l.name} style={`height:${l.h}px`} loading="lazy" /></li>)}</ul>
+        </div>
+        <div class="xq" id="xq">
+          {home.quotes.map((q, i) => (
+            <blockquote class={i === 0 ? 'on' : ''}>
+              <p>&ldquo;{q.text}&rdquo;</p>
+              <footer>
+                <img src={`${M}av-${q.avatar}.jpg`} alt="" width="44" height="44" loading="lazy" />
+                <span><b>{q.name}</b>{q.role}</span>
+              </footer>
+              {q.url && <a class="xq__tp" href={q.url} target="_blank" rel="noopener">Verified on Trustpilot ↗</a>}
+            </blockquote>
+          ))}
+          <div class="xq__nav">
+            <button type="button" class="xq__arr" data-d="-1" aria-label="Previous review">←</button>
+            <button type="button" class="xq__arr" data-d="1" aria-label="Next review">→</button>
+            <span id="xqn">{pad(1)} / {pad(home.quotes.length)}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -131,13 +133,13 @@ const schema = [{
           <p class="xp__n">Design and Build Sprint</p>
           <p class="xp__p">$2,499<small>/ week</small></p>
           <p class="xp__d">1 week of design, build or both. Ends on Friday, no notice period.</p>
-          <a class="x-btn x-btn--line x-btn--full" href={CALL}>Discuss a project <Tri /></a>
+          <a class="btn btn--line xp__btn" href={CALL}><span>Discuss a project</span><Tri /></a>
         </article>
         <article class="xp__c">
           <p class="xp__n">Monthly Design and Build</p>
           <p class="xp__p">$7,899<small>/ month</small></p>
           <p class="xp__d">4 weeks with a senior designer and a senior developer. Handover and AI setup included. Pause or stop after any month.</p>
-          <a class="x-btn x-btn--line x-btn--full" href={CALL}>Discuss a project <Tri /></a>
+          <a class="btn btn--line xp__btn" href={CALL}><span>Discuss a project</span><Tri /></a>
         </article>
         <article class="xp__c xp__c--concept">
           <p class="xp__n">Not sure where to start?</p>
@@ -148,13 +150,13 @@ const schema = [{
             <li>The files are yours to keep and build on</li>
             <li>The $1,499 goes toward the full website if you start within 60 days</li>
           </ul>
-          <a class="x-btn x-btn--full" href={BUY_CONCEPT}>Get a concept, $1,499 <Tri /></a>
+          <a class="btn btn--main xp__btn" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- 5. Услуги -->
+  <!-- 5. Услуги: у каждой свои пропорции кадра, картинки сменяются, видео целиком -->
   <section class="xs" id="services" aria-label="Services">
     <div class="xw">
       <h2 class="xh2">What we <span>do</span></h2>
@@ -165,9 +167,11 @@ const schema = [{
         <div class="xsv__media">
           {home.services.map((s, i) => (
             <figure class={`xsv__m${i === 0 ? ' on' : ''}`} data-i={i}>
-              {s.video
-                ? <video src={`${M}${s.video}.mp4`} poster={`${M}${s.video}.jpg`} muted loop playsinline preload="none"></video>
-                : <img src={`${M}${s.images[0]}.jpg`} alt={s.name} loading="lazy" />}
+              <div class="xsv__v" style={`aspect-ratio:${s.ratio}`}>
+                {s.video
+                  ? <video src={`${M}${s.video}.mp4`} poster={`${M}${s.video}.jpg`} muted loop playsinline preload="none"></video>
+                  : s.images.map((x, k) => <img src={`${M}${x}.jpg`} alt={k === 0 ? s.name : ''} class={k === 0 ? 'on' : ''} loading="lazy" />)}
+              </div>
               <figcaption>{s.tags.join(', ')}</figcaption>
             </figure>
           ))}
@@ -176,22 +180,33 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 6. После запуска -->
+  <!-- 6. После запуска: по прокрутке по линии бежит импульс, шаги открываются по очереди -->
   <section class="xs" id="handover" aria-label="After launch">
-    <div class="xw">
-      <h2 class="xh2">A website your team runs <span>without us</span></h2>
-      <ol class="xho">
-        {home.handover.map((h, i) => <li><span>{pad(i + 1)}</span><b>{h.t}</b><p>{h.d}</p></li>)}
+    <div class="xw xho">
+      <div class="xho__l">
+        <h2 class="xh2">A website your team runs <span>without us</span></h2>
+        <div class="xho__orb" aria-hidden="true"><i></i><i></i><i></i><b></b><s></s><s></s><s></s></div>
+      </div>
+      <ol class="xho__list" id="xHo">
+        <span class="xho__line" aria-hidden="true"><span></span><i></i></span>
+        {home.handover.map((h, i) => <li><span class="xho__n">{pad(i + 1)}</span><b>{h.t}</b><p>{h.d}</p></li>)}
       </ol>
     </div>
   </section>
 
-  <!-- 7. Созвон -->
+  <!-- 7. Созвон: сверху текст и цифры, календарь на всю ширину -->
   <section class="xs" id="team" aria-label="Contact">
-    <div class="xw xt">
-      <div class="xt__txt">
-        <h2 class="xh2">Book a call with <span>the people who do the work</span></h2>
-        <p>We are a team of 5 in Warsaw, no account managers in between. In 30 minutes you tell us what you are building, and we tell you what we would change on your website and how we can start. No sales pitch.</p>
+    <div class="xw">
+      <div class="xt">
+        <div>
+          <h2 class="xh2">Book a call with <span>the people who do the work</span></h2>
+          <p class="xt__p">We are a team of 5 in Warsaw, no account managers in between. In 30 minutes you tell us what you are building, and we tell you what we would change on your website and how we can start. No sales pitch.</p>
+        </div>
+        <div class="xt__nums">
+          <div><b>9</b><span>years</span></div>
+          <div><b>100+</b><span>brands</span></div>
+          <div><b>$130M+</b><span>raised by clients</span></div>
+        </div>
       </div>
       <div class="xt__cal" id="xCal"><p>Loading calendar</p></div>
     </div>

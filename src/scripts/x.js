@@ -1,57 +1,67 @@
-/* Экспериментальная главная: до и после в герое сменяются сами, ряд работ тянется мышью,
-   при наведении на маленький кадр он встаёт на место главного. Подпись в шапке показывает текущую секцию. */
+/* Экспериментальная главная: в герое концепты сменяются сами (сначала анимированные, по клику до и после),
+   внизу список проектов, у текущего полоска показывает время до следующего. Лента работ едет сама,
+   при наведении на маленький кадр он встаёт на место главного. «После запуска» оживает по прокрутке. */
 (() => {
   if (!document.body.classList.contains('x')) return;
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  /* ── герой: пары до и после (или видео) сменяются каждые 4 секунды, на наведении пауза ── */
-  const hero = $('.xhero'), nameEl = $('#xName');
-  const items = { ba: $$('.xc__pair', hero), anim: $$('.xc__vid', hero) };
-  const dots = { ba: $$('.xhero__dots--ba button', hero), anim: $$('.xhero__dots--anim button', hero) };
-  const idx = { ba: 0, anim: 0 };
-  const DUR = 4000;
-  let mode = 'ba', timer = 0, paused = false, heroVisible = true;
-  hero.style.setProperty('--dur-cycle', DUR / 1000 + 's');
+  /* ── герой ── */
+  const hero = $('.xhero');
+  const items = { anim: $$('.xc__vid', hero), ba: $$('.xc__pair', hero) };
+  const names = { anim: $$('.xc__names--anim button', hero), ba: $$('.xc__names--ba button', hero) };
+  const idx = { anim: 0, ba: 0 };
+  const BA_DUR = 4500, ANIM_MAX = 12000;
+  let mode = hero.dataset.mode || 'anim', paused = false, heroVisible = true, t0 = 0, spent = 0, raf = 0;
+
+  const vid = () => items.anim[idx.anim]?.querySelector('video');
+  // длительность текущего кадра: у видео его собственная (но не дольше 12 секунд), у до и после 4.5 секунды
+  const dur = () => mode === 'anim' ? Math.min(((vid()?.duration) || 8) * 1000, ANIM_MAX) : BA_DUR;
+
   function show(i, m = mode) {
     const n = items[m].length; idx[m] = (i + n) % n;
     items[m].forEach((x, k) => x.classList.toggle('on', k === idx[m]));
-    dots[m].forEach((d, k) => { d.classList.remove('on'); if (k === idx[m]) { void d.offsetWidth; d.classList.add('on'); } });
-    const cur = items[m][idx[m]];
+    names[m].forEach((b, k) => { b.classList.toggle('on', k === idx[m]); b.style.setProperty('--p', 0); });
+    const cur = items[m][idx[m]], next = items[m][(idx[m] + 1) % n];
     cur.querySelectorAll('img').forEach(im => im.loading = 'eager');
-    nameEl.textContent = cur.dataset.name;
-    items.anim.forEach((v, k) => { const el = v.querySelector('video'); if (m === 'anim' && mode === 'anim' && heroVisible && k === idx.anim) { el.preload = 'auto'; el.play().catch(() => {}); } else el.pause(); });
-    // заранее подгружаем следующую пару, чтобы смена была без вспышки
-    items[m][(idx[m] + 1) % n].querySelectorAll('img').forEach(im => im.loading = 'eager');
-    schedule();
+    next.querySelectorAll('img').forEach(im => im.loading = 'eager');
+    items.anim.forEach((v, k) => {
+      const el = v.querySelector('video');
+      if (m === 'anim' && k === idx.anim) { el.preload = 'auto'; el.currentTime = 0; if (heroVisible && !paused) el.play().catch(() => {}); }
+      else el.pause();
+    });
+    const nv = items.anim[(idx.anim + 1) % items.anim.length]?.querySelector('video'); if (nv && m === 'anim') nv.preload = 'auto';
+    t0 = performance.now(); spent = 0;
+    loop();
   }
-  function schedule() { clearTimeout(timer); if (!RM && !paused && heroVisible) timer = setTimeout(() => show(idx[mode] + 1), DUR); }
+  // полоска под названием и переход к следующему проекту
+  function loop() {
+    cancelAnimationFrame(raf);
+    if (RM) return;
+    raf = requestAnimationFrame(function tick(now) {
+      if (!paused && heroVisible) spent += now - t0;
+      t0 = now;
+      const p = Math.min(spent / dur(), 1);
+      names[mode][idx[mode]]?.style.setProperty('--p', p);
+      if (p >= 1) { show(idx[mode] + 1); return; }
+      raf = requestAnimationFrame(tick);
+    });
+  }
   function setMode(m) {
     mode = m; hero.dataset.mode = m;
     $$('.xc__mode button', hero).forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
     show(idx[m]);
   }
   $$('.xc__mode button', hero).forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
-  ['ba', 'anim'].forEach(m => dots[m].forEach(d => d.addEventListener('click', () => show(+d.dataset.i, m))));
-  const vis = $('.xhero__vis', hero);
-  vis.addEventListener('pointerenter', () => { paused = true; hero.classList.add('paused'); clearTimeout(timer); });
-  vis.addEventListener('pointerleave', () => { paused = false; hero.classList.remove('paused'); show(idx[mode]); });
+  ['anim', 'ba'].forEach(m => names[m].forEach(b => b.addEventListener('click', () => show(+b.dataset.i, m))));
+  const stage = $('.xhero__stage', hero);
+  stage.addEventListener('pointerenter', () => { paused = true; if (mode === 'anim') vid()?.pause(); });
+  stage.addEventListener('pointerleave', () => { paused = false; if (mode === 'anim' && heroVisible) vid()?.play().catch(() => {}); });
+  hero.dataset.mode = mode;
   show(0);
 
-  /* ── работы: ряд тянется мышью, маленький кадр под курсором встаёт на место главного ── */
-  const row = $('#xRow');
-  let drag = null, moved = false;
-  row.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || e.button) return; drag = { x: e.clientX, sl: row.scrollLeft }; moved = false; });
-  addEventListener('pointermove', e => {
-    if (!drag) return;
-    const dx = e.clientX - drag.x;
-    if (!moved && Math.abs(dx) > 5) { moved = true; row.classList.add('drag'); }
-    if (moved) row.scrollLeft = drag.sl - dx;
-  });
-  addEventListener('pointerup', () => { drag = null; setTimeout(() => row.classList.remove('drag'), 0); });
-  row.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
-  // вертикальное колесо над рядом не трогаем, горизонтальное (тачпад) работает само
-  $$('.xg', row).forEach(g => {
+  /* ── работы: маленький кадр под курсором встаёт на место главного, уход возвращает первый ── */
+  $$('.xg').forEach(g => {
     const imgs = $$('.xg__main img', g), th = $$('.xg__thumbs button', g);
     const set = k => { imgs.forEach(im => im.classList.toggle('on', +im.dataset.k === k)); th.forEach(b => b.classList.toggle('on', +b.dataset.k === k)); };
     th.forEach(b => {
@@ -61,6 +71,10 @@
     });
     $('.xg__thumbs', g)?.addEventListener('pointerleave', () => set(1));
   });
+  // на телефоне лента останавливается, пока палец на ней
+  const mq = $('.xmq__t');
+  $('#xRow')?.addEventListener('touchstart', () => mq && (mq.style.animationPlayState = 'paused'), { passive: true });
+  $('#xRow')?.addEventListener('touchend', () => mq && (mq.style.animationPlayState = ''), { passive: true });
 
   /* ── отзывы ── */
   const qs = $$('#xq blockquote'), qn = $('#xqn');
@@ -69,15 +83,32 @@
   const quote = i => { qi = (i + qs.length) % qs.length; qs.forEach((q, k) => q.classList.toggle('on', k === qi)); qn.textContent = `${pad(qi + 1)} / ${pad(qs.length)}`; };
   $$('#xq .xq__arr').forEach(b => b.addEventListener('click', () => quote(qi + +b.dataset.d)));
 
-  /* ── услуги: список переключает картинку ── */
+  /* ── услуги: список переключает кадр, картинки внутри услуги сменяются сами ── */
   const sb = $$('.xsv__list button'), sm = $$('.xsv__m');
+  let si = 0, sTimer = 0;
   const svc = i => {
+    si = i;
     sb.forEach((b, k) => b.classList.toggle('on', k === i));
     sm.forEach((m, k) => { m.classList.toggle('on', k === i); const v = m.querySelector('video'); if (v) { if (k === i) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause(); } });
   };
   sb.forEach((b, k) => { b.addEventListener('click', () => svc(k)); b.addEventListener('pointerenter', () => { if (matchMedia('(hover:hover)').matches) svc(k); }); });
+  if (!RM) sTimer = setInterval(() => {
+    const imgs = $$('img', sm[si]); if (imgs.length < 2) return;
+    const c = imgs.findIndex(im => im.classList.contains('on'));
+    imgs.forEach((im, k) => im.classList.toggle('on', k === (c + 1) % imgs.length));
+  }, 1800);
 
-  /* ── календарь грузится, когда до секции созвона остаётся экран ── */
+  /* ── после запуска: импульс бежит по линии, шаги открываются, когда до них доходит ── */
+  const ho = $('#xHo'), hoItems = ho ? $$('li', ho) : [];
+  function handover() {
+    if (!ho) return;
+    const r = ho.getBoundingClientRect(), mark = innerHeight * .62;
+    const p = Math.max(0, Math.min(1, (mark - r.top) / r.height));
+    ho.style.setProperty('--p', p.toFixed(4));
+    hoItems.forEach(li => { if (li.getBoundingClientRect().top < mark) li.classList.add('in'); });
+  }
+
+  /* ── календарь грузится, когда до секции созвона остаётся 2 экрана ── */
   let calBooted = false;
   function bootCal() {
     if (calBooted) return; calBooted = true;
@@ -87,22 +118,16 @@
     Cal.ns['30min']('ui', { theme: 'light', hideEventTypeDetails: false, layout: 'month_view', cssVarsPerTheme: { light: { 'cal-brand': '#8961E7' } } });
   }
 
-  /* ── подпись после логотипа следит за секцией ── */
-  const crumb = $('#xCrumb');
-  const NAMES = { concept: 'concept', work: 'work', reviews: 'reviews', pricing: 'pricing', services: 'services', handover: 'after launch', team: 'contact', faq: 'faq' };
-  const secs = $$('main .xs');
-  function spy() {
-    const y = innerHeight * .4;
-    let cur = 'concept';
-    secs.forEach(s => { if (s.getBoundingClientRect().top <= y) cur = s.id; });
-    if (crumb) crumb.textContent = NAMES[cur] || cur;
-    const hr = hero.getBoundingClientRect(), nowVis = hr.bottom > 0;
-    if (nowVis !== heroVisible) { heroVisible = nowVis; show(idx[mode]); }
+  function onScroll() {
+    const nowVis = hero.getBoundingClientRect().bottom > 0;
+    if (nowVis !== heroVisible) { heroVisible = nowVis; if (mode === 'anim') { if (nowVis && !paused) vid()?.play().catch(() => {}); else vid()?.pause(); } }
+    handover();
     if ($('#team').getBoundingClientRect().top < innerHeight * 2) bootCal();
   }
   let st = false;
-  addEventListener('scroll', () => { if (!st) { st = true; requestAnimationFrame(() => { st = false; spy(); }); } }, { passive: true });
-  spy();
+  addEventListener('scroll', () => { if (!st) { st = true; requestAnimationFrame(() => { st = false; onScroll(); }); } }, { passive: true });
+  onScroll();
+
   // старые ссылки вида /#offer, /#concepts ведут к нужной секции
   const ALIAS = { offer: 'concept', concepts: 'concept', about: 'team', contact: 'team' };
   const h = location.hash.slice(1);

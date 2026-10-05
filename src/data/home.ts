@@ -51,7 +51,7 @@ export const home = {
   {
    "slug": "dreamie",
    "stat": "$550K",
-   "statLabel": "raised, plus $44K on Kickstarter",
+   "statLabel": "raised",
    "shots": 4,
    "cs": "dreamie",
    "name": "Ambient Dreamie",
@@ -75,7 +75,7 @@ export const home = {
   {
    "slug": "javelin",
    "stat": "$125M",
-   "statLabel": "seed and Series A fund",
+   "statLabel": "fund",
    "shots": 4,
    "cs": "javelinvp",
    "name": "Javelin VP",
@@ -87,7 +87,7 @@ export const home = {
   {
    "slug": "trustyfy",
    "stat": "$6.8M",
-   "statLabel": "in funding",
+   "statLabel": "raised",
    "shots": 4,
    "cs": "trustyfy",
    "name": "Trustyfy",
@@ -98,6 +98,8 @@ export const home = {
   },
   {
    "slug": "epsilon",
+   "stat": "Medtech",
+   "statLabel": "radiology",
    "shots": 4,
    "cs": "epsilon-health",
    "name": "Epsilon Health",
@@ -106,6 +108,17 @@ export const home = {
    "url": "https://epsilonhealth.webflow.io/",
    "desc": "Website for a MedTech company that rebuilds radiology workflows to cut diagnostic delays and radiologist burnout."
   }
+ ],
+ /* логотипы клиентов слева от отзывов, h: высота в px, чтобы они выглядели одного веса */
+ "logos": [
+  { "slug": "javelin", "name": "Javelin VP", "h": 26 },
+  { "slug": "ambient", "name": "Ambient Dreamie", "h": 36 },
+  { "slug": "wowhouse", "name": "Wow House Studio", "h": 28 },
+  { "slug": "sintra", "name": "Sintra", "h": 22 },
+  { "slug": "switch", "name": "Switch", "h": 36 },
+  { "slug": "trustyfy", "name": "Trustyfy", "h": 24 },
+  { "slug": "epsilon", "name": "Epsilon Health", "h": 20 },
+  { "slug": "leadgains", "name": "Leadgains", "h": 20 }
  ],
  "quotes": [
   {

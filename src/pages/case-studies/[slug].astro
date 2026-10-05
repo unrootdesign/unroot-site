@@ -107,6 +107,9 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
   /* правая колонка одной ширины для текста и картинок; картинки в своих пропорциях */
   .cs__r { width: 100%; max-width: 44rem; justify-self: end; }
   .cs__media { border-top: 0; padding-top: 0; }
+  /* первый заголовок текста встаёт на одну линию с меткой слева */
+  .cs__grid > .prose > :global(:first-child) { margin-top: 0; }
+  .cs__grid > div > .tag { margin-top: 0; }
   .cs__h { font-size: clamp(2.4rem, 4vw, 3.4rem); }
   .cs__lede { margin-top: 0; margin-bottom: 28px; max-width: none; }
   .cs__stack { display: grid; gap: clamp(20px, 3vw, 32px); align-content: start; }

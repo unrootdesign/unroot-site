@@ -29,7 +29,7 @@ p { text-wrap: pretty; }
 
 /* ── метки и заголовки ──────────────────── */
 .tag { display: inline-flex; align-items: center; gap: 9px; padding: 7px 10px 7px 9px; margin-bottom: 26px;
-  background: var(--pale); color: var(--violet-d); border-radius: 3px;
+  background: var(--pale); color: var(--violet-d);
   font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; }
 .tag i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 .mono { font: 500 var(--caps-fs)/1.3 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; }
@@ -134,7 +134,7 @@ p { text-wrap: pretty; }
 .card { background: var(--white); display: flex; flex-direction: column; border: 1px solid var(--line); margin: -1px 0 0 -1px; }
 .card > a { display: flex; flex-direction: column; height: 100%; padding: clamp(16px, 1.8vw, 22px); }
 .card__img { aspect-ratio: 16/10; width: 100%; object-fit: cover; border: 1px solid var(--line); background: var(--bg); }
-.card__k { align-self: flex-start; margin-top: 18px; padding: 6px 9px; background: var(--pale); color: var(--violet-d); border-radius: 3px; }
+.card__k { align-self: flex-start; margin-top: 18px; padding: 6px 9px; background: var(--pale); color: var(--violet-d); }
 .card__t { margin-top: 10px; font-size: 1.2rem; font-weight: 500; letter-spacing: -.025em; line-height: 1.25; transition: color var(--t) var(--ease); }
 .card__d { margin-top: 8px; font-size: .92rem; color: var(--ink-2); line-height: 1.5; }
 .card__go { margin-top: auto; padding-top: 18px; }

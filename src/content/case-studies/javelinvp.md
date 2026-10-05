@@ -11,15 +11,6 @@ cardDescription: "Early-stage venture capital firm investing in and supporting t
 fullPage: true
 liveUrl: "https://www.javelinvp.com/"
 video: "/cms/Javelin-Concept.mp4"
-gallery:
-  - src: "/cases/javelinvp-1.jpg"
-    alt: "Javelin VP website, screen 1"
-  - src: "/cases/javelinvp-2.jpg"
-    alt: "Javelin VP website, screen 2"
-  - src: "/cases/javelinvp-3.jpg"
-    alt: "Javelin VP website, screen 3"
-  - src: "/cases/javelinvp-4.jpg"
-    alt: "Javelin VP website, screen 4"
 testimonial:
   quote: "Javelin worked with Adam at Unroot on the re-design and development of our website, transitioning from WordPress to WebFlow. We could not have been happier with his work and strongly recommend him to any future clients. We went through several iterations throughout which Adam was patient and provided outputs as per our ask and often beyond our expectations. He is creative and very timely with responses, which we really appreciated. If you want to get an awesome website, I highly recommend working with Adam at Unroot."
   name: "Tasnia Huque"

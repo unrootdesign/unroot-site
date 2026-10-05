@@ -1,5 +1,5 @@
 /* Плавающий чат «Ask us anything»: кнопка справа внизу и окно над ней. Общий для главной. */
-  .chat-fab{position:fixed;right:20px;bottom:20px;z-index:55;display:inline-flex;align-items:center;gap:10px;background:var(--violet);color:#fff;border:0;border-radius:3px;
+  .chat-fab{position:fixed;right:20px;bottom:20px;z-index:55;display:inline-flex;align-items:center;gap:10px;background:var(--violet);color:#fff;border:0;
     padding:15px 18px;font:500 var(--caps-fs)/1 var(--f);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
     box-shadow:0 14px 34px -12px rgba(29,19,54,.55);transition:background var(--t) var(--ease),opacity .2s var(--ease),transform .2s var(--ease)}
   .chat-fab:hover{background:var(--violet-hi)}
@@ -32,12 +32,12 @@
   .chat__chips{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:12px}
   .chat__chips:empty{display:none}
   /* варианты ответа: как наши метки, только без точки */
-  .chip,.sug{display:inline-flex;align-items:center;text-align:left;border:0;border-radius:3px;padding:8px 10px;background:var(--pale);color:var(--violet-d);
+  .chip,.sug{display:inline-flex;align-items:center;text-align:left;border:0;padding:8px 10px;background:var(--pale);color:var(--violet-d);
     font:500 var(--caps-fs)/1.25 var(--mono);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
     transition:color var(--t) var(--ease),background var(--t) var(--ease)}
   .chip:hover,.sug:hover{background:var(--violet);color:#fff}
   .chat__box{position:relative;flex:none;margin-top:14px}
-  .chat__in{display:flex;border:1px solid var(--line-b);border-radius:3px;background:var(--white);transition:border-color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+  .chat__in{display:flex;border:1px solid var(--line-b);background:var(--white);transition:border-color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
   .chat__in:focus-within{border-color:var(--violet);box-shadow:0 0 0 3px var(--pale)}
   .chat__in input{flex:1;min-width:0;border:0;background:none;padding:13px 14px;font:inherit;font-size:1rem;color:var(--ink);outline:none}
   .chat__in input::placeholder{color:var(--ink-3)}

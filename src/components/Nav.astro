@@ -58,8 +58,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
       <div class="mm">
         <button class="mm__t" type="button" aria-expanded="false">Services <Fragment set:html={chev} /></button>
         <div class="mm__p"><div class="wrap mm__in mm__in--svc">
-          <div><p class="mm__k">What we do</p><ul class="mm__l mm__l--big">{services.slice(0, 3).map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul></div>
-          <div><p class="mm__k">&nbsp;</p><ul class="mm__l mm__l--big">{services.slice(3).map(([h, l]) => <li><a href={h}>{l}</a></li>)}<li><a href="/templates">Templates</a></li></ul></div>
+          <div><p class="mm__k">What we do</p><ul class="mm__l">{services.slice(0, 3).map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul></div>
+          <div><p class="mm__k">&nbsp;</p><ul class="mm__l">{services.slice(3).map(([h, l]) => <li><a href={h}>{l}</a></li>)}<li><a href="/templates">Templates</a></li></ul></div>
           <a class="mm__card" href={CALL}>
             <span class="mm__k">Not sure what you need?</span>
             <b>Tell us what you are building</b>
@@ -74,8 +74,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
       <div class="mm">
         <button class="mm__t" type="button" aria-expanded="false">Contact <Fragment set:html={chev} /></button>
         <div class="mm__p"><div class="wrap mm__in mm__in--hi">
-          <div><p class="mm__k">Talk to us</p><ul class="mm__l mm__l--big"><li><a href={CALL}>Book a call</a></li><li><a href="/careers">Join the team</a></li></ul></div>
-          <div><p class="mm__k">Say hello</p><ul class="mm__l mm__l--big">{SOCIAL.map(s => <li><a href={s.href} target={ext(s.href) ? '_blank' : undefined} rel="noopener me">{s.label} ↗</a></li>)}</ul></div>
+          <div><p class="mm__k">Talk to us</p><ul class="mm__l"><li><a href={CALL}>Book a call</a></li><li><a href="/careers">Join the team</a></li></ul></div>
+          <div><p class="mm__k">Say hello</p><ul class="mm__l">{SOCIAL.map(s => <li><a href={s.href} target={ext(s.href) ? '_blank' : undefined} rel="noopener me">{s.label} ↗</a></li>)}</ul></div>
           <a class="mm__card" href={BUY_CONCEPT}>
             <span class="mm__k">Start here</span>
             <b>Your new homepage in 7&nbsp;days</b>
@@ -106,11 +106,26 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
     if (!open) openGroup(null);
   };
   burger?.addEventListener('click', () => setMenu(!bar?.classList.contains('is-open')));
+  // на компьютере панель открывается с маленькой задержкой и закрывается не сразу,
+  // чтобы она не мигала, когда мышь идёт по диагонали к панели или ненадолго выходит за неё
+  let tOpen = 0, tClose = 0, openedAt = 0;
+  const cur = () => groups.find(x => x.classList.contains('open')) || null;
   groups.forEach(g => {
-    g.querySelector('.mm__t')?.addEventListener('click', () => openGroup(g.classList.contains('open') ? null : g));
-    // на компьютере панель живёт, пока мышь над пунктом или панелью
-    g.addEventListener('pointerenter', e => { if (!mobile() && (e as PointerEvent).pointerType === 'mouse') openGroup(g); });
-    g.addEventListener('pointerleave', e => { if (!mobile() && (e as PointerEvent).pointerType === 'mouse') openGroup(null); });
+    g.querySelector('.mm__t')?.addEventListener('click', () => {
+      if (!mobile() && cur() === g && performance.now() - openedAt < 600) return; // только что открыли наведением
+      openGroup(cur() === g ? null : g); openedAt = performance.now();
+    });
+    g.addEventListener('pointerenter', e => {
+      if (mobile() || (e as PointerEvent).pointerType !== 'mouse') return;
+      clearTimeout(tClose); clearTimeout(tOpen);
+      if (cur() === g) return;
+      tOpen = window.setTimeout(() => { openGroup(g); openedAt = performance.now(); }, cur() ? 140 : 70);
+    });
+    g.addEventListener('pointerleave', e => {
+      if (mobile() || (e as PointerEvent).pointerType !== 'mouse') return;
+      clearTimeout(tOpen); clearTimeout(tClose);
+      tClose = window.setTimeout(() => { if (cur() === g) openGroup(null); }, 260);
+    });
   });
   bar?.querySelectorAll('.bar__nav a').forEach(a => a.addEventListener('click', () => { openGroup(null); setMenu(false); }));
   addEventListener('keydown', e => { if (e.key === 'Escape') { openGroup(null); setMenu(false); } });
@@ -126,19 +141,20 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .bar__crumb { font-size: .95rem; line-height: 1; color: var(--ink-3); letter-spacing: -.01em; transform: translateY(1px); white-space: nowrap; }
   .bar__nav { margin-left: auto; display: flex; align-items: center; height: 100%; }
   .mm { height: 100%; display: flex; align-items: center; }
-  .mm__t, .mm__a { display: inline-flex; align-items: center; gap: 5px; height: 36px; padding: 0 12px; border: 0; border-radius: 3px; background: none; cursor: pointer;
+  .mm__t, .mm__a { display: inline-flex; align-items: center; gap: 5px; height: 36px; padding: 0 12px; border: 0; background: none; cursor: pointer;
     font: 500 .9rem/1 var(--f); letter-spacing: -.01em; color: var(--ink); transition: background var(--t) var(--ease), color var(--t) var(--ease); }
   .mm__t :global(.mm__chev) { width: 10px; height: 10px; color: var(--ink-3); transition: transform .2s var(--ease); }
   .mm__t:hover, .mm__a:hover, .mm.open .mm__t { color: var(--violet); }
   .mm.open .mm__t :global(.mm__chev) { transform: rotate(180deg); color: var(--violet); }
-  .bar__cta { margin-left: 14px; display: inline-flex; align-items: center; gap: 9px; height: 36px; padding: 0 14px; border-radius: 3px; background: var(--violet); color: #fff;
-    font: 500 .9rem/1 var(--f); letter-spacing: -.01em; transition: background var(--t) var(--ease); white-space: nowrap; }
+  .bar__cta { margin-left: 14px; display: inline-flex; align-items: center; gap: 10px; height: 36px; padding: 0 14px; background: var(--violet); color: #fff;
+    font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; transition: background var(--t) var(--ease); white-space: nowrap; }
   .bar__cta :global(.tri) { width: 7px; height: 7px; color: #fff; }
   .bar__cta:hover { background: var(--violet-hi); }
 
   /* панель мега-меню: во всю ширину под полосой, внутри общий контейнер */
   .mm__p { position: absolute; left: 0; right: 0; top: 100%; background: var(--white); border-bottom: 1px solid var(--line); box-shadow: 0 30px 60px -40px rgba(29,19,54,.35);
     visibility: hidden; opacity: 0; transform: translateY(-4px); transition: opacity .18s var(--ease), transform .18s var(--ease), visibility 0s linear .18s; }
+  .mm:not(.open) .mm__p { pointer-events: none; }
   .mm.open .mm__p { visibility: visible; opacity: 1; transform: none; transition: opacity .18s var(--ease), transform .18s var(--ease); }
   .mm__in { display: grid; gap: 40px; padding-block: 32px 36px; }
   .mm__in--home { grid-template-columns: 1.4fr 1fr 1.2fr; }
@@ -148,10 +164,9 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm__k { font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
   .mm__l { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
   .mm__l--2 { grid-template-columns: 1fr 1fr; column-gap: 24px; }
-  .mm__l a { font-size: .98rem; color: var(--ink); transition: color var(--t) var(--ease); }
-  .mm__l--big a { font-size: 1.25rem; letter-spacing: -.02em; }
+  .mm__l a { font-size: 1.05rem; letter-spacing: -.015em; color: var(--ink); transition: color var(--t) var(--ease); }
   .mm__l a:hover { color: var(--violet); }
-  .mm__card { display: flex; flex-direction: column; gap: 10px; padding: 22px; background: var(--pale); color: var(--ink); border-radius: 3px; transition: background var(--t) var(--ease); }
+  .mm__card { display: flex; flex-direction: column; gap: 10px; padding: 22px; background: var(--pale); color: var(--ink); transition: background var(--t) var(--ease); }
   .mm__card .mm__k { margin-bottom: 0; color: var(--violet-d); }
   .mm__card b { font-size: 1.35rem; font-weight: 500; letter-spacing: -.03em; line-height: 1.15; }
   .mm__cardp { font-size: .92rem; line-height: 1.45; color: var(--ink-2); }
@@ -160,7 +175,7 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm__card:hover { background: color-mix(in srgb, var(--pale) 70%, var(--violet) 12%); }
   .mm__w { display: flex; flex-direction: column; gap: 4px; color: var(--ink); }
   .mm__w img { width: 100%; height: auto; border: 1px solid var(--line); margin-bottom: 8px; transition: border-color var(--t) var(--ease); }
-  .mm__w b { font-weight: 500; font-size: .98rem; letter-spacing: -.01em; }
+  .mm__w b { font-weight: 500; font-size: 1.05rem; letter-spacing: -.015em; }
   .mm__w span { font-size: .85rem; color: var(--ink-3); }
   .mm__w:hover b { color: var(--violet); }
   .mm__w:hover img { border-color: var(--violet); }
@@ -170,7 +185,7 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   @media (max-width: 900px) {
     .bar__in { gap: 8px; }
     .bar__logo :global(.logo) { height: 15px; }
-    .bar__cta { margin-left: auto; height: 34px; padding: 0 11px; font-size: .84rem; }
+    .bar__cta { margin-left: auto; height: 34px; padding: 0 11px; }
     .bar__burger { display: grid; place-content: center; gap: 6px; width: 40px; height: 40px; margin-right: -10px; background: none; border: 0; cursor: pointer; color: var(--ink); }
     .bar__burger i { display: block; width: 18px; height: 1.5px; background: currentColor; transition: transform var(--t) var(--ease); }
     .bar.is-open .bar__burger i:first-child { transform: translateY(3.75px) rotate(45deg); }

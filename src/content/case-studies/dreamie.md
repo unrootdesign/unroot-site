@@ -11,15 +11,6 @@ cardDescription: "Wellness company creating light-based products designed to imp
 fullPage: true
 liveUrl: "https://www.helloambient.com/"
 video: "/cms/Dreamie-section.mp4"
-gallery:
-  - src: "/cases/dreamie-1.jpg"
-    alt: "Dreamie website, screen 1"
-  - src: "/cases/dreamie-2.jpg"
-    alt: "Dreamie website, screen 2"
-  - src: "/cases/dreamie-3.jpg"
-    alt: "Dreamie website, screen 3"
-  - src: "/cases/dreamie-4.jpg"
-    alt: "Dreamie website, screen 4"
 testimonial:
   quote: "Adam and the Unroot team delivered a standout launch site for us. Collaboration was smooth from design through build, and they handled every detail with care. As a designer, I appreciated their can-do approach to exploring and refining ideas, then implementing them faithfully in production. Their post-launch support has been prompt and reliable. Strongly recommend."
   name: "Adrian Canoso"
@@ -53,10 +44,6 @@ The website went through several rounds. 3 decisions shaped it:
 - Designed the page as a single scroll. Kickstarter backers decide fast, so we cut everything non-essential.
 
 ![](/cms/Dreamie1.avif)
-
-![](/cms/Dreamie3.avif)
-
-*An intermediate result of working with the client*
 
 ![](/cms/Dreamie2.avif)
 
