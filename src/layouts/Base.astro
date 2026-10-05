@@ -14,7 +14,8 @@ export interface Props {
   modifiedTime?: string;
   schema?: unknown[];            // JSON-LD: FAQPage, Article, BreadcrumbList
   bodyClass?: string;
-  bare?: boolean;                // без шапки и футера (экспериментальная главная)
+  bare?: boolean;                // без шапки и футера
+  noNav?: boolean;               // без верхней шапки, футер остаётся (экспериментальная главная)
 }
 
 const {
@@ -27,6 +28,7 @@ const {
   schema = [],
   bodyClass = '',
   bare = false,
+  noNav = false,
 } = Astro.props;
 
 const site = 'https://unroot.design';
@@ -90,7 +92,7 @@ const PREVIEW = BRANCH !== '' && BRANCH !== 'main';
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>}
 
   <a class="skip-link" href="#main">Skip to content</a>
-  {!bare && <Nav />}
+  {!bare && !noNav && <Nav />}
   <main id="main"><slot /></main>
   {!bare && <Footer />}
   <script>import '../scripts/site.js';</script>
