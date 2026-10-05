@@ -1,11 +1,12 @@
 ---
-/* Экспериментальная главная (ветка next): сайт как пространство из 4 экранов.
-   Навигация плавает снизу по центру, работы стоят коридором в перспективе, без 3D-движка. */
+/* Экспериментальная главная (ветка next): сайт из 4 экранов, навигация плавает снизу по центру.
+   Works: полотно, которое двигается перетаскиванием, на нём группы кадров по проектам.
+   Concepts: до и после двумя картинками рядом или анимированная версия, переключатель сверху. */
 import Base from '../layouts/Base.astro';
 import Tri from '../components/Tri.astro';
 import logo from '../components/logo.svg?raw';
 import { home } from '../data/home';
-import { BUY_CONCEPT, CALL, SOCIAL } from '../data/links';
+import { BUY_CONCEPT, SOCIAL } from '../data/links';
 import '../styles/x.css';
 
 // title и description дословно из Webflow
@@ -13,96 +14,125 @@ const title = "Design partner for AI and Tech founders | Unroot Design";
 const description = "We design and build premium, custom websites with 3D & motion. We clarify complex products, ship in Webflow, and lift conversions with fast weekly sprints.";
 
 const M = '/home/';
-const pad = (n: number) => String(n).padStart(2, '0');
 const logoSvg = logo.replace('<svg ', '<svg class="x-logo__svg" aria-hidden="true" ');
 const schema = [{
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: home.faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 }];
 
-// коридор: 4 кадра каждого проекта подряд
-const frames = home.work.flatMap((w, p) =>
-  Array.from({ length: 4 }, (_, k) => ({ w, p, k, src: `${M}w-${w.slug}-${k + 1}.jpg` })));
+// полотно: где стоит каждая группа и как в ней разложены 4 кадра
+const PLACE: Record<string, { x: number; y: number; k: string }> = {
+  dreamie:  { x: 420,  y: 300,  k: 'top' },
+  epsilon:  { x: 1150, y: 170,  k: 'right' },
+  switch:   { x: 1900, y: 330,  k: 'left' },
+  javelin:  { x: 380,  y: 1190, k: 'right' },
+  trustyfy: { x: 1900, y: 1150, k: 'bottom' },
+};
 const plans = [
   { n: 'Homepage concept', p: '$1,499', s: 'one-off', d: '1 animated homepage direction in 7 days' },
   { n: 'Design and Build Sprint', p: '$2,499', s: '/ week', d: '1 week of design, build or both' },
   { n: 'Monthly Design and Build', p: '$7,899', s: '/ month', d: 'A senior designer and a senior developer' },
 ];
-const views = [
-  { id: 'works', label: 'Works' },
-  { id: 'concepts', label: 'Concepts' },
-  { id: 'about', label: 'About' },
-  { id: 'contact', label: 'Contact' },
-];
+const views = ['works', 'concepts', 'about', 'contact'];
 ---
 <Base title={title} description={description} schema={schema} bodyClass="x" bare>
   <div class="x-app" data-view="works">
 
     <header class="x-top">
       <a href="/" class="x-logo" aria-label="Unroot Design, home" set:html={logoSvg} />
-      <span class="x-crumb" aria-hidden="true">/ <span id="xCrumb">Works</span></span>
+      <span class="x-crumb" aria-hidden="true">/ <span id="xCrumb">works</span></span>
       <a class="x-topcta" href={BUY_CONCEPT}>Get a concept, $1,499 <Tri /></a>
     </header>
 
-    <!-- 1. Работы: коридор из кадров -->
+    <!-- 1. Работы: полотно с группами по проектам -->
     <section class="xv on" data-v="works" aria-label="Works">
       <div class="xw" id="xw">
-        {frames.map((f, i) => (
-          <a class="xf" data-i={i} data-p={f.p} href={f.w.cs ? `/case-studies/${f.w.cs}` : f.w.url} aria-label={`${f.w.name}, image ${f.k + 1}`}>
-            <img src={f.src} alt={f.w.name} width="1600" height="900" loading={i < 6 ? 'eager' : 'lazy'} decoding="async" />
-            {f.k === 0 && <span class="xf__l">{f.w.name} <i>/ {f.w.kind}</i></span>}
-          </a>
-        ))}
-      </div>
-      <div class="xw-hero" id="xwHero">
-        <p class="xw-hero__k">Website design and build for AI and tech startups</p>
-        <h1 class="xw-hero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
-        <p class="xw-hero__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
-        <p class="xw-hero__hint"><span class="xw-mouse" aria-hidden="true"></span>Scroll to walk through our websites</p>
-      </div>
-      <div class="xw-hud" id="xwHud" aria-live="polite">
-        {home.work.map((w, p) => (
-          <div class={`xw-hud__p${p === 0 ? ' on' : ''}`} data-p={p}>
-            <p class="xw-hud__n">{w.name} <span>{w.kind}</span></p>
-            {w.stat ? <p class="xw-hud__s"><b>{w.stat}</b> {w.statLabel}</p> : <p class="xw-hud__s">{w.desc.split('.')[0]}</p>}
-            <a class="xw-hud__go" href={w.cs ? `/case-studies/${w.cs}` : w.url}>View case study <Tri /></a>
+        <div class="xw-canvas" id="xwCanvas">
+          <div class="xw-intro" style="left:1130px;top:850px">
+            <p class="xw-intro__k">Website design and build for AI and tech startups</p>
+            <h1 class="xw-intro__h">Your new homepage <span>in 7&nbsp;days</span></h1>
+            <p class="xw-intro__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
+            <p class="xw-intro__hint"><span class="xw-hand" aria-hidden="true"></span>Drag to look around</p>
           </div>
-        ))}
-      </div>
-    </section>
 
-    <!-- 2. Концепты: до и после -->
-    <section class="xv" data-v="concepts" aria-label="Concepts" hidden>
-      <div class="xc">
-        <div class="xc__txt">
-          <p class="x-label">Concepts</p>
-          <h2 class="xc__h">See the direction before you commit</h2>
-          <p class="xc__s">You send a link. In 7 days you click through your homepage, redesigned from scratch. Drag across the picture to compare.</p>
-          <a class="x-btn" href={BUY_CONCEPT}>Get a concept, $1,499 <Tri /></a>
+          {home.work.map(w => {
+            const p = PLACE[w.slug] || { x: 0, y: 0, k: 'top' };
+            const href = w.cs ? `/case-studies/${w.cs}` : w.url;
+            return (
+              <a class={`xg xg--${p.k}`} href={href} style={`left:${p.x}px;top:${p.y}px`} aria-label={`${w.name}, case study`}>
+                <span class="xg__frame" aria-hidden="true"><i></i><i></i><i></i><i></i><b>{w.name}</b></span>
+                <span class="xg__head"><b>{w.name}</b> {w.kind}</span>
+                <span class="xg__shots">
+                  {[1, 2, 3, 4].map(k => <img src={`${M}w-${w.slug}-${k}.jpg`} alt={k === 1 ? w.name : ''} width="1600" height="900" loading="lazy" decoding="async" draggable="false" />)}
+                </span>
+                <span class="xg__foot">
+                  {w.stat ? <span class="xg__stat"><b>{w.stat}</b> {w.statLabel}</span> : <span class="xg__stat">{w.desc.split('.')[0]}</span>}
+                  <span class="xg__go">View case study <Tri /></span>
+                </span>
+              </a>
+            );
+          })}
+
+          <div class="xw-next" style="left:1250px;top:1520px">
+            <p class="xw-next__k">Your website</p>
+            <p class="xw-next__h">Could be next on this board</p>
+            <a class="x-btn" href={BUY_CONCEPT}>Get a concept, $1,499 <Tri /></a>
+          </div>
         </div>
-        <figure class="xc__stage ba">
-          <div class="ba__stage">
-            {home.ba.map((p, i) => (
-              <div class={`xc__pair${i === 0 ? ' on' : ''}`} data-i={i}>
-                <img class="ba__l" src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} loading="lazy" />
-                <img class="ba__r" src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} loading="lazy" />
-              </div>
-            ))}
-            <span class="xc__tag xc__tag--l">Before</span><span class="xc__tag xc__tag--r">After</span>
-            <span class="ba__bar"><i></i></span>
-          </div>
-        </figure>
-        <ol class="xc__list" aria-label="Concepts">
-          {home.ba.map((p, i) => (
-            <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}><span>{pad(i + 1)}</span>{p.name}</button></li>
-          ))}
-        </ol>
       </div>
     </section>
 
-    <!-- 3. О студии: 4 карточки -->
+    <!-- 2. Концепты: до и после или анимированная версия -->
+    <section class="xv" data-v="concepts" aria-label="Concepts" hidden>
+      <div class="xc" data-mode="ba">
+        <div class="xc__mode" role="tablist" aria-label="Show">
+          <button type="button" role="tab" data-mode="ba" aria-selected="true">Before / after</button>
+          <button type="button" role="tab" data-mode="anim" aria-selected="false">Animated</button>
+        </div>
+
+        <div class="xc__stage xc__stage--ba">
+          {home.ba.map((p, i) => (
+            <div class={`xc__pair${i === 0 ? ' on' : ''}`} data-i={i}>
+              <figure><figcaption>Before</figcaption><img src={`${M}p-${p.slug}-before.jpg`} alt={`${p.name} before`} loading="lazy" /></figure>
+              <span class="xc__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></span>
+              <figure><figcaption class="after">After, 7 days later</figcaption><img src={`${M}p-${p.slug}-after.jpg`} alt={`${p.name} after`} loading="lazy" /></figure>
+            </div>
+          ))}
+        </div>
+        <div class="xc__stage xc__stage--anim">
+          {home.pairs.map((p, i) => (
+            <div class={`xc__vid${i === 0 ? ' on' : ''}`} data-i={i}>
+              <video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted loop playsinline preload="none"></video>
+            </div>
+          ))}
+        </div>
+
+        <ol class="xc__list xc__list--ba" aria-label="Projects">
+          {home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{p.name}</button></li>)}
+        </ol>
+        <ol class="xc__list xc__list--anim" aria-label="Projects">
+          {home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{p.name}</button></li>)}
+        </ol>
+
+        <!-- сообщение: сначала короткий вопрос, по клику полный текст -->
+        <div class="xmsg" id="xMsg">
+          <button type="button" class="xmsg__q" aria-expanded="false" aria-controls="xMsgFull">
+            <span class="xmsg__av" aria-hidden="true">u</span><span>Want one like this?</span>
+          </button>
+          <div class="xmsg__full" id="xMsgFull" hidden>
+            <button type="button" class="xmsg__x" aria-label="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+            <p class="xmsg__who"><span class="xmsg__av" aria-hidden="true">u</span>Unroot</p>
+            <p>Send us your website. In 7 days you get your homepage redesigned from scratch: 3–4 sections as a live preview you can click through and share with your team.</p>
+            <p>$1,499. The files are yours, and the $1,499 goes toward the full website if you start within 60 days.</p>
+            <a class="x-btn x-btn--full" href={BUY_CONCEPT}>Get a concept, $1,499 <Tri /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. О студии: 4 прямые карточки -->
     <section class="xv" data-v="about" aria-label="About" hidden>
-      <div class="xa" id="xa">
+      <div class="xa">
         <div class="xa__col">
           <p class="x-label">Studio</p>
           <article class="xa__card xa__card--studio">
@@ -133,7 +163,11 @@ const views = [
                 <footer><img src={`${M}av-${q.avatar}.jpg`} alt="" width="40" height="40" loading="lazy" /><span><b>{q.name}</b>{q.role}</span></footer>
               </blockquote>
             ))}
-            <div class="xa__dots">{home.quotes.map((_, i) => <button type="button" class={i === 0 ? 'on' : ''} data-i={i} aria-label={`Quote ${i + 1}`}></button>)}</div>
+            <div class="xa__qnav">
+              <button type="button" class="xa__arr" data-d="-1" aria-label="Previous review"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
+              <span class="xa__qn" id="xqn">1 / {home.quotes.length}</span>
+              <button type="button" class="xa__arr" data-d="1" aria-label="Next review"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
+            </div>
           </article>
         </div>
         <div class="xa__col">
@@ -152,7 +186,7 @@ const views = [
       </div>
     </section>
 
-    <!-- 4. Контакт: концепт или созвон -->
+    <!-- 4. Контакт: концепт или созвон, без отдельных прокруток -->
     <section class="xv" data-v="contact" aria-label="Contact" hidden>
       <div class="xk">
         <div class="xk__col">
@@ -170,7 +204,7 @@ const views = [
             <p class="xk__soc">{SOCIAL.map(s => <a href={s.href} target="_blank" rel="noopener">{s.label}</a>)}</p>
           </article>
         </div>
-        <div class="xk__col xk__col--cal">
+        <div class="xk__col">
           <p class="x-label">Or book a 30 minute call</p>
           <div class="xa__card xk__cal" id="xCal"><p class="xk__load">Loading calendar</p></div>
         </div>
@@ -179,22 +213,7 @@ const views = [
 
     <!-- навигация снизу по центру -->
     <nav class="x-dock" aria-label="Sections">
-      <div class="x-dock__tabs" role="tablist">
-        {views.map((v, i) => <button type="button" role="tab" data-v={v.id} aria-selected={i === 0 ? 'true' : 'false'}>{v.label}</button>)}
-      </div>
-      <span class="x-dock__sep" aria-hidden="true"></span>
-      <div class="x-dock__nav">
-        <button type="button" class="x-dock__arr" id="xPrev" aria-label="Previous"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg></button>
-        <span class="x-dock__count" id="xCount">01 / {pad(frames.length)}</span>
-        <button type="button" class="x-dock__arr" id="xNext" aria-label="Next"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3.5 10.5 8 6 12.5"/></svg></button>
-      </div>
-      <span class="x-dock__sep" aria-hidden="true"></span>
-      <button type="button" class="x-dock__help" id="xHelpBtn" aria-expanded="false" aria-controls="xHelp">?</button>
-      <div class="x-help" id="xHelp" hidden>
-        <p><b>Scroll</b> or drag to move</p>
-        <p><b>← →</b> previous and next</p>
-        <p><b>1–4</b> switch sections</p>
-      </div>
+      {views.map((v, i) => <button type="button" data-v={v} aria-pressed={i === 0 ? 'true' : 'false'}>{v[0].toUpperCase() + v.slice(1)}</button>)}
     </nav>
   </div>
 </Base>

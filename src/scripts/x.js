@@ -1,123 +1,88 @@
-/* Экспериментальная главная: 4 экрана, док снизу, коридор работ в перспективе.
-   Движение только transform и opacity, анимация крутится, пока есть куда двигаться. */
+/* Экспериментальная главная: 4 экрана, док снизу.
+   Works: полотно двигается перетаскиванием и колесом. Concepts: до и после или анимированная версия. */
 (() => {
   const app = document.querySelector('.x-app'); if (!app) return;
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const pad = n => String(n).padStart(2, '0');
-  const views = $$('.xv'), tabs = $$('.x-dock__tabs button');
-  const crumb = $('#xCrumb'), count = $('#xCount'), prev = $('#xPrev'), next = $('#xNext');
-  const NAMES = { works: 'Works', concepts: 'Concepts', about: 'About', contact: 'Contact' };
+  const views = $$('.xv'), tabs = $$('.x-dock button'), crumb = $('#xCrumb');
+  const ALL = ['works', 'concepts', 'about', 'contact'];
   const ALIAS = { work: 'works', concept: 'concepts', offer: 'concepts', reviews: 'about', pricing: 'about', team: 'contact', faq: 'about' };
   let view = 'works';
+  const desktop = () => innerWidth > 760;
 
-  /* ── коридор ── */
-  const xw = $('#xw'), frames = $$('.xf', xw), hero = $('#xwHero'), hud = $('#xwHud'), huds = $$('.xw-hud__p', hud);
-  const N = frames.length, STEP = 360;
-  let cam = 0, target = 0, raf = 0, X = 0, FW = 520, ANG = 58, Z0 = 320, cur = -1;
-  function layout() {
-    const w = innerWidth, small = w < 760;
-    FW = small ? Math.round(w * .74) : Math.round(Math.min(760, Math.max(300, w * .44)));
-    X = small ? w * .46 : w * .345;
-    ANG = small ? 52 : 60;
-    Z0 = small ? 140 : 70;
-    xw.style.setProperty('--fw', FW + 'px');
-    paint();
-  }
-  function paint() {
-    for (let i = 0; i < N; i++) {
-      const f = frames[i], rel = i * STEP - cam, side = i % 2 ? 1 : -1;
-      const near = Math.min(1, Math.max(0, (rel + STEP * .9) / (STEP * .6)));
-      const far = Math.min(1, Math.max(0, (STEP * 15 - rel) / (STEP * 3)));
-      const o = near * far;
-      f.style.opacity = o.toFixed(3);
-      f.style.visibility = o < .01 ? 'hidden' : 'visible';
-      f.style.transform = `translate3d(${side * X}px,-50%,${-(rel + Z0)}px) rotateY(${-side * ANG}deg)`;
-      f.style.zIndex = String(1000 - i);
-    }
-    const i = Math.max(0, Math.min(N - 1, Math.round(cam / STEP)));
-    hero.classList.toggle('off', cam > STEP * .35);
-    hud.classList.toggle('off', cam <= STEP * .35);
-    if (i !== cur) {
-      cur = i;
-      const p = +frames[i].dataset.p;
-      huds.forEach(h => h.classList.toggle('on', +h.dataset.p === p));
-      if (view === 'works') setCount();
-    }
-  }
+  /* ── полотно: стартует с заголовка в центре, двигается в пределах краёв ── */
+  const xw = $('#xw'), cv = $('#xwCanvas'), intro = $('.xw-intro', cv);
+  let px = 0, py = 0, tx = 0, ty = 0, raf = 0, S = 1;
+  // на ноутбуках полотно чуть уменьшено, чтобы с заголовком было видно больше проектов
+  const scale = () => { S = innerWidth < 1300 ? .74 : innerWidth < 1700 ? .82 : .92; };
+  const bounds = () => ({ minX: Math.min(0, xw.clientWidth - cv.offsetWidth * S - 40), minY: Math.min(0, xw.clientHeight - cv.offsetHeight * S - 40) });
+  const clamp = (x, y) => { const b = bounds(); return [Math.max(b.minX, Math.min(40, x)), Math.max(b.minY, Math.min(40, y))]; };
+  const apply = () => { cv.style.transform = `translate3d(${px}px,${py}px,0) scale(${S})`; };
   function loop() {
-    const d = target - cam;
-    if (RM || Math.abs(d) < .4) { cam = target; paint(); raf = 0; return; }
-    cam += d * .11; paint(); raf = requestAnimationFrame(loop);
+    const dx = tx - px, dy = ty - py;
+    if (RM || (Math.abs(dx) < .3 && Math.abs(dy) < .3)) { px = tx; py = ty; apply(); raf = 0; return; }
+    px += dx * .14; py += dy * .14; apply(); raf = requestAnimationFrame(loop);
   }
-  const go = t => { target = Math.max(0, Math.min((N - 1) * STEP, t)); if (!raf) raf = requestAnimationFrame(loop); };
-  let snapT = 0;
-  const snapSoon = () => { clearTimeout(snapT); snapT = setTimeout(() => go(Math.round(target / STEP) * STEP), 170); };
+  const moveTo = (x, y, now) => { [tx, ty] = clamp(x, y); if (now) { px = tx; py = ty; apply(); } else if (!raf) raf = requestAnimationFrame(loop); };
+  function center(now) {
+    if (!desktop()) { cv.style.transform = ''; return; }
+    scale();
+    const cx = (intro.offsetLeft + intro.offsetWidth / 2) * S, cy = (intro.offsetTop + intro.offsetHeight / 2) * S;
+    moveTo(xw.clientWidth / 2 - cx, xw.clientHeight / 2 - cy - 20, now);
+  }
   xw.addEventListener('wheel', e => {
+    if (!desktop()) return;
     e.preventDefault();
-    const k = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? innerHeight : 1;
-    go(target + (Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX) * k * 1.1);
-    snapSoon();
+    const k = e.deltaMode === 1 ? 32 : 1;
+    moveTo(tx - (e.shiftKey ? e.deltaY : e.deltaX) * k, ty - (e.shiftKey ? 0 : e.deltaY) * k);
   }, { passive: false });
-  // перетаскивание мышью и пальцем: вверх или влево значит вперёд
   let drag = null, moved = false;
-  xw.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, t: target }; moved = false; });
+  xw.addEventListener('pointerdown', e => { if (!desktop() || e.button) return; drag = { x: e.clientX, y: e.clientY, tx, ty }; moved = false; });
   addEventListener('pointermove', e => {
     if (!drag) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (!moved && Math.hypot(dx, dy) > 6) { moved = true; xw.classList.add('drag'); }
-    if (moved) go(drag.t - (Math.abs(dy) > Math.abs(dx) ? dy : dx) * 2.2);
+    if (!moved && Math.hypot(dx, dy) > 5) { moved = true; xw.classList.add('drag'); }
+    if (moved) moveTo(drag.tx + dx, drag.ty + dy, true);
   });
-  addEventListener('pointerup', () => { if (!drag) return; drag = null; xw.classList.remove('drag'); if (moved) snapSoon(); });
-  frames.forEach(f => f.addEventListener('click', e => {
-    if (moved) { e.preventDefault(); return; }
-    const i = +f.dataset.i;
-    if (i !== cur) { e.preventDefault(); go(i * STEP); }   // первый клик подводит к кадру, второй открывает кейс
-  }));
-  addEventListener('resize', layout);
-  layout();
+  addEventListener('pointerup', () => { drag = null; setTimeout(() => xw.classList.remove('drag'), 0); });
+  $$('.xg', cv).forEach(g => g.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; } }));
+  addEventListener('resize', () => center(true));
+  center(true);
 
-  /* ── концепты: список переключает пары, слайдер ведётся мышью и остаётся на месте ── */
-  const pairs = $$('.xc__pair'), pbtn = $$('.xc__list button'), bst = $('.xc .ba__stage');
-  let pi = 0;
-  function setPair(i) {
-    pi = (i + pairs.length) % pairs.length;
-    pairs.forEach((p, k) => p.classList.toggle('on', k === pi));
-    pbtn.forEach((b, k) => b.classList.toggle('on', k === pi));
-    pairs[pi].querySelectorAll('img').forEach(im => im.loading = 'eager');
-    if (view === 'concepts') setCount();
+  /* ── концепты ── */
+  const xc = $('.xc');
+  const lists = { ba: $$('.xc__list--ba button'), anim: $$('.xc__list--anim button') };
+  const items = { ba: $$('.xc__pair'), anim: $$('.xc__vid') };
+  const idx = { ba: 0, anim: 0 };
+  let mode = 'ba';
+  const playVid = () => items.anim.forEach((v, k) => { const el = v.querySelector('video'); if (mode === 'anim' && view === 'concepts' && k === idx.anim) { el.preload = 'auto'; el.play().catch(() => {}); } else el.pause(); });
+  function pick(i, m = mode) {
+    const n = items[m].length; idx[m] = (i + n) % n;
+    items[m].forEach((x, k) => x.classList.toggle('on', k === idx[m]));
+    lists[m].forEach((b, k) => b.classList.toggle('on', k === idx[m]));
+    items[m][idx[m]].querySelectorAll('img').forEach(im => im.loading = 'eager');
+    playVid();
   }
-  pbtn.forEach(b => b.addEventListener('click', () => setPair(+b.dataset.i)));
-  if (bst) {
-    const card = bst.closest('figure');
-    const set = x => { const r = bst.getBoundingClientRect(); bst.style.setProperty('--sp', Math.max(0, Math.min(100, (x - r.left) / r.width * 100)) + '%'); };
-    card.addEventListener('pointermove', e => { if (e.pointerType === 'mouse' || bst.hasPointerCapture(e.pointerId)) set(e.clientX); });
-    bst.addEventListener('pointerdown', e => { bst.setPointerCapture(e.pointerId); set(e.clientX); });
-    bst.addEventListener('pointermove', e => { if (bst.hasPointerCapture(e.pointerId)) set(e.clientX); });
+  function setMode(m) {
+    mode = m; xc.dataset.mode = m;
+    $$('.xc__mode button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
+    pick(idx[m]);
   }
+  $$('.xc__mode button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  ['ba', 'anim'].forEach(m => lists[m].forEach(b => b.addEventListener('click', () => pick(+b.dataset.i, m))));
+  // сообщение
+  const msg = $('#xMsg'), mq = $('.xmsg__q', msg), mf = $('#xMsgFull');
+  const openMsg = on => { msg.classList.toggle('open', on); mf.hidden = !on; mq.setAttribute('aria-expanded', String(on)); };
+  mq.addEventListener('click', () => openMsg(true));
+  $('.xmsg__x', msg).addEventListener('click', () => openMsg(false));
 
-  /* ── о студии: 4 карточки, активная выпрямляется ── */
-  const xa = $('#xa'), cols = $$('.xa__col', xa);
-  let ci = 0;
-  function setCard(i, scroll = true) {
-    ci = Math.max(0, Math.min(cols.length - 1, i));
-    cols.forEach((c, k) => c.classList.toggle('on', k === ci));
-    if (scroll && xa.scrollWidth > xa.clientWidth + 4) cols[ci].scrollIntoView({ behavior: RM ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-    if (view === 'about') setCount();
-  }
-  cols.forEach((c, k) => c.addEventListener('pointerenter', () => { if (matchMedia('(hover:hover)').matches) setCard(k, false); }));
-  let st = 0;
-  xa.addEventListener('scroll', () => { clearTimeout(st); st = setTimeout(() => {
-    if (xa.scrollWidth <= xa.clientWidth + 4) return;
-    const mid = xa.scrollLeft + xa.clientWidth / 2;
-    let best = 0, bd = 1e9; cols.forEach((c, k) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = k; } });
-    if (best !== ci) setCard(best, false);
-  }, 90); });
-  // отзывы
-  const qs = $$('#xq blockquote'), dots = $$('#xq .xa__dots button');
-  dots.forEach(d => d.addEventListener('click', () => { const i = +d.dataset.i; qs.forEach((q, k) => q.classList.toggle('on', k === i)); dots.forEach((x, k) => x.classList.toggle('on', k === i)); }));
+  /* ── отзывы со стрелками ── */
+  const qs = $$('#xq blockquote'), qn = $('#xqn');
+  let qi = 0;
+  const quote = i => { qi = (i + qs.length) % qs.length; qs.forEach((q, k) => q.classList.toggle('on', k === qi)); qn.textContent = `${qi + 1} / ${qs.length}`; };
+  $$('#xq .xa__arr').forEach(b => b.addEventListener('click', () => quote(qi + +b.dataset.d)));
 
-  /* ── контакт: календарь грузится при первом открытии ── */
+  /* ── календарь грузится при первом открытии контакта ── */
   let calBooted = false;
   function bootCal() {
     if (calBooted) return; calBooted = true;
@@ -128,53 +93,26 @@
   }
 
   /* ── экраны и док ── */
-  function setCount() {
-    let i = 0, n = 1;
-    if (view === 'works') { i = cur; n = N; }
-    else if (view === 'concepts') { i = pi; n = pairs.length; }
-    else if (view === 'about') { i = ci; n = cols.length; }
-    count.textContent = `${pad(i + 1)} / ${pad(n)}`;
-    prev.disabled = i <= 0 && view !== 'concepts';
-    next.disabled = i >= n - 1 && view !== 'concepts';
-  }
   function show(v, push = true) {
-    if (!NAMES[v]) v = 'works';
+    if (!ALL.includes(v)) v = 'works';
     view = v; app.dataset.view = v;
     views.forEach(s => { const on = s.dataset.v === v; s.classList.toggle('on', on); s.toggleAttribute('hidden', !on); s.setAttribute('aria-hidden', String(!on)); });
-    tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.v === v)));
-    crumb.textContent = NAMES[v];
+    tabs.forEach(t => t.setAttribute('aria-pressed', String(t.dataset.v === v)));
+    crumb.textContent = v;
     if (v === 'contact') bootCal();
-    if (v === 'about') setCard(ci, false);
-    setCount();
+    if (v === 'concepts') pick(idx[mode]); else playVid();
     if (push) history.replaceState(null, '', v === 'works' ? location.pathname : '#' + v);
   }
-  function step(d) {
-    if (view === 'works') go(Math.round(target / STEP) * STEP + d * STEP);
-    else if (view === 'concepts') setPair(pi + d);
-    else if (view === 'about') setCard(ci + d);
-  }
   tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.v)));
-  prev.addEventListener('click', () => step(-1));
-  next.addEventListener('click', () => step(1));
-  // колесо на экранах концептов и карточек листает по одному шагу
-  let wl = 0;
-  ['concepts', 'about'].forEach(v => $(`.xv[data-v="${v}"]`).addEventListener('wheel', e => {
-    if (Math.abs(e.deltaY) < 8) return;
-    e.preventDefault(); const now = Date.now(); if (now - wl < 520) return; wl = now; step(e.deltaY > 0 ? 1 : -1);
-  }, { passive: false }));
   addEventListener('keydown', e => {
     if (e.target.closest('input,textarea,select,[contenteditable]')) return;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); step(1); }
-    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); step(-1); }
-    else if (/^[1-4]$/.test(e.key)) show(Object.keys(NAMES)[+e.key - 1]);
-    else if (e.key === 'Escape') toggleHelp(false);
+    if (/^[1-4]$/.test(e.key)) show(ALL[+e.key - 1]);
+    else if (view === 'concepts' && (e.key === 'ArrowRight' || e.key === 'ArrowDown')) { e.preventDefault(); pick(idx[mode] + 1); }
+    else if (view === 'concepts' && (e.key === 'ArrowLeft' || e.key === 'ArrowUp')) { e.preventDefault(); pick(idx[mode] - 1); }
+    else if (view === 'about' && e.key === 'ArrowRight') quote(qi + 1);
+    else if (view === 'about' && e.key === 'ArrowLeft') quote(qi - 1);
+    else if (e.key === 'Escape') openMsg(false);
   });
-  // подсказка «?»
-  const hb = $('#xHelpBtn'), hp = $('#xHelp');
-  function toggleHelp(on) { hp.hidden = !on; hb.setAttribute('aria-expanded', String(on)); }
-  hb.addEventListener('click', e => { e.stopPropagation(); toggleHelp(hp.hidden); });
-  addEventListener('click', e => { if (!e.target.closest('#xHelp')) toggleHelp(false); });
-
   const h = location.hash.slice(1);
   show(ALIAS[h] || h || 'works', false);
   addEventListener('hashchange', () => { const k = location.hash.slice(1); show(ALIAS[k] || k || 'works', false); });
