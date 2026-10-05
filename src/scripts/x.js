@@ -47,12 +47,14 @@
       raf = requestAnimationFrame(tick);
     });
   }
+  // переключатель «Before / after»: выключен, идут анимированные концепты; включён, пары до и после
+  const sw = $('#xSw');
   function setMode(m) {
     mode = m; hero.dataset.mode = m;
-    $$('.xc__mode button', hero).forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
+    sw?.setAttribute('aria-checked', String(m === 'ba'));
     show(idx[m]);
   }
-  $$('.xc__mode button', hero).forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  sw?.addEventListener('click', () => setMode(mode === 'ba' ? 'anim' : 'ba'));
   ['anim', 'ba'].forEach(m => names[m].forEach(b => b.addEventListener('click', () => show(+b.dataset.i, m))));
   const stage = $('.xhero__stage', hero);
   stage.addEventListener('pointerenter', () => { paused = true; if (mode === 'anim') vid()?.pause(); });
@@ -77,10 +79,9 @@
   $('#xRow')?.addEventListener('touchend', () => mq && (mq.style.animationPlayState = ''), { passive: true });
 
   /* ── отзывы ── */
-  const qs = $$('#xq blockquote'), qn = $('#xqn');
+  const qs = $$('#xq blockquote');
   let qi = 0;
-  const pad = n => String(n).padStart(2, '0');
-  const quote = i => { qi = (i + qs.length) % qs.length; qs.forEach((q, k) => q.classList.toggle('on', k === qi)); qn.textContent = `${pad(qi + 1)} / ${pad(qs.length)}`; };
+    const quote = i => { qi = (i + qs.length) % qs.length; qs.forEach((q, k) => q.classList.toggle('on', k === qi)); };
   $$('#xq .xq__arr').forEach(b => b.addEventListener('click', () => quote(qi + +b.dataset.d)));
 
   /* ── услуги: список переключает кадр, картинки внутри услуги сменяются сами ── */
@@ -98,15 +99,41 @@
     imgs.forEach((im, k) => im.classList.toggle('on', k === (c + 1) % imgs.length));
   }, 1800);
 
-  /* ── после запуска: импульс бежит по линии, шаги открываются, когда до них доходит ── */
-  const ho = $('#xHo'), hoItems = ho ? $$('li', ho) : [];
-  function handover() {
+  /* ── после запуска: линия идёт от первой точки до последней и плавно заполняется по прокрутке,
+     кольцо слева заполняется так же, по части на шаг, в центре номер текущего шага ── */
+  const ho = $('#xHo'), hoItems = ho ? $$('li', ho) : [], line = ho && $('.xho__line', ho);
+  const ring = $('.xho__ring'), now = $('.xho__now');
+  let hoP = 0, hoT = 0, hoRaf = 0, dots = [];
+  function hoLayout() {
     if (!ho) return;
-    const r = ho.getBoundingClientRect(), mark = innerHeight * .62;
-    const p = Math.max(0, Math.min(1, (mark - r.top) / r.height));
-    ho.style.setProperty('--p', p.toFixed(4));
-    hoItems.forEach(li => { if (li.getBoundingClientRect().top < mark) li.classList.add('in'); });
+    const top = ho.getBoundingClientRect().top;
+    dots = hoItems.map(li => li.getBoundingClientRect().top - top + 12);
+    line.style.top = dots[0] + 'px';
+    line.style.height = (dots[dots.length - 1] - dots[0]) + 'px';
   }
+  function hoTarget() {
+    if (!ho) return;
+    const mark = innerHeight * .55, r = line.getBoundingClientRect();
+    hoT = Math.max(0, Math.min(1, (mark - r.top) / (r.height || 1)));
+    if (!hoRaf) hoRaf = requestAnimationFrame(hoStep);
+  }
+  function hoStep() {
+    hoP += (hoT - hoP) * (RM ? 1 : .12);
+    if (Math.abs(hoT - hoP) < .0005) hoP = hoT;
+    ho.style.setProperty('--p', hoP.toFixed(4));
+    // точка шага загорается, когда заполнение до неё дошло
+    const span = dots[dots.length - 1] - dots[0] || 1;
+    let cur = 0;
+    hoItems.forEach((li, k) => { const at = (dots[k] - dots[0]) / span; const on = hoP >= at - .001; li.classList.toggle('in', on); if (on) cur = k; });
+    // кольцо: 3 части, каждая заполняется своим отрезком прокрутки
+    const n = hoItems.length, ringP = hoP * n;
+    ring?.style.setProperty('--r', ringP.toFixed(4));
+    if (now) now.textContent = String(cur + 1).padStart(2, '0');
+    hoRaf = hoP === hoT ? 0 : requestAnimationFrame(hoStep);
+  }
+  hoLayout();
+  addEventListener('resize', () => { hoLayout(); hoTarget(); });
+  addEventListener('load', () => { hoLayout(); hoTarget(); });
 
   /* ── календарь грузится, когда до секции созвона остаётся 2 экрана ── */
   let calBooted = false;
@@ -121,7 +148,7 @@
   function onScroll() {
     const nowVis = hero.getBoundingClientRect().bottom > 0;
     if (nowVis !== heroVisible) { heroVisible = nowVis; if (mode === 'anim') { if (nowVis && !paused) vid()?.play().catch(() => {}); else vid()?.pause(); } }
-    handover();
+    hoTarget();
     if ($('#team').getBoundingClientRect().top < innerHeight * 2) bootCal();
   }
   let st = false;

@@ -25,7 +25,7 @@ const schema = [{
 <Base title={title} description={description} schema={schema} bodyClass="x">
   <!-- 1. Герой: слева текст и кнопки, справа концепты (сначала анимированные, по клику до и после), под ними названия проектов -->
   <section class="xs xhero" id="concept" data-mode="anim" aria-label="Concept">
-    <div class="xw xhero__in">
+    <div class="xw x3 xhero__in">
       <div class="xhero__txt">
         <p class="xhero__k">Website design and build for AI and tech startups</p>
         <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
@@ -36,10 +36,14 @@ const schema = [{
         </div>
       </div>
 
-      <div class="xhero__vis">
-        <div class="xc__mode" role="tablist" aria-label="Show">
-          <button type="button" role="tab" data-mode="anim" aria-selected="true">Animated</button>
-          <button type="button" role="tab" data-mode="ba" aria-selected="false">Before / after</button>
+      <div class="xhero__vis s2">
+        <!-- над концептом одна строка: проекты как табы, справа переключатель до и после -->
+        <div class="xhero__bar">
+          <div class="xhero__names">
+            <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
+            <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
+          </div>
+          <button class="xsw" type="button" role="switch" aria-checked="false" id="xSw"><span class="xsw__t" aria-hidden="true"><i></i></span>Before / after</button>
         </div>
         <div class="xhero__stage">
           <div class="xc__stage xc__stage--anim">
@@ -58,10 +62,6 @@ const schema = [{
               </div>
             ))}
           </div>
-        </div>
-        <div class="xhero__names">
-          <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
-          <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
         </div>
       </div>
     </div>
@@ -85,7 +85,7 @@ const schema = [{
               </div>
               <div class="xg__foot">
                 <p class="xg__stat"><b>{w.stat}</b> {w.statLabel}</p>
-                <a class="link xg__go" href={href} tabindex={hide ? -1 : undefined}>View case study <Tri /></a>
+                <a class="xg__go" href={href} tabindex={hide ? -1 : undefined}>View case study <Tri /></a>
               </div>
             </article>
           );
@@ -98,8 +98,8 @@ const schema = [{
   <section class="xs" id="reviews" aria-label="Reviews">
     <div class="xw">
       <h2 class="xh2">What they say <span>after</span></h2>
-      <div class="xr">
-        <div class="xq" id="xq">
+      <div class="x3 xr">
+        <div class="xq s2" id="xq">
           {home.quotes.map((q, i) => (
             <blockquote class={i === 0 ? 'on' : ''}>
               <p>&ldquo;{q.text}&rdquo;</p>
@@ -113,7 +113,6 @@ const schema = [{
           <div class="xq__nav">
             <button type="button" class="xq__arr" data-d="-1" aria-label="Previous review">←</button>
             <button type="button" class="xq__arr" data-d="1" aria-label="Next review">→</button>
-            <span id="xqn">{pad(1)} / {pad(home.quotes.length)}</span>
           </div>
         </div>
         <div class="xr__logos">
@@ -128,7 +127,7 @@ const schema = [{
   <section class="xs" id="pricing" aria-label="Pricing">
     <div class="xw">
       <h2 class="xh2">Pick how we <span>work together</span></h2>
-      <div class="xp">
+      <div class="x3 xp">
         <article class="xp__c">
           <p class="xp__n">Design and Build Sprint</p>
           <p class="xp__p">$2,499<small>/ week</small></p>
@@ -142,6 +141,7 @@ const schema = [{
           <a class="btn btn--line xp__btn" href={CALL}><span>Discuss a project</span><Tri /></a>
         </article>
         <article class="xp__c xp__c--concept">
+          <canvas class="stars" data-d=".3" aria-hidden="true"></canvas>
           <p class="xp__n">Not sure where to start?</p>
           <p class="xp__p">$1,499<small>homepage concept, 7 days</small></p>
           <ul class="xp__list">
@@ -160,11 +160,11 @@ const schema = [{
   <section class="xs" id="services" aria-label="Services">
     <div class="xw">
       <h2 class="xh2">What we <span>do</span></h2>
-      <div class="xsv">
+      <div class="x3 xsv">
         <ol class="xsv__list">
           {home.services.map((s, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}><span>{pad(i + 1)}</span>{s.name}</button></li>)}
         </ol>
-        <div class="xsv__media">
+        <div class="xsv__media s2">
           {home.services.map((s, i) => (
             <figure class={`xsv__m${i === 0 ? ' on' : ''}`} data-i={i}>
               <div class="xsv__v" style={`aspect-ratio:${s.ratio}`}>
@@ -182,13 +182,17 @@ const schema = [{
 
   <!-- 6. После запуска: по прокрутке по линии бежит импульс, шаги открываются по очереди -->
   <section class="xs" id="handover" aria-label="After launch">
-    <div class="xw xho">
+    <div class="xw x3 xho">
       <div class="xho__l">
         <h2 class="xh2">A website your team runs <span>without us</span></h2>
-        <div class="xho__orb" aria-hidden="true"><i></i><i></i><i></i><b></b><s></s><s></s><s></s></div>
+        <!-- кольцо заполняется по прокрутке: 3 части, по одной на шаг -->
+        <div class="xho__ring" aria-hidden="true">
+          <svg viewBox="0 0 200 200">{[0, 1, 2].map(k => <><circle class="xho__seg" cx="100" cy="100" r="92" pathLength="300" style={`--k:${k}`} /><circle class="xho__fill" cx="100" cy="100" r="92" pathLength="300" style={`--k:${k}`} /></>)}</svg>
+          <span class="xho__now">01</span>
+        </div>
       </div>
-      <ol class="xho__list" id="xHo">
-        <span class="xho__line" aria-hidden="true"><span></span><i></i></span>
+      <ol class="xho__list s2" id="xHo">
+        <span class="xho__line" aria-hidden="true"><span></span></span>
         {home.handover.map((h, i) => <li><span class="xho__n">{pad(i + 1)}</span><b>{h.t}</b><p>{h.d}</p></li>)}
       </ol>
     </div>
@@ -197,8 +201,8 @@ const schema = [{
   <!-- 7. Созвон: сверху текст и цифры, календарь на всю ширину -->
   <section class="xs" id="team" aria-label="Contact">
     <div class="xw">
-      <div class="xt">
-        <div>
+      <div class="x3 xt">
+        <div class="s2">
           <h2 class="xh2">Book a call with <span>the people who do the work</span></h2>
           <p class="xt__p">We are a team of 5 in Warsaw, no account managers in between. In 30 minutes you tell us what you are building, and we tell you what we would change on your website and how we can start. No sales pitch.</p>
         </div>
@@ -214,9 +218,9 @@ const schema = [{
 
   <!-- 8. FAQ -->
   <section class="xs" id="faq" aria-label="FAQ">
-    <div class="xw xfaq">
+    <div class="xw x3 xfaq">
       <h2 class="xh2">Questions we get <span>on calls</span></h2>
-      <div>{home.faq.map(f => <details class="fq"><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+      <div class="s2">{home.faq.map(f => <details class="fq"><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
     </div>
   </section>
 
@@ -231,7 +235,7 @@ const schema = [{
     <div class="chat__chips"></div>
     <div class="chat__box">
       <form class="chat__in" autocomplete="off">
-        <input type="text" name="q" placeholder="Ask us anything..." aria-label="Ask us anything" maxlength="200" />
+        <input type="text" name="q" placeholder="Type your question" aria-label="Your question" maxlength="200" />
         <button type="submit" aria-label="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></button>
       </form>
       <div class="chat__sug"><ul></ul></div>

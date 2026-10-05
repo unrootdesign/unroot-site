@@ -118,7 +118,7 @@
     const size=()=>{
       D=Math.min(devicePixelRatio||1,1.5); W=host.offsetWidth; H=host.offsetHeight;
       cv.width=Math.round(W*D); cv.height=Math.round(H*D);
-      const n=Math.min(innerWidth<700?320:950, Math.round(W*H/1050));
+      const n=Math.min(innerWidth<700?320:950, Math.round(W*H/1050*(parseFloat(cv.dataset.d)||1))); // data-d: плотность, 1 как в футере
       const now=clk;
       P=[]; for(let i=0;i<n;i++){ const p={a:10+Math.random()*36,f:.00005+Math.random()*.0001,ph:Math.random()*6.28,
         k:(Math.random()*4)|0, o:1, g:0, st:0, tw:Math.random()<.1};
