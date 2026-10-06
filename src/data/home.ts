@@ -201,17 +201,26 @@ export const home = {
   {
    "k": "Design",
    "t": "We design it in Figma",
-   "d": "Every page in Figma first. Key screens become a clickable prototype with vibe coding, so you see the real thing early."
+   "d": "Every page in Figma first, so you see the direction before anything gets built.",
+   "tools": ["Figma"]
+  },
+  {
+   "k": "Prototype",
+   "t": "You click through it",
+   "d": "Key screens become a live prototype with vibe coding. Share it with your team and react to the real thing.",
+   "tools": ["Claude", "Vibe coding"]
   },
   {
    "k": "Build",
-   "t": "We build it in Webflow, Framer or code",
-   "d": "Animations, CMS and the basics for search are part of the build. Fast and clean on every screen."
+   "t": "We build it",
+   "d": "Webflow, Framer or code, with animations, a CMS and the basics for search.",
+   "tools": ["Webflow", "Framer", "Code"]
   },
   {
    "k": "Handover",
    "t": "Your team runs it",
-   "d": "You edit it in the CMS or by asking AI. We show you how on a call and in short videos, and we stay in touch if you need help."
+   "d": "Edit it in the CMS or by asking AI. We show you how and stay in touch after launch.",
+   "tools": ["CMS", "AI"]
   }
  ],
  "services": [

@@ -17,36 +17,13 @@ const M = '/home/';
 const pad = (n: number) => String(n).padStart(2, '0');
 // короткие названия проектов под концептом в герое
 const short = (n: string) => ({ 'Ambient Dreamie': 'Dreamie', 'Burd Home Health': 'Burd', 'Epsilon Health': 'Epsilon', 'Javelin VP': 'Javelin' } as Record<string, string>)[n] ?? n;
-// иллюстрации процесса: макет в Figma, сборка в браузере, правка словами и видео-инструкция
-const ART = [
-  `<svg viewBox="0 0 240 132" fill="none" stroke-width="1.5" stroke-linejoin="round">
-    <rect x="1" y="1" width="238" height="130" class="a-bg"/>
-    <rect x="1" y="1" width="52" height="130" class="a-panel"/>
-    <path d="M10 16h30M10 28h22M10 40h26M10 52h18" class="a-ln"/>
-    <rect x="72" y="18" width="148" height="96" class="a-card"/>
-    <rect x="84" y="30" width="70" height="8" class="a-fill"/><rect x="84" y="44" width="50" height="6" class="a-soft"/>
-    <rect x="84" y="62" width="124" height="40" class="a-soft"/>
-    <rect x="80" y="58" width="132" height="48" class="a-sel"/>
-    <rect x="77" y="55" width="6" height="6" class="a-h"/><rect x="209" y="55" width="6" height="6" class="a-h"/><rect x="77" y="103" width="6" height="6" class="a-h"/><rect x="209" y="103" width="6" height="6" class="a-h"/>
-    <path d="M176 84l12 30 5-12 12-5z" class="a-cur"/>
-  </svg>`,
-  `<svg viewBox="0 0 240 132" fill="none" stroke-width="1.5" stroke-linejoin="round">
-    <rect x="1" y="1" width="238" height="130" class="a-bg"/>
-    <path d="M1 20h238" class="a-ln"/><circle cx="12" cy="11" r="3" class="a-dot"/><circle cx="22" cy="11" r="3" class="a-dot"/><circle cx="32" cy="11" r="3" class="a-dot"/>
-    <rect x="20" y="34" width="96" height="10" class="a-fill"/><rect x="20" y="50" width="70" height="6" class="a-soft"/><rect x="20" y="66" width="44" height="14" class="a-btn"/>
-    <path d="M140 36c20 0 20 40 40 40s20-40 40-40" class="a-wave"/>
-    <path d="M150 104l-10-8 10-8M190 88l10 8-10 8M176 84l-12 24" class="a-code"/>
-    <rect x="20" y="96" width="96" height="22" class="a-soft"/>
-  </svg>`,
-  `<svg viewBox="0 0 240 132" fill="none" stroke-width="1.5" stroke-linejoin="round">
-    <rect x="1" y="1" width="238" height="130" class="a-bg"/>
-    <path d="M18 22h132v32H58l-14 12V54H18z" class="a-card"/>
-    <path d="M30 34h80M30 44h56" class="a-ln"/>
-    <path d="M134 30l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" class="a-spark"/>
-    <rect x="96" y="70" width="126" height="48" class="a-card"/>
-    <rect x="108" y="82" width="60" height="8" class="a-fill"/><rect x="108" y="96" width="90" height="6" class="a-soft"/>
-    <circle cx="44" cy="96" r="20" class="a-play"/><path d="M38 86v20l16-10z" class="a-tri"/>
-  </svg>`,
+// значки шагов процесса: перо (дизайн), курсор (прототип), код (сборка), люди (передача команде)
+const NI = (d: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const NODE = [
+  NI('<path d="M12 3l6 6-7 11-4-4z"/><path d="M7 16l-3 5 5-3"/><circle cx="13" cy="9" r="1.5"/>'),
+  NI('<path d="M5 3l12 6-5 2-2 5z"/><path d="M13 13l5 5"/>'),
+  NI('<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>'),
+  NI('<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 5.5a3 3 0 010 5.5M18 14.5c1.8.8 3 2.6 3 4.5"/>'),
 ];
 const schema = [{
   '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -224,22 +201,28 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 6. После запуска: процесс из 3 шагов, у каждого своя иллюстрация, между шагами стрелки -->
+  <!-- 6. Процесс: 4 шага на тёмной полосе со звёздами, по линии бежит свет, у шагов инструменты -->
   <section class="xs" id="handover" aria-label="Process">
     <div class="xw">
       <p class="tag xtag"><i></i>Process</p>
       <h2 class="xh2 xh2--wide">A website your team runs <span>without us</span></h2>
-      <p class="xho__lede">We design it, build it and hand it over. After that your team changes anything without waiting for us.</p>
-      <ol class="x3 xho">
-        {home.handover.map((h, i) => (
-          <li>
-            <div class="xho__art" aria-hidden="true" set:html={ART[i]} />
-            <span class="xho__n">{pad(i + 1)} · {h.k}</span>
-            <b>{h.t}</b>
-            <p>{h.d}</p>
-          </li>
-        ))}
-      </ol>
+      <p class="xho__lede">We design it, build it and hand it over. After that your team changes anything without waiting for us, and we are a message away if you need help.</p>
+      <!-- тёмная полоса со звёздами как в футере: по линии бежит свет, шаги загораются по очереди -->
+      <div class="xpr">
+        <canvas class="stars" data-d=".35" aria-hidden="true"></canvas>
+        <span class="xpr__line" aria-hidden="true"><i></i></span>
+        <ol class="xpr__steps">
+          {home.handover.map((h, i) => (
+            <li style={`--k:${i}`}>
+              <span class="xpr__node" aria-hidden="true" set:html={NODE[i]} />
+              <span class="xpr__n">{pad(i + 1)} · {h.k}</span>
+              <b>{h.t}</b>
+              <p>{h.d}</p>
+              <ul class="xpr__tools">{h.tools.map(t => <li>{t}</li>)}</ul>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   </section>
 

@@ -1,5 +1,5 @@
 /* рукописный шрифт только для подсказки у ленты работ */
-@font-face { font-family: "Caveat"; src: url("/fonts/caveat-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Caveat"; src: url("/fonts/caveat-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
 
 /* Экспериментальная главная (ветка next): одна страница с прокруткой, сверху общая навигация с мега-меню (Nav.astro).
    Все секции в одном контейнере: ширина --wrap, боковые поля как у футера. Цвета только из токенов.
@@ -7,7 +7,7 @@
 
 body.x { --xbg: color-mix(in srgb, var(--ink) 4.5%, var(--white)); --xpad: clamp(20px, 5vw, 70px);
   --xgap: clamp(16px, 2vw, 24px);
-  --xedge: max(var(--xpad), calc((100vw - var(--wrap)) / 2)); --xsh: 0 1px 0 var(--line), 0 24px 50px -34px color-mix(in srgb, var(--night) 35%, transparent);
+  --xedge: max(var(--xpad), calc((100vw - var(--wrap)) / 2)); --xsh: 0 1px 0 color-mix(in srgb, var(--ink) 6%, transparent), 0 20px 44px -36px color-mix(in srgb, var(--night) 26%, transparent);
   background: var(--xbg); }
 html:has(body.x) { scroll-behavior: smooth; }
 
@@ -76,15 +76,15 @@ html:has(body.x) { scroll-behavior: smooth; }
 /* ── 2. работы: бегущая лента, едет слева направо, при наведении стоит ── */
 .xwork { padding-left: 0; padding-right: 0; padding-top: clamp(64px, 8vw, 120px); overflow: hidden; }
 /* крупная серая подпись за лентой: видно верх букв, остальное закрывают карточки */
-.xwork__bg { position: fixed; z-index: 0; left: var(--xedge); top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity .5s var(--ease); margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
+.xwork__bg { position: fixed; z-index: 0; left: 50%; top: 50%; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
   white-space: nowrap; color: color-mix(in srgb, var(--ink) 6%, var(--xbg)); pointer-events: none; user-select: none; }
 .xwork__bg.on { opacity: 1; }
 .xwork { overflow: visible; }
 .xmq { z-index: 1; }
 .xmq { position: relative; }
 .xwork__hint { position: absolute; right: var(--xedge); top: clamp(4px, 1.5vw, 24px); z-index: 2; width: 150px; color: var(--violet); pointer-events: none; transform: rotate(-4deg); }
-.xwork__hint span { position: absolute; left: 30px; top: 12px; font: 600 1.9rem/1 "Caveat", var(--f); letter-spacing: 0; white-space: nowrap; }
-.xwork__hint svg { display: block; width: 100%; height: auto; }
+.xwork__hint span { position: absolute; left: 30px; top: 12px; font: 500 1.75rem/1 "Caveat", var(--f); letter-spacing: 0; white-space: nowrap; }
+.xwork__hint svg { display: block; width: 100%; height: auto; stroke-width: 1.2; }
 .xmq { overflow: hidden; padding: 10px 0 20px; }
 .xmq__t { display: flex; width: max-content; will-change: transform; }
 .xmq { touch-action: pan-y; cursor: grab; user-select: none; }
@@ -117,7 +117,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xr__logos img { width: auto; max-width: 80%; opacity: .5; filter: grayscale(1); transition: opacity .2s var(--ease), filter .2s var(--ease); }
 .xr__logos li:hover img { opacity: 1; filter: none; }
 .xq { position: relative; min-height: clamp(420px, 36vw, 500px); padding: clamp(52px, 4.4vw, 64px) clamp(28px, 3.4vw, 48px) clamp(28px, 3.4vw, 48px); background: var(--white); display: grid;
-  box-shadow: 0 24px 50px -34px color-mix(in srgb, var(--night) 35%, transparent); }
+  box-shadow: 0 20px 44px -36px color-mix(in srgb, var(--night) 26%, transparent); }
 /* все отзывы в одной ячейке: блок по самому длинному, автор всегда внизу на одном месте */
 .xq blockquote { grid-area: 1 / 1; margin: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: opacity .3s var(--ease), visibility 0s linear .3s; }
 .xq blockquote.on { opacity: 1; visibility: visible; transition: opacity .3s var(--ease); }
@@ -144,7 +144,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xp__p small { display: block; margin-top: 10px; font-size: .88rem; font-weight: 400; letter-spacing: 0; color: var(--ink-3); }
 .xp__d { margin: 22px 0 26px; font-size: .95rem; line-height: 1.55; color: var(--ink-2); }
 .xp__btn { margin-top: auto; width: 100%; }
-.xp__c--concept { background: var(--night); color: #fff; box-shadow: none; }
+.xp__c--concept { background: var(--night); color: #fff; box-shadow: 0 20px 44px -30px color-mix(in srgb, var(--night) 45%, transparent); }
 .xp__c--concept .xp__n { color: var(--violet-lt); font-weight: 500; }
 .xp__c--concept .xp__p small { color: color-mix(in srgb, #fff 60%, transparent); }
 .xp__c--concept .btn--main .tri { color: #fff; }
@@ -176,32 +176,34 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__m { position: relative; }
 .xsv__m figcaption { position: absolute; top: 100%; margin-top: 10px; font-size: .88rem; color: var(--ink-3); }
 
-/* ── 6. процесс: 3 шага с иллюстрациями, между карточками стрелки ── */
-.xho__lede { margin-top: 18px; max-width: 56ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
-.xho { list-style: none; margin: clamp(32px, 4vw, 48px) 0 0; padding: 0; row-gap: var(--xgap); }
-.xho li { position: relative; display: flex; flex-direction: column; padding: clamp(18px, 2vw, 24px) clamp(18px, 2vw, 24px) clamp(24px, 2.6vw, 32px); background: var(--white); box-shadow: var(--xsh); }
-.xho li + li::before { content: "→"; position: absolute; left: calc(var(--xgap) / -2); top: 30%; transform: translate(-50%, -50%); width: 28px; height: 28px; display: grid; place-items: center;
-  background: var(--violet); color: #fff; font-size: .95rem; z-index: 1; }
-.xho__art svg { display: block; width: 100%; height: auto; }
-.xho__art .a-bg { fill: var(--xbg); stroke: none; }
-.xho__art .a-panel { fill: var(--white); stroke: var(--line); }
-.xho__art .a-card { fill: var(--white); stroke: var(--line); }
-.xho__art .a-ln { stroke: color-mix(in srgb, var(--ink) 18%, var(--white)); }
-.xho__art .a-fill { fill: var(--ink); stroke: none; }
-.xho__art .a-soft { fill: color-mix(in srgb, var(--ink) 8%, var(--white)); stroke: none; }
-.xho__art .a-sel { stroke: var(--violet); }
-.xho__art .a-h { fill: var(--white); stroke: var(--violet); }
-.xho__art .a-cur { fill: var(--ink); stroke: var(--white); }
-.xho__art .a-dot { fill: color-mix(in srgb, var(--ink) 18%, var(--white)); stroke: none; }
-.xho__art .a-btn { fill: var(--violet); stroke: none; }
-.xho__art .a-wave { stroke: var(--violet); stroke-width: 2.5; stroke-linecap: round; }
-.xho__art .a-code { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
-.xho__art .a-spark { fill: var(--violet); stroke: none; }
-.xho__art .a-play { fill: var(--violet); stroke: none; }
-.xho__art .a-tri { fill: #fff; stroke: none; }
-.xho__n { margin-top: 24px; font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }
-.xho b { display: block; margin-top: 8px; font-size: clamp(1.3rem, 1.9vw, 1.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
-.xho p { margin-top: 12px; font-size: .95rem; line-height: 1.55; color: var(--ink-2); }
+/* ── 6. процесс: тёмная полоса со звёздами как в футере, линия через 4 шага, по ней бежит свет ── */
+.xho__lede { margin-top: 18px; max-width: 60ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
+.xpr { --dur: 8s; --px: clamp(24px, 3vw, 44px); --py: clamp(40px, 5vw, 64px); --g: clamp(20px, 2.4vw, 36px); position: relative; isolation: isolate; overflow: hidden; margin-top: clamp(32px, 4vw, 48px); padding: var(--py) var(--px);
+  background: var(--night); color: #fff; box-shadow: 0 20px 44px -30px color-mix(in srgb, var(--night) 45%, transparent); }
+.xpr > *:not(.stars):not(.xpr__line) { position: relative; z-index: 1; }
+.xpr > .xpr__line { z-index: 0; }
+/* линия от центра первого значка до центра последнего */
+.xpr__line { position: absolute; left: calc(var(--px) + 28px); right: calc(var(--px) + (100% - 2 * var(--px) - 3 * var(--g)) / 4 - 28px);
+  top: calc(var(--py) + 28px); height: 1px; background: color-mix(in srgb, #fff 18%, transparent); }
+.xpr__line i { position: absolute; top: -3px; left: 0; width: 120px; height: 7px; margin-left: -120px;
+  background: radial-gradient(closest-side, #fff, color-mix(in srgb, var(--violet-lt) 70%, transparent) 40%, transparent);
+  filter: blur(.4px); animation: xpr-run var(--dur) linear infinite; }
+@keyframes xpr-run { from { left: 0; } to { left: calc(100% + 120px); } }
+.xpr__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--g); }
+.xpr__node { position: relative; width: 56px; height: 56px; display: grid; place-items: center; background: var(--night); color: var(--violet-lt);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 22%, transparent); animation: xpr-glow var(--dur) linear infinite; animation-delay: calc(.2s + var(--k) * 2.33s); }
+.xpr__node svg { width: 24px; height: 24px; }
+/* значок загорается, когда до него доходит свет */
+@keyframes xpr-glow {
+  0%, 14%, 100% { color: var(--violet-lt); background: var(--night); box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 22%, transparent); }
+  4% { color: #fff; background: var(--violet); box-shadow: 0 0 0 6px color-mix(in srgb, var(--violet) 25%, transparent), 0 0 40px 6px color-mix(in srgb, var(--violet) 55%, transparent); }
+}
+.xpr__n { display: block; margin-top: 26px; font-size: .85rem; color: var(--violet-lt); font-variant-numeric: tabular-nums; }
+.xpr b { display: block; margin-top: 8px; font-size: clamp(1.25rem, 1.8vw, 1.5rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
+.xpr p { margin-top: 10px; font-size: .93rem; line-height: 1.55; color: color-mix(in srgb, #fff 70%, transparent); }
+.xpr__tools { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.xpr__tools li { padding: 6px 9px; font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase;
+  color: #fff; background: color-mix(in srgb, #fff 10%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 14%, transparent); }
 
 /* ── 7. созвон: текст на 2 колонки, цифры прижаты вправо, календарь на всю ширину ── */
 .xt { align-items: end; }
@@ -227,10 +229,12 @@ html:has(body.x) { scroll-behavior: smooth; }
   .xhero__vis { padding-left: 0; margin-top: 56px; }
   .xsv__media { margin-top: 0; }
   .xsv__l { padding-bottom: 0; }
-  .xho li + li::before { left: 50%; top: -16px; transform: translate(-50%, -50%) rotate(90deg); }
+  .xpr__steps { grid-template-columns: 1fr 1fr; row-gap: 40px; }
+  .xpr__line { display: none; }
 }
 /* ── телефон ── */
 @media (max-width: 760px) {
+  .xpr__steps { grid-template-columns: 1fr; }
   .xwork__hint { width: 110px; }
   .xwork__hint span { left: 22px; top: 8px; font-size: 1.45rem; }
   .xhero { min-height: 0; }
@@ -248,6 +252,7 @@ html:has(body.x) { scroll-behavior: smooth; }
   .xt__nums b { font-size: 1.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .xpr__line i, .xpr__node { animation: none; }
   html:has(body.x) { scroll-behavior: auto; }
   .xc__pair, .xc__vid, .xq blockquote, .xsv__m { transition: none; }
 }

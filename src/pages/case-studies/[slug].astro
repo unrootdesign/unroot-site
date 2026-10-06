@@ -27,12 +27,13 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
     name: d.title, about: d.client, creator: { '@type': 'Organization', name: 'Unroot Design' },
   }]}>
 
-  <!-- кейс в 2 колонки: слева название, справа описание, факты и все картинки в одной ширине -->
+  <!-- кейс в 2 колонки: слева название и кнопка сайта, справа описание, факты, картинки и отзыв в одной ширине -->
   <header class="phead">
     <div class="wrap cs__grid">
       <div>
         <nav class="crumbs mono" aria-label="Breadcrumb"><a href="/#work">Work</a><span aria-hidden="true">/</span><span>Case study</span></nav>
         <h1 class="h1 cs__h">{d.title}</h1>
+        {d.liveUrl && <a class="btn btn--line cs__visit" href={d.liveUrl} target="_blank" rel="noopener"><span>Visit the website</span><Tri /></a>}
       </div>
       <div class="cs__r">
         {d.cardDescription && <p class="lede cs__lede">{d.cardDescription}</p>}
@@ -40,7 +41,6 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
           <li><span>Client</span><span>{d.client}</span></li>
           {d.year && <li><span>Year</span><span>{d.year}</span></li>}
           {d.tags.length > 0 && <li><span>Scope</span><span>{d.tags.map(label).join(', ')}</span></li>}
-          {host && <li><span>Website</span><span><a class="cs__host" href={d.liveUrl} target="_blank" rel="noopener">{host} ↗</a></span></li>}
         </ul>
       </div>
     </div>
@@ -71,7 +71,7 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
     <section class="sec">
       <div class="wrap cs__grid">
         <div><p class="tag"><i></i>Client</p></div>
-        <blockquote class="quote">
+        <blockquote class="quote cs__r">
           <p>&ldquo;{d.testimonial.quote}&rdquo;</p>
           <footer>
             {d.testimonial.photo && <img src={d.testimonial.photo} alt={d.testimonial.name} loading="lazy" />}
@@ -111,6 +111,7 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
   .cs__grid > .prose > :global(:first-child) { margin-top: 0; }
   .cs__grid > div > .tag { margin-top: 0; }
   .cs__h { font-size: clamp(2.4rem, 4vw, 3.4rem); }
+  .cs__visit { margin-top: 28px; }
   .cs__lede { margin-top: 0; margin-bottom: 28px; max-width: none; }
   .cs__stack { display: grid; gap: clamp(20px, 3vw, 32px); align-content: start; }
   .cs__img { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: #fff; }
