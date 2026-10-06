@@ -19,7 +19,7 @@ const services = [
   ['/web-design', 'Website design'], ['/web-development', 'Webflow and Framer'],
   ['/logo-design', 'Logo and branding'], ['/services#3d', '3D and AI visuals'], ['/services', 'All services'],
 ];
-const work = home.work.map(w => ({ href: `/case-studies/${w.cs}`, name: w.name, kind: w.kind, img: `/home/w-${w.slug}-1.jpg` }));
+const work = home.work.map(w => ({ href: `/case-studies/${w.cs}`, name: w.name, kind: `${w.kind} · ${w.scope}`, img: `/home/w-${w.slug}-1.jpg` }));
 const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.8 5 6.6l3-2.8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>';
 ---
 <header class="bar">
@@ -166,10 +166,10 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm__go { margin-top: auto; padding-top: 6px; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; color: var(--violet); }
   .mm__go :global(.tri) { width: 7px; height: 7px; }
   .mm__card:hover { background: color-mix(in srgb, var(--pale) 70%, var(--violet) 12%); }
-  .mm__w { display: flex; flex-direction: column; gap: 4px; color: var(--ink); }
+  .mm__w { display: flex; flex-direction: column; gap: 1px; color: var(--ink); }
   .mm__w img { width: 100%; height: auto; border: 1px solid var(--line); margin-bottom: 8px; transition: border-color var(--t) var(--ease); }
   .mm__w b { font-weight: 500; font-size: 1.15rem; letter-spacing: -.02em; }
-  .mm__w span { font-size: .85rem; color: var(--ink-3); }
+  .mm__w span { font-size: .85rem; line-height: 1.35; color: var(--ink-3); }
   .mm__w:hover b { color: var(--violet); }
   .mm__w:hover img { border-color: var(--violet); }
 

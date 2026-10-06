@@ -9,48 +9,49 @@
      до и после сменяются раз в 4.5 секунды; под сценой серым названия проектов ── */
   const hero = $('.xhero');
   const items = { anim: $$('.xc__vid', hero), ba: $$('.xc__pair', hero) };
-  const names = { anim: $$('.xc__names--anim button', hero), ba: $$('.xc__names--ba button', hero) };
-  const idx = { anim: 0, ba: 0 };
+  // один и тот же список проектов в обоих режимах, номер текущего общий
+  const names = $$('.xc__names button', hero);
+  let cur = 0;
   const BA_DUR = 4500, RATE = 1.5;
   let mode = hero.dataset.mode || 'anim', paused = false, heroVisible = true, baTimer = 0, baLeft = BA_DUR, baAt = 0;
   const videos = items.anim.map(v => v.querySelector('video'));
   videos.forEach((el, k) => {
     el.defaultPlaybackRate = RATE; el.playbackRate = RATE;
     // следующее видео начинается ровно в момент, когда закончилось текущее
-    el.addEventListener('ended', () => { if (mode === 'anim' && k === idx.anim) show(idx.anim + 1); });
+    el.addEventListener('ended', () => { if (mode === 'anim' && k === cur) show(cur + 1); });
   });
-  const vid = () => videos[idx.anim];
+  const vid = () => videos[cur];
   const canPlay = () => heroVisible && !paused;
   function warm(el) { if (el && el.preload !== 'auto') { el.preload = 'auto'; el.load(); el.playbackRate = RATE; } }
 
   function show(i, m = mode) {
-    const n = items[m].length; idx[m] = (i + n) % n;
-    items[m].forEach((x, k) => x.classList.toggle('on', k === idx[m]));
-    names[m].forEach((b, k) => b.classList.toggle('on', k === idx[m]));
-    const next = items[m][(idx[m] + 1) % n];
-    items[m][idx[m]].querySelectorAll('img').forEach(im => im.loading = 'eager');
+    const n = items[m].length; cur = (i + n) % n;
+    ['anim', 'ba'].forEach(md => items[md].forEach((x, k) => x.classList.toggle('on', k === cur)));
+    names.forEach((b, k) => b.classList.toggle('on', k === cur));
+    const next = items[m][(cur + 1) % n];
+    items[m][cur].querySelectorAll('img').forEach(im => im.loading = 'eager');
     next.querySelectorAll('img').forEach(im => im.loading = 'eager');
     clearTimeout(baTimer);
     videos.forEach((el, k) => {
-      if (m === 'anim' && k === idx.anim) { warm(el); el.currentTime = 0; el.playbackRate = RATE; if (canPlay()) el.play().catch(() => {}); }
+      if (m === 'anim' && k === cur) { warm(el); el.currentTime = 0; el.playbackRate = RATE; if (canPlay()) el.play().catch(() => {}); }
       else el.pause();
     });
-    if (m === 'anim') warm(videos[(idx.anim + 1) % videos.length]);
+    if (m === 'anim') warm(videos[(cur + 1) % videos.length]);
     else { baLeft = BA_DUR; baRun(); }
   }
-  function baRun() { clearTimeout(baTimer); if (RM || mode !== 'ba' || !canPlay()) return; baAt = performance.now(); baTimer = setTimeout(() => show(idx.ba + 1), baLeft); }
+  function baRun() { clearTimeout(baTimer); if (RM || mode !== 'ba' || !canPlay()) return; baAt = performance.now(); baTimer = setTimeout(() => show(cur + 1), baLeft); }
   function pause() { if (paused) return; paused = true; if (mode === 'anim') vid()?.pause(); else { clearTimeout(baTimer); baLeft = Math.max(400, baLeft - (performance.now() - baAt)); } }
   function resume() { paused = false; if (!heroVisible) return; if (mode === 'anim') vid()?.play().catch(() => {}); else baRun(); }
 
-  // переключатель «See before / after»: выключен, идут анимированные концепты; включён, пары до и после
+  // кнопка-переключатель: на ней написан другой режим, «Before / after» или «Animated»; проект остаётся тот же
   const sw = $('#xSw');
   function setMode(m) {
     mode = m; hero.dataset.mode = m;
-    sw?.setAttribute('aria-checked', String(m === 'ba'));
-    show(idx[m]);
+    sw?.setAttribute('aria-pressed', String(m === 'ba'));
+    show(cur);
   }
   sw?.addEventListener('click', () => setMode(mode === 'ba' ? 'anim' : 'ba'));
-  ['anim', 'ba'].forEach(m => names[m].forEach(b => b.addEventListener('click', () => show(+b.dataset.i, m))));
+  names.forEach(b => b.addEventListener('click', () => show(+b.dataset.i)));
   const stage = $('.xhero__stage', hero);
   stage.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') pause(); });
   stage.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') resume(); });
@@ -62,7 +63,7 @@
     if (mode !== 'anim' || !canPlay()) { stall = 0; return; }
     const t = vid()?.currentTime ?? 0;
     stall = t === lastT ? stall + 500 : 0; lastT = t;
-    if (stall >= 3000) { stall = 0; show(idx.anim + 1); }
+    if (stall >= 3000) { stall = 0; show(cur + 1); }
   }, 500);
 
   /* ── работы: маленький кадр под курсором встаёт на место главного, уход возвращает первый ── */

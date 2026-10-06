@@ -37,15 +37,15 @@ export const home = {
    "label": "Clickable preview"
   }
  ],
- /* до и после со слайдером; анимированные концепты выше в pairs */
+ /* до и после: те же проекты и в том же порядке, что и анимированные концепты в pairs */
  "ba": [
   { "slug": "chatarmin", "name": "Chatarmin" },
   { "slug": "javelin", "name": "Javelin VP" },
   { "slug": "switch", "name": "Switch" },
   { "slug": "epsilon", "name": "Epsilon Health" },
   { "slug": "dreamie", "name": "Ambient Dreamie" },
-  { "slug": "rezi", "name": "Rezi" },
-  { "slug": "burd", "name": "Burd Home Health" }
+  { "slug": "resumai", "name": "ResumAI" },
+  { "slug": "leadgains", "name": "Leadgains" }
  ],
  "work": [
   {
@@ -56,7 +56,8 @@ export const home = {
    "cs": "dreamie",
    "name": "Ambient Dreamie",
    "year": "2025",
-   "kind": "Healthtech, brand, 3D",
+   "kind": "Healthtech",
+   "scope": "Mini branding, 3D animation, web design and development",
    "url": "https://www.helloambient.com/",
    "desc": "Brand, 3D and website for a sleep tech startup. They raised $550K, then $44K from 158 backers on Kickstarter."
   },
@@ -69,6 +70,7 @@ export const home = {
    "name": "Switch",
    "year": "2025",
    "kind": "Fintech",
+   "scope": "Web design and development",
    "url": "https://www.joinswitch.co",
    "desc": "Website for a group finance app with 100K+ active users: shared accounts, MoneyPools and instant payments."
   },
@@ -81,6 +83,7 @@ export const home = {
    "name": "Javelin VP",
    "year": "2024",
    "kind": "Venture capital",
+   "scope": "Brand, web design and development",
    "url": "https://www.javelinvp.com/",
    "desc": "Brand and website for a $125M seed and Series A fund. We moved them from WordPress to Webflow, and the homepage stays fast with video on it."
   },
@@ -93,6 +96,7 @@ export const home = {
    "name": "Trustyfy",
    "year": "2025",
    "kind": "Fintech",
+   "scope": "Web design and development",
    "url": "https://www.trustyfy.com/",
    "desc": "Website for a payments startup with $6.8M in funding: crypto and fiat, wallets and cards in one app."
   },
@@ -105,6 +109,7 @@ export const home = {
    "name": "Epsilon Health",
    "year": "2025",
    "kind": "Medtech",
+   "scope": "Web design and development",
    "url": "https://epsilonhealth.webflow.io/",
    "desc": "Website for a MedTech company that rebuilds radiology workflows to cut diagnostic delays and radiologist burnout."
   }
@@ -202,16 +207,16 @@ export const home = {
  ],
  "handover": [
   {
-   "t": "Edit it by asking AI",
-   "d": "We set up the website so you change copy, pages and posts in plain words. One of our clients runs his website this way and has not needed to hire anyone for it."
+   "t": "Built in Webflow, Framer or code",
+   "d": "We design and build the whole website with motion and 3D where it helps. Fast, responsive and ready for search from day one."
   },
   {
-   "t": "Handover and training",
-   "d": "1 call with your team and short video guides: how to edit, publish and add a page. After that you do not need us for everyday changes."
+   "t": "Edit it yourself, or just ask AI",
+   "d": "Change copy, pages and posts in the CMS, or in plain words with AI. One of our clients runs his website this way and has not hired anyone for it."
   },
   {
-   "t": "Automation around it",
-   "d": "Leads go straight to your CRM or Slack, routine content runs on templates. If more of your work can run on AI, we help set that up too."
+   "t": "We show your team how",
+   "d": "1 call and short video guides: how to edit, publish and add a page. If more of your work can run on AI, we help set that up too."
   }
  ],
  "services": [

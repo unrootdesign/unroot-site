@@ -1,3 +1,6 @@
+/* рукописный шрифт только для подсказки у ленты работ */
+@font-face { font-family: "Caveat"; src: url("/fonts/caveat-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
 /* Экспериментальная главная (ветка next): одна страница с прокруткой, сверху общая навигация с мега-меню (Nav.astro).
    Все секции в одном контейнере: ширина --wrap, боковые поля как у футера. Цвета только из токенов.
    Углы везде прямые, кнопки общие из base.css (.btn). */
@@ -16,6 +19,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .x3 > .s2 { grid-column: span 2; }
 .xh2 { font-size: clamp(2rem, 3.4vw, 3rem); font-weight: 500; letter-spacing: -.045em; line-height: 1.02; max-width: 18ch; }
 .xh2 span { color: var(--ink-3); }
+.xh2--wide { max-width: none; }
 
 /* ── 1. герой: текст слева, справа табы, концепты и названия проектов ── */
 .xhero { min-height: calc(100dvh - var(--bar)); display: flex; align-items: center; padding-top: 32px; padding-bottom: 48px; }
@@ -32,8 +36,7 @@ html:has(body.x) { scroll-behavior: smooth; }
    Снизу 44px под названия проектов, они стоят сразу под видео или под парой до и после */
 .xhero__stage { position: relative; height: clamp(400px, calc(100dvh - var(--bar) - 190px), 720px); container-type: size; --nm: 44px; }
 .xc__stage { position: absolute; inset: 0; }
-.xhero[data-mode="ba"] .xc__stage--anim, .xhero[data-mode="anim"] .xc__stage--ba,
-.xhero[data-mode="ba"] .xc__names--anim, .xhero[data-mode="anim"] .xc__names--ba { display: none; }
+.xhero[data-mode="ba"] .xc__stage--anim, .xhero[data-mode="anim"] .xc__stage--ba { display: none; }
 .xc__pair, .xc__vid { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; opacity: 0; visibility: hidden;
   transition: opacity .4s var(--ease), visibility 0s linear .4s; }
 .xc__pair.on, .xc__vid.on { opacity: 1; visibility: visible; transition: opacity .4s var(--ease); }
@@ -48,17 +51,15 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xc__vid video { display: block; width: min(100cqw, calc((100cqh - var(--nm)) * 16 / 9)); aspect-ratio: 16 / 9; height: auto; background: var(--white);
   box-shadow: 0 1px 0 var(--line), 0 40px 80px -46px color-mix(in srgb, var(--night) 55%, transparent); }
 
-/* переключатель до и после: кнопка со скруглённым свитчером внутри */
-.xsw { flex: none; display: inline-flex; align-items: center; gap: 14px; height: 46px; padding: 0 12px 0 18px; border: 0; background: var(--white); cursor: pointer;
-  box-shadow: inset 0 0 0 1px var(--line); font-size: 1rem; font-weight: 500; letter-spacing: -.015em; color: var(--ink); white-space: nowrap;
-  transition: box-shadow .2s var(--ease), background .2s var(--ease); }
-.xsw:hover { box-shadow: inset 0 0 0 1px var(--violet); }
-.xsw[aria-checked="true"] { box-shadow: inset 0 0 0 1px var(--violet); background: color-mix(in srgb, var(--violet) 6%, var(--white)); }
-.xsw__t { position: relative; width: 44px; height: 24px; border-radius: 12px; background: color-mix(in srgb, var(--ink) 16%, var(--white)); transition: background .2s var(--ease); }
-.xsw__t i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--white);
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--night) 30%, transparent); transition: transform .25s var(--ease); }
-.xsw[aria-checked="true"] .xsw__t { background: var(--violet); }
-.xsw[aria-checked="true"] .xsw__t i { transform: translateX(20px); }
+/* переключатель: маленькая кнопка с текстом другого режима, как кнопки на сайте (капс), при наведении заливается */
+.xsw { flex: none; display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; margin-right: -14px; border: 0; background: none; cursor: pointer;
+  font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink); white-space: nowrap;
+  transition: background var(--t) var(--ease), color var(--t) var(--ease); }
+.xsw .tri { width: 7px; height: 7px; color: var(--violet); }
+.xsw:hover { background: var(--violet); color: #fff; }
+.xsw:hover .tri { color: #fff; }
+.xsw__b, .xsw[aria-pressed="true"] .xsw__a { display: none; }
+.xsw[aria-pressed="true"] .xsw__b { display: inline; }
 
 /* названия проектов: просто серый текст, текущий темнее, по клику открывается нужный */
 .xhero__names { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
@@ -73,9 +74,12 @@ html:has(body.x) { scroll-behavior: smooth; }
 /* ── 2. работы: бегущая лента, едет слева направо, при наведении стоит ── */
 .xwork { padding-left: 0; padding-right: 0; padding-top: clamp(64px, 8vw, 120px); overflow: hidden; }
 /* крупная серая подпись за лентой: видно верх букв, остальное закрывают карточки */
-.xwork__bg { position: absolute; left: var(--xedge); top: clamp(24px, 3vw, 48px); margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
+.xwork__bg { position: absolute; left: var(--xedge); top: 50%; transform: translateY(-38%); margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
   white-space: nowrap; color: color-mix(in srgb, var(--ink) 6%, var(--xbg)); pointer-events: none; user-select: none; }
 .xmq { position: relative; }
+.xwork__hint { position: absolute; right: var(--xedge); top: clamp(4px, 1.5vw, 24px); z-index: 2; width: 150px; color: var(--violet); pointer-events: none; transform: rotate(-4deg); }
+.xwork__hint span { position: absolute; left: 30px; top: 12px; font: 600 1.9rem/1 "Caveat", var(--f); letter-spacing: 0; white-space: nowrap; }
+.xwork__hint svg { display: block; width: 100%; height: auto; }
 .xmq { overflow: hidden; padding: 10px 0 20px; }
 .xmq__t { display: flex; width: max-content; will-change: transform; }
 .xmq { touch-action: pan-y; cursor: grab; user-select: none; }
@@ -164,11 +168,12 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__m figcaption { margin-top: 10px; font-size: .88rem; color: var(--ink-3); }
 
 /* ── 6. после запуска: 3 карточки с иконками на сетке ── */
+.xho__lede { margin-top: 18px; max-width: 56ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
 .xho { list-style: none; margin: clamp(32px, 4vw, 48px) 0 0; padding: 0; row-gap: var(--xgap); }
 .xho li { display: flex; flex-direction: column; min-height: clamp(300px, 28vw, 360px); padding: clamp(24px, 2.6vw, 34px); background: var(--white); box-shadow: var(--xsh); }
 .xho__ic { width: 52px; height: 52px; display: grid; place-items: center; background: var(--pale); color: var(--violet); }
 .xho__ic svg { width: 28px; height: 28px; }
-.xho__n { margin-top: auto; padding-top: 40px; font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }
+.xho__n { margin-top: 40px; font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }
 .xho b { display: block; margin-top: 10px; font-size: clamp(1.35rem, 2vw, 1.7rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
 .xho p { margin-top: 12px; font-size: .95rem; line-height: 1.55; color: var(--ink-2); }
 
@@ -196,6 +201,8 @@ html:has(body.x) { scroll-behavior: smooth; }
 }
 /* ── телефон ── */
 @media (max-width: 760px) {
+  .xwork__hint { width: 110px; }
+  .xwork__hint span { left: 22px; top: 8px; font-size: 1.45rem; }
   .xhero { min-height: 0; }
   .xhero__bar { flex-direction: column; align-items: flex-start; gap: 14px; }
   .xhero__names { width: 100%; }

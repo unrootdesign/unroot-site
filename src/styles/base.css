@@ -133,7 +133,8 @@ p { text-wrap: pretty; }
 @media (max-width: 640px) { .cards, .cards--2 { grid-template-columns: 1fr; } }
 .card { background: var(--white); display: flex; flex-direction: column; border: 1px solid var(--line); margin: -1px 0 0 -1px; }
 .card > a { display: flex; flex-direction: column; height: 100%; padding: clamp(16px, 1.8vw, 22px); }
-.card__img { aspect-ratio: 16/10; width: 100%; object-fit: cover; border: 1px solid var(--line); background: var(--bg); }
+/* рамка картинки сплошным цветом: полупрозрачная линия на тёмной картинке выглядела темнее рамки карточки */
+.card__img { aspect-ratio: 16/10; width: 100%; object-fit: cover; border: 1px solid color-mix(in srgb, var(--ink) 11%, var(--white)); background: var(--bg); }
 .card__k { align-self: flex-start; margin-top: 18px; padding: 6px 9px; background: var(--pale); color: var(--violet-d); }
 .card__t { margin-top: 10px; font-size: 1.2rem; font-weight: 500; letter-spacing: -.025em; line-height: 1.25; transition: color var(--t) var(--ease); }
 .card__d { margin-top: 8px; font-size: .92rem; color: var(--ink-2); line-height: 1.5; }

@@ -17,12 +17,12 @@ const M = '/home/';
 const pad = (n: number) => String(n).padStart(2, '0');
 // короткие названия проектов под концептом в герое
 const short = (n: string) => ({ 'Ambient Dreamie': 'Dreamie', 'Burd Home Health': 'Burd', 'Epsilon Health': 'Epsilon', 'Javelin VP': 'Javelin' } as Record<string, string>)[n] ?? n;
-// иконки карточек «после запуска»: правка словами, передача и обучение, автоматизация
+// иконки карточек «после запуска»: сборка, правка самим или через AI, обучение команды
 const ICO = (d: string) => `<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const ICONS = [
+  ICO('<rect x="4" y="6" width="24" height="20"/><path d="M4 11h24"/><path d="M13 16l-3 3 3 3M19 16l3 3-3 3"/>'),
   ICO('<path d="M5 7h22v14H14l-6 5v-5H5z"/><path d="M10 12h6M10 16h4"/><path d="M21.5 10.5l1 2.2 2.2 1-2.2 1-1 2.2-1-2.2-2.2-1 2.2-1z"/>'),
   ICO('<rect x="4" y="7" width="24" height="16"/><path d="M14 12l5 3-5 3z"/><path d="M11 27h10"/>'),
-  ICO('<circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h5l4-8h3M15 16l4 8h3"/>'),
 ];
 const schema = [{
   '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -46,7 +46,7 @@ const schema = [{
       <div class="xhero__vis s2">
         <!-- над концептом справа переключатель: анимированные концепты или до и после; сменяются сами -->
         <div class="xhero__bar">
-          <button class="xsw" type="button" role="switch" aria-checked="false" id="xSw"><span>See before / after</span><span class="xsw__t" aria-hidden="true"><i></i></span></button>
+          <button class="xsw" type="button" aria-pressed="false" id="xSw"><span class="xsw__a">Before / after</span><span class="xsw__b">Animated</span><Tri /></button>
         </div>
         <div class="xhero__stage">
           <div class="xc__stage xc__stage--anim">
@@ -66,8 +66,7 @@ const schema = [{
             ))}
           </div>
           <div class="xhero__names">
-            <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}</button></li>)}</ol>
-            <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}</button></li>)}</ol>
+            <ol class="xc__names">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}</button></li>)}</ol>
           </div>
         </div>
       </div>
@@ -77,6 +76,14 @@ const schema = [{
   <!-- 2. Работы: бегущая лента справа налево, при наведении стоит; на фоне крупная серая подпись -->
   <section class="xs xwork" id="work" aria-label="Case studies">
     <p class="xwork__bg" aria-hidden="true">case studies</p>
+    <!-- рукописная подсказка: ленту можно тянуть -->
+    <div class="xwork__hint" aria-hidden="true">
+      <span>drag me</span>
+      <svg viewBox="0 0 150 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 34C14 14 118 2 136 24c14 18-50 34-104 28C10 50 4 36 20 22c10-8 30-12 46-13"/>
+        <path d="M58 58c-6 22-22 40-46 52"/><path d="M12 110l14-1M12 110l3-13"/>
+      </svg>
+    </div>
     <div class="xmq" id="xRow">
       <div class="xmq__t">
         {[0, 1].map(copy => home.work.map(w => {
@@ -84,7 +91,7 @@ const schema = [{
           const hide = copy === 1;
           return (
             <article class="xg" aria-hidden={hide ? 'true' : undefined}>
-              <a class="xg__head" href={href} tabindex={hide ? -1 : undefined}><b>{w.name}</b> {w.kind}</a>
+              <a class="xg__head" href={href} tabindex={hide ? -1 : undefined}><b>{w.name}</b> {w.kind} · {w.scope}</a>
               <a class="xg__main" href={href} aria-label={`${w.name}, case study`} tabindex={hide ? -1 : undefined}>
                 {[1, 2, 3, 4].map(k => <img src={`${M}w-${w.slug}-${k}.jpg`} alt={k === 1 && !hide ? w.name : ''} class={k === 1 ? 'on' : ''} data-k={k} width="1600" height="900" loading="lazy" decoding="async" draggable="false" />)}
               </a>
@@ -187,10 +194,13 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 6. После запуска: 3 карточки с иконками -->
+  <!-- 6. После запуска: что мы делаем и что получает команда, 3 карточки с иконками -->
   <section class="xs" id="handover" aria-label="After launch">
     <div class="xw">
-      <h2 class="xh2">A website your team runs <span>without us</span></h2>
+      <div class="xho__head">
+        <h2 class="xh2 xh2--wide">A website your team runs <span>without us</span></h2>
+        <p class="xho__lede">We build it and hand it over, so your team changes anything without waiting for us. You get an animated website and the know-how to run it.</p>
+      </div>
       <ol class="x3 xho">
         {home.handover.map((h, i) => (
           <li>

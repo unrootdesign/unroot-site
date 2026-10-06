@@ -86,7 +86,7 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
     <div class="wrap">
       <p class="tag"><i></i>More work</p>
       <h2 class="h2">Other <span class="acc">projects</span></h2>
-      <ul class="cards cs__more">
+      <ul class="cards cs__more" id="csMore">
         {others.map(o => (
           <li class="card"><a href={`/case-studies/${o.data.slug}`}>
             {(THUMB[o.data.slug] || o.data.cover || o.data.gallery[0]) && <img class="card__img cs__thumb" src={THUMB[o.data.slug] ?? o.data.cover ?? o.data.gallery[0].src} alt={o.data.coverAlt || o.data.title} loading="lazy" decoding="async" />}
@@ -118,4 +118,12 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
   @media (max-width: 960px) { .cs__grid { grid-template-columns: 1fr; } }
   .cs__more { margin-top: clamp(32px, 4vw, 48px); }
   .cs__thumb { aspect-ratio: 16/9; }
+  /* показываем 3 других проекта; какие именно, выбирается случайно при загрузке */
+  .cs__more > li:nth-child(n+4) { display: none; }
 </style>
+
+<script>
+  // перемешиваем другие проекты, видны первые 3
+  const ul = document.getElementById('csMore');
+  if (ul) [...ul.children].sort(() => Math.random() - .5).forEach(li => ul.appendChild(li));
+</script>
