@@ -31,8 +31,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
       <div class="mm">
         <button class="mm__t" type="button" aria-expanded="false">Home <Fragment set:html={chev} /></button>
         <div class="mm__p"><div class="wrap mm__in mm__in--home">
-          <ul class="mm__l">{page.slice(0, 4).map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
-          <ul class="mm__l">{page.slice(4).map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
+          <ul class="mm__l">{page.slice(0, 4).map(([h, l]) => <li><a class="spark" href={h}>{l}</a></li>)}</ul>
+          <ul class="mm__l">{page.slice(4).map(([h, l]) => <li><a class="spark" href={h}>{l}</a></li>)}</ul>
           <a class="mm__card" href={BUY_CONCEPT}>
             <span class="mm__k">Start here</span>
             <b>Your new homepage in 7&nbsp;days</b>
@@ -57,8 +57,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
       <div class="mm">
         <button class="mm__t" type="button" aria-expanded="false">Services <Fragment set:html={chev} /></button>
         <div class="mm__p"><div class="wrap mm__in mm__in--svc">
-          <ul class="mm__l">{services.slice(0, 3).map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
-          <ul class="mm__l">{services.slice(3).map(([h, l]) => <li><a href={h}>{l}</a></li>)}</ul>
+          <ul class="mm__l">{services.slice(0, 3).map(([h, l]) => <li><a class="spark" href={h}>{l}</a></li>)}</ul>
+          <ul class="mm__l">{services.slice(3).map(([h, l]) => <li><a class="spark" href={h}>{l}</a></li>)}</ul>
           <a class="mm__card" href={CALL}>
             <span class="mm__k">Not sure what you need?</span>
             <b>Tell us what you are building</b>
@@ -73,8 +73,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
       <div class="mm">
         <button class="mm__t" type="button" aria-expanded="false">Contact <Fragment set:html={chev} /></button>
         <div class="mm__p"><div class="wrap mm__in mm__in--hi">
-          <ul class="mm__l"><li><a href={CALL}>Book a call</a></li><li><a href="/careers">Careers</a></li></ul>
-          <ul class="mm__l">{SOCIAL.map(s => <li><a href={s.href} target="_blank" rel="noopener me">{s.label} ↗</a></li>)}</ul>
+          <ul class="mm__l"><li><a class="spark" href={CALL}>Book a call</a></li><li><a class="spark" href="/careers">Careers</a></li></ul>
+          <ul class="mm__l">{SOCIAL.map(s => <li><a class="spark" href={s.href} target="_blank" rel="noopener me">{s.label} ↗</a></li>)}</ul>
         </div></div>
       </div>
     </nav>

@@ -164,3 +164,29 @@ p { text-wrap: pretty; }
 html { cursor: var(--cur); }
 a, button, summary, label, [role="tab"], [role="button"], select, .btn { cursor: var(--cur-ptr); }
 input, textarea { cursor: text; }
+
+/* внешние ссылки (открываются в новой вкладке): кнопки и ссылки футера получают стрелку ↗ */
+a.btn[target="_blank"]::after, .ft__cols a[target="_blank"]::after { content: "↗"; position: relative; z-index: 1; font-size: 1.1em; line-height: 1; text-transform: none; letter-spacing: 0; }
+.ft__cols a[target="_blank"]::after { margin-left: 6px; }
+
+/* волшебное наведение: по рамке вокруг ссылки бежит свет, вокруг мерцают звёздочки (меню) */
+@property --spark-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.spark { position: relative; }
+.spark::after { content: ""; position: absolute; inset: -5px -12px; padding: 1.5px; pointer-events: none; opacity: 0;
+  background: conic-gradient(from var(--spark-a), transparent 0 55%, color-mix(in srgb, var(--violet) 35%, transparent) 70%, var(--violet) 82%, #fff 86%, var(--violet) 89%, transparent 96%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity .2s var(--ease); }
+.spark::before { content: ""; position: absolute; inset: -12px -20px; pointer-events: none; opacity: 0;
+  background:
+    radial-gradient(circle, var(--violet) 0 1.2px, transparent 1.8px) 8% 20% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--violet-lt) 0 1px, transparent 1.6px) 92% 12% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--violet) 0 1.4px, transparent 2px) 96% 82% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--violet-lt) 0 1px, transparent 1.6px) 4% 88% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--violet) 0 .9px, transparent 1.4px) 50% 2% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--violet-lt) 0 .9px, transparent 1.4px) 46% 98% / 10px 10px no-repeat;
+  transition: opacity .2s var(--ease); }
+.spark:hover::after { opacity: 1; animation: spark-run 1.8s linear infinite; }
+.spark:hover::before { opacity: 1; animation: spark-tw 1.2s steps(2, jump-none) infinite alternate; }
+@keyframes spark-run { to { --spark-a: 360deg; } }
+@keyframes spark-tw { from { transform: scale(1); filter: brightness(1); } to { transform: scale(1.04) rotate(.5deg); filter: brightness(1.4); opacity: .55; } }
+@media (prefers-reduced-motion: reduce) { .spark:hover::after, .spark:hover::before { animation: none; } }

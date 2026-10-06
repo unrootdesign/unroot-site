@@ -86,6 +86,11 @@
     $('.xg__thumbs', g)?.addEventListener('pointerleave', () => set(1));
   });
 
+  $$('.xg').forEach(g => g.addEventListener('click', e => {
+    if (e.defaultPrevented || e.target.closest('a, .xg__thumbs')) return;
+    const href = $('.xg__main', g)?.getAttribute('href'); if (href) location.href = href;
+  }));
+
   /* ── лента работ: едет сама справа налево, стоит под мышью, тянется мышью или пальцем ── */
   const row = $('#xRow'), track = $('.xmq__t');
   if (row && track) {
@@ -138,6 +143,80 @@
     imgs.forEach((im, k) => im.classList.toggle('on', k === (c + 1) % imgs.length));
   }, 1800);
 
+  /* ── процесс: у каждого шага круг из точек. С каждым шагом круг больше и заполнен сильнее,
+     по заполненной части бегут импульсы, у последнего шага круг полный и от него расходятся волны.
+     Рисуем только пока круги на экране. ── */
+  const orbs = $$('.xpr__orb');
+  if (orbs.length) {
+    const css = getComputedStyle(document.documentElement);
+    const VIO = css.getPropertyValue('--violet').trim() || '#8961E7';
+    const INK = 'rgba(18,17,22,';
+    const hex = h => { const n = parseInt(h.replace('#', ''), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+    const [vr, vg, vb] = hex(VIO);
+    const V = a => `rgba(${vr},${vg},${vb},${a})`;
+    const st = orbs.map(cv => ({ cv, ctx: cv.getContext('2d'), k: +cv.dataset.step, n: +cv.dataset.of, w: 0, h: 0, d: 1, grow: 0, on: false, seen: false }));
+    const size = () => st.forEach(o => {
+      o.d = Math.min(devicePixelRatio || 1, 2); o.w = o.cv.clientWidth; o.h = o.cv.clientHeight;
+      o.cv.width = Math.round(o.w * o.d); o.cv.height = Math.round(o.h * o.d);
+    });
+    size(); addEventListener('resize', size);
+    // точки кольца: радиус, количество, доля заполнения
+    function ring(o, t, r, count, fill, phase, bright) {
+      const c = o.ctx, cx = o.w / 2, cy = o.h / 2;
+      for (let i = 0; i < count; i++) {
+        const u = i / count, ang = -Math.PI / 2 + u * Math.PI * 2;
+        const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r;
+        if (u <= fill) {
+          const tw = .55 + .45 * Math.sin(t * .003 + i * 1.7 + phase);
+          c.fillStyle = V((.35 + .55 * tw) * bright);
+          const s = 2 + tw * 1.4; c.fillRect(x - s / 2, y - s / 2, s, s);
+        } else { c.fillStyle = INK + '.16)'; c.fillRect(x - 1, y - 1, 2, 2); }
+      }
+    }
+    function frame(t) {
+      st.forEach(o => {
+        if (!o.on || !o.w) return;
+        const c = o.ctx; c.setTransform(o.d, 0, 0, o.d, 0, 0); c.clearRect(0, 0, o.w, o.h);
+        // заполнение плавно растёт, когда круг появился на экране
+        o.grow = Math.min(1, o.grow + (RM ? 1 : .012));
+        const ease = 1 - Math.pow(1 - o.grow, 3);
+        const level = (o.k + 1) / o.n, base = Math.min(o.w, o.h) * .46, R = base * (.5 + .5 * level);
+        const fill = level * ease, cx = o.w / 2, cy = o.h / 2;
+        // внешнее кольцо и внутренние: у первого шага 1 кольцо, дальше больше
+        ring(o, t, R, 96, fill, 0, 1);
+        for (let j = 1; j <= o.k; j++) ring(o, t, R * (1 - j * .24), Math.round(96 * (1 - j * .24)), Math.min(1, fill * (1 + j * .15)), j * 2, .8);
+        // ядро
+        const core = 3 + level * 5 + Math.sin(t * .004) * 1;
+        const g = c.createRadialGradient(cx, cy, 0, cx, cy, core * 4);
+        g.addColorStop(0, V(.9)); g.addColorStop(.25, V(.35)); g.addColorStop(1, V(0));
+        c.fillStyle = g; c.beginPath(); c.arc(cx, cy, core * 4, 0, Math.PI * 2); c.fill();
+        // импульсы бегут по заполненной части кольца
+        if (fill > .02 && !RM) for (let p = 0; p < 1 + o.k; p++) {
+          const head = ((t * .00018 * (1 + p * .35) + p / (1 + o.k)) % 1) * fill;
+          for (let q = 0; q < 14; q++) {
+            const u = head - q * .006; if (u < 0) break;
+            const ang = -Math.PI / 2 + u * Math.PI * 2, a = (1 - q / 14);
+            c.fillStyle = q === 0 ? 'rgba(255,255,255,.95)' : V(.8 * a);
+            const s = q === 0 ? 4 : 3 * a + .6;
+            c.fillRect(cx + Math.cos(ang) * R - s / 2, cy + Math.sin(ang) * R - s / 2, s, s);
+          }
+        }
+        // последний шаг: круг замкнулся, от него расходятся волны из точек
+        if (o.k === o.n - 1 && ease > .98 && !RM) for (let wv = 0; wv < 2; wv++) {
+          const ph = ((t * .00035) + wv * .5) % 1, rr = R * (1 + ph * .55), a = (1 - ph) * .5;
+          for (let i = 0; i < 64; i++) { const ang = i / 64 * Math.PI * 2; c.fillStyle = V(a); c.fillRect(cx + Math.cos(ang) * rr - .8, cy + Math.sin(ang) * rr - .8, 1.6, 1.6); }
+        }
+      });
+      if (st.some(o => o.on)) requestAnimationFrame(frame); else running = false;
+    }
+    let running = false;
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => { const o = st.find(x => x.cv === e.target); o.on = e.isIntersecting; });
+      if (!running && st.some(o => o.on)) { running = true; requestAnimationFrame(frame); }
+    }, { threshold: .2 });
+    st.forEach(o => io.observe(o.cv));
+  }
+
   /* ── календарь грузится, когда до секции созвона остаётся 2 экрана ── */
   let calBooted = false;
   function bootCal() {
@@ -151,7 +230,7 @@
   // подпись «case studies» стоит по центру экрана, пока на экране секция работ, потом гаснет
   const csBg = $('.xwork__bg'), work = $('#work');
   function onScroll() {
-    if (csBg && work) { const r = work.getBoundingClientRect(); csBg.classList.toggle('on', r.top < innerHeight * .55 && r.bottom > innerHeight * .45); }
+    if (csBg && work) { const r = work.getBoundingClientRect(); csBg.classList.toggle('on', r.top < innerHeight * .3 && r.bottom > innerHeight * .7); }
     const nowVis = hero.getBoundingClientRect().bottom > 0;
     if (nowVis !== heroVisible) { heroVisible = nowVis; if (nowVis) { if (!paused) resume(); } else { const p = paused; pause(); paused = p; } }
     if ($('#team').getBoundingClientRect().top < innerHeight * 2) bootCal();

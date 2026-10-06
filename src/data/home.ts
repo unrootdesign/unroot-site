@@ -199,28 +199,22 @@ export const home = {
  ],
  "handover": [
   {
+   "k": "Concept",
+   "t": "We start with a concept",
+   "d": "You tell us about your product. We design our first direction in Figma and turn it into an interactive prototype with Claude, so you see how the website could look and move.",
+   "tools": ["Figma", "Claude"]
+  },
+  {
    "k": "Design",
-   "t": "We design it in Figma",
-   "d": "Every page in Figma first, so you see the direction before anything gets built.",
+   "t": "We design every page",
+   "d": "Once you are happy with the concept, we design the rest of the website. You get every page, ready for the build.",
    "tools": ["Figma"]
   },
   {
-   "k": "Prototype",
-   "t": "You click through it",
-   "d": "Key screens become a live prototype with vibe coding. Share it with your team and react to the real thing.",
-   "tools": ["Claude", "Vibe coding"]
-  },
-  {
    "k": "Build",
-   "t": "We build it",
-   "d": "Webflow, Framer or code, with animations, a CMS and the basics for search.",
-   "tools": ["Webflow", "Framer", "Code"]
-  },
-  {
-   "k": "Handover",
-   "t": "Your team runs it",
-   "d": "Edit it in the CMS or by asking AI. We show you how and stay in touch after launch.",
-   "tools": ["CMS", "AI"]
+   "t": "We build it and show you how",
+   "d": "Webflow, Framer or code with vibe coding. You get a live website and learn to run it: edit in the CMS or just ask AI.",
+   "tools": ["Webflow", "Framer", "Claude"]
   }
  ],
  "services": [
@@ -253,7 +247,7 @@ export const home = {
    ],
    "images": [],
    "video": "s-dev",
-   "ratio": "1920/1080"
+   "ratio": "2886/1860"
   },
   {
    "name": "Brand identity",
@@ -299,7 +293,7 @@ export const home = {
    ],
    "images": [],
    "video": "s-vibe",
-   "ratio": "1530/936"
+   "ratio": "2886/1860"
   },
   {
    "name": "Social media and content",

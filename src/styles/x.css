@@ -12,7 +12,7 @@ body.x { --xbg: color-mix(in srgb, var(--ink) 4.5%, var(--white)); --xpad: clamp
 html:has(body.x) { scroll-behavior: smooth; }
 
 /* секции и контейнер */
-.xs { position: relative; padding: clamp(120px, 13.5vw, 192px) var(--xpad) 0; scroll-margin-top: var(--bar); }
+.xs { position: relative; z-index: 1; padding: clamp(120px, 13.5vw, 192px) var(--xpad) 0; scroll-margin-top: var(--bar); }
 .xw { max-width: var(--wrap); margin-inline: auto; }
 /* сетка главной: 3 равные колонки с одним зазором, все секции встают на эти линии */
 .x3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--xgap); }
@@ -74,7 +74,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 /* ── 2. работы: бегущая лента, едет слева направо, при наведении стоит ── */
 .xwork { padding-left: 0; padding-right: 0; padding-top: clamp(64px, 8vw, 120px); overflow: hidden; }
 /* крупная серая подпись за лентой: видно верх букв, остальное закрывают карточки */
-.xwork__bg { position: fixed; z-index: 0; left: 50%; top: 50%; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
+.xwork__bg { position: fixed; z-index: 0; margin: 0; left: 50%; top: 50%; transform: translate(-50%, -50%); opacity: 0; transition: opacity .5s var(--ease); margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
   white-space: nowrap; color: color-mix(in srgb, var(--ink) 6%, var(--xbg)); pointer-events: none; user-select: none; }
 .xwork__bg.on { opacity: 1; }
 .xwork { overflow: visible; }
@@ -88,10 +88,12 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xmq { touch-action: pan-y; cursor: grab; user-select: none; }
 .xmq.drag { cursor: grabbing; }
 .xmq.drag a, .xmq.drag button { pointer-events: none; }
-.xg { flex: none; width: min(640px, 86vw); margin-right: clamp(40px, 4.4vw, 72px); }
+.xg { flex: none; width: min(640px, 86vw); margin-right: clamp(28px, 3vw, 48px); padding: clamp(16px, 1.6vw, 22px); background: var(--white);
+  border: 1px solid var(--line); cursor: var(--cur-ptr); transition: border-color var(--t) var(--ease); }
+.xg:hover { border-color: var(--violet); }
 .xg__head { display: block; margin-bottom: 12px; font-size: .95rem; color: var(--ink-3); }
 .xg__head b { font-weight: 500; color: var(--ink); margin-right: 4px; }
-.xg__main { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--white); box-shadow: var(--xsh); }
+.xg__main { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
 .xg__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; pointer-events: none; }
 .xg__main img.on { opacity: 1; }
 .xg__thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
@@ -101,11 +103,11 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xg__foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 16px; }
 .xg__stat { font-size: .92rem; color: var(--ink-3); white-space: nowrap; }
 .xg__stat b { font-size: 1.45rem; font-weight: 500; letter-spacing: -.04em; color: var(--ink); margin-right: 4px; }
-.xg__go { flex: none; display: inline-flex; align-items: center; gap: 10px; padding: 13px 14px; margin: -13px -14px -13px 0; color: var(--ink);
+.xg__go { flex: none; display: inline-flex; align-items: center; gap: 10px; padding: 13px 14px; margin: -6px 0; color: var(--ink); box-shadow: inset 0 0 0 1px var(--violet);
   font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; transition: background var(--t) var(--ease), color var(--t) var(--ease); }
 .xg__go .tri { width: 7px; height: 7px; color: var(--violet); }
-.xg__go:hover { background: var(--violet); color: #fff; }
-.xg__go:hover .tri { color: #fff; }
+.xg:hover .xg__go, .xg__go:hover { background: var(--violet); color: #fff; box-shadow: none; }
+
 
 /* ── 3. отзывы: отзыв на 2 колонки, логотипы в третьей той же высоты ── */
 .xr { margin-top: clamp(32px, 4vw, 48px); align-items: stretch; }
@@ -169,34 +171,20 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__m.on { opacity: 1; visibility: visible; transition: opacity .35s var(--ease); }
 .xsv__v { position: relative; width: 100%; overflow: hidden; background: var(--white); box-shadow: var(--xsh); }
 .xsv__v img, .xsv__v video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+/* видео шире остальных кадров: заполняет кадр, лишнее срезается справа */
+.xsv__v video { object-fit: cover; object-position: left center; }
 .xsv__v img { opacity: 0; transition: opacity .5s var(--ease); }
 .xsv__v img.on { opacity: 1; }
 .xsv__m { position: relative; }
 .xsv__m figcaption { position: absolute; top: 100%; margin-top: 10px; font-size: .88rem; color: var(--ink-3); }
 
-/* ── 6. процесс: светлый, линия через 4 шага, по ней бежит свет, значки вспыхивают по очереди ── */
-.xho__lede { margin-top: 18px; max-width: 60ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
-.xpr { --dur: 8s; --px: 0px; --py: 0px; --g: clamp(20px, 2.4vw, 36px); position: relative; margin-top: clamp(40px, 5vw, 64px); padding: var(--py) var(--px); }
-.xpr > *:not(.xpr__line) { position: relative; z-index: 1; }
-.xpr > .xpr__line { z-index: 0; }
-/* линия от центра первого значка до центра последнего */
-.xpr__line { position: absolute; left: calc(var(--px) + 28px); right: calc(var(--px) + (100% - 2 * var(--px) - 3 * var(--g)) / 4 - 28px);
-  top: calc(var(--py) + 28px); height: 1px; background: var(--line); }
-.xpr__line i { position: absolute; top: -3px; left: 0; width: 120px; height: 7px; margin-left: -120px;
-  background: radial-gradient(closest-side, var(--violet), color-mix(in srgb, var(--violet) 45%, transparent) 45%, transparent);
-  animation: xpr-run var(--dur) linear infinite; }
-@keyframes xpr-run { from { left: 0; } to { left: calc(100% + 120px); } }
-.xpr__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--g); }
-.xpr__node { position: relative; width: 56px; height: 56px; display: grid; place-items: center; background: var(--white); color: var(--violet);
-  box-shadow: inset 0 0 0 1px var(--line); animation: xpr-glow var(--dur) linear infinite; animation-delay: calc(.2s + var(--k) * 2.33s); }
-.xpr__node svg { width: 24px; height: 24px; }
-/* значок загорается, когда до него доходит свет */
-@keyframes xpr-glow {
-  0%, 14%, 100% { color: var(--violet); background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
-  4% { color: #fff; background: var(--violet); box-shadow: 0 0 0 6px color-mix(in srgb, var(--violet) 16%, transparent), 0 10px 30px -6px color-mix(in srgb, var(--violet) 55%, transparent); }
-}
-.xpr__n { display: block; margin-top: 26px; font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }
-.xpr b { display: block; margin-top: 8px; font-size: clamp(1.25rem, 1.8vw, 1.5rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
+/* ── 6. процесс: 3 шага на сетке, у каждого круг из точек (рисует x.js), под ним текст и инструменты ── */
+.xho__lede { margin-top: 18px; max-width: 64ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
+.xpr { list-style: none; margin: clamp(40px, 5vw, 64px) 0 0; padding: 0; row-gap: 48px; }
+.xpr > li { display: flex; flex-direction: column; }
+.xpr__orb { display: block; width: 100%; height: clamp(200px, 20vw, 260px); }
+.xpr__n { display: block; margin-top: 20px; font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }
+.xpr b { display: block; margin-top: 8px; font-size: clamp(1.3rem, 1.9vw, 1.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
 .xpr p { margin-top: 10px; font-size: .95rem; line-height: 1.55; color: var(--ink-2); }
 .xpr__tools { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .xpr__tools li { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase;
@@ -227,12 +215,9 @@ html:has(body.x) { scroll-behavior: smooth; }
   .xhero__vis { padding-left: 0; margin-top: 56px; }
   .xsv__media { margin-top: 0; }
   .xsv__l { padding-bottom: 0; }
-  .xpr__steps { grid-template-columns: 1fr 1fr; row-gap: 40px; }
-  .xpr__line { display: none; }
 }
 /* ── телефон ── */
 @media (max-width: 760px) {
-  .xpr__steps { grid-template-columns: 1fr; }
   .xwork__hint { width: 110px; }
   .xwork__hint span { left: 22px; top: 8px; font-size: 1.45rem; }
   .xhero { min-height: 0; }
@@ -250,7 +235,6 @@ html:has(body.x) { scroll-behavior: smooth; }
   .xt__nums b { font-size: 1.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .xpr__line i, .xpr__node { animation: none; }
   html:has(body.x) { scroll-behavior: auto; }
   .xc__pair, .xc__vid, .xq blockquote, .xsv__m { transition: none; }
 }
