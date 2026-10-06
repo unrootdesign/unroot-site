@@ -1,53 +1,48 @@
-/* Экспериментальная главная: в герое концепты сменяются сами (сначала анимированные, по клику до и после),
-   внизу список проектов, у текущего полоска показывает время до следующего. Лента работ едет сама,
-   при наведении на маленький кадр он встаёт на место главного. «После запуска» оживает по прокрутке. */
+/* Экспериментальная главная: в герое концепты сменяются сами (сначала анимированные, переключатель показывает до и после),
+   под сценой серым названия проектов. Лента работ едет сама и тянется, при наведении на маленький кадр он встаёт на место главного. */
 (() => {
   if (!document.body.classList.contains('x')) return;
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  /* ── герой ── */
+  /* ── герой: анимированные концепты идут друг за другом без пауз в 1.5 раза быстрее,
+     до и после сменяются раз в 4.5 секунды; под сценой серым названия проектов ── */
   const hero = $('.xhero');
   const items = { anim: $$('.xc__vid', hero), ba: $$('.xc__pair', hero) };
   const names = { anim: $$('.xc__names--anim button', hero), ba: $$('.xc__names--ba button', hero) };
   const idx = { anim: 0, ba: 0 };
-  const BA_DUR = 4500, ANIM_MAX = 12000;
-  let mode = hero.dataset.mode || 'anim', paused = false, heroVisible = true, t0 = 0, spent = 0, raf = 0;
-
-  const vid = () => items.anim[idx.anim]?.querySelector('video');
-  // длительность текущего кадра: у видео его собственная (но не дольше 12 секунд), у до и после 4.5 секунды
-  const dur = () => mode === 'anim' ? Math.min(((vid()?.duration) || 8) * 1000, ANIM_MAX) : BA_DUR;
+  const BA_DUR = 4500, RATE = 1.5;
+  let mode = hero.dataset.mode || 'anim', paused = false, heroVisible = true, baTimer = 0, baLeft = BA_DUR, baAt = 0;
+  const videos = items.anim.map(v => v.querySelector('video'));
+  videos.forEach((el, k) => {
+    el.defaultPlaybackRate = RATE; el.playbackRate = RATE;
+    // следующее видео начинается ровно в момент, когда закончилось текущее
+    el.addEventListener('ended', () => { if (mode === 'anim' && k === idx.anim) show(idx.anim + 1); });
+  });
+  const vid = () => videos[idx.anim];
+  const canPlay = () => heroVisible && !paused;
+  function warm(el) { if (el && el.preload !== 'auto') { el.preload = 'auto'; el.load(); el.playbackRate = RATE; } }
 
   function show(i, m = mode) {
     const n = items[m].length; idx[m] = (i + n) % n;
     items[m].forEach((x, k) => x.classList.toggle('on', k === idx[m]));
-    names[m].forEach((b, k) => { b.classList.toggle('on', k === idx[m]); b.style.setProperty('--p', 0); });
-    const cur = items[m][idx[m]], next = items[m][(idx[m] + 1) % n];
-    cur.querySelectorAll('img').forEach(im => im.loading = 'eager');
+    names[m].forEach((b, k) => b.classList.toggle('on', k === idx[m]));
+    const next = items[m][(idx[m] + 1) % n];
+    items[m][idx[m]].querySelectorAll('img').forEach(im => im.loading = 'eager');
     next.querySelectorAll('img').forEach(im => im.loading = 'eager');
-    items.anim.forEach((v, k) => {
-      const el = v.querySelector('video');
-      if (m === 'anim' && k === idx.anim) { el.preload = 'auto'; el.currentTime = 0; if (heroVisible && !paused) el.play().catch(() => {}); }
+    clearTimeout(baTimer);
+    videos.forEach((el, k) => {
+      if (m === 'anim' && k === idx.anim) { warm(el); el.currentTime = 0; el.playbackRate = RATE; if (canPlay()) el.play().catch(() => {}); }
       else el.pause();
     });
-    const nv = items.anim[(idx.anim + 1) % items.anim.length]?.querySelector('video'); if (nv && m === 'anim') nv.preload = 'auto';
-    t0 = performance.now(); spent = 0;
-    loop();
+    if (m === 'anim') warm(videos[(idx.anim + 1) % videos.length]);
+    else { baLeft = BA_DUR; baRun(); }
   }
-  // полоска под названием и переход к следующему проекту
-  function loop() {
-    cancelAnimationFrame(raf);
-    if (RM) return;
-    raf = requestAnimationFrame(function tick(now) {
-      if (!paused && heroVisible) spent += now - t0;
-      t0 = now;
-      const p = Math.min(spent / dur(), 1);
-      names[mode][idx[mode]]?.style.setProperty('--p', p);
-      if (p >= 1) { show(idx[mode] + 1); return; }
-      raf = requestAnimationFrame(tick);
-    });
-  }
-  // переключатель «Before / after»: выключен, идут анимированные концепты; включён, пары до и после
+  function baRun() { clearTimeout(baTimer); if (RM || mode !== 'ba' || !canPlay()) return; baAt = performance.now(); baTimer = setTimeout(() => show(idx.ba + 1), baLeft); }
+  function pause() { if (paused) return; paused = true; if (mode === 'anim') vid()?.pause(); else { clearTimeout(baTimer); baLeft = Math.max(400, baLeft - (performance.now() - baAt)); } }
+  function resume() { paused = false; if (!heroVisible) return; if (mode === 'anim') vid()?.play().catch(() => {}); else baRun(); }
+
+  // переключатель «See before / after»: выключен, идут анимированные концепты; включён, пары до и после
   const sw = $('#xSw');
   function setMode(m) {
     mode = m; hero.dataset.mode = m;
@@ -57,10 +52,18 @@
   sw?.addEventListener('click', () => setMode(mode === 'ba' ? 'anim' : 'ba'));
   ['anim', 'ba'].forEach(m => names[m].forEach(b => b.addEventListener('click', () => show(+b.dataset.i, m))));
   const stage = $('.xhero__stage', hero);
-  stage.addEventListener('pointerenter', () => { paused = true; if (mode === 'anim') vid()?.pause(); });
-  stage.addEventListener('pointerleave', () => { paused = false; if (mode === 'anim' && heroVisible) vid()?.play().catch(() => {}); });
+  stage.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') pause(); });
+  stage.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') resume(); });
   hero.dataset.mode = mode;
   show(0);
+  // страховка: если видео не грузится или застряло на 3 секунды, переходим к следующему
+  let lastT = -1, stall = 0;
+  setInterval(() => {
+    if (mode !== 'anim' || !canPlay()) { stall = 0; return; }
+    const t = vid()?.currentTime ?? 0;
+    stall = t === lastT ? stall + 500 : 0; lastT = t;
+    if (stall >= 3000) { stall = 0; show(idx.anim + 1); }
+  }, 500);
 
   /* ── работы: маленький кадр под курсором встаёт на место главного, уход возвращает первый ── */
   $$('.xg').forEach(g => {
@@ -73,10 +76,37 @@
     });
     $('.xg__thumbs', g)?.addEventListener('pointerleave', () => set(1));
   });
-  // на телефоне лента останавливается, пока палец на ней
-  const mq = $('.xmq__t');
-  $('#xRow')?.addEventListener('touchstart', () => mq && (mq.style.animationPlayState = 'paused'), { passive: true });
-  $('#xRow')?.addEventListener('touchend', () => mq && (mq.style.animationPlayState = ''), { passive: true });
+
+  /* ── лента работ: едет сама справа налево, стоит под мышью, тянется мышью или пальцем ── */
+  const row = $('#xRow'), track = $('.xmq__t');
+  if (row && track) {
+    const SPEED = 105; // пикселей в секунду
+    let x = 0, half = 0, last = 0, hover = false, drag = null, moved = false, visible = true;
+    const measure = () => { half = track.scrollWidth / 2; };
+    const wrap = () => { if (half) { while (x <= -half) x += half; while (x > 0) x -= half; } };
+    const paint = () => { track.style.transform = `translate3d(${x}px,0,0)`; };
+    measure(); addEventListener('resize', measure); addEventListener('load', measure);
+    new IntersectionObserver(es => es.forEach(e => { visible = e.isIntersecting; })).observe(row);
+    requestAnimationFrame(function tick(t) {
+      const dt = Math.min(64, t - (last || t)); last = t;
+      if (!RM && visible && !hover && !drag) { x -= SPEED * dt / 1000; wrap(); paint(); }
+      requestAnimationFrame(tick);
+    });
+    row.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hover = true; });
+    row.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') hover = false; });
+    row.addEventListener('pointerdown', e => { if (e.button) return; drag = { sx: e.clientX, x0: x, id: e.pointerId }; moved = false; });
+    addEventListener('pointermove', e => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dx = e.clientX - drag.sx;
+      if (!moved && Math.abs(dx) > 6) { moved = true; row.classList.add('drag'); try { row.setPointerCapture(drag.id); } catch {} }
+      if (moved) { x = drag.x0 + dx; wrap(); paint(); }
+    });
+    const end = () => { if (!drag) return; drag = null; setTimeout(() => row.classList.remove('drag'), 0); };
+    addEventListener('pointerup', end); addEventListener('pointercancel', end);
+    // после перетаскивания клик по карточке не срабатывает
+    row.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+    row.addEventListener('dragstart', e => e.preventDefault());
+  }
 
   /* ── отзывы ── */
   const qs = $$('#xq blockquote');
@@ -111,7 +141,7 @@
 
   function onScroll() {
     const nowVis = hero.getBoundingClientRect().bottom > 0;
-    if (nowVis !== heroVisible) { heroVisible = nowVis; if (mode === 'anim') { if (nowVis && !paused) vid()?.play().catch(() => {}); else vid()?.pause(); } }
+    if (nowVis !== heroVisible) { heroVisible = nowVis; if (nowVis) { if (!paused) resume(); } else { const p = paused; pause(); paused = p; } }
     if ($('#team').getBoundingClientRect().top < innerHeight * 2) bootCal();
   }
   let st = false;

@@ -150,12 +150,14 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm:not(.open) .mm__p { pointer-events: none; }
   .mm.open .mm__p { visibility: visible; opacity: 1; transform: none; transition: opacity .18s var(--ease), transform .18s var(--ease); }
   /* списки по ширине текста с одинаковым зазором, карточка прижата вправо; во всех панелях одинаково */
-  .mm__in { display: flex; align-items: flex-start; gap: 72px; padding-block: 32px 36px; }
+  /* все панели одной высоты, по самой высокой (Work с картинками) */
+  .mm__in { display: flex; align-items: flex-start; gap: 72px; padding-block: 32px 36px; min-height: 262px; box-sizing: border-box; }
   .mm__in .mm__card { margin-left: auto; width: min(380px, 34%); }
   .mm__in--work { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
   .mm__k { font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
-  .mm__l { list-style: none; margin: 0; padding: 0; display: grid; align-content: start; gap: 12px; }
-  .mm__l a { font-size: 1.05rem; letter-spacing: -.015em; color: var(--ink); transition: color var(--t) var(--ease); }
+  .mm__l { list-style: none; margin: -6px 0 0; padding: 0; display: grid; align-content: start; gap: 4px; }
+  /* крупные ссылки с запасом по высоте, чтобы легко попасть мышью */
+  .mm__l a { display: inline-block; padding: 6px 0; font-size: 1.3rem; letter-spacing: -.025em; color: var(--ink); transition: color var(--t) var(--ease); }
   .mm__l a:hover { color: var(--violet); }
   .mm__card { display: flex; flex-direction: column; gap: 10px; padding: 22px; background: var(--pale); color: var(--ink); transition: background var(--t) var(--ease); }
   .mm__card .mm__k { margin-bottom: 0; color: var(--violet-d); }
@@ -166,7 +168,7 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm__card:hover { background: color-mix(in srgb, var(--pale) 70%, var(--violet) 12%); }
   .mm__w { display: flex; flex-direction: column; gap: 4px; color: var(--ink); }
   .mm__w img { width: 100%; height: auto; border: 1px solid var(--line); margin-bottom: 8px; transition: border-color var(--t) var(--ease); }
-  .mm__w b { font-weight: 500; font-size: 1.05rem; letter-spacing: -.015em; }
+  .mm__w b { font-weight: 500; font-size: 1.15rem; letter-spacing: -.02em; }
   .mm__w span { font-size: .85rem; color: var(--ink-3); }
   .mm__w:hover b { color: var(--violet); }
   .mm__w:hover img { border-color: var(--violet); }
@@ -190,7 +192,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
     .mm__t :global(.mm__chev) { width: 14px; height: 14px; }
     .mm__p { position: static; display: none; visibility: visible; opacity: 1; transform: none; border: 0; box-shadow: none; transition: none; }
     .mm.open .mm__p { display: block; }
-    .mm__in { flex-direction: column; gap: 24px; padding: 4px 0 24px; }
+    .mm__in { flex-direction: column; gap: 24px; padding: 4px 0 24px; min-height: 0; }
+    .mm__l a { font-size: 1.05rem; }
     .mm__in .mm__card { margin-left: 0; width: 100%; }
     .mm__in--work { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
   }

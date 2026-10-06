@@ -28,56 +28,59 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xhero__ctas .btn { padding-inline: 15px; gap: 10px; }
 .xhero__vis { min-width: 0; display: flex; flex-direction: column; gap: 22px; }
 .xhero__bar { display: flex; justify-content: flex-end; }
-.xhero__stage { position: relative; }
-
-/* сцена: картинки и видео всегда целиком и в своих пропорциях, размер считается от ширины и высоты сцены */
-.xc__stage { position: relative; height: clamp(380px, calc(100dvh - var(--bar) - 230px), 680px); container-type: size; }
+/* сцена: одна высота в обоих режимах; картинки и видео всегда целиком, размер считается от ширины и высоты сцены.
+   Снизу 44px под названия проектов, они стоят сразу под видео или под парой до и после */
+.xhero__stage { position: relative; height: clamp(400px, calc(100dvh - var(--bar) - 190px), 720px); container-type: size; --nm: 44px; }
+.xc__stage { position: absolute; inset: 0; }
 .xhero[data-mode="ba"] .xc__stage--anim, .xhero[data-mode="anim"] .xc__stage--ba,
 .xhero[data-mode="ba"] .xc__names--anim, .xhero[data-mode="anim"] .xc__names--ba { display: none; }
 .xc__pair, .xc__vid { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; opacity: 0; visibility: hidden;
-  transition: opacity .5s var(--ease), visibility 0s linear .5s; }
-.xc__pair.on, .xc__vid.on { opacity: 1; visibility: visible; transition: opacity .5s var(--ease); }
+  transition: opacity .4s var(--ease), visibility 0s linear .4s; }
+.xc__pair.on, .xc__vid.on { opacity: 1; visibility: visible; transition: opacity .4s var(--ease); }
 .xc__pair { gap: 18px; }
 .xc__pair figure { margin: 0; flex: none; }
-.xc__pair figcaption { margin-bottom: 8px; font-size: .88rem; color: var(--ink-3); }
+.xc__pair figcaption { height: 30px; font-size: .88rem; color: var(--ink-3); }
 .xc__pair figcaption.after { color: var(--violet-d); font-weight: 500; }
 .xc__pair img { display: block; height: auto; aspect-ratio: 620 / 1033; background: var(--white);
-  width: min(calc((100cqw - 70px) / 2), calc((100cqh - 30px) * 620 / 1033)); box-shadow: var(--xsh); }
+  width: min(calc((100cqw - 70px) / 2), calc((100cqh - 30px - var(--nm)) * 620 / 1033)); box-shadow: var(--xsh); }
 .xc__pair figure:last-child img { box-shadow: 0 0 0 2px var(--violet), 0 30px 60px -30px color-mix(in srgb, var(--violet) 55%, transparent); }
 .xc__arrow { flex: none; width: 20px; text-align: center; margin-top: 26px; font-size: 1.4rem; line-height: 1; color: var(--violet); }
-.xc__vid video { display: block; width: min(100cqw, calc(100cqh * 16 / 9)); aspect-ratio: 16 / 9; height: auto; background: var(--white);
+.xc__vid video { display: block; width: min(100cqw, calc((100cqh - var(--nm)) * 16 / 9)); aspect-ratio: 16 / 9; height: auto; background: var(--white);
   box-shadow: 0 1px 0 var(--line), 0 40px 80px -46px color-mix(in srgb, var(--night) 55%, transparent); }
 
-/* переключатель до и после: скруглённая дорожка и круглый ползунок, единственное скругление на странице */
-.xsw { flex: none; display: inline-flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; cursor: pointer;
-  font-size: 1.05rem; font-weight: 500; letter-spacing: -.015em; color: var(--ink-2); white-space: nowrap; transition: color .2s var(--ease); }
-.xsw:hover, .xsw[aria-checked="true"] { color: var(--ink); }
+/* переключатель до и после: кнопка со скруглённым свитчером внутри */
+.xsw { flex: none; display: inline-flex; align-items: center; gap: 14px; height: 46px; padding: 0 12px 0 18px; border: 0; background: var(--white); cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--line); font-size: 1rem; font-weight: 500; letter-spacing: -.015em; color: var(--ink); white-space: nowrap;
+  transition: box-shadow .2s var(--ease), background .2s var(--ease); }
+.xsw:hover { box-shadow: inset 0 0 0 1px var(--violet); }
+.xsw[aria-checked="true"] { box-shadow: inset 0 0 0 1px var(--violet); background: color-mix(in srgb, var(--violet) 6%, var(--white)); }
 .xsw__t { position: relative; width: 44px; height: 24px; border-radius: 12px; background: color-mix(in srgb, var(--ink) 16%, var(--white)); transition: background .2s var(--ease); }
 .xsw__t i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--white);
   box-shadow: 0 1px 3px color-mix(in srgb, var(--night) 30%, transparent); transition: transform .25s var(--ease); }
 .xsw[aria-checked="true"] .xsw__t { background: var(--violet); }
 .xsw[aria-checked="true"] .xsw__t i { transform: translateX(20px); }
 
-/* проекты: по клику открывается нужный, у текущего полоска показывает, сколько осталось до следующего */
+/* названия проектов: просто серый текст, текущий темнее, по клику открывается нужный */
+.xhero__names { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
+.xhero[data-mode="anim"] .xhero__names { top: calc(min(100cqw * 9 / 16, 100cqh - var(--nm)) + 16px); }
+.xhero[data-mode="ba"] .xhero__names { top: calc(30px + min((100cqw - 70px) / 2 * 1033 / 620, 100cqh - 30px - var(--nm)) + 16px); }
 .xc__names { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; overflow-x: auto; scrollbar-width: none; }
 .xc__names::-webkit-scrollbar { display: none; }
-.xc__names button { position: relative; padding: 0 0 8px; border: 0; background: none; cursor: pointer; white-space: nowrap;
-  font-size: 1.08rem; letter-spacing: -.015em; color: var(--ink-3); transition: color .2s var(--ease); }
-.xc__names button:hover { color: var(--ink); }
-.xc__names button.on { color: var(--violet-d); }
-.xc__names i { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); overflow: hidden; }
-.xc__names button.on i::after { content: ""; position: absolute; inset: 0; background: var(--violet); transform-origin: left; transform: scaleX(var(--p, 0)); }
+.xc__names button { padding: 0; border: 0; background: none; cursor: pointer; white-space: nowrap;
+  font-size: 1rem; letter-spacing: -.015em; color: color-mix(in srgb, var(--ink-3) 75%, var(--xbg)); transition: color .2s var(--ease); }
+.xc__names button:hover, .xc__names button.on { color: var(--ink-2); }
 
 /* ── 2. работы: бегущая лента, едет слева направо, при наведении стоит ── */
 .xwork { padding-left: 0; padding-right: 0; padding-top: clamp(64px, 8vw, 120px); overflow: hidden; }
 /* крупная серая подпись за лентой: видно верх букв, остальное закрывают карточки */
-.xwork__bg { position: absolute; left: var(--xedge); top: 0; margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
+.xwork__bg { position: absolute; left: var(--xedge); top: clamp(24px, 3vw, 48px); margin: 0; font-size: clamp(5rem, 13vw, 12rem); font-weight: 500; letter-spacing: -.06em; line-height: .8;
   white-space: nowrap; color: color-mix(in srgb, var(--ink) 6%, var(--xbg)); pointer-events: none; user-select: none; }
 .xmq { position: relative; }
 .xmq { overflow: hidden; padding: 10px 0 20px; }
-.xmq__t { display: flex; width: max-content; animation: xmq 34s linear infinite; }
-.xmq:hover .xmq__t, .xmq:focus-within .xmq__t { animation-play-state: paused; }
-@keyframes xmq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.xmq__t { display: flex; width: max-content; will-change: transform; }
+.xmq { touch-action: pan-y; cursor: grab; user-select: none; }
+.xmq.drag { cursor: grabbing; }
+.xmq.drag a, .xmq.drag button { pointer-events: none; }
 .xg { flex: none; width: min(640px, 86vw); margin-right: clamp(40px, 4.4vw, 72px); }
 .xg__head { display: block; margin-bottom: 12px; font-size: .95rem; color: var(--ink-3); }
 .xg__head b { font-weight: 500; color: var(--ink); margin-right: 4px; }
@@ -104,7 +107,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xr__logos li { display: grid; place-items: center; min-height: 72px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .xr__logos img { width: auto; max-width: 80%; opacity: .5; filter: grayscale(1); transition: opacity .2s var(--ease), filter .2s var(--ease); }
 .xr__logos li:hover img { opacity: 1; filter: none; }
-.xq { position: relative; padding: clamp(28px, 3.4vw, 48px); background: var(--white); display: grid;
+.xq { position: relative; min-height: clamp(420px, 36vw, 500px); padding: clamp(52px, 4.4vw, 64px) clamp(28px, 3.4vw, 48px) clamp(28px, 3.4vw, 48px); background: var(--white); display: grid;
   box-shadow: 0 24px 50px -34px color-mix(in srgb, var(--night) 35%, transparent); }
 /* все отзывы в одной ячейке: блок по самому длинному, автор всегда внизу на одном месте */
 .xq blockquote { grid-area: 1 / 1; margin: 0; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: opacity .3s var(--ease), visibility 0s linear .3s; }
@@ -113,7 +116,10 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xq footer { margin-top: auto; padding-top: 36px; padding-right: 100px; display: flex; align-items: center; gap: 12px; font-size: .9rem; color: var(--ink-3); line-height: 1.35; }
 .xq footer img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
 .xq footer b { display: block; color: var(--ink); font-weight: 500; }
-.xq__tp { margin-left: 18px; padding-left: 18px; border-left: 1px solid var(--line); font-size: .9rem; color: var(--violet-d); font-weight: 500; white-space: nowrap; }
+/* ссылка на Trustpilot живёт в правом верхнем углу карточки, отдельно от отступов */
+.xq__tp { position: absolute; top: 0; right: 0; padding: 12px 16px; background: var(--pale); color: var(--violet-d); white-space: nowrap;
+  font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; transition: background var(--t) var(--ease), color var(--t) var(--ease); }
+.xq__tp:hover { background: var(--violet); color: #fff; }
 .xq__nav { position: absolute; right: clamp(28px, 3.4vw, 48px); bottom: clamp(28px, 3.4vw, 48px); display: flex; gap: 6px; }
 .xq__arr { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: var(--xbg); font-size: 1.05rem; color: var(--ink); cursor: pointer;
   transition: background .2s var(--ease), color .2s var(--ease); }
@@ -193,21 +199,18 @@ html:has(body.x) { scroll-behavior: smooth; }
   .xhero { min-height: 0; }
   .xhero__bar { flex-direction: column; align-items: flex-start; gap: 14px; }
   .xhero__names { width: 100%; }
-  .xc__stage { height: min(520px, 62svh); }
-  .xhero[data-mode="anim"] .xc__stage { height: auto; aspect-ratio: 16 / 9; }
+  .xhero__stage { height: min(560px, 66svh); }
   .xc__pair { gap: 6px; }
   .xc__arrow { width: 12px; font-size: 1rem; }
   .xp { grid-template-columns: 1fr; }
   .xr__logos ul { grid-template-columns: 1fr 1fr 1fr 1fr; }
   .xr__logos li { height: 64px; }
-  .xq footer { flex-wrap: wrap; padding-right: 0; padding-bottom: 56px; }
-  .xq__tp { margin-left: 0; padding-left: 0; border-left: 0; width: 100%; }
+  .xq footer { padding-right: 0; padding-bottom: 56px; }
+  .xq { min-height: 0; }
   .xho li { min-height: 0; }
   .xt__nums b { font-size: 1.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   html:has(body.x) { scroll-behavior: auto; }
   .xc__pair, .xc__vid, .xq blockquote, .xsv__m { transition: none; }
-  .xmq { overflow-x: auto; }
-  .xmq__t { animation: none; }
 }

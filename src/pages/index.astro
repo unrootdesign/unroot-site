@@ -15,6 +15,8 @@ const description = "We design and build premium, custom websites with 3D & moti
 
 const M = '/home/';
 const pad = (n: number) => String(n).padStart(2, '0');
+// короткие названия проектов под концептом в герое
+const short = (n: string) => ({ 'Ambient Dreamie': 'Dreamie', 'Burd Home Health': 'Burd', 'Epsilon Health': 'Epsilon', 'Javelin VP': 'Javelin' } as Record<string, string>)[n] ?? n;
 // иконки карточек «после запуска»: правка словами, передача и обучение, автоматизация
 const ICO = (d: string) => `<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 const ICONS = [
@@ -44,7 +46,7 @@ const schema = [{
       <div class="xhero__vis s2">
         <!-- над концептом справа переключатель: анимированные концепты или до и после; сменяются сами -->
         <div class="xhero__bar">
-          <button class="xsw" type="button" role="switch" aria-checked="false" id="xSw">See before / after<span class="xsw__t" aria-hidden="true"><i></i></span></button>
+          <button class="xsw" type="button" role="switch" aria-checked="false" id="xSw"><span>See before / after</span><span class="xsw__t" aria-hidden="true"><i></i></span></button>
         </div>
         <div class="xhero__stage">
           <div class="xc__stage xc__stage--anim">
@@ -63,6 +65,10 @@ const schema = [{
               </div>
             ))}
           </div>
+          <div class="xhero__names">
+            <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}</button></li>)}</ol>
+            <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}</button></li>)}</ol>
+          </div>
         </div>
       </div>
     </div>
@@ -70,7 +76,7 @@ const schema = [{
 
   <!-- 2. Работы: бегущая лента справа налево, при наведении стоит; на фоне крупная серая подпись -->
   <section class="xs xwork" id="work" aria-label="Case studies">
-    <p class="xwork__bg" aria-hidden="true">Case studies</p>
+    <p class="xwork__bg" aria-hidden="true">case studies</p>
     <div class="xmq" id="xRow">
       <div class="xmq__t">
         {[0, 1].map(copy => home.work.map(w => {
@@ -108,8 +114,8 @@ const schema = [{
               <footer>
                 <img src={`${M}av-${q.avatar}.jpg`} alt="" width="44" height="44" loading="lazy" />
                 <span><b>{q.name}</b>{q.role}</span>
-                {q.url && <a class="xq__tp" href={q.url} target="_blank" rel="noopener">Verified on Trustpilot ↗</a>}
               </footer>
+              {q.url && <a class="xq__tp" href={q.url} target="_blank" rel="noopener">See on Trustpilot ↗</a>}
             </blockquote>
           ))}
           <div class="xq__nav">
