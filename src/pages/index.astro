@@ -17,12 +17,36 @@ const M = '/home/';
 const pad = (n: number) => String(n).padStart(2, '0');
 // короткие названия проектов под концептом в герое
 const short = (n: string) => ({ 'Ambient Dreamie': 'Dreamie', 'Burd Home Health': 'Burd', 'Epsilon Health': 'Epsilon', 'Javelin VP': 'Javelin' } as Record<string, string>)[n] ?? n;
-// иконки карточек «после запуска»: сборка, правка самим или через AI, обучение команды
-const ICO = (d: string) => `<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-const ICONS = [
-  ICO('<rect x="4" y="6" width="24" height="20"/><path d="M4 11h24"/><path d="M13 16l-3 3 3 3M19 16l3 3-3 3"/>'),
-  ICO('<path d="M5 7h22v14H14l-6 5v-5H5z"/><path d="M10 12h6M10 16h4"/><path d="M21.5 10.5l1 2.2 2.2 1-2.2 1-1 2.2-1-2.2-2.2-1 2.2-1z"/>'),
-  ICO('<rect x="4" y="7" width="24" height="16"/><path d="M14 12l5 3-5 3z"/><path d="M11 27h10"/>'),
+// иллюстрации процесса: макет в Figma, сборка в браузере, правка словами и видео-инструкция
+const ART = [
+  `<svg viewBox="0 0 240 132" fill="none" stroke-width="1.5" stroke-linejoin="round">
+    <rect x="1" y="1" width="238" height="130" class="a-bg"/>
+    <rect x="1" y="1" width="52" height="130" class="a-panel"/>
+    <path d="M10 16h30M10 28h22M10 40h26M10 52h18" class="a-ln"/>
+    <rect x="72" y="18" width="148" height="96" class="a-card"/>
+    <rect x="84" y="30" width="70" height="8" class="a-fill"/><rect x="84" y="44" width="50" height="6" class="a-soft"/>
+    <rect x="84" y="62" width="124" height="40" class="a-soft"/>
+    <rect x="80" y="58" width="132" height="48" class="a-sel"/>
+    <rect x="77" y="55" width="6" height="6" class="a-h"/><rect x="209" y="55" width="6" height="6" class="a-h"/><rect x="77" y="103" width="6" height="6" class="a-h"/><rect x="209" y="103" width="6" height="6" class="a-h"/>
+    <path d="M176 84l12 30 5-12 12-5z" class="a-cur"/>
+  </svg>`,
+  `<svg viewBox="0 0 240 132" fill="none" stroke-width="1.5" stroke-linejoin="round">
+    <rect x="1" y="1" width="238" height="130" class="a-bg"/>
+    <path d="M1 20h238" class="a-ln"/><circle cx="12" cy="11" r="3" class="a-dot"/><circle cx="22" cy="11" r="3" class="a-dot"/><circle cx="32" cy="11" r="3" class="a-dot"/>
+    <rect x="20" y="34" width="96" height="10" class="a-fill"/><rect x="20" y="50" width="70" height="6" class="a-soft"/><rect x="20" y="66" width="44" height="14" class="a-btn"/>
+    <path d="M140 36c20 0 20 40 40 40s20-40 40-40" class="a-wave"/>
+    <path d="M150 104l-10-8 10-8M190 88l10 8-10 8M176 84l-12 24" class="a-code"/>
+    <rect x="20" y="96" width="96" height="22" class="a-soft"/>
+  </svg>`,
+  `<svg viewBox="0 0 240 132" fill="none" stroke-width="1.5" stroke-linejoin="round">
+    <rect x="1" y="1" width="238" height="130" class="a-bg"/>
+    <path d="M18 22h132v32H58l-14 12V54H18z" class="a-card"/>
+    <path d="M30 34h80M30 44h56" class="a-ln"/>
+    <path d="M134 30l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" class="a-spark"/>
+    <rect x="96" y="70" width="126" height="48" class="a-card"/>
+    <rect x="108" y="82" width="60" height="8" class="a-fill"/><rect x="108" y="96" width="90" height="6" class="a-soft"/>
+    <circle cx="44" cy="96" r="20" class="a-play"/><path d="M38 86v20l16-10z" class="a-tri"/>
+  </svg>`,
 ];
 const schema = [{
   '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -30,11 +54,11 @@ const schema = [{
 }];
 ---
 <Base title={title} description={description} schema={schema} bodyClass="x">
-  <!-- 1. Герой: слева текст и кнопки, справа концепты (сначала анимированные, переключатель показывает до и после) -->
+  <!-- 1. Герой: слева текст и кнопки, справа концепты (табы: анимированные или до и после) -->
   <section class="xs xhero" id="concept" data-mode="anim" aria-label="Concept">
     <div class="xw x3 xhero__in">
       <div class="xhero__txt">
-        <p class="xhero__k">Website design and build for AI and tech startups</p>
+        <p class="tag xtag"><i></i>Design for AI and tech startups</p>
         <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
         <p class="xhero__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
         <div class="xhero__ctas">
@@ -44,15 +68,16 @@ const schema = [{
       </div>
 
       <div class="xhero__vis s2">
-        <!-- над концептом справа переключатель: анимированные концепты или до и после; сменяются сами -->
-        <div class="xhero__bar">
-          <button class="xsw" type="button" aria-pressed="false" id="xSw"><span class="xsw__a">Before / after</span><span class="xsw__b">Animated</span><Tri /></button>
+        <!-- табы прямо над концептом, справа: анимированные концепты или до и после; проекты сменяются сами -->
+        <div class="xc__mode" role="tablist" aria-label="Show">
+          <button type="button" role="tab" data-mode="anim" aria-selected="true">Animated</button>
+          <button type="button" role="tab" data-mode="ba" aria-selected="false">Before / after</button>
         </div>
         <div class="xhero__stage">
           <div class="xc__stage xc__stage--anim">
             {home.pairs.map((p, i) => (
               <div class={`xc__vid${i === 0 ? ' on' : ''}`} data-i={i}>
-                <video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted playsinline preload={i === 0 ? 'auto' : 'none'}></video>
+                <div class="xc__frame"><video src={`${M}v-${p.slug}.mp4`} poster={`${M}v-${p.slug}.jpg`} muted playsinline preload={i === 0 ? 'auto' : 'none'}></video></div>
               </div>
             ))}
           </div>
@@ -112,7 +137,8 @@ const schema = [{
   <!-- 3. Отзывы: слева отзыв в узкой колонке, справа логотипы клиентов -->
   <section class="xs" id="reviews" aria-label="Reviews">
     <div class="xw">
-      <h2 class="xh2">What they say <span>after</span></h2>
+      <p class="tag xtag"><i></i>Testimonials</p>
+      <h2 class="xh2">What clients say <span>after</span></h2>
       <div class="x3 xr">
         <div class="xq s2" id="xq">
           {home.quotes.map((q, i) => (
@@ -140,6 +166,7 @@ const schema = [{
   <!-- 4. Цены: 2 формата работы и концепт для тех, кто не знает, с чего начать -->
   <section class="xs" id="pricing" aria-label="Pricing">
     <div class="xw">
+      <p class="tag xtag"><i></i>Pricing</p>
       <h2 class="xh2">Pick how we <span>work together</span></h2>
       <div class="x3 xp">
         <article class="xp__c">
@@ -170,14 +197,17 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 5. Услуги: у каждой свои пропорции кадра, картинки сменяются, видео целиком -->
+  <!-- 5. Услуги: слева тег, заголовок и список до низа кадра; справа кадр вровень с заголовком, в своей пропорции -->
   <section class="xs" id="services" aria-label="Services">
     <div class="xw">
-      <h2 class="xh2">What we <span>do</span></h2>
       <div class="x3 xsv">
-        <ol class="xsv__list">
-          {home.services.map((s, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}><span>{pad(i + 1)}</span>{s.name}</button></li>)}
-        </ol>
+        <div class="xsv__l">
+          <p class="tag xtag"><i></i>Services</p>
+          <h2 class="xh2">What we <span>do</span></h2>
+          <ol class="xsv__list">
+            {home.services.map((s, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}><span>{pad(i + 1)}</span>{s.name}</button></li>)}
+          </ol>
+        </div>
         <div class="xsv__media s2">
           {home.services.map((s, i) => (
             <figure class={`xsv__m${i === 0 ? ' on' : ''}`} data-i={i}>
@@ -194,18 +224,17 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 6. После запуска: что мы делаем и что получает команда, 3 карточки с иконками -->
-  <section class="xs" id="handover" aria-label="After launch">
+  <!-- 6. После запуска: процесс из 3 шагов, у каждого своя иллюстрация, между шагами стрелки -->
+  <section class="xs" id="handover" aria-label="Process">
     <div class="xw">
-      <div class="xho__head">
-        <h2 class="xh2 xh2--wide">A website your team runs <span>without us</span></h2>
-        <p class="xho__lede">We build it and hand it over, so your team changes anything without waiting for us. You get an animated website and the know-how to run it.</p>
-      </div>
+      <p class="tag xtag"><i></i>Process</p>
+      <h2 class="xh2 xh2--wide">A website your team runs <span>without us</span></h2>
+      <p class="xho__lede">We design it, build it and hand it over. After that your team changes anything without waiting for us.</p>
       <ol class="x3 xho">
         {home.handover.map((h, i) => (
           <li>
-            <span class="xho__ic" aria-hidden="true" set:html={ICONS[i]} />
-            <span class="xho__n">{pad(i + 1)}</span>
+            <div class="xho__art" aria-hidden="true" set:html={ART[i]} />
+            <span class="xho__n">{pad(i + 1)} · {h.k}</span>
             <b>{h.t}</b>
             <p>{h.d}</p>
           </li>
@@ -219,6 +248,7 @@ const schema = [{
     <div class="xw">
       <div class="x3 xt">
         <div class="s2">
+          <p class="tag xtag"><i></i>Contact</p>
           <h2 class="xh2">Book a call with <span>the people who do the work</span></h2>
           <p class="xt__p">We are a team of 5 in Warsaw, no account managers in between. In 30 minutes you tell us what you are building, and we tell you what we would change on your website and how we can start. No sales pitch.</p>
         </div>
@@ -235,7 +265,8 @@ const schema = [{
   <!-- 8. FAQ -->
   <section class="xs" id="faq" aria-label="FAQ">
     <div class="xw x3 xfaq">
-      <h2 class="xh2">Questions we get <span>on calls</span></h2>
+      <div><p class="tag xtag"><i></i>FAQ</p>
+      <h2 class="xh2">Questions we get <span>on calls</span></h2></div>
       <div class="s2">{home.faq.map(f => <details class="fq"><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
     </div>
   </section>

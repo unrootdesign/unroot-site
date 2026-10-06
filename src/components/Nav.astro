@@ -137,8 +137,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm__t, .mm__a { display: inline-flex; align-items: center; gap: 5px; height: 36px; padding: 0 12px; border: 0; background: none; cursor: pointer;
     font: 500 .9rem/1 var(--f); letter-spacing: -.01em; color: var(--ink); transition: background var(--t) var(--ease), color var(--t) var(--ease); }
   .mm__t :global(.mm__chev) { width: 10px; height: 10px; color: var(--ink-3); transition: transform .2s var(--ease); }
-  .mm__t:hover, .mm__a:hover, .mm.open .mm__t { color: var(--violet); }
-  .mm.open .mm__t :global(.mm__chev) { transform: rotate(180deg); color: var(--violet); }
+  .mm__t:hover, .mm__a:hover, .mm.open .mm__t { color: var(--violet-hi); }
+  .mm.open .mm__t :global(.mm__chev) { transform: rotate(180deg); color: var(--violet-hi); }
   .bar__cta { margin-left: 14px; display: inline-flex; align-items: center; gap: 10px; height: 36px; padding: 0 14px; background: var(--violet); color: #fff;
     font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; transition: background var(--t) var(--ease); white-space: nowrap; }
   .bar__cta :global(.tri) { width: 7px; height: 7px; color: #fff; }
@@ -157,8 +157,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm__k { font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
   .mm__l { list-style: none; margin: -6px 0 0; padding: 0; display: grid; align-content: start; gap: 4px; }
   /* крупные ссылки с запасом по высоте, чтобы легко попасть мышью */
-  .mm__l a { display: inline-block; padding: 6px 0; font-size: 1.3rem; letter-spacing: -.025em; color: var(--ink); transition: color var(--t) var(--ease); }
-  .mm__l a:hover { color: var(--violet); }
+  .mm__l a { display: inline-block; padding: 6px 0; font-size: 1.55rem; font-weight: 500; letter-spacing: -.035em; color: var(--ink); transition: color var(--t) var(--ease); }
+  .mm__l a:hover { color: var(--violet-hi); }
   .mm__card { display: flex; flex-direction: column; gap: 10px; padding: 22px; background: var(--pale); color: var(--ink); transition: background var(--t) var(--ease); }
   .mm__card .mm__k { margin-bottom: 0; color: var(--violet-d); }
   .mm__card b { font-size: 1.35rem; font-weight: 500; letter-spacing: -.03em; line-height: 1.15; }
@@ -168,10 +168,10 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .mm__card:hover { background: color-mix(in srgb, var(--pale) 70%, var(--violet) 12%); }
   .mm__w { display: flex; flex-direction: column; gap: 1px; color: var(--ink); }
   .mm__w img { width: 100%; height: auto; border: 1px solid var(--line); margin-bottom: 8px; transition: border-color var(--t) var(--ease); }
-  .mm__w b { font-weight: 500; font-size: 1.15rem; letter-spacing: -.02em; }
+  .mm__w b { font-weight: 500; font-size: 1.3rem; letter-spacing: -.03em; }
   .mm__w span { font-size: .85rem; line-height: 1.35; color: var(--ink-3); }
-  .mm__w:hover b { color: var(--violet); }
-  .mm__w:hover img { border-color: var(--violet); }
+  .mm__w:hover b { color: var(--violet-hi); }
+  .mm__w:hover img { border-color: var(--violet-hi); }
 
   /* бургер, только на телефоне и планшете */
   .bar__burger { display: none; }

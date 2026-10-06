@@ -43,18 +43,16 @@
   function pause() { if (paused) return; paused = true; if (mode === 'anim') vid()?.pause(); else { clearTimeout(baTimer); baLeft = Math.max(400, baLeft - (performance.now() - baAt)); } }
   function resume() { paused = false; if (!heroVisible) return; if (mode === 'anim') vid()?.play().catch(() => {}); else baRun(); }
 
-  // кнопка-переключатель: на ней написан другой режим, «Before / after» или «Animated»; проект остаётся тот же
-  const sw = $('#xSw');
+  // табы «Animated» и «Before / after»; проект при переключении остаётся тот же
+  const tabs = $$('.xc__mode button', hero);
   function setMode(m) {
     mode = m; hero.dataset.mode = m;
-    sw?.setAttribute('aria-pressed', String(m === 'ba'));
+    tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
     show(cur);
   }
-  sw?.addEventListener('click', () => setMode(mode === 'ba' ? 'anim' : 'ba'));
+  tabs.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
   names.forEach(b => b.addEventListener('click', () => show(+b.dataset.i)));
-  const stage = $('.xhero__stage', hero);
-  stage.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') pause(); });
-  stage.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') resume(); });
+  // при наведении не останавливаемся: концепты идут всегда
   hero.dataset.mode = mode;
   show(0);
   // страховка: если видео не грузится или застряло на 3 секунды, переходим к следующему
@@ -140,7 +138,10 @@
     Cal.ns['30min']('ui', { theme: 'light', hideEventTypeDetails: false, layout: 'month_view', cssVarsPerTheme: { light: { 'cal-brand': '#8961E7' } } });
   }
 
+  // подпись «case studies» стоит по центру экрана, пока на экране секция работ, потом гаснет
+  const csBg = $('.xwork__bg'), work = $('#work');
   function onScroll() {
+    if (csBg && work) { const r = work.getBoundingClientRect(); csBg.classList.toggle('on', r.top < innerHeight * .55 && r.bottom > innerHeight * .45); }
     const nowVis = hero.getBoundingClientRect().bottom > 0;
     if (nowVis !== heroVisible) { heroVisible = nowVis; if (nowVis) { if (!paused) resume(); } else { const p = paused; pause(); paused = p; } }
     if ($('#team').getBoundingClientRect().top < innerHeight * 2) bootCal();

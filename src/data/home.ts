@@ -57,7 +57,7 @@ export const home = {
    "name": "Ambient Dreamie",
    "year": "2025",
    "kind": "Healthtech",
-   "scope": "Mini branding, 3D animation, web design and development",
+   "scope": "Web design / dev",
    "url": "https://www.helloambient.com/",
    "desc": "Brand, 3D and website for a sleep tech startup. They raised $550K, then $44K from 158 backers on Kickstarter."
   },
@@ -70,7 +70,7 @@ export const home = {
    "name": "Switch",
    "year": "2025",
    "kind": "Fintech",
-   "scope": "Web design and development",
+   "scope": "Web design / dev",
    "url": "https://www.joinswitch.co",
    "desc": "Website for a group finance app with 100K+ active users: shared accounts, MoneyPools and instant payments."
   },
@@ -83,7 +83,7 @@ export const home = {
    "name": "Javelin VP",
    "year": "2024",
    "kind": "Venture capital",
-   "scope": "Brand, web design and development",
+   "scope": "Web design / dev",
    "url": "https://www.javelinvp.com/",
    "desc": "Brand and website for a $125M seed and Series A fund. We moved them from WordPress to Webflow, and the homepage stays fast with video on it."
   },
@@ -96,7 +96,7 @@ export const home = {
    "name": "Trustyfy",
    "year": "2025",
    "kind": "Fintech",
-   "scope": "Web design and development",
+   "scope": "Web design / dev",
    "url": "https://www.trustyfy.com/",
    "desc": "Website for a payments startup with $6.8M in funding: crypto and fiat, wallets and cards in one app."
   },
@@ -109,7 +109,7 @@ export const home = {
    "name": "Epsilon Health",
    "year": "2025",
    "kind": "Medtech",
-   "scope": "Web design and development",
+   "scope": "Web design / dev",
    "url": "https://epsilonhealth.webflow.io/",
    "desc": "Website for a MedTech company that rebuilds radiology workflows to cut diagnostic delays and radiologist burnout."
   }
@@ -177,10 +177,6 @@ export const home = {
    "a": "Yes. We set it up so you change copy, pages and posts by asking AI in plain words, and we show your team how on a handover call. One of our clients runs his website this way and has not needed to hire anyone for it."
   },
   {
-   "q": "Can you help automate other things?",
-   "a": "Yes, when it sits close to your website or sales: leads into your CRM, follow-ups, reports, content. Tell us on a call what takes your team the most time, and we will tell you if AI can take it over."
-  },
-  {
    "q": "What happens if you go quiet for a week?",
    "a": "We do not. You get a private Slack channel with the people doing the work, weekly updates and a status message every Friday, good news or not."
   },
@@ -197,26 +193,25 @@ export const home = {
    "a": "Most of our clients build in AI, fintech and health. If you sell a complex product and need a website that explains it fast, we are likely a fit."
   },
   {
-   "q": "What is vibe coding and when do you use it?",
-   "a": "It means we write code together with AI. That is how the concept becomes a live preview in 7 days. We also use it for custom interactions and MVPs when Webflow or Framer cannot do the job out of the box."
-  },
-  {
    "q": "Who owns the files?",
    "a": "You do. Figma files, the Webflow or Framer project, code and assets: everything is yours once the project is paid."
   }
  ],
  "handover": [
   {
-   "t": "Built in Webflow, Framer or code",
-   "d": "We design and build the whole website with motion and 3D where it helps. Fast, responsive and ready for search from day one."
+   "k": "Design",
+   "t": "We design it in Figma",
+   "d": "Every page in Figma first. Key screens become a clickable prototype with vibe coding, so you see the real thing early."
   },
   {
-   "t": "Edit it yourself, or just ask AI",
-   "d": "Change copy, pages and posts in the CMS, or in plain words with AI. One of our clients runs his website this way and has not hired anyone for it."
+   "k": "Build",
+   "t": "We build it in Webflow, Framer or code",
+   "d": "Animations, CMS and the basics for search are part of the build. Fast and clean on every screen."
   },
   {
-   "t": "We show your team how",
-   "d": "1 call and short video guides: how to edit, publish and add a page. If more of your work can run on AI, we help set that up too."
+   "k": "Handover",
+   "t": "Your team runs it",
+   "d": "You edit it in the CMS or by asking AI. We show you how on a call and in short videos, and we stay in touch if you need help."
   }
  ],
  "services": [
