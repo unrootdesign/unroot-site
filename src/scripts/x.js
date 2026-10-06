@@ -45,11 +45,21 @@
 
   // табы «Animated» и «Before / after»; проект при переключении остаётся тот же
   const tabs = $$('.xc__mode button', hero);
+  // высота сцены своя у каждого режима: у видео ровно 16:9 плюс строка названий, у до и после выше; меняется плавно
+  const stageEl = $('.xhero__stage', hero);
+  function fit() {
+    if (!stageEl) return;
+    if (mode === 'anim') stageEl.style.height = Math.round(stageEl.clientWidth * 9 / 16 + 44) + 'px';
+    else stageEl.style.height = '';
+  }
   function setMode(m) {
     mode = m; hero.dataset.mode = m;
     tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
+    fit();
     show(cur);
   }
+  fit();
+  addEventListener('resize', fit);
   tabs.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
   names.forEach(b => b.addEventListener('click', () => show(+b.dataset.i)));
   // при наведении не останавливаемся: концепты идут всегда

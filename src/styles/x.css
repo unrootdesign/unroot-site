@@ -34,7 +34,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xhero__vis { position: relative; min-width: 0; padding-left: clamp(24px, 4vw, 64px); }
 /* сцена: одна высота в обоих режимах; картинки и видео всегда целиком, размер считается от ширины и высоты сцены.
    Снизу 44px под названия проектов, они стоят сразу под видео или под парой до и после */
-.xhero__stage { position: relative; height: clamp(420px, 40vw, 560px); container-type: size; --nm: 44px; }
+.xhero__stage { position: relative; height: clamp(420px, 40vw, 560px); container-type: size; --nm: 44px; transition: height .45s var(--ease); }
 .xc__stage { position: absolute; inset: 0; }
 .xhero[data-mode="ba"] .xc__stage--anim, .xhero[data-mode="anim"] .xc__stage--ba { display: none; }
 .xc__pair, .xc__vid { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; opacity: 0; visibility: hidden;
