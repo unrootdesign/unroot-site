@@ -15,15 +15,20 @@ const description = "We design and build premium, custom websites with 3D & moti
 
 const M = '/home/';
 const pad = (n: number) => String(n).padStart(2, '0');
-// короткие названия под концептами в герое
-const short = (n: string) => ({ 'Ambient Dreamie': 'Dreamie', 'Burd Home Health': 'Burd', 'Epsilon Health': 'Epsilon', 'Javelin VP': 'Javelin' } as Record<string, string>)[n] ?? n;
+// иконки карточек «после запуска»: правка словами, передача и обучение, автоматизация
+const ICO = (d: string) => `<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const ICONS = [
+  ICO('<path d="M5 7h22v14H14l-6 5v-5H5z"/><path d="M10 12h6M10 16h4"/><path d="M21.5 10.5l1 2.2 2.2 1-2.2 1-1 2.2-1-2.2-2.2-1 2.2-1z"/>'),
+  ICO('<rect x="4" y="7" width="24" height="16"/><path d="M14 12l5 3-5 3z"/><path d="M11 27h10"/>'),
+  ICO('<circle cx="7" cy="16" r="3"/><circle cx="25" cy="8" r="3"/><circle cx="25" cy="24" r="3"/><path d="M10 16h5l4-8h3M15 16l4 8h3"/>'),
+];
 const schema = [{
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: home.faq.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 }];
 ---
 <Base title={title} description={description} schema={schema} bodyClass="x">
-  <!-- 1. Герой: слева текст и кнопки, справа концепты (сначала анимированные, по клику до и после), под ними названия проектов -->
+  <!-- 1. Герой: слева текст и кнопки, справа концепты (сначала анимированные, переключатель показывает до и после) -->
   <section class="xs xhero" id="concept" data-mode="anim" aria-label="Concept">
     <div class="xw x3 xhero__in">
       <div class="xhero__txt">
@@ -37,13 +42,9 @@ const schema = [{
       </div>
 
       <div class="xhero__vis s2">
-        <!-- над концептом одна строка: проекты как табы, справа переключатель до и после -->
+        <!-- над концептом справа переключатель: анимированные концепты или до и после; сменяются сами -->
         <div class="xhero__bar">
-          <div class="xhero__names">
-            <ol class="xc__names xc__names--anim">{home.pairs.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
-            <ol class="xc__names xc__names--ba">{home.ba.map((p, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{short(p.name)}<i></i></button></li>)}</ol>
-          </div>
-          <button class="xsw" type="button" role="switch" aria-checked="false" id="xSw"><span class="xsw__t" aria-hidden="true"><i></i></span>Before / after</button>
+          <button class="xsw" type="button" role="switch" aria-checked="false" id="xSw">See before / after<span class="xsw__t" aria-hidden="true"><i></i></span></button>
         </div>
         <div class="xhero__stage">
           <div class="xc__stage xc__stage--anim">
@@ -67,8 +68,9 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 2. Работы: медленная бегущая лента слева направо, при наведении стоит -->
-  <section class="xs xwork" id="work" aria-label="Work">
+  <!-- 2. Работы: бегущая лента справа налево, при наведении стоит; на фоне крупная серая подпись -->
+  <section class="xs xwork" id="work" aria-label="Case studies">
+    <p class="xwork__bg" aria-hidden="true">Case studies</p>
     <div class="xmq" id="xRow">
       <div class="xmq__t">
         {[0, 1].map(copy => home.work.map(w => {
@@ -106,8 +108,8 @@ const schema = [{
               <footer>
                 <img src={`${M}av-${q.avatar}.jpg`} alt="" width="44" height="44" loading="lazy" />
                 <span><b>{q.name}</b>{q.role}</span>
+                {q.url && <a class="xq__tp" href={q.url} target="_blank" rel="noopener">Verified on Trustpilot ↗</a>}
               </footer>
-              {q.url && <a class="xq__tp" href={q.url} target="_blank" rel="noopener">Verified on Trustpilot ↗</a>}
             </blockquote>
           ))}
           <div class="xq__nav">
@@ -116,7 +118,6 @@ const schema = [{
           </div>
         </div>
         <div class="xr__logos">
-          <p class="xr__k">Teams we have worked with</p>
           <ul>{home.logos.map(l => <li><img src={`${M}logos/${l.slug}.png`} alt={l.name} style={`height:${l.h}px`} loading="lazy" /></li>)}</ul>
         </div>
       </div>
@@ -180,20 +181,19 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 6. После запуска: по прокрутке по линии бежит импульс, шаги открываются по очереди -->
+  <!-- 6. После запуска: 3 карточки с иконками -->
   <section class="xs" id="handover" aria-label="After launch">
-    <div class="xw x3 xho">
-      <div class="xho__l">
-        <h2 class="xh2">A website your team runs <span>without us</span></h2>
-        <!-- кольцо заполняется по прокрутке: 3 части, по одной на шаг -->
-        <div class="xho__ring" aria-hidden="true">
-          <svg viewBox="0 0 200 200">{[0, 1, 2].map(k => <><circle class="xho__seg" cx="100" cy="100" r="92" pathLength="300" style={`--k:${k}`} /><circle class="xho__fill" cx="100" cy="100" r="92" pathLength="300" style={`--k:${k}`} /></>)}</svg>
-          <span class="xho__now">01</span>
-        </div>
-      </div>
-      <ol class="xho__list s2" id="xHo">
-        <span class="xho__line" aria-hidden="true"><span></span></span>
-        {home.handover.map((h, i) => <li><span class="xho__n">{pad(i + 1)}</span><b>{h.t}</b><p>{h.d}</p></li>)}
+    <div class="xw">
+      <h2 class="xh2">A website your team runs <span>without us</span></h2>
+      <ol class="x3 xho">
+        {home.handover.map((h, i) => (
+          <li>
+            <span class="xho__ic" aria-hidden="true" set:html={ICONS[i]} />
+            <span class="xho__n">{pad(i + 1)}</span>
+            <b>{h.t}</b>
+            <p>{h.d}</p>
+          </li>
+        ))}
       </ol>
     </div>
   </section>

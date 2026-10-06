@@ -74,8 +74,7 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
         <button class="mm__t" type="button" aria-expanded="false">Contact <Fragment set:html={chev} /></button>
         <div class="mm__p"><div class="wrap mm__in mm__in--hi">
           <ul class="mm__l"><li><a href={CALL}>Book a call</a></li><li><a href="/careers">Careers</a></li></ul>
-          <ul class="mm__l">{SOCIAL.slice(0, 2).map(s => <li><a href={s.href} target="_blank" rel="noopener me">{s.label} ↗</a></li>)}</ul>
-          <ul class="mm__l">{SOCIAL.slice(2).map(s => <li><a href={s.href} target="_blank" rel="noopener me">{s.label} ↗</a></li>)}</ul>
+          <ul class="mm__l">{SOCIAL.map(s => <li><a href={s.href} target="_blank" rel="noopener me">{s.label} ↗</a></li>)}</ul>
         </div></div>
       </div>
     </nav>
@@ -150,14 +149,12 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
     visibility: hidden; opacity: 0; transform: translateY(-4px); transition: opacity .18s var(--ease), transform .18s var(--ease), visibility 0s linear .18s; }
   .mm:not(.open) .mm__p { pointer-events: none; }
   .mm.open .mm__p { visibility: visible; opacity: 1; transform: none; transition: opacity .18s var(--ease), transform .18s var(--ease); }
-  .mm__in { display: grid; gap: 40px; padding-block: 32px 36px; }
-  .mm__in--home { grid-template-columns: 1fr 1fr 1.2fr; }
-  .mm__in--svc { grid-template-columns: 1fr 1fr 1.2fr; }
-  .mm__in--hi { grid-template-columns: 1fr 1fr 1.2fr; align-items: start; }
-  .mm__in--work { grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  /* списки по ширине текста с одинаковым зазором, карточка прижата вправо; во всех панелях одинаково */
+  .mm__in { display: flex; align-items: flex-start; gap: 72px; padding-block: 32px 36px; }
+  .mm__in .mm__card { margin-left: auto; width: min(380px, 34%); }
+  .mm__in--work { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
   .mm__k { font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
-  .mm__l { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-  .mm__l--2 { grid-template-columns: 1fr 1fr; column-gap: 24px; }
+  .mm__l { list-style: none; margin: 0; padding: 0; display: grid; align-content: start; gap: 12px; }
   .mm__l a { font-size: 1.05rem; letter-spacing: -.015em; color: var(--ink); transition: color var(--t) var(--ease); }
   .mm__l a:hover { color: var(--violet); }
   .mm__card { display: flex; flex-direction: column; gap: 10px; padding: 22px; background: var(--pale); color: var(--ink); transition: background var(--t) var(--ease); }
@@ -193,7 +190,8 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
     .mm__t :global(.mm__chev) { width: 14px; height: 14px; }
     .mm__p { position: static; display: none; visibility: visible; opacity: 1; transform: none; border: 0; box-shadow: none; transition: none; }
     .mm.open .mm__p { display: block; }
-    .mm__in, .mm__in--home, .mm__in--svc, .mm__in--hi { grid-template-columns: 1fr; gap: 24px; padding: 4px 0 24px; }
+    .mm__in { flex-direction: column; gap: 24px; padding: 4px 0 24px; }
+    .mm__in .mm__card { margin-left: 0; width: 100%; }
     .mm__in--work { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
   }
 </style>
