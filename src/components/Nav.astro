@@ -134,7 +134,7 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
   .bar__crumb { font-size: .95rem; line-height: 1; color: var(--ink-3); letter-spacing: -.01em; transform: translateY(1px); white-space: nowrap; }
   .bar__nav { margin-left: auto; display: flex; align-items: center; height: 100%; }
   .mm { height: 100%; display: flex; align-items: center; }
-  .mm__t, .mm__a { display: inline-flex; align-items: center; gap: 5px; height: 36px; padding: 0 12px; border: 0; background: none; cursor: pointer;
+  .mm__t, .mm__a { display: inline-flex; align-items: center; gap: 5px; height: 36px; padding: 0 12px; border: 0; background: none; cursor: var(--cur-ptr);
     font: 500 .9rem/1 var(--f); letter-spacing: -.01em; color: var(--ink); transition: background var(--t) var(--ease), color var(--t) var(--ease); }
   .mm__t :global(.mm__chev) { width: 10px; height: 10px; color: var(--ink-3); transition: transform .2s var(--ease); }
   .mm__t:hover, .mm__a:hover, .mm.open .mm__t { color: var(--violet-hi); }
@@ -179,7 +179,7 @@ const chev = '<svg class="mm__chev" viewBox="0 0 10 10" aria-hidden="true"><path
     .bar__in { gap: 8px; }
     .bar__logo :global(.logo) { height: 15px; }
     .bar__cta { margin-left: auto; height: 34px; padding: 0 11px; }
-    .bar__burger { display: grid; place-content: center; gap: 6px; width: 40px; height: 40px; margin-right: -10px; background: none; border: 0; cursor: pointer; color: var(--ink); }
+    .bar__burger { display: grid; place-content: center; gap: 6px; width: 40px; height: 40px; margin-right: -10px; background: none; border: 0; cursor: var(--cur-ptr); color: var(--ink); }
     .bar__burger i { display: block; width: 18px; height: 1.5px; background: currentColor; transition: transform var(--t) var(--ease); }
     .bar.is-open .bar__burger i:first-child { transform: translateY(3.75px) rotate(45deg); }
     .bar.is-open .bar__burger i:last-child { transform: translateY(-3.75px) rotate(-45deg); }

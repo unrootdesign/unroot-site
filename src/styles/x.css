@@ -24,7 +24,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xtag { height: 26px; box-sizing: border-box; margin-bottom: 24px; }
 
 /* ── 1. герой: текст слева, справа табы, концепты и названия проектов ── */
-.xhero { min-height: calc(100dvh - var(--bar)); display: flex; align-items: center; padding-top: 32px; padding-bottom: 48px; }
+.xhero { padding-top: 72px; padding-bottom: 24px; }
 .xhero__in { width: 100%; align-items: start; }
 .xhero__h { margin-top: 0; font-size: clamp(2.6rem, 4.4vw, 4.2rem); font-weight: 500; letter-spacing: -.055em; line-height: .96; }
 .xhero__h span { color: var(--violet); }
@@ -34,7 +34,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xhero__vis { position: relative; min-width: 0; padding-left: clamp(24px, 4vw, 64px); }
 /* сцена: одна высота в обоих режимах; картинки и видео всегда целиком, размер считается от ширины и высоты сцены.
    Снизу 44px под названия проектов, они стоят сразу под видео или под парой до и после */
-.xhero__stage { position: relative; height: clamp(400px, calc(100dvh - var(--bar) - 190px), 720px); container-type: size; --nm: 44px; }
+.xhero__stage { position: relative; height: clamp(420px, 40vw, 560px); container-type: size; --nm: 44px; }
 .xc__stage { position: absolute; inset: 0; }
 .xhero[data-mode="ba"] .xc__stage--anim, .xhero[data-mode="anim"] .xc__stage--ba { display: none; }
 .xc__pair, .xc__vid { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; opacity: 0; visibility: hidden;
@@ -55,13 +55,11 @@ html:has(body.x) { scroll-behavior: smooth; }
 
 /* табы над концептом справа, прижаты к нему: текст и полоска у активного */
 .xc__mode { position: absolute; right: 0; bottom: calc(100% + 10px); display: flex; gap: 22px; }
-.xc__mode button { position: relative; padding: 0 0 6px; border: 0; background: none; cursor: pointer; white-space: nowrap;
+.xc__mode button { position: relative; padding: 0 0 6px; border: 0; background: none; cursor: var(--cur-ptr); white-space: nowrap;
   font-size: .95rem; font-weight: 500; letter-spacing: -.01em; color: var(--ink-3); transition: color .2s var(--ease); }
 .xc__mode button::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--violet); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .xc__mode button:hover, .xc__mode button[aria-selected="true"] { color: var(--ink); }
 .xc__mode button[aria-selected="true"]::after { transform: none; }
-/* левый текст начинается вровень с верхом концепта, табы стоят над ним */
-.xhero { padding-top: 72px; }
 
 /* названия проектов: просто серый текст, текущий темнее, по клику открывается нужный */
 .xhero__names { position: absolute; left: 0; right: 0; display: flex; justify-content: center; }
@@ -69,7 +67,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xhero[data-mode="ba"] .xhero__names { top: calc(30px + min((100cqw - 70px) / 2 * 1033 / 620, 100cqh - 30px - var(--nm)) + 16px); }
 .xc__names { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; overflow-x: auto; scrollbar-width: none; }
 .xc__names::-webkit-scrollbar { display: none; }
-.xc__names button { padding: 0; border: 0; background: none; cursor: pointer; white-space: nowrap;
+.xc__names button { padding: 0; border: 0; background: none; cursor: var(--cur-ptr); white-space: nowrap;
   font-size: 1rem; letter-spacing: -.015em; color: color-mix(in srgb, var(--ink-3) 75%, var(--xbg)); transition: color .2s var(--ease); }
 .xc__names button:hover, .xc__names button.on { color: var(--ink-2); }
 
@@ -97,7 +95,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xg__main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; pointer-events: none; }
 .xg__main img.on { opacity: 1; }
 .xg__thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
-.xg__thumbs button { padding: 0; border: 0; background: var(--white); cursor: pointer; box-shadow: 0 1px 0 var(--line); }
+.xg__thumbs button { padding: 0; border: 0; background: var(--white); cursor: var(--cur-ptr); box-shadow: 0 1px 0 var(--line); }
 .xg__thumbs button:hover, .xg__thumbs button.on { box-shadow: 0 0 0 2px var(--violet); }
 .xg__thumbs img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; pointer-events: none; }
 .xg__foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 16px; }
@@ -130,7 +128,7 @@ html:has(body.x) { scroll-behavior: smooth; }
   font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; transition: background var(--t) var(--ease), color var(--t) var(--ease); }
 .xq__tp:hover { background: var(--violet); color: #fff; }
 .xq__nav { position: absolute; right: clamp(28px, 3.4vw, 48px); bottom: clamp(28px, 3.4vw, 48px); display: flex; gap: 6px; }
-.xq__arr { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: var(--xbg); font-size: 1.05rem; color: var(--ink); cursor: pointer;
+.xq__arr { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: var(--xbg); font-size: 1.05rem; color: var(--ink); cursor: var(--cur-ptr);
   transition: background .2s var(--ease), color .2s var(--ease); }
 .xq__arr:hover { background: var(--violet); color: #fff; }
 
@@ -160,7 +158,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__l .xh2 { margin-bottom: 28px; }
 .xsv__list { flex: 1; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; }
 .xsv__list li { flex: 1; display: flex; border-bottom: 1px solid var(--line); }
-.xsv__list button { display: flex; align-items: center; gap: 14px; width: 100%; padding: 15px 0; border: 0; background: none; cursor: pointer; text-align: left;
+.xsv__list button { display: flex; align-items: center; gap: 14px; width: 100%; padding: 15px 0; border: 0; background: none; cursor: var(--cur-ptr); text-align: left;
   font-size: clamp(1.15rem, 1.6vw, 1.4rem); font-weight: 500; letter-spacing: -.03em; color: color-mix(in srgb, var(--ink-3) 70%, var(--xbg)); transition: color .2s var(--ease); }
 .xsv__list button span { width: 22px; font-size: .78rem; font-weight: 400; letter-spacing: 0; color: var(--ink-3); }
 .xsv__list button:hover { color: var(--ink-2); }
@@ -176,34 +174,34 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__m { position: relative; }
 .xsv__m figcaption { position: absolute; top: 100%; margin-top: 10px; font-size: .88rem; color: var(--ink-3); }
 
-/* ── 6. процесс: тёмная полоса со звёздами как в футере, линия через 4 шага, по ней бежит свет ── */
+/* ── 6. процесс: светлый, линия через 4 шага, по ней бежит свет, значки вспыхивают по очереди ── */
 .xho__lede { margin-top: 18px; max-width: 60ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
-.xpr { --dur: 8s; --px: clamp(24px, 3vw, 44px); --py: clamp(40px, 5vw, 64px); --g: clamp(20px, 2.4vw, 36px); position: relative; isolation: isolate; overflow: hidden; margin-top: clamp(32px, 4vw, 48px); padding: var(--py) var(--px);
-  background: var(--night); color: #fff; box-shadow: 0 20px 44px -30px color-mix(in srgb, var(--night) 45%, transparent); }
-.xpr > *:not(.stars):not(.xpr__line) { position: relative; z-index: 1; }
+.xpr { --dur: 8s; --px: 0px; --py: 0px; --g: clamp(20px, 2.4vw, 36px); position: relative; margin-top: clamp(40px, 5vw, 64px); padding: var(--py) var(--px); }
+.xpr > *:not(.xpr__line) { position: relative; z-index: 1; }
 .xpr > .xpr__line { z-index: 0; }
 /* линия от центра первого значка до центра последнего */
 .xpr__line { position: absolute; left: calc(var(--px) + 28px); right: calc(var(--px) + (100% - 2 * var(--px) - 3 * var(--g)) / 4 - 28px);
-  top: calc(var(--py) + 28px); height: 1px; background: color-mix(in srgb, #fff 18%, transparent); }
+  top: calc(var(--py) + 28px); height: 1px; background: var(--line); }
 .xpr__line i { position: absolute; top: -3px; left: 0; width: 120px; height: 7px; margin-left: -120px;
-  background: radial-gradient(closest-side, #fff, color-mix(in srgb, var(--violet-lt) 70%, transparent) 40%, transparent);
-  filter: blur(.4px); animation: xpr-run var(--dur) linear infinite; }
+  background: radial-gradient(closest-side, var(--violet), color-mix(in srgb, var(--violet) 45%, transparent) 45%, transparent);
+  animation: xpr-run var(--dur) linear infinite; }
 @keyframes xpr-run { from { left: 0; } to { left: calc(100% + 120px); } }
 .xpr__steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--g); }
-.xpr__node { position: relative; width: 56px; height: 56px; display: grid; place-items: center; background: var(--night); color: var(--violet-lt);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 22%, transparent); animation: xpr-glow var(--dur) linear infinite; animation-delay: calc(.2s + var(--k) * 2.33s); }
+.xpr__node { position: relative; width: 56px; height: 56px; display: grid; place-items: center; background: var(--white); color: var(--violet);
+  box-shadow: inset 0 0 0 1px var(--line); animation: xpr-glow var(--dur) linear infinite; animation-delay: calc(.2s + var(--k) * 2.33s); }
 .xpr__node svg { width: 24px; height: 24px; }
 /* значок загорается, когда до него доходит свет */
 @keyframes xpr-glow {
-  0%, 14%, 100% { color: var(--violet-lt); background: var(--night); box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 22%, transparent); }
-  4% { color: #fff; background: var(--violet); box-shadow: 0 0 0 6px color-mix(in srgb, var(--violet) 25%, transparent), 0 0 40px 6px color-mix(in srgb, var(--violet) 55%, transparent); }
+  0%, 14%, 100% { color: var(--violet); background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
+  4% { color: #fff; background: var(--violet); box-shadow: 0 0 0 6px color-mix(in srgb, var(--violet) 16%, transparent), 0 10px 30px -6px color-mix(in srgb, var(--violet) 55%, transparent); }
 }
-.xpr__n { display: block; margin-top: 26px; font-size: .85rem; color: var(--violet-lt); font-variant-numeric: tabular-nums; }
+.xpr__n { display: block; margin-top: 26px; font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }
 .xpr b { display: block; margin-top: 8px; font-size: clamp(1.25rem, 1.8vw, 1.5rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
-.xpr p { margin-top: 10px; font-size: .93rem; line-height: 1.55; color: color-mix(in srgb, #fff 70%, transparent); }
+.xpr p { margin-top: 10px; font-size: .95rem; line-height: 1.55; color: var(--ink-2); }
 .xpr__tools { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-.xpr__tools li { padding: 6px 9px; font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase;
-  color: #fff; background: color-mix(in srgb, #fff 10%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, #fff 14%, transparent); }
+.xpr__tools li { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase;
+  color: var(--ink); background: var(--white); box-shadow: inset 0 0 0 1px var(--line); }
+.xpr__tools svg { width: 13px; height: 13px; flex: none; }
 
 /* ── 7. созвон: текст на 2 колонки, цифры прижаты вправо, календарь на всю ширину ── */
 .xt { align-items: end; }

@@ -1,7 +1,7 @@
 /* Плавающий чат «Ask us anything»: кнопка справа внизу и окно над ней. Общий для главной. */
   /* кнопка той же высоты, что «Get a concept» в шапке */
   .chat-fab{position:fixed;right:20px;bottom:20px;z-index:55;display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 14px;background:var(--violet);color:#fff;border:0;
-    font:500 var(--caps-fs)/1 var(--f);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
+    font:500 var(--caps-fs)/1 var(--f);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor: var(--cur-ptr);
     box-shadow:0 14px 34px -12px rgba(29,19,54,.55);transition:background var(--t) var(--ease),opacity .2s var(--ease),transform .2s var(--ease)}
   .chat-fab:hover{background:var(--violet-hi)}
   .chat-fab svg{width:14px;height:14px}
@@ -14,7 +14,7 @@
   body.chat-open .chat{opacity:1;visibility:visible;transform:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
   .chat__head{position:relative;flex:none;display:flex;align-items:center;justify-content:space-between;padding:14px 10px 14px 20px;border-bottom:1px solid var(--line)}
   .chat__h{font-size:1.05rem;font-weight:500;letter-spacing:-.02em;line-height:1.2}
-  .chat__x{order:2;width:36px;height:36px;border:0;background:none;color:var(--ink);cursor:pointer;display:grid;place-items:center}
+  .chat__x{order:2;width:36px;height:36px;border:0;background:none;color:var(--ink);cursor: var(--cur-ptr);display:grid;place-items:center}
   .chat__x svg{width:16px;height:16px}
   .chat__log{flex:1 1 0;min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:14px;padding:18px 20px 6px}
   .chat__log::-webkit-scrollbar{display:none}
@@ -35,7 +35,7 @@
   .chat__chips:empty{display:none}
   /* варианты ответа: как наши метки, только без точки */
   .chip,.sug{display:inline-flex;align-items:center;text-align:left;border:0;padding:8px 10px;background:var(--pale);color:var(--violet-d);
-    font:500 var(--caps-fs)/1.25 var(--mono);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
+    font:500 var(--caps-fs)/1.25 var(--mono);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor: var(--cur-ptr);
     transition:color var(--t) var(--ease),background var(--t) var(--ease)}
   .chip:hover,.sug:hover{background:var(--violet);color:#fff}
   /* поле без рамки, на светлой подложке; варианты всплывают над ним по клику в поле */
@@ -44,14 +44,14 @@
   .chat__in:focus-within{background:color-mix(in srgb,var(--violet) 8%,var(--white))}
   .chat__in input{flex:1;min-width:0;border:0;background:none;padding:14px 14px;font:inherit;font-size:1rem;color:var(--ink);outline:none}
   .chat__in input::placeholder{color:var(--ink-3)}
-  .chat__in button{flex:none;width:48px;border:0;background:var(--violet);color:#fff;cursor:pointer;display:grid;place-items:center;transition:background var(--t) var(--ease)}
+  .chat__in button{flex:none;width:48px;border:0;background:var(--violet);color:#fff;cursor: var(--cur-ptr);display:grid;place-items:center;transition:background var(--t) var(--ease)}
   .chat__in button:hover{background:var(--violet-hi)}
   .chat__in svg{width:16px;height:16px}
   .chat__sug{display:none;position:absolute;left:12px;right:12px;bottom:calc(100% - 4px);z-index:5;background:var(--white);border:1px solid var(--line);
     box-shadow:0 20px 40px -20px rgba(29,19,54,.35);padding:12px}
   .chat__box.open .chat__sug{display:block}
   .chat__sug ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-  .chat__reset{flex:none;align-self:flex-start;display:none;margin:-4px 0 10px 20px;background:none;border:0;padding:4px 0;cursor:pointer;color:var(--ink-3);transition:color var(--t) var(--ease)}
+  .chat__reset{flex:none;align-self:flex-start;display:none;margin:-4px 0 10px 20px;background:none;border:0;padding:4px 0;cursor: var(--cur-ptr);color:var(--ink-3);transition:color var(--t) var(--ease)}
   .chat__reset:hover{color:var(--violet)}
   .chat.is-chat .chat__reset{display:block}
   @media(max-width:620px){

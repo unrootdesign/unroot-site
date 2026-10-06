@@ -45,7 +45,7 @@ p { text-wrap: pretty; }
 .ctas .btn { flex: 1 1 auto; }
 .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
   font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; white-space: nowrap;
-  padding: 17px 20px; border: 0; border-radius: 0; cursor: pointer; overflow: hidden; isolation: isolate;
+  padding: 17px 20px; border: 0; border-radius: 0; cursor: var(--cur-ptr); overflow: hidden; isolation: isolate;
   -webkit-tap-highlight-color: transparent;
   transition: background var(--t) var(--ease), color var(--t) var(--ease), box-shadow var(--t) var(--ease); }
 .btn > * { position: relative; z-index: 1; }
@@ -107,7 +107,7 @@ p { text-wrap: pretty; }
 .fq:first-child { border-top: 1px solid var(--line); }
 .fq::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--violet); transform: scaleY(0); transition: transform .35s var(--ease); }
 .fq[open]::before { transform: scaleY(1); }
-.fq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 24px;
+.fq summary { list-style: none; cursor: var(--cur-ptr); display: flex; justify-content: space-between; align-items: center; gap: 24px;
   padding: 18px 0; font-size: 1.08rem; font-weight: 500; letter-spacing: -.02em; transition: color var(--t) var(--ease), padding var(--t) var(--ease); }
 .fq summary::-webkit-details-marker { display: none; }
 .fq summary::after { content: ""; flex: none; width: 12px; height: 12px;
@@ -157,3 +157,10 @@ p { text-wrap: pretty; }
 /* ── курсор ─────────────────────────────── */
 .comet { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99; }
 @media (pointer: coarse) { .comet { display: none; } }
+
+/* курсор: волшебная палочка, направлена как обычный курсор, кончик со звездой и есть точка клика.
+   Цвета внутри картинки заданы числами, потому что переменные в data URI не работают (--violet, --violet-hi, --ink) */
+:root { --cur: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M10.5 12.5L26 28' stroke='white' stroke-width='5.5' stroke-linecap='round'/><path d='M10.5 12.5L26 28' stroke='%2316141c' stroke-width='3' stroke-linecap='round'/><path d='M22.6 24.6l2.2-2.2' stroke='%238961E7' stroke-width='3'/><path d='M7 1.2l1.6 4.2 4.2 1.6-4.2 1.6L7 12.8 5.4 8.6 1.2 7l4.2-1.6z' fill='%238961E7' stroke='white' stroke-width='1.2' stroke-linejoin='round'/></svg>") 7 7, auto; --cur-ptr: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='7' cy='7' r='6' fill='%238961E7' fill-opacity='.22'/><path d='M10.5 12.5L26 28' stroke='white' stroke-width='5.5' stroke-linecap='round'/><path d='M10.5 12.5L26 28' stroke='%2316141c' stroke-width='3' stroke-linecap='round'/><path d='M22.6 24.6l2.2-2.2' stroke='%238961E7' stroke-width='3'/><path d='M7 1.2l1.6 4.2 4.2 1.6-4.2 1.6L7 12.8 5.4 8.6 1.2 7l4.2-1.6z' fill='%236538D6' stroke='white' stroke-width='1.2' stroke-linejoin='round'/></svg>") 7 7, pointer; }
+html { cursor: var(--cur); }
+a, button, summary, label, [role="tab"], [role="button"], select, .btn { cursor: var(--cur-ptr); }
+input, textarea { cursor: text; }

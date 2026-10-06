@@ -95,7 +95,7 @@ const label = { framer: 'Framer', webflow: 'Webflow' };
   .tp__h1 { max-width: 20ch; }
   .tp__note { margin-top: 18px; color: var(--ink-3); }
   .tabs { display: flex; gap: 28px; border-bottom: 1px solid var(--line); }
-  .tabs button { font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; border: 0; background: none; color: var(--ink-3); padding: 0 0 15px; cursor: pointer; position: relative; transition: color var(--t) var(--ease); }
+  .tabs button { font: 500 var(--caps-fs)/1 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; border: 0; background: none; color: var(--ink-3); padding: 0 0 15px; cursor: var(--cur-ptr); position: relative; transition: color var(--t) var(--ease); }
   .tabs button::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--violet); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
   .tabs button:hover, .tabs button[aria-selected="true"] { color: var(--ink); }
   .tabs button[aria-selected="true"]::after { transform: scaleX(1); }

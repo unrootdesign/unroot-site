@@ -40,7 +40,7 @@
   /* ── концепт ─────────────────────────────── */
   .tabs{display:flex;gap:28px;margin-top:clamp(36px,4vw,52px);border-bottom:1px solid var(--line)}
   .tabs button{font:500 var(--caps-fs)/1 var(--mono);letter-spacing:var(--caps-ls);text-transform:uppercase;border:0;
-    background:none;color:var(--ink-3);padding:0 0 15px;cursor:pointer;position:relative;transition:color var(--t) var(--ease)}
+    background:none;color:var(--ink-3);padding:0 0 15px;cursor: var(--cur-ptr);position:relative;transition:color var(--t) var(--ease)}
   .tabs button::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
     background:var(--violet);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
   .tabs button:hover,.tabs button[aria-selected="true"]{color:var(--ink)}
@@ -117,7 +117,7 @@
   .q__tp .ars{width:8px;height:8px}
   .q__tp:hover{color:var(--ink)}
   .sl__nav{display:flex;align-items:center;gap:8px;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
-  .arrow{width:46px;height:46px;border:0;border-radius:0;background:transparent;color:var(--ink);cursor:pointer;
+  .arrow{width:46px;height:46px;border:0;border-radius:0;background:transparent;color:var(--ink);cursor: var(--cur-ptr);
     display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line-b);
     transition:background var(--t) var(--ease),color var(--t) var(--ease),box-shadow var(--t) var(--ease)}
   .arrow svg{width:18px;height:18px}
@@ -169,7 +169,7 @@
   @media(max-width:1100px){.svx{grid-template-columns:1fr}.svm{order:-1}}
   .svl{list-style:none;margin:0;padding:0;display:grid}
   /* линии между пунктами как в вопросах и ответах */
-  .sv{display:flex;align-items:baseline;gap:16px;padding:18px 0;cursor:pointer;border-bottom:1px solid var(--line);
+  .sv{display:flex;align-items:baseline;gap:16px;padding:18px 0;cursor: var(--cur-ptr);border-bottom:1px solid var(--line);
     position:relative;transition:color .3s var(--ease),padding var(--t) var(--ease)}
   .sv:first-child{border-top:1px solid var(--line)}
   .sv::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--violet);
@@ -255,7 +255,7 @@
 
   /* ── чат: плавающая кнопка «Ask us anything» справа внизу и окно над ней ── */
   .chat-fab{position:fixed;right:20px;bottom:20px;z-index:55;display:inline-flex;align-items:center;gap:10px;background:var(--violet);color:#fff;border:0;border-radius:3px;
-    padding:15px 18px;font:500 var(--caps-fs)/1 var(--f);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
+    padding:15px 18px;font:500 var(--caps-fs)/1 var(--f);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor: var(--cur-ptr);
     box-shadow:0 14px 34px -12px rgba(29,19,54,.55);transition:background var(--t) var(--ease),opacity .2s var(--ease),transform .2s var(--ease)}
   .chat-fab:hover{background:var(--violet-hi)}
   .chat-fab svg{width:16px;height:16px}
@@ -267,7 +267,7 @@
   body.chat-open .chat{opacity:1;visibility:visible;transform:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
   .chat__head{position:relative;flex:none;padding-right:36px}
   .chat__h{font-size:1.7rem;font-weight:500;letter-spacing:-.04em;line-height:1.05}
-  .chat__x{position:absolute;top:-18px;right:-18px;width:40px;height:40px;border:0;background:none;color:var(--ink);cursor:pointer;display:grid;place-items:center}
+  .chat__x{position:absolute;top:-18px;right:-18px;width:40px;height:40px;border:0;background:none;color:var(--ink);cursor: var(--cur-ptr);display:grid;place-items:center}
   .chat__x svg{width:18px;height:18px}
   .chat__log{flex:1 1 0;min-height:0;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:14px;padding-top:18px}
   .chat__log::-webkit-scrollbar{display:none}
@@ -288,7 +288,7 @@
   .chat__chips:empty{display:none}
   /* варианты ответа: как наши метки, только без точки */
   .chip,.sug{display:inline-flex;align-items:center;text-align:left;border:0;border-radius:3px;padding:8px 10px;background:var(--pale);color:var(--violet-d);
-    font:500 var(--caps-fs)/1.25 var(--mono);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor:pointer;
+    font:500 var(--caps-fs)/1.25 var(--mono);letter-spacing:var(--caps-ls);text-transform:uppercase;cursor: var(--cur-ptr);
     transition:color var(--t) var(--ease),background var(--t) var(--ease)}
   .chip:hover,.sug:hover{background:var(--violet);color:#fff}
   .chat__box{position:relative;flex:none;margin-top:14px}
@@ -296,7 +296,7 @@
   .chat__in:focus-within{border-color:var(--violet);box-shadow:0 0 0 3px var(--pale)}
   .chat__in input{flex:1;min-width:0;border:0;background:none;padding:13px 14px;font:inherit;font-size:1rem;color:var(--ink);outline:none}
   .chat__in input::placeholder{color:var(--ink-3)}
-  .chat__in button{flex:none;width:46px;border:0;background:var(--violet);color:#fff;cursor:pointer;display:grid;place-items:center;transition:background var(--t) var(--ease)}
+  .chat__in button{flex:none;width:46px;border:0;background:var(--violet);color:#fff;cursor: var(--cur-ptr);display:grid;place-items:center;transition:background var(--t) var(--ease)}
   .chat__in button:hover{background:var(--violet-hi)}
   .chat__in svg{width:16px;height:16px}
   /* варианты: под полем, в одну колонку */
@@ -309,7 +309,7 @@
   .chat.is-chat .chat__sug{display:none;position:absolute;left:0;right:0;bottom:calc(100% + 8px);margin:0;z-index:5;background:var(--white);border:1px solid var(--line);
     box-shadow:0 20px 40px -20px rgba(29,19,54,.35);padding:12px}
   .chat.is-chat .chat__box.open .chat__sug{display:block}
-  .chat__reset{flex:none;align-self:flex-start;display:none;margin-top:10px;background:none;border:0;padding:4px 0;cursor:pointer;color:var(--ink-3);transition:color var(--t) var(--ease)}
+  .chat__reset{flex:none;align-self:flex-start;display:none;margin-top:10px;background:none;border:0;padding:4px 0;cursor: var(--cur-ptr);color:var(--ink-3);transition:color var(--t) var(--ease)}
   .chat__reset:hover{color:var(--violet)}
   .chat.is-chat .chat__reset{display:block}
   @media(max-width:620px){
