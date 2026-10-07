@@ -2,8 +2,8 @@
    Перенесено из превью главной (версия D). */
 (() => {
   const RM = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  /* курсор: плотная цепочка светящихся точек бежит за мышью,
-     сначала держит линию, потом распадается и гаснет, как звёзды в футере. На тёмных блоках звёзды светлые, на светлом фоне фиолетовые */
+  /* курсор: за мышью тянется пушистый след из светящихся точек и мягких облачков,
+     точки ложатся с разбросом, почти сразу разлетаются, всплывают и гаснут. На тёмных блоках звёзды светлые, на светлом фоне фиолетовые */
   (()=>{
     if(RM || matchMedia('(pointer:coarse)').matches) return;
     const cv=document.createElement('canvas'); cv.className='comet'; cv.setAttribute('aria-hidden','true');
@@ -23,28 +23,38 @@
         c.moveTo(32,2); c.quadraticCurveTo(34,30,62,32); c.quadraticCurveTo(34,34,32,62); c.quadraticCurveTo(30,34,2,32); c.quadraticCurveTo(30,30,32,2); c.fill(); }
       return s;
     };
-    const SP={
-      light:[sprite('rgba(137,97,231,1)','rgba(137,97,231,.28)'),sprite('rgba(106,67,209,1)','rgba(137,97,231,.22)'),sprite('rgba(137,97,231,1)','rgba(185,162,245,.3)',true)],
-      dark:[sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)'),sprite('rgba(210,194,252,1)','rgba(185,162,245,.3)'),sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)',true)]
+    // пушок: большое мягкое облачко без чёткой серединки, из таких и набирается дымка вокруг следа
+    const fluff=(core,mid)=>{
+      const s=document.createElement('canvas'); s.width=s.height=64; const c=s.getContext('2d');
+      const g=c.createRadialGradient(32,32,0,32,32,32);
+      g.addColorStop(0,core); g.addColorStop(.3,mid); g.addColorStop(.65,mid.replace(/[\d.]+\)$/,'0.03)')); g.addColorStop(1,'rgba(137,97,231,0)');
+      c.fillStyle=g; c.fillRect(0,0,64,64); return s;
     };
-    const MAX=1100, P=[];
+    const SP={
+      light:[sprite('rgba(137,97,231,1)','rgba(137,97,231,.28)'),sprite('rgba(106,67,209,1)','rgba(137,97,231,.22)'),sprite('rgba(137,97,231,1)','rgba(185,162,245,.3)',true),fluff('rgba(137,97,231,.4)','rgba(137,97,231,.14)')],
+      dark:[sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)'),sprite('rgba(210,194,252,1)','rgba(185,162,245,.3)'),sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)',true),fluff('rgba(230,222,255,.6)','rgba(185,162,245,.25)')]
+    };
+    const MAX=1400, P=[];
     let dark=false, running=false, lastCheck=0, H4=[], last=0;
     const isDark=(x,y)=>{ const el=document.elementFromPoint(x,y); return !!(el && el.closest('.ft,.ob,.pk,.stage--night')); };
     // Catmull-Rom: путь мыши сглаживается кривой через точки, поэтому быстрый круг выходит кругом, а не многоугольником
     const cr=(a,b,c,d,t)=>{ const t2=t*t,t3=t2*t; return .5*((2*b)+(-a+c)*t+(2*a-5*b+4*c-d)*t2+(-a+3*b-3*c+d)*t3); };
+    // след не чёткой линией, а пушком: точки ложатся вокруг пути с разбросом, почти сразу разлетаются,
+    // всплывают вверх и покачиваются. Среди них мягкие облачка без серединки и редкие искры
     const put=(x,y,sp,now)=>{
       if(P.length>=MAX) P.shift();
-      const a=Math.random()*6.2832, r=Math.pow(Math.random(),1.6)*sp, v=R(.16,.7);
+      const a=Math.random()*6.2832, r=Math.pow(Math.random(),.85)*sp, v=R(.25,1.1), q=Math.random();
+      const k=q<.45?3:(q<.94?(q<.7?0:1):2);
       P.push({ x:x+Math.cos(a)*r, y:y+Math.sin(a)*r,
-        vx:Math.cos(a)*v, vy:Math.sin(a)*v+R(0,.06), hold:R(110,300),
-        s:R(2.6,4.8), k:Math.random()<.5?0:1, set:dark?'dark':'light',
-        b:now, life:R(800,1500), f:R(.008,.02), ph:Math.random()*6.28 });
+        vx:Math.cos(a)*v, vy:Math.sin(a)*v-R(.05,.25), hold:R(30,120),
+        s:k===3?R(4,8):(k===2?R(4,6):R(2,3.8)), o:k===3?R(.35,.6):1, k, set:dark?'dark':'light',
+        b:now, life:R(900,1800), f:R(.008,.02), ph:Math.random()*6.28, sw:R(.002,.005) });
     };
     // точки ставятся вдоль сглаженного отрезка между двумя предыдущими замерами
     const seg=(p0,p1,p2,p3,now)=>{
       const dist=Math.hypot(p2.x-p1.x,p2.y-p1.y); if(dist<1) return;
-      const n=Math.min(48,Math.max(1,Math.round(dist/2.6)));
-      const sp=Math.min(4,.9+dist*.035);
+      const n=Math.min(40,Math.max(1,Math.round(dist/3.2)));
+      const sp=Math.min(14,3+dist*.12);
       for(let i=0;i<n;i++){ const t=(i+Math.random())/n; put(cr(p0.x,p1.x,p2.x,p3.x,t),cr(p0.y,p1.y,p2.y,p3.y,t),sp,now); }
     };
     const add=(x,y,now)=>{
@@ -70,11 +80,12 @@
       for(let i=P.length-1;i>=0;i--){
         const p=P[i], age=(now-p.b)/p.life;
         if(age>=1){ P.splice(i,1); continue; }
-        if(now-p.b>p.hold){ p.x+=p.vx*k; p.y+=p.vy*k; p.vx*=damp; p.vy*=damp; }   // сначала держат линию, потом разлетаются
+        if(now-p.b>p.hold){ p.x+=(p.vx+Math.sin(now*p.sw+p.ph)*.18)*k; p.y+=p.vy*k; p.vx*=damp; p.vy=p.vy*damp-.004*k; }   // почти сразу разлетаются, всплывают и покачиваются
         const fin=Math.min(1,age*14), fout=1-age*age;       // быстро вспыхивает, плавно гаснет
         const tw=.62+.38*Math.sin(now*p.f+p.ph);            // мерцание
-        ctx.globalAlpha=fin*fout*tw;
-        ctx.drawImage(SP[p.set][p.k],p.x-p.s,p.y-p.s,p.s*2,p.s*2);
+        const gs=p.s*(1+age*.6);                              // облачко чуть расплывается, пока гаснет
+        ctx.globalAlpha=fin*fout*tw*p.o;
+        ctx.drawImage(SP[p.set][p.k],p.x-gs,p.y-gs,gs*2,gs*2);
       }
       ctx.globalAlpha=1;
       if(P.length) requestAnimationFrame(tick); else { running=false; ctx.clearRect(0,0,W,H); }
