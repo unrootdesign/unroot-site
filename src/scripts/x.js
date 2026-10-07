@@ -143,100 +143,140 @@
     imgs.forEach((im, k) => im.classList.toggle('on', k === (c + 1) % imgs.length));
   }, 1800);
 
-  /* ── процесс: над шагами полоса, анимация по кругу. Кругов по умолчанию нет: частицы слетаются слева и собирают
-     круг над первым шагом, потом летят вправо и собирают круг побольше над вторым, потом самый большой над третьим.
-     Из третьего частицы уходят дальше вправо лучами. Потом всё гаснет и начинается заново.
+  /* ── процесс: над шагами тонкая линия из точек, по ней всё время бегут импульсы слева направо.
+     По кругу: звёздочки слетаются и собирают маленькую сферу над первым шагом, их тянет вправо в сферу побольше
+     над вторым, потом в самую большую над третьим, из неё лучи уходят дальше. Потом всё гаснет и начинается заново.
+     Точки такие же, как у курсора и звёзд в футере: мягкое свечение и изредка четырёхлучевые искры.
+     Сферы из случайных точек на поверхности шара, шар медленно вращается: ближние точки ярче и крупнее.
      Рисуем только пока полоса на экране. ── */
   const flow = $('.xpr__flow');
   if (flow) {
     const c = flow.getContext('2d');
-    const VIO = getComputedStyle(document.documentElement).getPropertyValue('--violet').trim() || '#8961E7';
-    const n = parseInt(VIO.slice(1), 16), vr = n >> 16 & 255, vg = n >> 8 & 255, vb = n & 255;
-    const V = a => `rgba(${vr},${vg},${vb},${a})`;
+    const css = getComputedStyle(document.documentElement);
+    const rgb = (v, d) => { const n = parseInt((css.getPropertyValue(v).trim() || d).slice(1), 16); return `${n >> 16 & 255},${n >> 8 & 255},${n & 255}`; };
+    const VI = rgb('--violet', '#8961E7'), VD = rgb('--violet-d', '#6A43D1'), VL = rgb('--violet-lt', '#B9A2F5');
+    // спрайты как у курсора: мягкая точка двух оттенков и искра
+    const sprite = (core, glow, spark) => {
+      const s = document.createElement('canvas'); s.width = s.height = 64; const g2 = s.getContext('2d');
+      const g = g2.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, core); g.addColorStop(.16, core); g.addColorStop(.42, glow); g.addColorStop(1, 'rgba(0,0,0,0)');
+      g2.fillStyle = g; g2.fillRect(0, 0, 64, 64);
+      if (spark) { g2.fillStyle = core; g2.beginPath();
+        g2.moveTo(32, 2); g2.quadraticCurveTo(34, 30, 62, 32); g2.quadraticCurveTo(34, 34, 32, 62); g2.quadraticCurveTo(30, 34, 2, 32); g2.quadraticCurveTo(30, 30, 32, 2); g2.fill(); }
+      return s;
+    };
+    const SP = [sprite(`rgba(${VI},1)`, `rgba(${VI},.28)`), sprite(`rgba(${VD},1)`, `rgba(${VI},.22)`), sprite(`rgba(${VI},1)`, `rgba(${VL},.3)`, true)];
     const steps = $$('.xpr > li');
-    const T = 11;                                   // секунд в одном круге
-    const WIN = [[0, 1.8], [2.2, 4.1], [4.5, 6.6]];  // когда вылетают частицы к каждому кругу
-    const RAYS = [6.7, 8.9], FADE = [9.1, 10.4];
-    const GOLD = Math.PI * (3 - Math.sqrt(5));
+    const T = 12;                                   // секунд в одном круге
+    const WIN = [[.4, 2.3], [2.7, 4.7], [5.1, 7.3]]; // когда вылетают звёздочки к каждой сфере
+    const RAYS = [7.4, 9.6], FADE = [9.9, 11.3];
     const rnd = (a, b) => a + Math.random() * (b - a);
-    const ease = x => 1 - Math.pow(1 - x, 3);
-    let W = 0, H = 0, D = 1, C = [], P = [], R = [], clock = 0, on = false, last = 0;
-    const bez = (p, u) => { const v = 1 - u; return [v * v * p.sx + 2 * v * u * p.mx + u * u * p.tx, v * v * p.sy + 2 * v * u * p.my + u * u * p.ty]; };
+    const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+    let W = 0, H = 0, D = 1, C = [], P = [], R = [], IMP = [], DUST = [], clock = 0, on = false, last = 0, nextImp = 0;
+    const bez = (p, u, tx, ty) => { const v = 1 - u; return [v * v * p.sx + 2 * v * u * p.mx + u * u * tx, v * v * p.sy + 2 * v * u * p.my + u * u * ty]; };
+    const star = (img, x, y, s, a) => { if (a <= .01) return; c.globalAlpha = Math.min(1, a); c.drawImage(img, x - s, y - s, s * 2, s * 2); };
     function layout() {
       D = Math.min(devicePixelRatio || 1, 2); W = flow.clientWidth; H = flow.clientHeight;
       flow.width = Math.round(W * D); flow.height = Math.round(H * D);
       const fl = flow.getBoundingClientRect().left, cy = H / 2, rs = [H * .15, H * .24, H * .36];
       let xs = steps.map(li => li.getBoundingClientRect().left - fl);
-      // на телефоне шаги стоят друг под другом, тогда круги расставляем по ширине сами
+      // на телефоне шаги стоят друг под другом, тогда сферы расставляем по ширине сами
       if (xs.length < 3 || xs[1] - xs[0] < rs[0] + rs[1] + 30) xs = [W * .04, W * .3, W * .56];
-      C = rs.map((r, k) => ({ x: xs[k] + r + 2, y: cy, r }));
+      C = rs.map((r, k) => ({ x: xs[k] + r + 2, y: cy, r, spin: .25 + k * .07 }));
       build();
+      // импульсы уже бегут, когда полоса появляется на экране
+      if (!IMP.length) for (let i = 0; i < 6; i++) IMP.push({ x: rnd(0, W), y: H / 2 + rnd(-3, 3), v: rnd(70, 110), s: rnd(2.6, 3.4) });
+    }
+    // точка сферы на экране: поворот вокруг вертикальной оси, лёгкий наклон, глубина даёт яркость и размер
+    function sph(ci, p, t) {
+      const ang = t * ci.spin, ca = Math.cos(ang), sa = Math.sin(ang);
+      const x = p.ux * ca + p.uz * sa, z0 = -p.ux * sa + p.uz * ca;
+      const y = p.uy * .94 - z0 * .34, z = p.uy * .34 + z0 * .94;
+      return [ci.x + x * ci.r * p.rr, ci.y + y * ci.r * p.rr, (z + 1) / 2];
     }
     function build() {
       P = []; R = [];
       C.forEach((ci, k) => {
-        const cnt = Math.round((ci.r / 3.3) ** 2), s = (ci.r - 1) / Math.sqrt(cnt), [w0, w1] = WIN[k], prev = C[k - 1];
+        const cnt = Math.round(ci.r * ci.r / 8), [w0, w1] = WIN[k], prev = C[k - 1];
         for (let i = 0; i < cnt; i++) {
-          // точки круга по спирали подсолнуха: заполняется от центра к краю
-          const ang = i * GOLD, rr = s * Math.sqrt(i + .5);
-          const p = { tx: ci.x + Math.cos(ang) * rr, ty: ci.y + Math.sin(ang) * rr, k, i, a: .45 + .5 * (1 - rr / ci.r) };
-          if (prev) { const e = rnd(-1.1, 1.1); p.sx = prev.x + Math.cos(e) * prev.r; p.sy = prev.y + Math.sin(e) * prev.r; }
-          else { p.sx = rnd(-30, ci.x + ci.r * 5); p.sy = Math.random() < .5 ? rnd(-20, H * .2) : rnd(H * .8, H + 20); }
-          const mx = (p.sx + p.tx) / 2, my = (p.sy + p.ty) / 2;
-          p.mx = mx; p.my = my + rnd(-1, 1) * H * (prev ? .32 : .2);
-          p.t0 = w0 + (i / cnt) * (w1 - w0) + rnd(0, .25); p.dur = rnd(.8, 1.25);
+          const u = rnd(-1, 1), th = rnd(0, Math.PI * 2), q = Math.sqrt(1 - u * u);
+          const p = { k, ux: q * Math.cos(th), uy: u, uz: q * Math.sin(th), rr: Math.random() < .1 ? rnd(.55, .92) : rnd(.95, 1.02),
+            img: Math.random() < .05 ? 2 : (Math.random() < .5 ? 0 : 1), sz: rnd(2.2, 3.6), f: rnd(1.5, 4), ph: rnd(0, 6.3) };
+          if (p.img === 2) p.sz = rnd(4, 5.5);
+          if (prev) { const e = rnd(-1.2, 1.2); p.sx = prev.x + Math.cos(e) * prev.r * .9; p.sy = prev.y + Math.sin(e) * prev.r * .9; }
+          else { p.sx = rnd(-30, ci.x + ci.r * 4); p.sy = Math.random() < .5 ? rnd(-10, H * .25) : rnd(H * .75, H + 10); }
+          p.mx = (p.sx + ci.x) / 2 + rnd(-20, 20); p.my = ci.y + rnd(-1, 1) * H * (prev ? .22 : .35);
+          p.t0 = rnd(w0, w1); p.dur = rnd(1, 1.5);
           P.push(p);
         }
       });
-      // продолжения: из большого круга частицы уходят дальше вправо веером
-      const h = C[2], L = Math.max(60, W - h.x - h.r + 30);
+      // продолжения: из большой сферы звёздочки уходят дальше вправо веером
+      const h = C[2], L = Math.max(60, W - h.x - h.r + 40);
       for (let j = 0; j < 7; j++) {
-        const e = (j / 6 - .5) * 1.2;
-        for (let q = 0; q < 24; q++) {
+        const e = (j / 6 - .5) * 1.1;
+        for (let q = 0; q < 22; q++) {
           const sx = h.x + Math.cos(e) * h.r, sy = h.y + Math.sin(e) * h.r;
-          R.push({ sx, sy, tx: sx + Math.cos(e) * L, ty: sy + Math.sin(e * 1.4) * L * .55, mx: sx + Math.cos(e) * L * .5, my: sy + Math.sin(e) * L * .35,
-            t0: rnd(RAYS[0], RAYS[1]), dur: rnd(1, 1.6) });
+          R.push({ sx, sy, tx: sx + Math.cos(e) * L, ty: sy + Math.sin(e * 1.3) * L * .5, mx: sx + Math.cos(e) * L * .5, my: sy + Math.sin(e) * L * .3,
+            t0: rnd(RAYS[0], RAYS[1]), dur: rnd(1.2, 1.8), img: Math.random() < .1 ? 2 : 0, sz: rnd(2.4, 3.4) });
         }
       }
     }
     layout();
     addEventListener('resize', layout); addEventListener('load', layout);
-    function draw(t) {
+    // пыль: точка, которую оставляет летящая звёздочка, держится и гаснет, как след курсора
+    const dust = (x, y, s) => { if (DUST.length < 700) DUST.push({ x, y, vx: rnd(-6, 6), vy: rnd(-6, 6), s: s * rnd(.6, .9), b: 0, life: rnd(.5, 1), img: Math.random() < .5 ? 0 : 1 }); };
+    function draw(t, dt) {
       c.setTransform(D, 0, 0, D, 0, 0); c.clearRect(0, 0, W, H);
+      const cy = H / 2;
+      // тонкая линия из точек
+      for (let x = 3; x < W; x += 9) star(SP[1], x, cy, 1.7, .3 + .12 * Math.sin(x * .05 - t * 2));
+      // импульсы: бегут по линии всё время, у правого края ускоряются, будто их что-то тянет
+      if (t >= nextImp || nextImp - t > 2) { IMP.push({ x: -10, y: cy + rnd(-3, 3), v: rnd(70, 110), s: rnd(2.6, 3.4) }); nextImp = t + rnd(.35, .8); }
+      for (let i = IMP.length - 1; i >= 0; i--) {
+        const m = IMP[i]; m.x += m.v * (1 + m.x / W * 1.6) * dt;
+        if (m.x > W + 10) { IMP.splice(i, 1); continue; }
+        star(SP[0], m.x, m.y, m.s, .9); if (Math.random() < .6) dust(m.x, m.y + rnd(-1.5, 1.5), m.s);
+      }
       const f = Math.min(1, Math.max(0, (t - FADE[0]) / (FADE[1] - FADE[0]))), g = 1 - f;
-      if (g <= 0) return;
-      c.lineCap = 'round'; c.lineWidth = 1.6;
-      for (const p of P) {
-        if (t < p.t0) continue;
-        const u = (t - p.t0) / p.dur;
-        if (u < 1) {
-          const [x, y] = bez(p, ease(u)), [px, py] = bez(p, ease(Math.max(0, u - .035)));
-          c.strokeStyle = V(.7 * g); c.beginPath(); c.moveTo(px, py); c.lineTo(x, y); c.stroke();
-        } else {
-          // собранная точка чуть дышит, а при затухании круг слегка расходится
-          const ci = C[p.k], wob = Math.sin(t * 1.6 + p.i) * .35, sp = 1 + f * .18;
-          const x = ci.x + (p.tx - ci.x) * sp + wob, y = ci.y + (p.ty - ci.y) * sp - wob;
-          const pop = Math.max(0, 1 - (u - 1) * 4);   // вспышка в момент прилёта
-          c.fillStyle = V(Math.min(1, p.a + pop * .4) * g); const z = 2 + pop;
-          c.fillRect(x - z / 2, y - z / 2, z, z);
+      if (g > 0) {
+        for (const p of P) {
+          if (t < p.t0) continue;
+          const ci = C[p.k], u = (t - p.t0) / p.dur, sp = 1 + f * .15;
+          let [x, y, z] = sph(ci, p, t); x = ci.x + (x - ci.x) * sp; y = ci.y + (y - ci.y) * sp;
+          const tw = .7 + .3 * Math.sin(t * p.f + p.ph);
+          if (u < 1) {
+            const [bx, by] = bez(p, ease(u), x, y);
+            star(SP[p.img], bx, by, p.sz, .95 * g); if (Math.random() < .35) dust(bx, by, p.sz);
+          } else {
+            const pop = Math.max(0, 1 - (u - 1) * 3);   // вспышка в момент прилёта
+            star(SP[p.img], x, y, p.sz * (.55 + .55 * z) + pop * 1.5, (.18 + .82 * z * z) * tw * g + pop * .4);
+          }
+        }
+        for (const p of R) {
+          if (t < p.t0) continue;
+          const u = (t - p.t0) / p.dur; if (u >= 1) continue;
+          const [x, y] = bez(p, ease(u), p.tx, p.ty);
+          star(SP[p.img], x, y, p.sz, (1 - u) * g); if (Math.random() < .3) dust(x, y, p.sz * (1 - u * .5));
         }
       }
-      for (const p of R) {
-        if (t < p.t0) continue;
-        const u = (t - p.t0) / p.dur; if (u >= 1) continue;
-        const [x, y] = bez(p, ease(u)), [px, py] = bez(p, ease(Math.max(0, u - .09)));
-        c.strokeStyle = V(.8 * (1 - u) * g); c.beginPath(); c.moveTo(px, py); c.lineTo(x, y); c.stroke();
+      for (let i = DUST.length - 1; i >= 0; i--) {
+        const d = DUST[i]; d.b += dt; const age = d.b / d.life;
+        if (age >= 1) { DUST.splice(i, 1); continue; }
+        if (d.b > .15) { d.x += d.vx * dt; d.y += d.vy * dt; }
+        star(SP[d.img], d.x, d.y, d.s, .7 * (1 - age * age));
       }
+      c.globalAlpha = 1;
     }
     function frame(ts) {
       if (!on) { last = 0; return; }
       const dt = last ? Math.min(.05, (ts - last) / 1000) : .016; last = ts;
-      clock = (clock + dt) % T; draw(clock);
+      const prev = clock; clock = (clock + dt) % T; if (clock < prev) nextImp = 0;
+      draw(clock, dt);
       requestAnimationFrame(frame);
     }
     new IntersectionObserver(es => es.forEach(e => {
       const was = on; on = e.isIntersecting;
-      if (RM) { if (on) { layout(); draw(8.2); } on = false; return; }   // без анимации: просто три собранных круга
+      if (RM) { if (on) { layout(); draw(9, 0); } on = false; return; }   // без анимации: линия и три собранные сферы
       if (on && !was) { layout(); requestAnimationFrame(frame); }
     }), { threshold: .1 }).observe(flow);
   }
