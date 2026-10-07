@@ -181,7 +181,12 @@ html:has(body.x) { scroll-behavior: smooth; }
 
 /* ── 6. процесс: 3 шага на сетке, у каждого круг из точек (рисует x.js), под ним текст и инструменты ── */
 .xho__lede { margin-top: 18px; max-width: 64ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
-.xpr__flow { display: block; width: 100%; height: clamp(170px, 16vw, 220px); margin-top: clamp(32px, 4vw, 48px); }
+/* полоса выходит за контейнер к краям экрана и там плавно тает, чтобы линия не обрывалась по контейнеру */
+#handover { overflow-x: clip; }
+.xpr__flow { --bleed: clamp(0px, calc((100vw - 100%) / 2 - 10px), 260px); display: block; max-width: none; width: calc(100% + 2 * var(--bleed)); margin-left: calc(-1 * var(--bleed));
+  height: clamp(170px, 16vw, 220px); margin-top: clamp(32px, 4vw, 48px);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--bleed), #000 calc(100% - var(--bleed)), transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 var(--bleed), #000 calc(100% - var(--bleed)), transparent); }
 .xpr { list-style: none; margin: 12px 0 0; padding: 0; row-gap: 48px; }
 .xpr > li { display: flex; flex-direction: column; }
 .xpr__n { display: block; margin-top: 0; font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }

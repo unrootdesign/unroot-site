@@ -34,7 +34,7 @@
       light:[sprite('rgba(137,97,231,1)','rgba(137,97,231,.28)'),sprite('rgba(106,67,209,1)','rgba(137,97,231,.22)'),sprite('rgba(137,97,231,1)','rgba(185,162,245,.3)',true),fluff('rgba(137,97,231,.4)','rgba(137,97,231,.14)')],
       dark:[sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)'),sprite('rgba(210,194,252,1)','rgba(185,162,245,.3)'),sprite('rgba(255,255,255,1)','rgba(185,162,245,.35)',true),fluff('rgba(230,222,255,.6)','rgba(185,162,245,.25)')]
     };
-    const MAX=1400, P=[];
+    const MAX=2100, P=[];
     let dark=false, running=false, lastCheck=0, H4=[], last=0;
     const isDark=(x,y)=>{ const el=document.elementFromPoint(x,y); return !!(el && el.closest('.ft,.ob,.pk,.stage--night')); };
     // Catmull-Rom: путь мыши сглаживается кривой через точки, поэтому быстрый круг выходит кругом, а не многоугольником
@@ -53,7 +53,7 @@
     // точки ставятся вдоль сглаженного отрезка между двумя предыдущими замерами
     const seg=(p0,p1,p2,p3,now)=>{
       const dist=Math.hypot(p2.x-p1.x,p2.y-p1.y); if(dist<1) return;
-      const n=Math.min(40,Math.max(1,Math.round(dist/3.2)));
+      const n=Math.min(60,Math.max(1,Math.round(dist/2.13)));
       const sp=Math.min(14,3+dist*.12);
       for(let i=0;i<n;i++){ const t=(i+Math.random())/n; put(cr(p0.x,p1.x,p2.x,p3.x,t),cr(p0.y,p1.y,p2.y,p3.y,t),sp,now); }
     };

@@ -181,7 +181,10 @@
       const fl = flow.getBoundingClientRect().left, cy = H / 2, rs = [H * .15, H * .24, H * .36];
       let xs = steps.map(li => li.getBoundingClientRect().left - fl);
       // на телефоне шаги стоят друг под другом, тогда сферы расставляем по ширине сами
-      if (xs.length < 3 || xs[1] - xs[0] < rs[0] + rs[1] + 30) xs = [W * .04, W * .3, W * .56];
+      if (xs.length < 3 || xs[1] - xs[0] < rs[0] + rs[1] + 30) {
+        const lr = steps[0] ? steps[0].parentElement.getBoundingClientRect() : { left: fl, width: W }, lx = lr.left - fl;
+        xs = [lx + lr.width * .04, lx + lr.width * .3, lx + lr.width * .56];
+      }
       C = rs.map((r, k) => ({ x: xs[k] + r + 2, y: cy, r, spin: .25 + k * .07 }));
       build();
       // импульсы уже бегут, когда полоса появляется на экране
