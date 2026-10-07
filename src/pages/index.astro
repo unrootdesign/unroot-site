@@ -202,17 +202,17 @@ const schema = [{
     </div>
   </section>
 
-  <!-- 6. Процесс: 3 шага (концепт, дизайн, сборка), круги из точек растут и заполняются, у шагов инструменты со значками -->
+  <!-- 6. Процесс: 3 шага (концепт, дизайн, сборка), над ними полоса с частицами, которые летят к воронке, у шагов инструменты -->
   <section class="xs" id="handover" aria-label="Process">
     <div class="xw">
       <p class="tag xtag"><i></i>Process</p>
       <h2 class="xh2 xh2--wide">A website your team runs <span>without us</span></h2>
       <p class="xho__lede">You come with a project. We start with a concept, design every page and build the website, then show your team how to run it. After that you change anything without waiting for us, and we are a message away if you need help.</p>
-      <!-- 3 шага, у каждого круг из точек: с каждым шагом круг больше и заполнен сильнее, по нему бегут импульсы -->
+      <!-- над шагами общая полоса: частицы летят слева направо через 3 станции и затягиваются в воронку на последнем шаге -->
+      <canvas class="xpr__flow" aria-hidden="true"></canvas>
       <ol class="x3 xpr">
         {home.handover.map((h, i) => (
           <li>
-            <canvas class="xpr__orb" data-step={i} data-of={home.handover.length} aria-hidden="true"></canvas>
             <span class="xpr__n">{pad(i + 1)} · {h.k}</span>
             <b>{h.t}</b>
             <p>{h.d}</p>

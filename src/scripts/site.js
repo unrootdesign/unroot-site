@@ -180,3 +180,8 @@
 
 
 })();
+
+/* ссылки на другие сайты (Stripe, Cal, кейсы клиентов, соцсети) открываются в новой вкладке, чтобы не уводить с сайта */
+document.querySelectorAll('a[href^="http"]').forEach(a => {
+  try { if (new URL(a.href).hostname !== location.hostname) { a.target = '_blank'; if (!/noopener/.test(a.rel)) a.rel = (a.rel + ' noopener').trim(); } } catch {}
+});

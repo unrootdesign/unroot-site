@@ -143,78 +143,83 @@
     imgs.forEach((im, k) => im.classList.toggle('on', k === (c + 1) % imgs.length));
   }, 1800);
 
-  /* ── процесс: у каждого шага круг из точек. С каждым шагом круг больше и заполнен сильнее,
-     по заполненной части бегут импульсы, у последнего шага круг полный и от него расходятся волны.
-     Рисуем только пока круги на экране. ── */
-  const orbs = $$('.xpr__orb');
-  if (orbs.length) {
-    const css = getComputedStyle(document.documentElement);
-    const VIO = css.getPropertyValue('--violet').trim() || '#8961E7';
-    const INK = 'rgba(18,17,22,';
-    const hex = h => { const n = parseInt(h.replace('#', ''), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
-    const [vr, vg, vb] = hex(VIO);
+  /* ── процесс: над шагами полоса. Частицы летят слева направо, проходят через 2 станции (концепт и дизайн)
+     и затягиваются в воронку над третьим шагом. Станции растут от шага к шагу. Рисуем только пока полоса на экране. ── */
+  const flow = $('.xpr__flow');
+  if (flow) {
+    const c = flow.getContext('2d');
+    const VIO = getComputedStyle(document.documentElement).getPropertyValue('--violet').trim() || '#8961E7';
+    const n = parseInt(VIO.slice(1), 16), vr = n >> 16 & 255, vg = n >> 8 & 255, vb = n & 255;
     const V = a => `rgba(${vr},${vg},${vb},${a})`;
-    const st = orbs.map(cv => ({ cv, ctx: cv.getContext('2d'), k: +cv.dataset.step, n: +cv.dataset.of, w: 0, h: 0, d: 1, grow: 0, on: false, seen: false }));
-    const size = () => st.forEach(o => {
-      o.d = Math.min(devicePixelRatio || 1, 2); o.w = o.cv.clientWidth; o.h = o.cv.clientHeight;
-      o.cv.width = Math.round(o.w * o.d); o.cv.height = Math.round(o.h * o.d);
-    });
-    size(); addEventListener('resize', size);
-    // точки кольца: радиус, количество, доля заполнения
-    function ring(o, t, r, count, fill, phase, bright) {
-      const c = o.ctx, cx = o.w / 2, cy = o.h / 2;
+    let W = 0, H = 0, D = 1, ST = [], P = [], on = false, last = 0;
+    const steps = $$('.xpr > li');
+    function layout() {
+      D = Math.min(devicePixelRatio || 1, 2); W = flow.clientWidth; H = flow.clientHeight;
+      flow.width = Math.round(W * D); flow.height = Math.round(H * D);
+      const fl = flow.getBoundingClientRect().left, cy = H / 2;
+      const rs = [H * .09, H * .17, H * .3];
+      // станция стоит над началом своего шага, левым краем вровень с текстом
+      ST = steps.map((li, k) => { const r = rs[k] || rs[2]; return { x: li.getBoundingClientRect().left - fl + r + 2, y: cy, r, k }; });
+    }
+    const spawn = (p, fresh) => {
+      p.x = fresh ? Math.random() * (ST[2] ? ST[2].x : W) : -8 - Math.random() * 40;
+      p.y = H / 2 + (Math.random() - .5) * H * .7; p.vx = 50 + Math.random() * 60; p.vy = (Math.random() - .5) * 20;
+      p.px = p.x; p.py = p.y; p.a = .55 + Math.random() * .45;
+    };
+    layout(); for (let i = 0; i < 230; i++) { const p = {}; spawn(p, true); P.push(p); }
+    addEventListener('resize', layout); addEventListener('load', layout);
+    function ringDots(st, r, count, t, rot, alpha, size) {
       for (let i = 0; i < count; i++) {
-        const u = i / count, ang = -Math.PI / 2 + u * Math.PI * 2;
-        const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r;
-        if (u <= fill) {
-          const tw = .55 + .45 * Math.sin(t * .003 + i * 1.7 + phase);
-          c.fillStyle = V((.35 + .55 * tw) * bright);
-          const s = 2 + tw * 1.4; c.fillRect(x - s / 2, y - s / 2, s, s);
-        } else { c.fillStyle = INK + '.16)'; c.fillRect(x - 1, y - 1, 2, 2); }
+        const ang = i / count * Math.PI * 2 + rot, tw = .6 + .4 * Math.sin(t * .004 + i * 1.3);
+        c.fillStyle = V(alpha * tw); const s = size * (.8 + .4 * tw);
+        c.fillRect(st.x + Math.cos(ang) * r - s / 2, st.y + Math.sin(ang) * r - s / 2, s, s);
       }
     }
     function frame(t) {
-      st.forEach(o => {
-        if (!o.on || !o.w) return;
-        const c = o.ctx; c.setTransform(o.d, 0, 0, o.d, 0, 0); c.clearRect(0, 0, o.w, o.h);
-        // заполнение плавно растёт, когда круг появился на экране
-        o.grow = Math.min(1, o.grow + (RM ? 1 : .012));
-        const ease = 1 - Math.pow(1 - o.grow, 3);
-        const level = (o.k + 1) / o.n, base = Math.min(o.w, o.h) * .46, R = base * (.5 + .5 * level);
-        const fill = level * ease, cx = o.w / 2, cy = o.h / 2;
-        // внешнее кольцо и внутренние: у первого шага 1 кольцо, дальше больше
-        ring(o, t, R, 96, fill, 0, 1);
-        for (let j = 1; j <= o.k; j++) ring(o, t, R * (1 - j * .24), Math.round(96 * (1 - j * .24)), Math.min(1, fill * (1 + j * .15)), j * 2, .8);
-        // ядро
-        const core = 3 + level * 5 + Math.sin(t * .004) * 1;
-        const g = c.createRadialGradient(cx, cy, 0, cx, cy, core * 4);
-        g.addColorStop(0, V(.9)); g.addColorStop(.25, V(.35)); g.addColorStop(1, V(0));
-        c.fillStyle = g; c.beginPath(); c.arc(cx, cy, core * 4, 0, Math.PI * 2); c.fill();
-        // импульсы бегут по заполненной части кольца
-        if (fill > .02 && !RM) for (let p = 0; p < 1 + o.k; p++) {
-          const head = ((t * .00018 * (1 + p * .35) + p / (1 + o.k)) % 1) * fill;
-          for (let q = 0; q < 14; q++) {
-            const u = head - q * .006; if (u < 0) break;
-            const ang = -Math.PI / 2 + u * Math.PI * 2, a = (1 - q / 14);
-            c.fillStyle = q === 0 ? 'rgba(255,255,255,.95)' : V(.8 * a);
-            const s = q === 0 ? 4 : 3 * a + .6;
-            c.fillRect(cx + Math.cos(ang) * R - s / 2, cy + Math.sin(ang) * R - s / 2, s, s);
-          }
+      if (!on) { last = 0; return; }
+      const dt = last ? Math.min(.05, (t - last) / 1000) : .016; last = t;
+      c.setTransform(D, 0, 0, D, 0, 0); c.clearRect(0, 0, W, H);
+      const hole = ST[ST.length - 1];
+      // тонкая линия процесса
+      c.strokeStyle = 'rgba(18,17,22,.08)'; c.lineWidth = 1; c.beginPath(); c.moveTo(0, H / 2); c.lineTo(hole.x, H / 2); c.stroke();
+      // частицы
+      c.lineWidth = 1.8; c.lineCap = 'round';
+      for (const p of P) {
+        p.px = p.x; p.py = p.y;
+        let ax = 18, ay = (H / 2 - p.y) * .8;
+        for (const st of ST) {
+          const dx = st.x - p.x, dy = st.y - p.y, d = Math.hypot(dx, dy) || 1;
+          if (st === hole) {
+            // воронка: сильное притяжение и закрутка
+            const g = 60000 / (d * d + 400); ax += dx / d * g - dy / d * g * .9; ay += dy / d * g + dx / d * g * .9;
+            if (d < 7) { spawn(p, false); break; }
+          } else if (d < st.r * 3) { const g = 900 * (st.k + 1) / (d + 20); ax += dx / d * g * .3; ay += dy / d * g * .3; }
         }
-        // последний шаг: круг замкнулся, от него расходятся волны из точек
-        if (o.k === o.n - 1 && ease > .98 && !RM) for (let wv = 0; wv < 2; wv++) {
-          const ph = ((t * .00035) + wv * .5) % 1, rr = R * (1 + ph * .55), a = (1 - ph) * .5;
-          for (let i = 0; i < 64; i++) { const ang = i / 64 * Math.PI * 2; c.fillStyle = V(a); c.fillRect(cx + Math.cos(ang) * rr - .8, cy + Math.sin(ang) * rr - .8, 1.6, 1.6); }
-        }
+        p.vx = (p.vx + ax * dt) * .992; p.vy = (p.vy + ay * dt) * .985;
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x > W + 10 || p.y < -20 || p.y > H + 20) spawn(p, false);
+        const dh = Math.hypot(hole.x - p.x, hole.y - p.y), near = Math.max(0, 1 - dh / (hole.r * 2.4));
+        c.strokeStyle = V(p.a * (.6 + near * .4)); c.beginPath(); c.moveTo(p.px - (p.x - p.px) * 2, p.py - (p.y - p.py) * 2); c.lineTo(p.x, p.y); c.stroke();
+      }
+      // станции: кольца из точек, у каждой следующей больше и ярче
+      ST.forEach(st => {
+        if (st === hole) return;
+        ringDots(st, st.r, Math.round(st.r * 1.6), t, t * .0004 * (st.k + 1), .55 + st.k * .2, 2);
+        c.fillStyle = V(.8); c.beginPath(); c.arc(st.x, st.y, 2.5 + st.k, 0, 7); c.fill();
       });
-      if (st.some(o => o.on)) requestAnimationFrame(frame); else running = false;
+      // воронка: кольца крутятся, в центре тёмное ядро со светящимся краем
+      ringDots(hole, hole.r, 72, t, t * .0009, .7, 2.2);
+      ringDots(hole, hole.r * .72, 54, t, -t * .0014, .55, 1.8);
+      ringDots(hole, hole.r * .46, 36, t, t * .002, .45, 1.6);
+      const g = c.createRadialGradient(hole.x, hole.y, 0, hole.x, hole.y, hole.r * .38);
+      g.addColorStop(0, 'rgba(18,17,22,.95)'); g.addColorStop(.6, 'rgba(18,17,22,.85)'); g.addColorStop(.85, V(.55)); g.addColorStop(1, V(0));
+      c.fillStyle = g; c.beginPath(); c.arc(hole.x, hole.y, hole.r * .38, 0, 7); c.fill();
+      if (!RM) requestAnimationFrame(frame);
     }
-    let running = false;
-    const io = new IntersectionObserver(es => {
-      es.forEach(e => { const o = st.find(x => x.cv === e.target); o.on = e.isIntersecting; });
-      if (!running && st.some(o => o.on)) { running = true; requestAnimationFrame(frame); }
-    }, { threshold: .2 });
-    st.forEach(o => io.observe(o.cv));
+    new IntersectionObserver(es => es.forEach(e => {
+      const was = on; on = e.isIntersecting;
+      if (on && !was) { layout(); requestAnimationFrame(frame); }
+    }), { threshold: .1 }).observe(flow);
   }
 
   /* ── календарь грузится, когда до секции созвона остаётся 2 экрана ── */

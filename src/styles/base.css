@@ -158,16 +158,16 @@ p { text-wrap: pretty; }
 .comet { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99; }
 @media (pointer: coarse) { .comet { display: none; } }
 
-/* курсор: волшебная палочка, направлена как обычный курсор, кончик со звездой и есть точка клика.
+/* курсор: волшебная палочка с наклоном как у обычной стрелки (62°), чуть короче, направлена как курсор, кончик со звездой и есть точка клика.
    Цвета внутри картинки заданы числами, потому что переменные в data URI не работают (--violet, --violet-hi, --ink) */
-:root { --cur: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M10.5 12.5L26 28' stroke='white' stroke-width='5.5' stroke-linecap='round'/><path d='M10.5 12.5L26 28' stroke='%2316141c' stroke-width='3' stroke-linecap='round'/><path d='M22.6 24.6l2.2-2.2' stroke='%238961E7' stroke-width='3'/><path d='M7 1.2l1.6 4.2 4.2 1.6-4.2 1.6L7 12.8 5.4 8.6 1.2 7l4.2-1.6z' fill='%238961E7' stroke='white' stroke-width='1.2' stroke-linejoin='round'/></svg>") 7 7, auto; --cur-ptr: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='7' cy='7' r='6' fill='%238961E7' fill-opacity='.22'/><path d='M10.5 12.5L26 28' stroke='white' stroke-width='5.5' stroke-linecap='round'/><path d='M10.5 12.5L26 28' stroke='%2316141c' stroke-width='3' stroke-linecap='round'/><path d='M22.6 24.6l2.2-2.2' stroke='%238961E7' stroke-width='3'/><path d='M7 1.2l1.6 4.2 4.2 1.6-4.2 1.6L7 12.8 5.4 8.6 1.2 7l4.2-1.6z' fill='%236538D6' stroke='white' stroke-width='1.2' stroke-linejoin='round'/></svg>") 7 7, pointer; }
+:root { --cur: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M9.82 12.3L18.03 27.75' stroke='white' stroke-width='5.5' stroke-linecap='round'/><path d='M9.82 12.3L18.03 27.75' stroke='%2316141c' stroke-width='3' stroke-linecap='round'/><path d='M17.65 23.42L14.65 25.02' stroke='%238961E7' stroke-width='3'/><path d='M7 1.2l1.6 4.2 4.2 1.6-4.2 1.6L7 12.8 5.4 8.6 1.2 7l4.2-1.6z' fill='%238961E7' stroke='white' stroke-width='1.2' stroke-linejoin='round'/></svg>") 7 7, auto; --cur-ptr: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><circle cx='7' cy='7' r='6' fill='%238961E7' fill-opacity='.22'/><path d='M9.82 12.3L18.03 27.75' stroke='white' stroke-width='5.5' stroke-linecap='round'/><path d='M9.82 12.3L18.03 27.75' stroke='%2316141c' stroke-width='3' stroke-linecap='round'/><path d='M17.65 23.42L14.65 25.02' stroke='%238961E7' stroke-width='3'/><path d='M7 1.2l1.6 4.2 4.2 1.6-4.2 1.6L7 12.8 5.4 8.6 1.2 7l4.2-1.6z' fill='%236538D6' stroke='white' stroke-width='1.2' stroke-linejoin='round'/></svg>") 7 7, pointer; }
 html { cursor: var(--cur); }
 a, button, summary, label, [role="tab"], [role="button"], select, .btn { cursor: var(--cur-ptr); }
 input, textarea { cursor: text; }
 
-/* внешние ссылки (открываются в новой вкладке): кнопки и ссылки футера получают стрелку ↗ */
-a.btn[target="_blank"]::after, .ft__cols a[target="_blank"]::after { content: "↗"; position: relative; z-index: 1; font-size: 1.1em; line-height: 1; text-transform: none; letter-spacing: 0; }
-.ft__cols a[target="_blank"]::after { margin-left: 6px; }
+/* внешние ссылки (на другие сайты, открываются в новой вкладке через site.js): кнопки и ссылки футера получают стрелку ↗ */
+a.btn[href^="http"]::after, .ft__cols a[href^="http"]::after { content: "↗"; position: relative; z-index: 1; font-size: 1.1em; line-height: 1; text-transform: none; letter-spacing: 0; }
+.ft__cols a[href^="http"]::after { margin-left: 6px; }
 
 /* волшебное наведение: по рамке вокруг ссылки бежит свет, вокруг мерцают звёздочки (меню) */
 @property --spark-a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
