@@ -202,8 +202,8 @@
     const STB = [[], [], []];
     const ink = (col, a, w = 1, dash) => {
       if (!LP || LP.length < 2) return;
-      const A = Math.min(1, a * LINE_A), P0 = LP.find(Boolean), gap = (dash ? 3 : 1.45) / s, r = (.42 + .3 * w) * LINE_W * .62 / s, seed = P0[0] * 7.13 + P0[1] * 3.71;
-      if (!dash) { c.save(); c.globalAlpha *= A * .2; c.strokeStyle = col; c.lineWidth = w * LINE_W * 1.8 / s; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke(); c.restore(); }
+      const A = Math.min(1, a * LINE_A), P0 = LP.find(Boolean), gap = (dash ? 2.6 : 1.1) / s, r = (.42 + .3 * w) * LINE_W * .8 / s, seed = P0[0] * 7.13 + P0[1] * 3.71;
+      if (!dash) { c.save(); c.globalAlpha *= A * .26; c.strokeStyle = col; c.lineWidth = w * LINE_W * 1.8 / s; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke(); c.restore(); }
       let n = 0, carry = 0;
       for (let i = 1; i < LP.length; i++) {
         if (!LP[i] || !LP[i - 1]) { carry = 0; continue; }   // pen lift
@@ -218,7 +218,7 @@
       }
       const base = c.globalAlpha; c.save(); c.fillStyle = col;
       STB.forEach((q, bi) => { if (!q.length) return; const ga = base * A * [.45, .72, 1][bi]; c.globalAlpha = ga; c.beginPath();
-        for (let m = 0; m < q.length; m += 4) { const z = q[m + 2] * 1.7; c.rect(q[m] - z / 2, q[m + 1] - z / 2, z, z); } c.fill();
+        for (let m = 0; m < q.length; m += 4) { c.moveTo(q[m] + q[m + 2], q[m + 1]); c.arc(q[m], q[m + 1], q[m + 2], 0, 6.283); } c.fill();
         // a few of the brightest dots become small sparks, like the cursor trail
         if (bi === 2) for (let m = 0; m < q.length; m += 4) if (q[m + 3] > .93) { const z = 3.2 / s; c.globalAlpha = ga * .9; c.drawImage(SP[2], q[m] - z, q[m + 1] - z, z * 2, z * 2); }
         q.length = 0; });
@@ -298,7 +298,7 @@
     const LEFT = STEPS.map(k => Math.min(...k.path.filter(Boolean).map(q => q[0])) - 10);
     const START = STEPS.map(k => k.dust(0).map(() => [Math.random(), rnd(0, .6)]));   // where on the trail each speck starts, and its delay
 
-    let W = 0, H = 0, D = 1, B = [], shown = false, clock = 0, on = false, last = 0, seen = 0, mx = -1e4, my = -1e4, SPARK = [];
+    let acc = 0, skip = 0, W = 0, H = 0, D = 1, B = [], shown = false, clock = 0, on = false, last = 0, seen = 0, mx = -1e4, my = -1e4, SPARK = [];
     const st = [0, 1, 2].map(() => ({ want: 0, p: 0, done: -1, lastDraw: 0 }));
     const spr = (img, x, y, sz, a) => { if (a <= .01 || sz <= 0) return; c.globalAlpha = Math.min(1, a); c.drawImage(img, x - sz, y - sz, sz * 2, sz * 2); };
     const spark = (x, y, sz, v = 12) => { if (SPARK.length < 500) SPARK.push({ x, y, vx: rnd(-v, v), vy: rnd(-v * 1.2, v * .4), sz, b: 0, life: rnd(.5, 1), img: Math.random() < .2 ? 2 : Math.random() < .5 ? 0 : 1 }); };
@@ -414,7 +414,10 @@
     function frame(ts) {
       if (!on) { last = 0; return; }
       const dt = last ? Math.min(.05, (ts - last) / 1000) : .016; last = ts;
-      clock += dt; draw(clock, dt);
+      clock += dt; acc += dt;
+      // when all 3 pictures are finished only the quiet twinkle is left, 30 frames a second are enough and spare the laptop
+      const calm = st.every(q => q.done >= 0 && clock - q.done > 3) && !SPARK.length;
+      if (!calm || ++skip % 2 === 0) { draw(clock, acc); acc = 0; }
       requestAnimationFrame(frame);
     }
     new IntersectionObserver(es => es.forEach(e => {
@@ -433,28 +436,31 @@
     // точки вдоль каждой линии: плотно, с лёгкой волной и разбросом поперёк, как будто нарисовано звёздной пылью
     const DOTS = [];
     $$('path', svg).forEach((p, pi) => {
-      const L = p.getTotalLength(), n = Math.ceil(L / 1.25);
+      const L = p.getTotalLength(), n = Math.ceil(L / 2.3);
       for (let i = 0; i <= n; i++) {
         const d = i / n * L, q = p.getPointAtLength(d), q2 = p.getPointAtLength(Math.min(L, d + .5)), q0 = p.getPointAtLength(Math.max(0, d - .5));
         const tx = q2.x - q0.x, ty = q2.y - q0.y, tl = Math.hypot(tx, ty) || 1, h1 = hs(i + pi * 977), h2 = hs(i * 3.1 + pi * 131);
-        const off = Math.sin(d * .11 + pi) * .45 + (h1 - .5) * 1.5;
-        DOTS.push({ x: q.x - ty / tl * off, y: q.y + tx / tl * off, r: .55 + .5 * h2, f: .9 + h1 * 1.8, ph: h2 * 6.28, sp: h1 > .965 });
-        if (h2 > .8) DOTS.push({ x: q.x + (h1 - .5) * 5, y: q.y + (hs(i + 7) - .5) * 5, r: .45, f: 1.4, ph: h1 * 6.28, dust: true });   // пыль вокруг линии
+        const off = Math.sin(d * .11 + pi) * .5 + (h1 - .5) * 2;
+        DOTS.push({ x: q.x - ty / tl * off, y: q.y + tx / tl * off, r: 2.1 + 1.3 * h2, alt: h2 > .55, f: .9 + h1 * 1.8, ph: h2 * 6.28, sp: h1 > .965 });
+        if (h2 > .8) DOTS.push({ x: q.x + (h1 - .5) * 6, y: q.y + (hs(i + 7) - .5) * 6, r: 1.9, f: 1.4, ph: h1 * 6.28, dust: true });   // пыль вокруг линии
       }
     });
-    const SPK = document.createElement('canvas'); SPK.width = SPK.height = 32;
-    { const g2 = SPK.getContext('2d'), g = g2.createRadialGradient(16, 16, 0, 16, 16, 16); g.addColorStop(0, col); g.addColorStop(.3, col.replace('rgb(', 'rgba(').replace(')', ',.35)')); g.addColorStop(1, 'rgba(0,0,0,0)');
-      g2.fillStyle = g; g2.fillRect(0, 0, 32, 32); g2.fillStyle = col; g2.beginPath(); g2.moveTo(16, 1); g2.quadraticCurveTo(17, 15, 31, 16); g2.quadraticCurveTo(17, 17, 16, 31); g2.quadraticCurveTo(15, 17, 1, 16); g2.quadraticCurveTo(15, 15, 16, 1); g2.fill(); }
+    // точки как у следа курсора: мягкое ядро и чуть-чуть свечения вокруг, два оттенка и искра
+    const sprite = (core, glow, spark) => { const sc = document.createElement('canvas'); sc.width = sc.height = 64; const g2 = sc.getContext('2d'), g = g2.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, core); g.addColorStop(.16, core); g.addColorStop(.42, glow); g.addColorStop(1, 'rgba(0,0,0,0)'); g2.fillStyle = g; g2.fillRect(0, 0, 64, 64);
+      if (spark) { g2.fillStyle = core; g2.beginPath(); g2.moveTo(32, 2); g2.quadraticCurveTo(34, 30, 62, 32); g2.quadraticCurveTo(34, 34, 32, 62); g2.quadraticCurveTo(30, 34, 2, 32); g2.quadraticCurveTo(30, 30, 32, 2); g2.fill(); }
+      return sc; };
+    const cs = getComputedStyle(document.documentElement), hx = (v, d) => { const n = parseInt((cs.getPropertyValue(v).trim() || d).slice(1), 16); return `${n >> 16 & 255},${n >> 8 & 255},${n & 255}`; };
+    const VI = hx('--violet', '#8961E7'), VD = hx('--violet-d', '#6A43D1'), VL = hx('--violet-lt', '#B9A2F5');
+    const HS = [sprite(`rgba(${VI},1)`, `rgba(${VI},.28)`), sprite(`rgba(${VD},1)`, `rgba(${VI},.22)`), sprite(`rgba(${VI},1)`, `rgba(${VL},.3)`, true)];
     let W = 0, H = 0, D = 1, k = 1, on = false;
     const size = () => { D = Math.min(devicePixelRatio || 1, 2); W = svg.clientWidth; H = svg.clientHeight; k = W / vb.width; cv.width = Math.round(W * D); cv.height = Math.round(H * D); cv.style.width = W + 'px'; cv.style.height = H + 'px'; };
     const B = [[], [], []];
     const draw = t => {
       c.setTransform(D, 0, 0, D, 0, 0); c.clearRect(0, 0, W, H); c.fillStyle = col;
       for (const d of DOTS) { const tw = .66 + .34 * Math.sin(t * d.f + d.ph); B[tw > .9 ? 2 : tw > .72 ? 1 : 0].push(d); }
-      B.forEach((q, bi) => { c.globalAlpha = [.5, .75, 1][bi]; c.beginPath();
-        for (const d of q) { if (d.dust) continue; const x = d.x * k, y = d.y * k; c.moveTo(x + d.r, y); c.arc(x, y, d.r, 0, 6.283); } c.fill();
-        c.globalAlpha *= .4; c.beginPath(); for (const d of q) { if (!d.dust) continue; c.moveTo(d.x * k + d.r, d.y * k); c.arc(d.x * k, d.y * k, d.r, 0, 6.283); } c.fill();
-        if (bi === 2) { c.globalAlpha = .9; for (const d of q) if (d.sp) c.drawImage(SPK, d.x * k - 4, d.y * k - 4, 8, 8); }
+      B.forEach((q, bi) => { const ga = [.45, .7, .95][bi];
+        for (const d of q) { const x = d.x * k, y = d.y * k, z = d.sp ? 5 : d.r; c.globalAlpha = d.dust ? ga * .45 : ga; c.drawImage(HS[d.sp ? 2 : d.alt ? 1 : 0], x - z, y - z, z * 2, z * 2); }
         q.length = 0; });
       c.globalAlpha = 1;
     };
