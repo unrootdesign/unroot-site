@@ -80,7 +80,7 @@ const schema = [{
   <!-- 2. Работы: бегущая лента справа налево, при наведении стоит; на фоне крупная серая подпись -->
   <section class="xs xwork" id="work" aria-label="Case studies">
     <!-- рукописная подсказка: ленту можно тянуть -->
-    <div class="xwork__hint" aria-hidden="true">
+    <div class="xhint xwork__hint" aria-hidden="true">
       <span>drag me</span>
       <svg viewBox="0 0 150 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 34C14 14 118 2 136 24c14 18-50 34-104 28C10 50 4 36 20 22c10-8 30-12 46-13"/>
@@ -208,8 +208,14 @@ const schema = [{
       <p class="tag xtag"><i></i>Process</p>
       <h2 class="xh2 xh2--wide">A website your team runs <span>without us</span></h2>
       <p class="xho__lede">You come with a project. We start with a concept, design every page and build the website, then show your team how to run it. After that you change anything without waiting for us, and we are a message away if you need help.</p>
-      <!-- над шагами общая полоса: частицы летят слева направо через 3 станции и затягиваются в воронку на последнем шаге -->
+      <!-- над шагами полоса с луной в 3 фазах: её рисуют волшебной палочкой (курсором) или она рисуется сама (x.js) -->
       <canvas class="xpr__flow" aria-hidden="true"></canvas>
+      <div class="xhint xpr__hint" aria-hidden="true">
+        <span>draw with the wand</span>
+        <svg viewBox="0 0 200 90" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M52 36c-4 18-22 34-48 42"/><path d="M4 78l15 1M4 78l9-12"/>
+        </svg>
+      </div>
       <ol class="x3 xpr">
         {home.handover.map((h, i) => (
           <li>
