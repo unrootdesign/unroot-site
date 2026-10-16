@@ -201,19 +201,19 @@ export const home = {
   {
    "k": "Concept",
    "t": "We start with a concept",
-   "d": "A call and your brief first. Then we design a direction in Figma and turn it into an interactive prototype with Claude.",
+   "d": "A call and your brief, then a prototype you can click through, made in Figma and Claude.",
    "tools": ["Call", "Brief", "Figma", "Claude"]
   },
   {
    "k": "Design",
    "t": "We design every page",
-   "d": "Once you like the concept, we design the rest of the website and its design system, with rounds of feedback until it feels right.",
+   "d": "The rest of the website and its design system, with feedback rounds until it feels right.",
    "tools": ["All pages", "Design system", "Feedback"]
   },
   {
    "k": "Build",
    "t": "We build it and show you how",
-   "d": "We build it in Webflow, Framer or code, then show your team how to edit it in the CMS or just by asking AI.",
+   "d": "Built in Webflow, Framer or code. Your team edits it in the CMS or by asking AI.",
    "tools": ["Webflow", "Framer", "Training"]
   }
  ],
