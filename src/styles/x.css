@@ -164,7 +164,12 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__l .xh2 { margin-bottom: 28px; }
 .xsv__list { flex: 1; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; }
 .xsv__list li { flex: 1; display: flex; border-bottom: 1px solid var(--line); }
-/* строки списка: см. блок «иерархия» ниже */
+.xsv__list button { display: flex; align-items: center; gap: 14px; width: 100%; padding: 15px 0; border: 0; background: none; cursor: var(--cur-ptr); text-align: left;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem); font-weight: 500; letter-spacing: -.03em; color: color-mix(in srgb, var(--ink-3) 70%, var(--xbg)); transition: color .2s var(--ease); }
+.xsv__list button span { width: 22px; font-size: .78rem; font-weight: 400; letter-spacing: 0; color: var(--ink-3); }
+.xsv__list button:hover { color: var(--ink-2); }
+.xsv__list button.on { color: var(--ink); }
+.xsv__list button.on span { color: var(--violet); }
 .xsv__media { display: grid; align-self: start; margin-top: 50px; margin-bottom: 30px; }
 .xsv__m { grid-area: 1 / 1; margin: 0; opacity: 0; visibility: hidden; transition: opacity .35s var(--ease), visibility 0s linear .35s; }
 .xsv__m.on { opacity: 1; visibility: visible; transition: opacity .35s var(--ease); }
@@ -175,6 +180,7 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__v img { opacity: 0; transition: opacity .5s var(--ease); }
 .xsv__v img.on { opacity: 1; }
 .xsv__m { position: relative; }
+.xsv__m figcaption { position: absolute; top: 100%; margin-top: 10px; font-size: .88rem; color: var(--ink-3); }
 
 /* ── 6. процесс: 3 шага на сетке, над ними луна в 3 фазах (рисует x.js), под ней текст и инструменты ── */
 .xho__lede { margin-top: 18px; max-width: 64ch; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); }
@@ -247,49 +253,7 @@ html:has(body.x) { scroll-behavior: smooth; }
   .xc__pair, .xc__vid, .xq blockquote, .xsv__m { transition: none; }
 }
 
-/* ══ иерархия и цвет (v24) ══
-   Три уровня, чтобы глазу было за что зацепиться: крупный заголовок, средний акцент (цена, цифра, активный пункт),
-   всё второстепенное (номера, подписи, мета) мелким капсом серым и прижато к углу. */
-.xh2 { font-size: clamp(2.4rem, 4.4vw, 4rem); letter-spacing: -.05em; line-height: .98; }
-.xhero__h { font-size: clamp(2.9rem, 5.4vw, 5.2rem); }
-.xhero__s { font-size: 1.12rem; max-width: 30ch; }
-.xho__lede, .xt__p { font-size: 1.06rem; max-width: 52ch; }
-/* мелкий капс: номера, подписи, мета */
-.xcaps, .xp__n, .xpr__n, .xt__nums span, .xg__head span { font: 500 var(--caps-fs)/1.2 var(--f); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-3); }
-
-/* услуги: номер крошечный в верхнем углу строки, неактивные мельче и светлее, у активного крупно и чёрным, под ним подпись */
-.xsv__list li { position: relative; }
-.xsv__list button { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 0; width: 100%; padding: 18px 0 18px 30px;
-  border: 0; background: none; cursor: var(--cur-ptr); text-align: left; color: color-mix(in srgb, var(--ink-3) 80%, var(--xbg)); transition: color .2s var(--ease); }
-.xsv__list button span { position: absolute; left: 0; top: 21px; font: 500 var(--caps-fs)/1 var(--f); letter-spacing: var(--caps-ls); color: var(--ink-3); }
-.xsv__list button b { font-size: clamp(1.05rem, 1.35vw, 1.2rem); font-weight: 500; letter-spacing: -.02em; line-height: 1.2; transition: font-size .3s var(--ease); }
-.xsv__list button small { display: block; max-height: 0; overflow: hidden; opacity: 0; font-size: .88rem; line-height: 1.4; color: var(--ink-3); transition: max-height .3s var(--ease), opacity .3s var(--ease), margin .3s var(--ease); }
-.xsv__list button:hover { color: var(--ink-2); }
-.xsv__list button.on { color: var(--ink); }
-.xsv__list button.on b { font-size: clamp(1.6rem, 2.4vw, 2.1rem); letter-spacing: -.04em; }
-.xsv__list button.on span { color: var(--violet); top: 23px; }
-.xsv__list button.on small { max-height: 3em; opacity: 1; margin-top: 8px; }
-
-/* работы: картинки крупнее, у карточки имя крупно, мета мелким капсом, цифра как акцент */
-.xg { width: min(880px, 88vw); }
-.xg__head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-.xg__head b { font-size: 1.3rem; letter-spacing: -.03em; }
-.xg__stat b { font-size: 2rem; }
-
-/* цены: название мелким капсом, цена крупно, карточки ниже, без пустоты */
-.xp__c { min-height: clamp(380px, 32vw, 460px); }
-.xp__p { margin-top: 18px; font-size: clamp(2.8rem, 4vw, 3.6rem); }
-.xp__p small { font-size: .9rem; }
-.xp__c--concept .xp__n { color: var(--violet-lt); }
-
-/* процесс: номер и этап мелким капсом, заголовок шага крупнее */
-.xpr__n { color: var(--violet-d); }
-.xpr b { margin-top: 12px; font-size: clamp(1.45rem, 2.2vw, 1.9rem); letter-spacing: -.04em; }
-
-/* созвон: цифры как главный акцент секции */
-.xt__nums b { font-size: clamp(2.4rem, 3.6vw, 3.4rem); color: var(--violet-d); }
-.xt__nums span { margin-top: 10px; }
-
+/* ══ v25: цвет на фоне и контент ══ */
 /* цвет: мягкие фиолетовые пятна на фоне, как в футере, только светлые; медленно плывут */
 #concept, #pricing, #handover, #team { overflow-x: clip; }
 #concept::before, #pricing::before, #handover::before, #team::before { content: ""; position: absolute; z-index: -1; pointer-events: none; aspect-ratio: 1; border-radius: 50%;
@@ -305,78 +269,23 @@ html:has(body.x) { scroll-behavior: smooth; }
 #handover { background: linear-gradient(180deg, var(--xbg), color-mix(in srgb, var(--pale) 70%, var(--xbg)) 22%, color-mix(in srgb, var(--pale) 70%, var(--xbg)) 78%, var(--xbg));
   padding-bottom: clamp(100px, 11vw, 160px); }
 @media (prefers-reduced-motion: reduce) { #concept::before, #pricing::before, #handover::before, #team::before { animation: none; } }
-@media (max-width: 760px) { .xg { width: 88vw; } }
 
-/* ══ редакционная вёрстка (v24, по референсу Adam) ══
-   Как в журнале: огромные заголовки, мелкая мета в строках с тонкими линиями, крупные картинки, почти без карточек.
-   Средних размеров мало: либо очень крупно, либо мелко. */
-body.x { counter-reset: xsec; }
-/* шапка секции: тонкая линия во всю ширину, под ней мелкая строка «номер, название, линия» */
-.xtag { counter-increment: xsec; display: flex; align-items: center; gap: 14px; width: 100%; height: auto; padding: 12px 0 0; margin: 0 0 clamp(28px, 3.4vw, 48px);
-  border-top: 1px solid var(--ink); background: none; color: var(--ink); font: 400 .9rem/1.3 var(--f); letter-spacing: 0; text-transform: none; }
-.xtag i { display: none; }
-.xtag::before { content: counter(xsec, decimal-leading-zero); min-width: 28px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-.xtag::after { content: ""; flex: 0 0 clamp(48px, 9vw, 150px); height: 1px; background: var(--ink); }
-.xsv__l .xtag { align-self: stretch; }
-.xwork > .xw { max-width: calc(var(--wrap) + 2 * var(--xpad)); padding-inline: var(--xpad); }
+/* герой: цифры доверия сразу под кнопками */
+.xhero__proof { list-style: none; margin: 28px 0 0; padding: 18px 0 0; display: flex; gap: clamp(20px, 2.4vw, 32px); border-top: 1px solid var(--line); }
+.xhero__proof li { font-size: .82rem; line-height: 1.3; color: var(--ink-3); }
+.xhero__proof b { display: block; margin-bottom: 4px; font-size: 1.5rem; font-weight: 500; letter-spacing: -.04em; line-height: 1; color: var(--ink); }
 
-/* заголовки секций крупно, плотно */
-.xh2 { font-size: clamp(2.8rem, 5.8vw, 5.6rem); letter-spacing: -.055em; line-height: .92; max-width: 14ch; }
-.xh2--wide { max-width: 18ch; }
+/* работы: одна строка о том, что сделали */
+.xg__desc { margin: -4px 0 12px; font-size: .9rem; line-height: 1.45; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* герой: заголовок во всю ширину, огромный; ниже текст и факты слева, концепт справа */
-.xhero { padding-top: clamp(40px, 5vw, 72px); }
-.xhero__h { font-size: clamp(3.4rem, 9.4vw, 9.6rem); line-height: .86; letter-spacing: -.065em; max-width: 11ch; }
-.xhero__in { margin-top: clamp(56px, 6vw, 88px); }
-.xhero__txt { padding-top: 0; }
-.xhero__s { margin-top: 0; font-size: 1.12rem; max-width: 28ch; color: var(--ink); }
-.xhero__ctas { margin-top: 28px; }
-.xfacts { margin: clamp(36px, 4vw, 56px) 0 0; border-top: 1px solid var(--ink); }
-.xfacts div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: .9rem; line-height: 1.35; }
-.xfacts dt { color: var(--ink-3); }
-.xfacts dd { margin: 0; color: var(--ink); }
+/* отзывы: результат клиента цифрами и ссылка на кейс */
+.xq__proof { margin-top: auto; padding-top: 28px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 28px; font-size: .88rem; color: var(--ink-3); }
+.xq__proof b { margin-right: 6px; font-size: 1.5rem; font-weight: 500; letter-spacing: -.04em; color: var(--ink); }
+.xq__proof a { color: var(--violet-d); text-decoration: underline; text-underline-offset: 4px; transition: color var(--t) var(--ease); }
+.xq__proof a:hover { color: var(--ink); }
+.xq__proof + footer { margin-top: 24px; }
 
-/* отзывы: без карточки, цитата крупно прямо на фоне, линии вместо рамок */
-.xq { background: none; box-shadow: none; border-top: 1px solid var(--line); padding: clamp(28px, 3vw, 40px) 0 0; min-height: clamp(380px, 32vw, 440px); }
-.xq p { font-size: clamp(1.5rem, 2.5vw, 2.3rem); line-height: 1.22; letter-spacing: -.035em; }
-.xq__tp { position: static; justify-self: start; align-self: start; grid-area: 1 / 1; order: -1; padding: 0; background: none; color: var(--violet-d); text-decoration: underline; text-underline-offset: 4px; }
-.xq__tp:hover { background: none; color: var(--ink); }
-.xq blockquote { padding-top: 0; }
-.xq__nav { right: 0; bottom: 0; }
-.xq footer { padding-right: 100px; }
-.xr__logos ul { border-top-color: var(--line); }
-
-/* цены: без белых карточек и теней, колонки разделены тонкими линиями; концепт остаётся тёмным акцентом */
-.xp { column-gap: 0; border-top: 1px solid var(--ink); }
-.xp__c { background: none; box-shadow: none; padding: 22px clamp(18px, 2.2vw, 30px) clamp(22px, 2.4vw, 30px); border-right: 1px solid var(--line); min-height: clamp(360px, 30vw, 440px); }
-.xp__c:first-child { padding-left: 0; }
-.xp__c--concept { border-right: 0; box-shadow: none; padding-left: clamp(22px, 2.6vw, 34px); }
-.xp__p { font-size: clamp(3rem, 5vw, 4.6rem); letter-spacing: -.06em; }
-
-/* процесс: каждый шаг открывается линией, номер мелко */
-.xpr > li { border-top: 1px solid var(--ink); padding-top: 14px; }
-.xpr__n { color: var(--ink-3); }
-
-/* созвон: цифры огромные, подписи мелкие */
-.xt__nums { border-top: 1px solid var(--ink); gap: clamp(28px, 4vw, 64px); }
-.xt__nums b { font-size: clamp(2.8rem, 5vw, 4.6rem); letter-spacing: -.06em; color: var(--ink); }
-
-/* FAQ: первая линия жирнее, как у остальных таблиц */
-.xfaq .fq:first-child { border-top-color: var(--ink); }
-
-/* цвет чуть тише, чтобы не спорил с типографикой */
-#concept::before, #pricing::before, #team::before { opacity: .8; }
-
-@media (max-width: 1000px) {
-  .xhero__in { margin-top: 40px; }
-  .xp__c { border-right: 0; border-bottom: 1px solid var(--line); padding-left: 0; }
-  .xp__c--concept { padding-left: clamp(22px, 2.6vw, 34px); }
-  .xq footer { padding-right: 0; }
-}
-/* правки после первого просмотра */
-.xp__c--concept { background: var(--night); }
-.xhero__h { font-size: clamp(3.2rem, 8.4vw, 8.2rem); max-width: none; }
-.xq__tp { margin-bottom: 18px; }
-.xwork .xtag { margin-bottom: clamp(70px, 8vw, 120px); }
-.xwork__hint { top: calc(clamp(64px, 8vw, 120px) + 26px); }
-@media (max-width: 1000px) { .xp__c { min-height: 0; } .xp__d { margin-bottom: 26px; } }
+/* услуги: под кадром теги и ссылка на страницу услуги */
+.xsv__m figcaption { display: flex; justify-content: space-between; gap: 16px; width: 100%; }
+.xsv__m figcaption a { flex: none; color: var(--violet-d); transition: color var(--t) var(--ease); }
+.xsv__m figcaption a:hover { color: var(--ink); }

@@ -131,14 +131,18 @@ export const home = {
    "name": "Tasnia Huque",
    "role": "Principal at Javelin VP",
    "avatar": "tasnia",
-   "url": "https://www.trustpilot.com/reviews/68811a779569d1770b673aba"
+   "url": "https://www.trustpilot.com/reviews/68811a779569d1770b673aba",
+   "proof": [["$125M", "fund"], ["WordPress", "to Webflow"]],
+   "cs": "javelinvp"
   },
   {
    "text": "Adam and the Unroot team delivered a standout launch site for us. Collaboration was smooth from design through build, and they handled every detail with care. As a designer, I appreciated their can-do approach to exploring and refining ideas, then implementing them faithfully in production.",
    "name": "Adrian Canoso",
    "role": "CEO and Co-Founder at Ambient Dreamie",
    "avatar": "adrian",
-   "url": "https://www.trustpilot.com/reviews/68dad10cbf77717f3c8e7895"
+   "url": "https://www.trustpilot.com/reviews/68dad10cbf77717f3c8e7895",
+   "proof": [["$550K", "raised"], ["$44K", "on Kickstarter"]],
+   "cs": "dreamie"
   },
   {
    "text": "As the co-founder of Wow House Studio, I can confidently say that working with Unroot has been a game-changer for our projects. Adam and his team excel in both design and development, consistently delivering high-quality work with clear and timely communication.",
@@ -156,6 +160,18 @@ export const home = {
   }
  ],
  "faq": [
+  {
+   "q": "How much does it cost?",
+   "a": "A homepage concept is $1,499 and takes 7 days. A Design and Build Sprint is $2,499 a week. Monthly Design and Build is $7,899 a month, with a senior designer and a senior developer."
+  },
+  {
+   "q": "Do you design, build, or both?",
+   "a": "Both. We design in Figma and build in Webflow, Framer or code. A sprint can be design only, build only, or both."
+  },
+  {
+   "q": "How soon can we see something?",
+   "a": "7 days from the payment to a homepage concept you can click through and share with your team."
+  },
   {
    "q": "What exactly do I get for $1,499?",
    "a": "An animated homepage concept, hero plus 3 sections. Designed in Figma and vibe coded into a live preview you can click through, with our take on where your redesign should go. Delivered in 7 days."
@@ -193,6 +209,10 @@ export const home = {
    "a": "Most of our clients build in AI, fintech and health. If you sell a complex product and need a website that explains it fast, we are likely a fit."
   },
   {
+   "q": "Why not hire in-house?",
+   "a": "You get a designer and a developer who already work together, without hiring 2 people. Pay by the week or the month, and stop when the website is done."
+  },
+  {
    "q": "Who owns the files?",
    "a": "You do. Figma files, the Webflow or Framer project, code and assets: everything is yours once the project is paid."
   }
@@ -201,25 +221,26 @@ export const home = {
   {
    "k": "Concept",
    "t": "We start with a concept",
-   "d": "A call and your brief, then a prototype you can click through, made in Figma and Claude.",
+   "d": "A call and your brief first. Then we design a direction in Figma and turn it into an interactive prototype with Claude.",
    "tools": ["Call", "Brief", "Figma", "Claude"]
   },
   {
    "k": "Design",
    "t": "We design every page",
-   "d": "The rest of the website and its design system, with feedback rounds until it feels right.",
+   "d": "Once you like the concept, we design the rest of the website and its design system, with rounds of feedback until it feels right.",
    "tools": ["All pages", "Design system", "Feedback"]
   },
   {
    "k": "Build",
    "t": "We build it and show you how",
-   "d": "Built in Webflow, Framer or code. Your team edits it in the CMS or by asking AI.",
+   "d": "We build it in Webflow, Framer or code, then show your team how to edit it in the CMS or just by asking AI.",
    "tools": ["Webflow", "Framer", "Training"]
   }
  ],
  "services": [
   {
    "name": "Website design",
+   "href": "/web-design",
    "tags": [
     "conversion-focused",
     "UX/UI",
@@ -240,6 +261,7 @@ export const home = {
   },
   {
    "name": "Webflow and Framer",
+   "href": "/web-development",
    "tags": [
     "fully responsive",
     "SEO-ready",
@@ -251,6 +273,7 @@ export const home = {
   },
   {
    "name": "Brand identity",
+   "href": "/logo-design",
    "tags": [
     "logo design",
     "brand guidelines",

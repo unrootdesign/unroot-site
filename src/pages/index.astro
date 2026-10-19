@@ -35,24 +35,20 @@ const schema = [{
 
   <!-- 1. Герой: слева текст и кнопки, справа концепты (табы: анимированные или до и после) -->
   <section class="xs xhero" id="concept" data-mode="anim" aria-label="Concept">
-    <!-- сверху во всю ширину: строка меты и огромный заголовок; ниже слева текст, кнопки и короткая таблица фактов, справа концепт -->
-    <div class="xw xhero__top">
-      <p class="tag xtag"><i></i>Design for AI and tech startups</p>
-      <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
-    </div>
     <div class="xw x3 xhero__in">
       <div class="xhero__txt">
-        <p class="xhero__s">Click through your homepage first. Then we build the website, and your team runs it with&nbsp;AI.</p>
+        <p class="tag xtag"><i></i>Design for AI and tech startups</p>
+        <h1 class="xhero__h">Your new homepage <span>in 7&nbsp;days</span></h1>
+        <p class="xhero__s">Click through your new homepage first. Then we build the full website, and your team runs it with&nbsp;AI.</p>
         <div class="xhero__ctas">
           <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
           <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
         </div>
-        <dl class="xfacts">
-          <div><dt>Concept</dt><dd>$1,499, 7 days</dd></div>
-          <div><dt>Built in</dt><dd>Webflow, Framer or code</dd></div>
-          <div><dt>Team</dt><dd>5 people in Warsaw</dd></div>
-          <div><dt>Clients raised</dt><dd>$130M+</dd></div>
-        </dl>
+        <ul class="xhero__proof">
+          <li><b>$130M+</b>raised by clients</li>
+          <li><b>100+</b>brands</li>
+          <li><b>9</b>years</li>
+        </ul>
       </div>
 
       <div class="xhero__vis s2">
@@ -88,7 +84,6 @@ const schema = [{
 
   <!-- 2. Работы: бегущая лента справа налево, при наведении стоит; на фоне крупная серая подпись -->
   <section class="xs xwork" id="work" aria-label="Case studies">
-    <div class="xw"><p class="tag xtag"><i></i>Selected work</p></div>
     <!-- рукописная подсказка: ленту можно тянуть -->
     <div class="xhint xwork__hint" aria-hidden="true">
       <span>drag me</span>
@@ -105,6 +100,7 @@ const schema = [{
           return (
             <article class="xg" aria-hidden={hide ? 'true' : undefined}>
               <a class="xg__head" href={href} tabindex={hide ? -1 : undefined}><b>{w.name}</b> {w.kind} · {w.scope}</a>
+              <p class="xg__desc">{w.desc}</p>
               <a class="xg__main" href={href} aria-label={`${w.name}, case study`} tabindex={hide ? -1 : undefined}>
                 {[1, 2, 3, 4].map(k => <img src={`${M}w-${w.slug}-${k}.jpg`} alt={k === 1 && !hide ? w.name : ''} class={k === 1 ? 'on' : ''} data-k={k} width="1600" height="900" loading="lazy" decoding="async" draggable="false" />)}
               </a>
@@ -132,6 +128,12 @@ const schema = [{
           {home.quotes.map((q, i) => (
             <blockquote class={i === 0 ? 'on' : ''}>
               <p>&ldquo;{q.text}&rdquo;</p>
+              {q.proof && (
+                <div class="xq__proof">
+                  {q.proof.map(([n, l]) => <span><b>{n}</b>{l}</span>)}
+                  {q.cs && <a href={`/case-studies/${q.cs}`}>Read the case study</a>}
+                </div>
+              )}
               <footer>
                 <img src={`${M}av-${q.avatar}.jpg`} alt="" width="44" height="44" loading="lazy" />
                 <span><b>{q.name}</b>{q.role}</span>
@@ -166,7 +168,7 @@ const schema = [{
         <article class="xp__c">
           <p class="xp__n">Monthly Design and Build</p>
           <p class="xp__p">$7,899<small>/ month</small></p>
-          <p class="xp__d">A senior designer and developer for 4 weeks. Handover and AI setup included. Pause or stop after any month.</p>
+          <p class="xp__d">4 weeks with a senior designer and a senior developer. Handover and AI setup included. Pause or stop after any month.</p>
           <a class="btn btn--line xp__btn" href={CALL}><span>Discuss a project</span><Tri /></a>
         </article>
         <article class="xp__c xp__c--concept">
@@ -174,10 +176,10 @@ const schema = [{
           <p class="xp__n">Not sure where to start?</p>
           <p class="xp__p">$1,499<small>homepage concept, 7 days</small></p>
           <ul class="xp__list">
-            <li>3–4 homepage sections in our direction</li>
-            <li>A live preview to click through and share</li>
-            <li>The files are yours</li>
-            <li>$1,499 counts toward the website if you start within 60 days</li>
+            <li>3–4 homepage sections with our direction for your product</li>
+            <li>A live preview you can click through and share with your team</li>
+            <li>The files are yours to keep and build on</li>
+            <li>The $1,499 goes toward the full website if you start within 60 days</li>
           </ul>
           <a class="btn btn--main xp__btn" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
         </article>
@@ -193,7 +195,7 @@ const schema = [{
           <p class="tag xtag"><i></i>Services</p>
           <h2 class="xh2">What we <span>do</span></h2>
           <ol class="xsv__list">
-            {home.services.map((s, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}><span>{pad(i + 1)}</span><b>{s.name}</b><small>{s.tags.join(', ')}</small></button></li>)}
+            {home.services.map((s, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}><span>{pad(i + 1)}</span>{s.name}</button></li>)}
           </ol>
         </div>
         <div class="xsv__media s2">
@@ -204,6 +206,7 @@ const schema = [{
                   ? <video src={`${M}${s.video}.mp4`} poster={`${M}${s.video}.jpg`} muted loop playsinline preload="none"></video>
                   : s.images.map((x, k) => <img src={`${M}${x}.jpg`} alt={k === 0 ? s.name : ''} class={k === 0 ? 'on' : ''} loading="lazy" />)}
               </div>
+              <figcaption><span>{s.tags.join(', ')}</span>{s.href && <a href={s.href}>Explore {s.name.toLowerCase()} →</a>}</figcaption>
             </figure>
           ))}
         </div>
@@ -216,7 +219,7 @@ const schema = [{
     <div class="xw">
       <p class="tag xtag"><i></i>Process</p>
       <h2 class="xh2 xh2--wide">A website your team runs <span>without us</span></h2>
-      <p class="xho__lede">We design and build the website, then show your team how to run it. After that you change anything without us, and we are a message away.</p>
+      <p class="xho__lede">You come with a project. We start with a concept, design every page and build the website, then show your team how to run it. After that you change anything without waiting for us, and we are a message away if you need help.</p>
       <!-- над шагами полоса с луной в 3 фазах: её рисуют волшебной палочкой (курсором) или она рисуется сама (x.js) -->
       <canvas class="xpr__flow" aria-hidden="true"></canvas>
       <div class="xhint xpr__hint" aria-hidden="true">
@@ -245,7 +248,7 @@ const schema = [{
         <div class="s2">
           <p class="tag xtag"><i></i>Contact</p>
           <h2 class="xh2">Book a call with <span>the people who do the work</span></h2>
-          <p class="xt__p">A team of 5 in Warsaw, no account managers. In 30 minutes you tell us what you are building, we tell you what we would change and how to start. No sales pitch.</p>
+          <p class="xt__p">We are a team of 5 in Warsaw, no account managers in between. In 30 minutes you tell us what you are building, and we tell you what we would change on your website and how we can start. No sales pitch.</p>
         </div>
         <div class="xt__nums">
           <div><b>9</b><span>years</span></div>
