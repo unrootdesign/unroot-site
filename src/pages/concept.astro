@@ -7,32 +7,30 @@ const title = "Homepage redesign in 7 days, $1,499 | Unroot Design";
 const description = "Send us a link. In 7 days you get a clickable animated homepage for $1,499, credited to the full website within 60 days.";
 ---
 <LandingPage title={title} description={description}
-  tag="Concept"
+  media="chatarmin"
   crumbs={[{ name: 'Home', href: '/' }, { name: 'Concept' }]}
-  h1="Your new homepage in 7 days"
+  h1="Your new homepage <span>in 7 days</span>"
   lede="Send us a link. In 7 days you get a clickable, animated version of your new homepage. $1,499, and it goes toward the full website if you start within 60 days."
   sections={[
-    { h: 'What you get', blocks: [{ kind: 'bullets', items: [
+    { h: 'What <span>you get</span>', blocks: [{ kind: 'tiles', items: [
       'An animated homepage concept: hero plus 3 sections.',
       'Designed in Figma and turned into a live preview you can click through and share with your team.',
       'Our direction for where your redesign should go.',
       'The files are yours to keep and build on.',
     ]}]},
-    { h: 'How it works', blocks: [{ kind: 'steps', items: [
+    { h: 'How it <span>works</span>', blocks: [{ kind: 'steps', items: [
       { d: 'Send a link to your current website and any context you have. We read all of it. We do not ask for moodboards or brand kits: choosing the direction is our job.' },
       { d: 'Pay $1,499 securely.' },
       { d: 'In 7 days you get the live preview.' },
     ]}]},
-    { h: 'Before and after', blocks: [
+    { h: 'Before <span>and after</span>', blocks: [
       { kind: 'text', html: ['Each pair shows a homepage before and 7 days later: Chatarmin, Javelin VP, Switch, Epsilon Health, Ambient Dreamie, ResumAI and Leadgains.'] },
       { kind: 'pairs', items: home.ba },
     ]},
-    { h: 'Not included', blocks: [{ kind: 'text', html: [
-      'Revisions. The concept is 1 direction, done once. Revisions happen in the full project, which is priced separately.',
-    ]}]},
-    { h: 'If you do not move forward', blocks: [{ kind: 'text', html: ['You keep the concept and can build it with anyone.'] }]},
-    { h: 'If you do', blocks: [{ kind: 'text', html: [
-      'The $1,499 goes toward the full website if you start within 60 days. See the <a href="/pricing">pricing page</a>.',
+    { blocks: [{ kind: 'cols', items: [
+      { h: 'Not included', html: 'Revisions. The concept is 1 direction, done once. Revisions happen in the full project, which is priced separately.' },
+      { h: 'If you do not move forward', html: 'You keep the concept and can build it with anyone.' },
+      { h: 'If you do', html: 'The $1,499 goes toward the full website if you start within 60 days. See the <a href="/pricing">pricing page</a>.' },
     ]}]},
   ]}
   faqTitle="Questions"

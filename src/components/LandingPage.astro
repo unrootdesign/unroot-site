@@ -1,25 +1,31 @@
 ---
 /* Шаблон отдельных страниц под поисковые запросы: /pricing, /web-design/ai-startups, /concept.
    Текст от Adam (документ «Batch 1: page copy and build notes»), ничего сверх него.
-   Слева заголовок секции, справа содержимое. Вопросы и ответы видны в HTML и дублируются в схеме FAQPage. */
+   Вид как у главной: серый фон, белые карточки с тенью, сетка из 3 колонок, заголовки в 2 тона,
+   тёмный блок со звёздами. Вопросы и ответы есть в HTML и дублируются в схеме FAQPage. */
 import Base from '../layouts/Base.astro';
 import Tri from './Tri.astro';
 import { BUY_CONCEPT, CALL } from '../data/links';
+import '../styles/x.css';
 
 const M = '/home/';
 type Block =
-  | { kind: 'text'; html: string[] }                                  // абзацы, внутри можно <a>
-  | { kind: 'plans'; items: { name: string; price: string; d: string; btn: 'concept' | 'call'; more?: { label: string; href: string } }[] }
-  | { kind: 'bullets'; items: string[] }
+  | { kind: 'text'; html: string[]; big?: boolean }                    // абзацы, внутри можно <a>; big: крупный текст для коротких секций
+  | { kind: 'plans'; items: { name: string; price: string; unit: string; d: string; btn: 'concept' | 'call'; more?: { label: string; href: string } }[] }
+  | { kind: 'tiles'; items: string[] }                                 // пункты списка плитками 2 на 2
   | { kind: 'steps'; items: { t?: string; d: string }[] }
-  | { kind: 'quote'; text: string; name: string; role: string; avatar?: string }
+  | { kind: 'quote'; text: string; name: string; role: string; avatar?: string; logo?: string }
+  | { kind: 'cases'; items: { slug: string; href: string; html: string }[] }
   | { kind: 'pairs'; items: { slug: string; name: string }[] }
+  | { kind: 'cols'; items: { h: string; html: string }[] }             // короткие секции рядом, карточками
   | { kind: 'links'; items: { label: string; href: string }[] };
 export interface Props {
   title: string; description: string;
-  tag: string; h1: string; lede: string;
+  h1: string;          // можно <span> для фиолетовой части
+  lede: string;
+  media?: string;      // видео концепта справа в первом экране (slug из /home/v-*.mp4)
   crumbs: { name: string; href?: string }[];
-  sections: { h: string; blocks: Block[] }[];
+  sections: { h?: string; blocks: Block[] }[];   // h можно с <span> для серой части
   faqTitle: string;
   faq: { q: string; a: string }[];
   closing: string;
@@ -36,73 +42,114 @@ const schema = [
   ...(p.extraSchema ?? []),
 ];
 const Btn = { concept: { href: BUY_CONCEPT, label: 'Get a concept', main: true }, call: { href: CALL, label: 'Discuss a project', main: false } };
+// секции с широким содержимым идут столбиком: заголовок сверху, содержимое на всю ширину
+const WIDE = ['plans', 'steps', 'cases', 'pairs', 'cols', 'tiles'];
+const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind));
 ---
-<Base title={p.title} description={p.description} schema={schema}>
-  <header class="phead">
-    <div class="wrap">
-      <nav class="crumbs mono" aria-label="Breadcrumb">
-        {p.crumbs.map((c, i) => i < p.crumbs.length - 1
-          ? <><a href={c.href}>{c.name}</a><span aria-hidden="true">/</span></>
-          : <span>{c.name}</span>)}
-      </nav>
-      <h1 class="h1 lp__h1">{p.h1}</h1>
-      <p class="lede lp__lede">{p.lede}</p>
-      <div class="ctas">
-        <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
-        <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+<Base title={p.title} description={p.description} schema={schema} bodyClass="x">
+  <section class="xs lph">
+    <div class="xw x3 lph__in">
+      <div class={p.media ? 'lph__t' : 's2 lph__t lph__t--solo'}>
+        <nav class="crumbs mono" aria-label="Breadcrumb">
+          {p.crumbs.map((c, i) => i < p.crumbs.length - 1
+            ? <><a href={c.href}>{c.name}</a><span aria-hidden="true">/</span></>
+            : <span>{c.name}</span>)}
+        </nav>
+        <h1 class="xhero__h lph__h" set:html={p.h1} />
+        <p class="xhero__s lph__s">{p.lede}</p>
+        <div class="xhero__ctas">
+          <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
+          <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
+        </div>
       </div>
+      {p.media && (
+        <div class="s2 lph__m">
+          <div class="lph__f"><video src={`${M}v-${p.media}.mp4`} poster={`${M}v-${p.media}.jpg`} autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video></div>
+        </div>
+      )}
     </div>
-  </header>
+  </section>
 
   {p.sections.map((s) => (
-    <section class="sec">
-      <div class="wrap lp__row">
-        <h2 class="h2 lp__h2">{s.h}</h2>
-        <div class="lp__body">
+    <section class="xs lps">
+      <div class={`xw ${wide(s) ? '' : 'x3 lps__row'}`}>
+        {s.h && <h2 class="xh2 lps__h" set:html={s.h} />}
+        <div class={wide(s) ? 'lps__wide' : 's2 lps__b'}>
           {s.blocks.map((b) => (
             <>
-              {b.kind === 'text' && <div class="lp__text">{b.html.map((t) => <p set:html={t} />)}</div>}
+              {b.kind === 'text' && <div class={b.big ? 'lpt lpt--big' : 'lpt'}>{b.html.map((t) => <p set:html={t} />)}</div>}
+
               {b.kind === 'plans' && (
-                <div class="lp__plans">{b.items.map((it) => (
-                  <article class={`lp__plan${it.btn === 'concept' ? ' lp__plan--concept' : ''}`}>
-                    <p class="mono lp__pn">{it.name}</p>
-                    <p class="lp__pp">{it.price}</p>
-                    <p class="lp__pd">{it.d}</p>
-                    <div class="lp__pa">
-                      <a class={`btn ${Btn[it.btn].main ? 'btn--main' : 'btn--line'}`} href={Btn[it.btn].href}><span>{Btn[it.btn].label}</span><Tri /></a>
-                      {it.more && <a class="link lp__more" href={it.more.href}>{it.more.label} <Tri /></a>}
+                <div class="x3 xp lpp">{b.items.map((it) => (
+                  <article class={`xp__c${it.btn === 'concept' ? ' xp__c--concept' : ''}`}>
+                    {it.btn === 'concept' && <canvas class="stars" data-d=".3" aria-hidden="true"></canvas>}
+                    <p class="xp__n">{it.name}</p>
+                    <p class="xp__p">{it.price}<small>{it.unit}</small></p>
+                    <p class="xp__d">{it.d}</p>
+                    <div class="lpp__a">
+                      {it.more && <a class="link lpp__more" href={it.more.href}>{it.more.label} <Tri /></a>}
+                      <a class={`btn ${Btn[it.btn].main ? 'btn--main' : 'btn--line'} xp__btn`} href={Btn[it.btn].href}><span>{Btn[it.btn].label}</span><Tri /></a>
                     </div>
                   </article>
                 ))}</div>
               )}
-              {b.kind === 'bullets' && <ul class="lp__list">{b.items.map((t) => <li set:html={t} />)}</ul>}
+
+              {b.kind === 'tiles' && (
+                <ul class="lptl">{b.items.map((t, i) => (
+                  <li><span class="lptl__n">{String(i + 1).padStart(2, '0')}</span><p set:html={t} /></li>
+                ))}</ul>
+              )}
+
               {b.kind === 'steps' && (
-                <ol class="lp__steps">{b.items.map((it, i) => (
-                  <li><span class="mono lp__n">{String(i + 1).padStart(2, '0')}</span><p>{it.t && <b>{it.t} </b>}<span set:html={it.d} /></p></li>
+                <ol class="x3 xpr lpst">{b.items.map((it, i) => (
+                  <li>
+                    <span class="xpr__n">{String(i + 1).padStart(2, '0')}</span>
+                    {it.t ? <><b>{it.t.replace(/\.$/, '')}</b><p set:html={it.d} /></> : <p class="lpst__solo" set:html={it.d} />}
+                  </li>
                 ))}</ol>
               )}
+
               {b.kind === 'quote' && (
-                <blockquote class="quote lp__quote">
+                <blockquote class="lpq">
+                  {b.logo && <img class="lpq__logo" src={`${M}logos/${b.logo}.png`} alt="" height="22" loading="lazy" />}
                   <p>{b.text}</p>
                   <footer>
-                    {b.avatar && <img src={`${M}av-${b.avatar}.jpg`} alt="" width="46" height="46" loading="lazy" />}
-                    <span><b>{b.name}</b><s>{b.role}</s></span>
+                    {b.avatar && <img src={`${M}av-${b.avatar}.jpg`} alt="" width="44" height="44" loading="lazy" />}
+                    <span><b>{b.name}</b>{b.role}</span>
                   </footer>
                 </blockquote>
               )}
-              {b.kind === 'pairs' && (
-                <ul class="lp__pairs">{b.items.map((x) => (
+
+              {b.kind === 'cases' && (
+                <ul class="lpc">{b.items.map((c) => (
                   <li>
-                    <p class="lp__pairn">{x.name}</p>
-                    <div class="lp__pair">
-                      <figure><figcaption class="mono">Before</figcaption><img src={`${M}p-${x.slug}-before.jpg`} alt={`${x.name} homepage before`} width="620" height="1033" loading="lazy" decoding="async" /></figure>
-                      <figure><figcaption class="mono lp__after">After, 7 days later</figcaption><img src={`${M}p-${x.slug}-after.jpg`} alt={`${x.name} homepage after`} width="620" height="1033" loading="lazy" decoding="async" /></figure>
-                    </div>
+                    <a class="lpc__img" href={c.href} tabindex="-1" aria-hidden="true"><img src={`${M}w-${c.slug}-1.jpg`} alt="" width="1600" height="900" loading="lazy" decoding="async" /></a>
+                    <p set:html={c.html} />
                   </li>
                 ))}</ul>
               )}
+
+              {b.kind === 'pairs' && (
+                <div class="lpb" data-lpb>
+                  <ol class="xc__names lpb__names">{b.items.map((x, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}>{x.name}</button></li>)}</ol>
+                  <div class="lpb__stage">{b.items.map((x, i) => (
+                    <div class={`lpb__pair${i === 0 ? ' on' : ''}`} data-i={i}>
+                      <figure><figcaption>Before</figcaption><img src={`${M}p-${x.slug}-before.jpg`} alt={`${x.name} homepage before`} width="620" height="1033" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" /></figure>
+                      <span class="lpb__arrow" aria-hidden="true">→</span>
+                      <figure><figcaption class="after">After, 7 days later</figcaption><img src={`${M}p-${x.slug}-after.jpg`} alt={`${x.name} homepage after`} width="620" height="1033" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" /></figure>
+                    </div>
+                  ))}</div>
+                </div>
+              )}
+
+              {b.kind === 'cols' && (
+                <div class="x3 lpk">{b.items.map((c) => (
+                  <div class="lpk__c"><h2 class="lpk__h">{c.h}</h2><p set:html={c.html} /></div>
+                ))}</div>
+              )}
+
               {b.kind === 'links' && (
-                <ul class="lp__links">{b.items.map((l) => <li><a class="link" href={l.href}>{l.label} <Tri /></a></li>)}</ul>
+                <ul class="lpl">{b.items.map((l) => <li><a class="link" href={l.href}>{l.label} <Tri /></a></li>)}</ul>
               )}
             </>
           ))}
@@ -111,80 +158,146 @@ const Btn = { concept: { href: BUY_CONCEPT, label: 'Get a concept', main: true }
     </section>
   ))}
 
-  <section class="sec" id="faq">
-    <div class="wrap lp__row">
-      <h2 class="h2 lp__h2">{p.faqTitle}</h2>
-      <div class="lp__body lp__faq">
-        {p.faq.map((f) => <div class="lp__q"><h3>{f.q}</h3><p>{f.a}</p></div>)}
-      </div>
+  <section class="xs lps" id="faq">
+    <div class="xw x3 xfaq lpf">
+      <h2 class="xh2 lps__h" set:html={p.faqTitle} />
+      <div class="s2">{p.faq.map((f, i) => <details class="fq" open={i === 0}><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
     </div>
   </section>
 
-  <section class="sec">
-    <div class="wrap lp__row">
-      <p class="h2 lp__h2 lp__close">{p.closing}</p>
-      <div class="lp__body">
-        <div class="ctas lp__closeb">
-          <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, <span class="nw">$1,499</span></span><Tri /></a>
-          <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
-        </div>
+  <section class="xs lps lpz">
+    <div class="xw lpz__in">
+      <p class="xh2 lpz__h">{p.closing}</p>
+      <div class="xhero__ctas lpz__b">
+        <a class="btn btn--main" href={BUY_CONCEPT}><span>Get a concept, $1,499</span><Tri /></a>
+        <a class="btn btn--line" href={CALL}><span>Discuss a project</span><Tri /></a>
       </div>
     </div>
   </section>
 </Base>
 
+<script>
+  // до и после: по клику на название показываем нужную пару
+  document.querySelectorAll<HTMLElement>('[data-lpb]').forEach((root) => {
+    const btns = root.querySelectorAll<HTMLButtonElement>('.lpb__names button');
+    const pairs = root.querySelectorAll<HTMLElement>('.lpb__pair');
+    btns.forEach((b) => b.addEventListener('click', () => {
+      const i = b.dataset.i;
+      btns.forEach((x) => x.classList.toggle('on', x === b));
+      pairs.forEach((x) => x.classList.toggle('on', x.dataset.i === i));
+    }));
+  });
+</script>
+
 <style>
-  .lp__h1 { max-width: 16ch; }
-  .lp__lede { max-width: 60ch; }
-  .lp__row { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
-  @media (max-width: 900px) { .lp__row { grid-template-columns: 1fr; } }
-  .lp__h2 { position: sticky; top: calc(var(--bar) + 32px); }
-  @media (max-width: 900px) { .lp__h2 { position: static; } }
-  .lp__body > * + * { margin-top: clamp(24px, 3vw, 36px); }
-  .lp__text { max-width: 62ch; }
-  .lp__text p { color: var(--ink-2); font-size: 1.06rem; line-height: 1.7; }
-  .lp__text p + p { margin-top: 1em; }
-  .lp__text a, .lp__list a, .lp__steps a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--violet); text-underline-offset: 4px; transition: color var(--t) var(--ease); }
-  .lp__text a:hover, .lp__list a:hover, .lp__steps a:hover { color: var(--violet-d); }
-  .lp__text b { color: var(--ink); font-weight: 500; }
+  /* первый экран: как герой главной, крошки вместо значка */
+  .lph { padding-top: 72px; }
+  .lph .crumbs { margin-bottom: 28px; }
+  .lph__h :global(span) { color: var(--violet); }
+  .lph__t--solo .lph__h { max-width: 14ch; }
+  .lph__s { max-width: 46ch; }
+  .lph__t:not(.lph__t--solo) .lph__s { max-width: 34ch; }
+  .lph__in { align-items: center; }
+  .lph__m { align-self: center; padding-left: clamp(24px, 4vw, 64px); }
+  .lph__f { aspect-ratio: 16 / 9; overflow: hidden; background: var(--white);
+    box-shadow: 0 1px 0 var(--line), 0 40px 80px -46px color-mix(in srgb, var(--night) 55%, transparent); }
+  .lph__f video { display: block; width: 100%; height: 100%; object-fit: cover; transform: scale(1.012); }
 
-  /* цены: карточки как на главной, концепт тёмный */
-  .lp__plans { display: grid; gap: 16px; }
-  .lp__plan { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 24px; padding: clamp(22px, 2.6vw, 30px); background: var(--white); border: 1px solid var(--line); }
-  .lp__pn { grid-column: 1 / -1; color: var(--ink-3); }
-  .lp__pp { font-size: clamp(2.2rem, 3.4vw, 2.8rem); font-weight: 500; letter-spacing: -.05em; line-height: 1; }
-  .lp__pd { grid-column: 1 / -1; margin-top: 8px; color: var(--ink-2); line-height: 1.6; max-width: 58ch; }
-  .lp__pa { grid-column: 1 / -1; margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
-  .lp__plan--concept { background: var(--night); border-color: var(--night); color: #fff; }
-  .lp__plan--concept .lp__pn { color: var(--violet-lt); }
-  .lp__plan--concept .lp__pd { color: color-mix(in srgb, #fff 75%, transparent); }
-  .lp__plan--concept .lp__more { color: #fff; }
+  /* секции: отступы меньше, чем на главной, страница короче */
+  .lps { padding-top: clamp(96px, 10vw, 152px); }
+  .lps__row { align-items: start; }
+  .lps__h :global(span) { color: var(--ink-3); }
+  .lps__row .lps__h { position: sticky; top: calc(var(--bar) + 32px); }
+  .lps__wide { margin-top: clamp(32px, 4vw, 48px); }
+  .lps__wide > * + * { margin-top: var(--xgap); }
+  .lps__b > * + * { margin-top: 28px; }
 
-  .lp__list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
-  .lp__list li { position: relative; padding: 14px 0 14px 22px; border-bottom: 1px solid var(--line); line-height: 1.55; }
-  .lp__list li::before { content: ""; position: absolute; left: 1px; top: 1.4em; width: 7px; height: 7px; background: var(--violet); clip-path: polygon(0 0, 100% 0, 100% 100%); }
-  .lp__steps { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
-  .lp__steps li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); }
-  .lp__steps p { line-height: 1.6; color: var(--ink-2); }
-  .lp__steps b { color: var(--ink); font-weight: 500; }
-  .lp__n { color: var(--violet-d); padding-top: 4px; }
-  .lp__quote s { display: block; text-decoration: none; color: var(--ink-3); font-size: .9rem; }
+  .lpt { max-width: 60ch; }
+  .lpt p { font-size: 1.06rem; line-height: 1.6; color: var(--ink-2); }
+  .lpt p + p { margin-top: 1em; }
+  .lpt--big { max-width: 46ch; }
+  .lpt--big p { font-size: clamp(1.15rem, 1.6vw, 1.42rem); line-height: 1.42; letter-spacing: -.02em; font-weight: 500; color: var(--ink); }
+  .lpt--big p + p { margin-top: .7em; }
+  .lpt :global(a), .lptl :global(a), .lpc :global(a), .lpk :global(a), .lpst :global(a) { color: inherit; text-decoration: underline; text-decoration-color: var(--violet); text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: color var(--t) var(--ease); }
+  .lpt :global(a:hover), .lptl :global(a:hover), .lpc :global(a:hover), .lpk :global(a:hover) { color: var(--violet-d); }
+  .lpt :global(b), .lpc :global(b) { font-weight: 500; color: var(--ink); }
 
-  /* до и после: 7 пар с главной */
-  .lp__pairs { list-style: none; padding: 0; margin: 0; display: grid; gap: clamp(32px, 4vw, 48px); }
-  .lp__pairn { font-size: 1.15rem; font-weight: 500; letter-spacing: -.02em; margin-bottom: 12px; }
-  .lp__pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.6vw, 18px); }
-  .lp__pair figure { margin: 0; }
-  .lp__pair figcaption { margin-bottom: 8px; color: var(--ink-3); }
-  .lp__pair .lp__after { color: var(--violet-d); }
-  .lp__pair img { display: block; width: 100%; height: auto; background: var(--white); border: 1px solid var(--line); }
-  .lp__pair figure:last-child img { border-color: var(--violet); }
+  /* цены: карточки главной, ссылка «как работает» над кнопкой */
+  .lpp { margin-top: 0; }
+  .lpp__a { margin-top: auto; display: grid; gap: 18px; }
+  .lpp__a .xp__btn { margin-top: 0; }
+  .lpp__more { color: #fff; justify-self: start; }
+  .lpp__more:hover { color: var(--violet-lt); }
+  .xp__c--concept :global(.btn--main .tri) { color: #fff; }
+  .xp__c--concept .xp__d { color: color-mix(in srgb, #fff 72%, transparent); }
 
-  .lp__links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 14px 28px; }
-  .lp__faq { border-top: 1px solid var(--line); }
-  .lp__q { padding: 22px 0; border-bottom: 1px solid var(--line); }
-  .lp__q h3 { font-size: 1.15rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.3; }
-  .lp__q p { margin-top: 10px; color: var(--ink-2); line-height: 1.6; max-width: 62ch; }
-  .lp__close { max-width: 18ch; }
-  .lp__closeb { margin-top: 0; }
+  /* пункты плитками */
+  .lptl { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--xgap); }
+  .lptl li { display: flex; flex-direction: column; gap: 28px; min-height: 180px; padding: clamp(22px, 2.4vw, 32px); background: var(--white); box-shadow: var(--xsh); }
+  .lptl__n { font-size: .85rem; color: var(--violet-d); font-variant-numeric: tabular-nums; }
+  .lptl p { margin-top: auto; font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.35; letter-spacing: -.02em; font-weight: 500; }
+
+  /* шаги: как процесс на главной, без шага-заголовка текст крупнее */
+  .lpst { margin-top: 0; padding-top: 24px; border-top: 1px solid var(--line); }
+  .lpst__solo { margin-top: 10px !important; font-size: clamp(1.1rem, 1.5vw, 1.3rem) !important; line-height: 1.38 !important; letter-spacing: -.02em; font-weight: 500; color: var(--ink) !important; }
+
+  /* отзыв: белая карточка, как на главной */
+  .lpq { margin: 0; padding: clamp(28px, 3.4vw, 48px); background: var(--white); box-shadow: var(--xsh); }
+  .lpq__logo { display: block; height: 22px; width: auto; margin-bottom: 28px; opacity: .55; filter: grayscale(1); }
+  .lpq p { font-size: clamp(1.2rem, 1.8vw, 1.55rem); line-height: 1.38; letter-spacing: -.025em; font-weight: 500; }
+  .lpq footer { margin-top: 32px; display: flex; align-items: center; gap: 12px; font-size: .9rem; color: var(--ink-3); line-height: 1.35; }
+  .lpq footer img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+  .lpq footer b { display: block; color: var(--ink); font-weight: 500; }
+
+  /* кейсы: кадр и строка под ним */
+  .lpc { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px var(--xgap); }
+  .lpc__img { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--white); box-shadow: var(--xsh); transition: box-shadow var(--t) var(--ease); }
+  .lpc__img:hover { box-shadow: 0 0 0 2px var(--violet); }
+  .lpc__img img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .lpc p { margin-top: 14px; font-size: 1rem; color: var(--ink-2); }
+
+  /* до и после: одна пара за раз, названия сверху */
+  .lpb__names { justify-content: flex-start; flex-wrap: wrap; row-gap: 8px; margin-bottom: 28px; }
+  .lpb__names button { font-size: 1.05rem; }
+  .lpb__stage { display: grid; }
+  .lpb__pair { grid-area: 1 / 1; display: flex; justify-content: center; align-items: flex-start; gap: 22px; opacity: 0; visibility: hidden;
+    transition: opacity .4s var(--ease), visibility 0s linear .4s; }
+  .lpb__pair.on { opacity: 1; visibility: visible; transition: opacity .4s var(--ease); }
+  .lpb__pair figure { margin: 0; width: min(360px, 42%); }
+  .lpb__pair figcaption { height: 30px; font-size: .88rem; color: var(--ink-3); }
+  .lpb__pair figcaption.after { color: var(--violet-d); font-weight: 500; }
+  .lpb__pair img { display: block; width: 100%; height: auto; background: var(--white); box-shadow: var(--xsh); }
+  .lpb__pair figure:last-child img { box-shadow: 0 0 0 2px var(--violet), 0 30px 60px -30px color-mix(in srgb, var(--violet) 55%, transparent); }
+  .lpb__arrow { flex: none; margin-top: 26px; font-size: 1.4rem; line-height: 1; color: var(--violet); }
+
+  /* короткие секции рядом карточками */
+  .lpk { row-gap: var(--xgap); }
+  .lpk__c { padding: clamp(24px, 2.6vw, 34px); background: var(--white); box-shadow: var(--xsh); }
+  .lpk__h { font-size: clamp(1.3rem, 1.9vw, 1.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.15; }
+  .lpk__c p { margin-top: 14px; font-size: 1rem; line-height: 1.55; color: var(--ink-2); }
+
+  .lpl { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px 28px; }
+  .lpl .link { color: var(--ink-2); }
+  .lpl .link:hover { color: var(--violet-d); }
+
+  .lpf { padding-bottom: 0; }
+  .lpf .lps__h { position: sticky; top: calc(var(--bar) + 32px); }
+
+  /* последняя строка: вопрос слева, кнопки справа; тёмный блок дальше даёт футер */
+  .lpz { padding-bottom: clamp(100px, 10vw, 140px); }
+  .lpz__in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 28px 48px; padding-top: clamp(40px, 5vw, 64px); border-top: 1px solid var(--line); }
+  .lpz__h { max-width: 20ch; }
+  .lpz__b { margin-top: 0; }
+
+  @media (max-width: 1000px) {
+    .lps__row .lps__h, .lpf .lps__h { position: static; }
+    .lph__m { margin-top: 8px; padding-left: 0; }
+  }
+  @media (max-width: 760px) {
+    .lptl, .lpc { grid-template-columns: 1fr; }
+    .lptl li { min-height: 0; }
+    .lpb__pair { gap: 8px; }
+    .lpb__pair figure { width: calc(50% - 14px); }
+    .lpb__arrow { font-size: 1rem; }
+  }
 </style>
