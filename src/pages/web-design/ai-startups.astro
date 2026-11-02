@@ -1,0 +1,52 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+// текст из документа Adam «Batch 1: page copy and build notes», Page 2
+const title = "Website design for AI startups | Unroot Design";
+const description = "We design websites for AI startups that explain the product in 10 seconds. Concept in 7 days, a landing page in a month.";
+---
+<LandingPage title={title} description={description}
+  tag="Website design"
+  crumbs={[{ name: 'Home', href: '/' }, { name: 'Website design', href: '/web-design' }, { name: 'AI startups' }]}
+  h1="Website design for AI startups"
+  lede="AI products are hard to explain. Our rule for an AI website: show the product on the first screen."
+  sections={[
+    { h: 'What the first screen has to do in 10 seconds', blocks: [{ kind: 'text', html: [
+      'A visitor must be able to answer 3 questions: What does it do? Who is it for? What do I do next? That is the test we run on every first screen.',
+    ]}]},
+    { h: 'How we show the product', blocks: [{ kind: 'text', html: [
+      'We show the product instead of describing it. Animated interface, 3D and motion, used where they explain how an agent or a model works. We clarify complex products and ship in Webflow or Framer.',
+    ]}]},
+    { h: 'Work', blocks: [
+      { kind: 'text', html: ['<b>Sintra</b>, an AI platform for autonomous agents.'] },
+      { kind: 'quote', text: '“The designs are honestly some of the coolest stuff I have seen out there. If you are on a search for truly creative and unique web designs, these guys know what they are doing.”', name: 'Rokas Judickas', role: 'Founding designer at Sintra', avatar: 'rokas' },
+      { kind: 'text', html: [
+        '<a href="/case-studies/dreamie"><b>Ambient Dreamie</b></a>, healthtech: $550K raised. <a href="/case-studies/trustyfy"><b>Trustyfy</b></a>, fintech: $6.8M raised. <a href="/case-studies/switch"><b>Switch</b></a>, fintech: 100K+ active users. <a href="/case-studies/epsilon-health"><b>Epsilon Health</b></a>, medtech radiology.',
+        'Most of our clients build in AI, fintech and health.',
+      ]},
+    ]},
+    { h: 'How we work', blocks: [{ kind: 'steps', items: [
+      { t: 'Concept.', d: 'A call and your brief first. Then we design a direction in Figma and turn it into an interactive prototype with Claude.' },
+      { t: 'Design.', d: 'Once you like the concept, we design every page and the design system, with rounds of feedback until it feels right.' },
+      { t: 'Build and handover.', d: 'We build it in Webflow, Framer or code, then show your team how to edit it in the CMS or by asking AI.' },
+    ]}]},
+    { h: 'What it costs', blocks: [{ kind: 'text', html: [
+      'The <a href="/concept">concept</a> is $1,499 and takes 7 days. A sprint is $2,499 a week. A month is $7,899. Details on the <a href="/pricing">pricing page</a>.',
+    ]}]},
+    { h: 'After launch', blocks: [{ kind: 'text', html: [
+      'Your team changes copy, pages and posts by asking AI. One of our clients runs his website this way and has not needed to hire anyone for it.',
+    ]}]},
+  ]}
+  faqTitle="Questions"
+  faq={[
+    { q: 'Do you only work with AI startups?', a: 'Most of our clients build in AI, fintech and health. If you sell a complex product and need a website that explains it fast, we are likely a fit.' },
+    { q: 'How fast can the website launch?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+    { q: 'Which platform do you build in?', a: 'Webflow, Framer or code.' },
+    { q: 'Who owns the files?', a: 'You do. Everything is yours once the project is paid.' },
+  ]}
+  closing="Take the concept, or want a call first?"
+  extraSchema={[{
+    '@context': 'https://schema.org', '@type': 'Service', name: 'Website design for AI startups', serviceType: 'Website design',
+    description, url: 'https://unroot.design/web-design/ai-startups',
+    provider: { '@type': 'Organization', name: 'Unroot Design', url: 'https://unroot.design' },
+  }]}
+/>

@@ -257,3 +257,10 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xbadge { display: block; width: fit-content; margin-bottom: 24px; transition: opacity var(--t) var(--ease); }
 .xbadge img { display: block; height: 26px; width: auto; }
 .xbadge:hover { opacity: .85; }
+
+/* ссылки на отдельные страницы /concept и /pricing под кнопками героя и под заголовком цен */
+.xhero__more { margin-top: 18px; color: var(--ink-2); }
+.xhero__more:hover { color: var(--violet-d); }
+.xp__links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 20px; }
+.xp__links .link { color: var(--ink-2); }
+.xp__links .link:hover { color: var(--violet-d); }

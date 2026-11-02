@@ -10,7 +10,7 @@ type Block =
   | { kind: 'steps'; items: { t: string; d?: string }[] }
   | { kind: 'list'; items: Item[] }
   | { kind: 'text'; paras: string[] }
-  | { kind: 'pills'; items: string[]; note?: string }
+  | { kind: 'pills'; items: string[]; note?: string; links?: Record<string, string> }
   | { kind: 'compare'; cols: { t: string; items: string[] }[]; note?: string }
   | { kind: 'gallery'; images: { src: string; alt?: string }[] };
 export interface Section { id?: string; tag: string; title: string; acc?: string; blocks: Block[]; image?: { src: string; alt?: string } }
@@ -62,7 +62,7 @@ const itemD = (i: Item) => typeof i === 'string' ? '' : (i.d ?? '');
               )}
               {b.kind === 'text' && <div class="sv__text">{b.paras.map((t) => <p>{t}</p>)}</div>}
               {b.kind === 'pills' && (
-                <div><ul class="sv__pills">{b.items.map((t) => <li class="mono">{t}</li>)}</ul>{b.note && <p class="sv__note">{b.note}</p>}</div>
+                <div><ul class="sv__pills">{b.items.map((t) => <li class="mono">{b.links?.[t] ? <a href={b.links[t]}>{t} <Tri /></a> : t}</li>)}</ul>{b.note && <p class="sv__note">{b.note}</p>}</div>
               )}
               {b.kind === 'compare' && (
                 <div>
@@ -127,6 +127,8 @@ const itemD = (i: Item) => typeof i === 'string' ? '' : (i.d ?? '');
   .sv__text p + p { margin-top: 1em; }
   .sv__pills { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .sv__pills li { padding: 9px 12px; background: var(--pale); color: var(--violet-d); }
+  .sv__pills a { display: inline-flex; align-items: center; gap: 8px; text-decoration: underline; text-underline-offset: 3px; }
+  .sv__pills a:hover { color: var(--ink); }
   .sv__note { margin-top: 18px; color: var(--ink-2); max-width: 62ch; }
   .sv__cmp { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 40px); }
   @media (max-width: 700px) { .sv__cmp { grid-template-columns: 1fr; } }

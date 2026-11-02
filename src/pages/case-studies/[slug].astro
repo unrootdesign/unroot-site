@@ -86,6 +86,7 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
     <div class="wrap">
       <p class="tag"><i></i>More work</p>
       <h2 class="h2">Other <span class="acc">projects</span></h2>
+      <p class="cs__ai"><a class="link" href="/web-design/ai-startups">Website design for AI startups <Tri /></a></p>
       <ul class="cards cs__more" id="csMore">
         {others.map(o => (
           <li class="card"><a href={`/case-studies/${o.data.slug}`}>
@@ -112,6 +113,7 @@ const THUMB: Record<string, string> = { dreamie: '/home/w-dreamie-1.jpg', switch
   .cs__grid > div > .tag { margin-top: 0; }
   .cs__h { font-size: clamp(2.4rem, 4vw, 3.4rem); }
   .cs__visit { margin-top: 28px; }
+  .cs__ai { margin-top: 16px; }
   .cs__lede { margin-top: 0; margin-bottom: 28px; max-width: none; }
   .cs__stack { display: grid; gap: clamp(20px, 3vw, 32px); align-content: start; }
   .cs__img { width: 100%; height: auto; display: block; border: 1px solid var(--line); background: #fff; }

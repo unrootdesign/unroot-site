@@ -3,14 +3,14 @@ import Tri from './Tri.astro';
 import { BUY_CONCEPT, CALL, SOCIAL } from '../data/links';
 const cols = [
   { title: 'Browse', links: [
-    ['/#concept', 'Concept'], ['/services', 'Services'],
+    ['/concept', 'Concept'], ['/pricing', 'Pricing'], ['/services', 'Services'],
     ['/templates', 'Templates'], ['/blog', 'Blog'], ['/careers', 'Careers'] ]},
   { title: 'Work', links: [
     ['/case-studies/dreamie', 'Ambient Dreamie'], ['/case-studies/javelinvp', 'Javelin VP'],
     ['/case-studies/switch', 'Switch'], ['/case-studies/trustyfy', 'Trustyfy'],
     ['/case-studies/epsilon-health', 'Epsilon Health'] ]},
   { title: 'Services', links: [
-    ['/web-design', 'Website design'], ['/web-development', 'Webflow and Framer'],
+    ['/web-design', 'Website design'], ['/web-design/ai-startups', 'Websites for AI startups'], ['/web-development', 'Webflow and Framer'],
     ['/logo-design', 'Logo and branding'], ['/services#3d', '3D and AI visuals'],
     ['/services', 'All services'] ]},
   { title: 'Say hello', links: SOCIAL.map(s => [s.href, s.label]) },

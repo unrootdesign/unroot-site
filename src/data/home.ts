@@ -182,7 +182,7 @@ export const home = {
   },
   {
    "q": "Is an AI doing the design?",
-   "a": "No. Designers make every decision on direction and layout. AI helps us write the code, which is why a full website fits into a month."
+   "a": "No. Designers make every decision on direction and layout. AI helps us write the code, which is why a landing page plus a few pages fits into a month."
   },
   {
    "q": "How is Monthly Design and Build different from a subscription?",
