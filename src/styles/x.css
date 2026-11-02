@@ -252,3 +252,6 @@ html:has(body.x) { scroll-behavior: smooth; }
   html:has(body.x) { scroll-behavior: auto; }
   .xc__pair, .xc__vid, .xq blockquote, .xsv__m { transition: none; }
 }
+
+/* значок партнёра Webflow в герое вместо метки, той же высоты, чтобы верх текста не сдвинулся */
+.xbadge { display: block; height: 26px; width: auto; margin-bottom: 24px; }
