@@ -207,7 +207,6 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
   .lps { padding-top: clamp(96px, 10vw, 152px); }
   .lps__row { align-items: start; }
   .lps__h :global(span) { color: var(--ink-3); }
-  .lps__row .lps__h { position: sticky; top: calc(var(--bar) + 32px); }
   .lps__wide { margin-top: clamp(32px, 4vw, 48px); }
   .lps__wide > * + * { margin-top: var(--xgap); }
   .lps__b > * + * { margin-top: 28px; }
@@ -281,7 +280,6 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
   .lpl .link:hover { color: var(--violet-d); }
 
   .lpf { padding-bottom: 0; }
-  .lpf .lps__h { position: sticky; top: calc(var(--bar) + 32px); }
 
   /* последняя строка: вопрос слева, кнопки справа; тёмный блок дальше даёт футер */
   .lpz { padding-bottom: clamp(100px, 10vw, 140px); }
@@ -290,7 +288,6 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
   .lpz__b { margin-top: 0; }
 
   @media (max-width: 1000px) {
-    .lps__row .lps__h, .lpf .lps__h { position: static; }
     .lph__m { margin-top: 8px; padding-left: 0; }
   }
   @media (max-width: 760px) {
