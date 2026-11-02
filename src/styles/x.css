@@ -254,4 +254,6 @@ html:has(body.x) { scroll-behavior: smooth; }
 }
 
 /* значок партнёра Webflow в герое вместо метки, той же высоты, чтобы верх текста не сдвинулся */
-.xbadge { display: block; height: 26px; width: auto; margin-bottom: 24px; }
+.xbadge { display: block; width: fit-content; margin-bottom: 24px; transition: opacity var(--t) var(--ease); }
+.xbadge img { display: block; height: 26px; width: auto; }
+.xbadge:hover { opacity: .85; }
