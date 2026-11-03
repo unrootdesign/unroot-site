@@ -2,7 +2,7 @@
 import LandingPage from '../../components/LandingPage.astro';
 import { service } from '../../data/schema';
 // текст из документа Adam «Batch 2: page copy and build notes», Page 3.
-// Вопрос «Do you write the medical copy?» помечен CHECK, ждёт ответа Adam, на страницу не идёт
+// Ответ на «Do you write the medical copy?» со слов Adam, 3 ноября
 const title = "Website design for healthtech startups | Unroot Design";
 const description = "Websites for healthtech and medtech startups, with work for Ambient Dreamie and Epsilon Health. Concept in 7 days.";
 const path = '/web-design/healthtech';
@@ -34,6 +34,7 @@ const path = '/web-design/healthtech';
   ]}
   faqTitle="Questions"
   faq={[
+    { q: 'Do you write the medical copy?', a: 'We help with it. We ask you what we need to know about the product, then write the copy with AI based on your answers. It usually takes a few rounds.' },
     { q: 'How fast can the website launch?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
     { q: 'Who owns the files?', a: 'You do, once the project is paid.' },
   ]}
