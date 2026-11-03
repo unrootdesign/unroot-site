@@ -1,0 +1,42 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import { service } from '../../data/schema';
+// текст из документа Adam «Batch 2: page copy and build notes», Page 3.
+// Вопрос «Do you write the medical copy?» помечен CHECK, ждёт ответа Adam, на страницу не идёт
+const title = "Website design for healthtech startups | Unroot Design";
+const description = "Websites for healthtech and medtech startups, with work for Ambient Dreamie and Epsilon Health. Concept in 7 days.";
+const path = '/web-design/healthtech';
+---
+<LandingPage title={title} description={description}
+  media="dreamie"
+  crumbs={[{ name: 'Home', href: '/' }, { name: 'Website design', href: '/web-design' }, { name: 'Healthtech' }]}
+  h1="Website design for healthtech <span>and medtech startups</span>"
+  lede="A health product has to be understood by a patient, a doctor and an investor, often on the same page. Our rule: the first screen says what the product does and for whom, in one sentence, before anyone scrolls."
+  sections={[
+    { h: 'How we show <span>the product</span>', blocks: [{ kind: 'text', big: true, html: [
+      'We show how it works: the device, the interface or the flow. Animation and 3D are used to explain, so a visitor sees what happens instead of reading a paragraph.',
+    ]}]},
+    { h: 'Health <span>work</span>', blocks: [
+      { kind: 'work', items: [
+        { slug: 'dreamie', html: '<b>Ambient Dreamie</b>, healthtech: $550K raised, and $44K on Kickstarter. We handled design, 3D visuals and website animation.' },
+        { slug: 'epsilon', html: '<b>Epsilon Health</b>, medtech radiology.' },
+      ]},
+      { kind: 'text', html: ['Most of our clients build in AI, fintech and health.'] },
+    ]},
+    { h: 'How we <span>work</span>', blocks: [{ kind: 'steps', items: [
+      { t: 'Concept.', d: '$1,499, 7 days.' },
+      { t: 'Design and build.', d: 'Every page and the design system, then the build.' },
+      { t: 'Handover.', d: 'Your team edits the website by asking AI or in the CMS.' },
+    ]}]},
+    { h: 'What it <span>costs</span>', blocks: [{ kind: 'text', big: true, html: [
+      '<a href="/concept">Concept</a> $1,499, a sprint $2,499 a week, a month $7,899. See the <a href="/pricing">pricing page</a>.',
+    ]}]},
+  ]}
+  faqTitle="Questions"
+  faq={[
+    { q: 'How fast can the website launch?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+    { q: 'Who owns the files?', a: 'You do, once the project is paid.' },
+  ]}
+  closing="Take the concept, or want a call first?"
+  extraSchema={[service('Website design for healthtech and medtech startups', 'Website design', description, path)]}
+/>

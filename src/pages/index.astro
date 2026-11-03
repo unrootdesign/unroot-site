@@ -187,6 +187,10 @@ const schema = [{
           <ol class="xsv__list">
             {home.services.map((s, i) => <li><button type="button" class={i === 0 ? 'on' : ''} data-i={i}><span>{pad(i + 1)}</span>{s.name}</button></li>)}
           </ol>
+          <ul class="xsv__more">
+            {[['/web-design/ai-startups', 'AI startups'], ['/web-design/fintech', 'Fintech'], ['/web-design/healthtech', 'Healthtech'], ['/web-design/seed-stage-startups', 'Seed stage'], ['/web-design/ai-mvp-redesign', 'AI MVP redesign'], ['/web-development/webflow-agency-for-startups', 'Webflow agency for startups'], ['/web-development/webflow-agency-warsaw', 'Webflow agency in Warsaw']]
+              .map(([h, l]) => <li><a class="link" href={h}>{l} <Tri /></a></li>)}
+          </ul>
         </div>
         <div class="xsv__media s2">
           {home.services.map((s, i) => (

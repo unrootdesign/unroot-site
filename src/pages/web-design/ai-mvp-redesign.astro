@@ -1,0 +1,37 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import { service } from '../../data/schema';
+// текст из документа Adam «Batch 2: page copy and build notes», Page 4
+const title = "Website redesign for an AI MVP | Unroot Design";
+const description = "Your MVP shipped fast and the website still looks like version 1. We redesign it, starting with a $1,499 concept in 7 days.";
+const path = '/web-design/ai-mvp-redesign';
+---
+<LandingPage title={title} description={description}
+  media="resumai"
+  crumbs={[{ name: 'Home', href: '/' }, { name: 'Website design', href: '/web-design' }, { name: 'AI MVP redesign' }]}
+  h1="Website redesign <span>for an AI MVP</span>"
+  lede="You shipped the MVP fast. The website was made in a weekend and it still shows version 1. Our rule for an MVP website: change 5 things first."
+  sections={[
+    { h: 'The 5 things <span>we change first</span>', blocks: [{ kind: 'steps', items: [
+      { d: 'Show the product on the first screen instead of describing it.' },
+      { d: 'One promise in one sentence: what it does and for whom.' },
+      { d: 'Proof: real names, real numbers, real screens.' },
+      { d: 'One next step: a call, a trial or a concept, not 5 buttons.' },
+      { d: 'A website your team edits itself, so it keeps up with the product.' },
+    ]}]},
+    { h: 'How we <span>start</span>', blocks: [{ kind: 'text', big: true, html: [
+      'With the $1,499 concept: send a link, and in 7 days you get a clickable, animated version of your new homepage. Look at the before and after pairs on the <a href="/concept">concept page</a>. Chatarmin, ResumAI and Leadgains were early products too.',
+    ]}]},
+    { h: 'What it <span>costs</span>', blocks: [{ kind: 'text', big: true, html: [
+      'Concept $1,499, a sprint $2,499 a week, a month $7,899. See the <a href="/pricing">pricing page</a>.',
+    ]}]},
+  ]}
+  faqTitle="Questions"
+  faq={[
+    { q: 'Do I need a full redesign?', a: 'Not always. Start with the concept and see the direction first. If you do not move forward, you keep it.' },
+    { q: 'How long does it take?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+    { q: 'Can my team keep editing it?', a: 'Yes, in the CMS or by asking AI.' },
+  ]}
+  closing="Take the concept, or want a call first?"
+  extraSchema={[service('Website redesign for an AI MVP', 'Website redesign', description, path)]}
+/>

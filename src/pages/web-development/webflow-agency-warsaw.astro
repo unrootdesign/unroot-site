@@ -1,0 +1,41 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import { service } from '../../data/schema';
+// текст из документа Adam «Batch 2: page copy and build notes», Page 6. Пометки CHECK на страницу не идут
+const title = "Webflow agency in Warsaw, Poland | Unroot Design";
+const description = "A Webflow Certified Partner based in Warsaw. We build startup websites in Webflow for teams in Poland and worldwide.";
+const path = '/web-development/webflow-agency-warsaw';
+---
+<LandingPage title={title} description={description}
+  badge
+  crumbs={[{ name: 'Home', href: '/' }, { name: 'Webflow and Framer', href: '/web-development' }, { name: 'Webflow agency in Warsaw' }]}
+  h1="Webflow agency <span>in Warsaw, Poland</span>"
+  lede="We are a Webflow Certified Partner based in Warsaw. We build startup websites in Webflow for teams in Poland and around the world."
+  sections={[
+    { h: 'Who <span>we are</span>', blocks: [{ kind: 'text', big: true, html: [
+      'A team of 5 in Warsaw, with no account managers in between. 9 years, 100+ brands, $130M+ raised by clients.',
+    ]}]},
+    { h: 'What we build <span>in Webflow</span>', blocks: [{ kind: 'text', big: true, html: [
+      'Homepages, landing pages and full websites for funded AI and tech startups, and for agencies. Design in Figma first, then the build in Webflow, with animation and 3D where it explains the product. See the page for <a href="/web-development/webflow-agency-for-startups">Webflow agency for startups</a>.',
+    ]}]},
+    { h: 'Webflow <span>work</span>', blocks: [
+      { kind: 'work', items: [
+        { slug: 'dreamie', html: '<b>Ambient Dreamie</b>: designed in Figma and built in Webflow, with 3D visuals and animation.' },
+        { slug: 'javelin', html: '<b>Javelin VP</b>: moved from WordPress to Webflow. $125M fund.' },
+      ]},
+      { kind: 'text', html: ['Our <a href="/templates">Webflow templates</a> are sold on the Webflow Marketplace.'] },
+    ]},
+    { h: 'How we <span>start</span>', blocks: [{ kind: 'text', big: true, html: [
+      'The $1,499 <a href="/concept">homepage concept</a>, in 7 days. A sprint is $2,499 a week and a month is $7,899. See the <a href="/pricing">pricing page</a>.',
+    ]}]},
+  ]}
+  faqTitle="Questions"
+  faq={[
+    { q: 'Do you only work with companies in Poland?', a: 'No. We work with startups and agencies around the world, from Warsaw.' },
+    { q: 'Are you a Webflow Certified Partner?', a: 'Yes.' },
+    { q: 'How long does a Webflow website take?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+    { q: 'Who owns the files?', a: 'You do, once the project is paid.' },
+  ]}
+  closing="Take the concept, or want a call first?"
+  extraSchema={[service('Webflow agency in Warsaw, Poland', 'Webflow development', description, path)]}
+/>

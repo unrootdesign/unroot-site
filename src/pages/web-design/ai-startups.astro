@@ -19,11 +19,11 @@ const description = "We design websites for AI startups that explain the product
     { h: 'Work', blocks: [
       { kind: 'text', html: ['<b>Sintra</b>, an AI platform for autonomous agents.'] },
       { kind: 'quote', text: '“The designs are honestly some of the coolest stuff I have seen out there. If you are on a search for truly creative and unique web designs, these guys know what they are doing.”', name: 'Rokas Judickas', role: 'Founding designer at Sintra', avatar: 'rokas', logo: 'sintra' },
-      { kind: 'cases', items: [
-        { slug: 'dreamie', href: '/case-studies/dreamie', html: '<a href="/case-studies/dreamie"><b>Ambient Dreamie</b></a>, healthtech: $550K raised.' },
-        { slug: 'trustyfy', href: '/case-studies/trustyfy', html: '<a href="/case-studies/trustyfy"><b>Trustyfy</b></a>, fintech: $6.8M raised.' },
-        { slug: 'switch', href: '/case-studies/switch', html: '<a href="/case-studies/switch"><b>Switch</b></a>, fintech: 100K+ active users.' },
-        { slug: 'epsilon', href: '/case-studies/epsilon-health', html: '<a href="/case-studies/epsilon-health"><b>Epsilon Health</b></a>, medtech radiology.' },
+      { kind: 'work', items: [
+        { slug: 'dreamie', html: '<b>Ambient Dreamie</b>, healthtech: $550K raised.' },
+        { slug: 'trustyfy', html: '<b>Trustyfy</b>, fintech: $6.8M raised.' },
+        { slug: 'switch', html: '<b>Switch</b>, fintech: 100K+ active users.' },
+        { slug: 'epsilon', html: '<b>Epsilon Health</b>, medtech radiology.' },
       ]},
       { kind: 'text', html: ['Most of our clients build in AI, fintech and health.'] },
     ]},
@@ -34,6 +34,9 @@ const description = "We design websites for AI startups that explain the product
     ]}]},
     { h: 'What it <span>costs</span>', blocks: [{ kind: 'text', big: true, html: [
       'The <a href="/concept">concept</a> is $1,499 and takes 7 days. A sprint is $2,499 a week. A month is $7,899. Details on the <a href="/pricing">pricing page</a>.',
+    ]}, { kind: 'links', items: [
+      { label: 'Website redesign for an AI MVP', href: '/web-design/ai-mvp-redesign' },
+      { label: 'Website design for seed stage startups', href: '/web-design/seed-stage-startups' },
     ]}]},
     { h: 'After <span>launch</span>', blocks: [{ kind: 'text', big: true, html: [
       'Your team changes copy, pages and posts by asking AI. One of our clients runs his website this way and has not needed to hire anyone for it.',

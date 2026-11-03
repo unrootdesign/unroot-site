@@ -1,0 +1,38 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import { service } from '../../data/schema';
+// текст из документа Adam «Batch 2: page copy and build notes», Page 5
+const title = "Website design for seed stage startups | Unroot Design";
+const description = "Websites for pre seed to Series A startups, designed for the visit an investor makes before the call.";
+const path = '/web-design/seed-stage-startups';
+---
+<LandingPage title={title} description={description}
+  crumbs={[{ name: 'Home', href: '/' }, { name: 'Website design', href: '/web-design' }, { name: 'Seed stage startups' }]}
+  h1="Website design <span>for seed stage startups</span>"
+  lede="Before a call, an investor opens your website. We design for that visit. This page is for startups from pre seed to Series A."
+  sections={[
+    { h: 'What the website has to do <span>for a funded startup</span>', blocks: [{ kind: 'text', big: true, html: [
+      'Explain the product in 10 seconds. Show proof that is yours. Make the next step clear. And be easy to change when the product changes, because at this stage it changes every month.',
+    ]}]},
+    { h: 'Work', blocks: [{ kind: 'work', items: [
+      { slug: 'dreamie', html: '<b>Ambient Dreamie</b>: $550K raised.' },
+      { slug: 'trustyfy', html: '<b>Trustyfy</b>: $6.8M raised.' },
+    ]}]},
+    { h: 'How we <span>work</span>', blocks: [
+      { kind: 'steps', items: [
+        { t: 'Concept.', d: '$1,499, 7 days, goes toward the full website within 60 days.' },
+        { t: 'Design and build.', d: 'A sprint is $2,499 a week and a month is $7,899.' },
+        { t: 'Handover.', d: 'Your team edits it by asking AI or in the CMS, with no developer.' },
+      ]},
+      { kind: 'text', html: ['See the <a href="/pricing">pricing page</a> and the <a href="/concept">concept page</a>.'] },
+    ]},
+  ]}
+  faqTitle="Questions"
+  faq={[
+    { q: 'Do you work with pre seed startups?', a: 'Yes, from pre seed to Series A.' },
+    { q: 'How fast can it launch?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+    { q: 'Who owns the files?', a: 'You do, once the project is paid.' },
+  ]}
+  closing="Take the concept, or want a call first?"
+  extraSchema={[service('Website design for seed stage startups', 'Website design', description, path)]}
+/>

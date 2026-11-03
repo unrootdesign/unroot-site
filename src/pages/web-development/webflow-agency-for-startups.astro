@@ -1,0 +1,48 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import { service } from '../../data/schema';
+// текст из документа Adam «Batch 2: page copy and build notes», Page 1. Пометки CHECK на страницу не идут
+const title = "Webflow agency for startups | Unroot Design";
+const description = "A Webflow Certified Partner in Warsaw. Concept in 7 days, a landing page in a month, fixed public prices from $1,499.";
+const path = '/web-development/webflow-agency-for-startups';
+---
+<LandingPage title={title} description={description}
+  badge media="javelin"
+  crumbs={[{ name: 'Home', href: '/' }, { name: 'Webflow and Framer', href: '/web-development' }, { name: 'Webflow agency for startups' }]}
+  h1="Webflow agency <span>for startups</span>"
+  lede="We are a Webflow Certified Partner in Warsaw. We design and build startup websites in Webflow for AI, fintech and healthtech teams, and your team edits them after launch without a developer."
+  sections={[
+    { h: 'What we build <span>in Webflow</span>', blocks: [{ kind: 'text', big: true, html: [
+      'Homepages, landing pages and full websites for funded AI and tech startups. Design in Figma first, then the build in Webflow, with animation and 3D where it explains the product.',
+    ]}]},
+    { h: 'Webflow for AI, <span>fintech and healthtech</span>', blocks: [{ kind: 'text', big: true, html: [
+      'We build for <a href="/web-design/ai-startups">AI startups</a>, <a href="/web-design/fintech">fintech</a> and <a href="/web-design/healthtech">healthtech</a>. One team for all three, in Webflow, Framer or code. Based in Warsaw: see our <a href="/web-development/webflow-agency-warsaw">Webflow agency in Warsaw</a> page.',
+    ]}]},
+    { h: 'How we <span>start</span>', blocks: [{ kind: 'text', big: true, html: [
+      'The $1,499 homepage concept comes first: hero plus 3 sections, animated and clickable, in 7 days. It goes toward the full website if you start within 60 days. After that, a sprint is $2,499 a week and a month is $7,899. Details on the <a href="/pricing">pricing page</a>.',
+    ]}]},
+    { h: 'Webflow <span>work</span>', blocks: [
+      { kind: 'work', items: [
+        { slug: 'dreamie', html: '<b>Ambient Dreamie</b>: designed in Figma and built in Webflow, with 3D visuals and animation. $550K raised.' },
+        { slug: 'javelin', html: '<b>Javelin VP</b>: moved from WordPress to Webflow. $125M fund.' },
+      ]},
+      { kind: 'text', html: ['Our <a href="/templates">Webflow templates</a> are sold on the Webflow Marketplace. One of them is how our longest client, WHS, found us.'] },
+    ]},
+    { h: 'After <span>launch</span>', blocks: [{ kind: 'text', big: true, html: [
+      'Your team changes copy, pages and posts in the Webflow CMS, or by asking AI. One of our clients runs his website this way and has not needed to hire anyone for it.',
+    ]}]},
+    { h: 'Webflow or <span>something else</span>', blocks: [{ kind: 'text', big: true, html: [
+      'We also build in Framer and in code. Not sure which fits? Read <a href="/web-development/webflow-vs-framer">Webflow vs Framer</a>.',
+    ]}]},
+  ]}
+  faqTitle="Questions"
+  faq={[
+    { q: 'Are you a Webflow Certified Partner?', a: 'Yes.' },
+    { q: 'Do you build in Framer too?', a: 'Yes, in Webflow, Framer or code.' },
+    { q: 'Can my team edit the website ourselves?', a: 'Yes, in the CMS or by asking AI. We show your team how in a handover call.' },
+    { q: 'How long does a Webflow website take?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+    { q: 'Who owns the files?', a: 'You do, once the project is paid.' },
+  ]}
+  closing="Take the concept, or want a call first?"
+  extraSchema={[service('Webflow agency for startups', 'Webflow development', description, path)]}
+/>

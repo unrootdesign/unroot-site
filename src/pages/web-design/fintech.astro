@@ -1,0 +1,42 @@
+---
+import LandingPage from '../../components/LandingPage.astro';
+import { service } from '../../data/schema';
+// текст из документа Adam «Batch 2: page copy and build notes», Page 2
+const title = "Website design for fintech startups | Unroot Design";
+const description = "We design websites for fintech startups that answer 3 questions in 10 seconds. Work for Switch and Trustyfy.";
+const path = '/web-design/fintech';
+---
+<LandingPage title={title} description={description}
+  media="switch"
+  crumbs={[{ name: 'Home', href: '/' }, { name: 'Website design', href: '/web-design' }, { name: 'Fintech' }]}
+  h1="Website design <span>for fintech startups</span>"
+  lede="A fintech visitor decides fast whether to trust you. Our rule: the first screen answers 3 questions in 10 seconds. What does it do? Is it safe to use? What do I do next?"
+  sections={[
+    { h: 'How we show <span>the product</span>', blocks: [{ kind: 'text', big: true, html: [
+      'We show the product on the first screen: the interface, the flow, the numbers. Motion and 3D go where they explain how the product works, not where they decorate.',
+    ]}]},
+    { h: 'Fintech <span>work</span>', blocks: [
+      { kind: 'work', items: [
+        { slug: 'switch', html: '<b>Switch</b>: 100K+ active users.' },
+        { slug: 'trustyfy', html: '<b>Trustyfy</b>: $6.8M raised.' },
+      ]},
+      { kind: 'text', html: ['Most of our clients build in AI, fintech and health.'] },
+    ]},
+    { h: 'How we <span>work</span>', blocks: [{ kind: 'steps', items: [
+      { t: 'Concept.', d: '$1,499, 7 days. Hero plus 3 sections, animated and clickable.' },
+      { t: 'Design and build.', d: 'Every page and the design system, then the build in Webflow, Framer or code.' },
+      { t: 'Handover.', d: 'Your team edits the website by asking AI or in the CMS.' },
+    ]}]},
+    { h: 'What it <span>costs</span>', blocks: [{ kind: 'text', big: true, html: [
+      '<a href="/concept">Concept</a> $1,499, a sprint $2,499 a week, a month $7,899. See the <a href="/pricing">pricing page</a>.',
+    ]}]},
+  ]}
+  faqTitle="Questions"
+  faq={[
+    { q: 'How fast can a fintech website launch?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+    { q: 'Which platform do you build in?', a: 'Webflow, Framer or code.' },
+    { q: 'Who owns the files?', a: 'You do, once the project is paid.' },
+  ]}
+  closing="Take the concept, or want a call first?"
+  extraSchema={[service('Website design for fintech startups', 'Website design', description, path)]}
+/>
