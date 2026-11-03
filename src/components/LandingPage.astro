@@ -48,6 +48,19 @@ const Btn = { concept: { href: BUY_CONCEPT, label: 'Get a concept', main: true }
 // секции с широким содержимым идут столбиком: заголовок сверху, содержимое на всю ширину
 const WIDE = ['plans', 'steps', 'cases', 'work', 'pairs', 'cols', 'tiles'];
 const W = Object.fromEntries(home.work.map((w) => [w.slug, w]));
+// подряд идущие короткие текстовые секции собираем в ряд белых карточек (по 2 или 3), одиночную ставим одной широкой карточкой
+type Sec = Props['sections'][number];
+const isText = (x: Sec) => !!x.h && x.blocks.every((b) => b.kind === 'text' || b.kind === 'links');
+const rows: { s?: Sec; group?: Sec[] }[] = [];
+for (let i = 0; i < p.sections.length;) {
+  if (!isText(p.sections[i])) { rows.push({ s: p.sections[i] }); i++; continue; }
+  let j = i; while (j < p.sections.length && isText(p.sections[j])) j++;
+  const run = p.sections.slice(i, j);
+  // 4 = 2 + 2, 5 = 3 + 2, иначе по 3
+  const sizes = run.length === 4 ? [2, 2] : run.length === 5 ? [3, 2] : Array.from({ length: Math.ceil(run.length / 3) }, (_, k) => Math.min(3, run.length - k * 3));
+  let k = 0; for (const n of sizes) { rows.push({ group: run.slice(k, k + n) }); k += n; }
+  i = j;
+}
 const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind));
 ---
 <Base title={p.title} description={p.description} schema={schema} bodyClass="x">
@@ -75,7 +88,20 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
     </div>
   </section>
 
-  {p.sections.map((s) => (
+  {rows.map((r) => r.group ? (
+    <section class="xs lps">
+      <div class={`xw lpg lpg--${r.group.length}`}>
+        {r.group.map((g) => (
+          <article class="lpg__c">
+            <h2 class="lpg__h" set:html={g.h} />
+            {g.blocks.map((b) => b.kind === 'text'
+              ? <div class="lpt lpg__t">{b.html.map((t) => <p set:html={t} />)}</div>
+              : b.kind === 'links' ? <ul class="lpl lpg__l">{b.items.map((l) => <li><a class="link" href={l.href}>{l.label} <Tri /></a></li>)}</ul> : null)}
+          </article>
+        ))}
+      </div>
+    </section>
+  ) : ((s: Sec) => (
     <section class="xs lps">
       <div class={`xw ${wide(s) ? '' : 'x3 lps__row'}`}>
         {s.h && <h2 class="xh2 lps__h" set:html={s.h} />}
@@ -179,7 +205,7 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
         </div>
       </div>
     </section>
-  ))}
+  ))(r.s!))}
 
   <section class="xs lps" id="faq">
     <div class="xw x3 xfaq lpf">
@@ -239,7 +265,7 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
   .lph__f video { display: block; width: 100%; height: 100%; object-fit: cover; transform: scale(1.012); }
 
   /* секции: отступы меньше, чем на главной, страница короче */
-  .lps { padding-top: clamp(96px, 10vw, 152px); }
+  .lps { padding-top: clamp(72px, 8vw, 120px); }
   .lps__row { align-items: start; }
   .lps__h :global(span) { color: var(--ink-3); }
   .lps__wide { margin-top: clamp(32px, 4vw, 48px); }
@@ -289,6 +315,22 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
   .lpc__img:hover { box-shadow: 0 0 0 2px var(--violet); }
   .lpc__img img { display: block; width: 100%; height: 100%; object-fit: contain; }
   .lpc p { margin-top: 14px; font-size: 1rem; color: var(--ink-2); }
+
+  /* короткие секции: белые карточки в ряд, как карточки цен на главной */
+  .lpg { display: grid; gap: var(--xgap); align-items: stretch; }
+  .lpg--1 { grid-template-columns: 1fr; }
+  .lpg--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lpg--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lpg__c { display: flex; flex-direction: column; gap: 18px; padding: clamp(26px, 3vw, 44px); background: var(--white); box-shadow: var(--xsh); }
+  .lpg--1 .lpg__c { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); column-gap: var(--xgap); }
+  .lpg--1 .lpg__c > :not(.lpg__h) { grid-column: 2; }
+  .lpg__h { font-size: clamp(1.45rem, 2.1vw, 1.9rem); font-weight: 500; letter-spacing: -.04em; line-height: 1.08; max-width: 16ch; }
+  .lpg__h :global(span) { color: var(--ink-3); }
+  .lpg__t { max-width: none; }
+  .lpg__t p { font-size: 1.02rem; line-height: 1.6; }
+  .lpg__l { margin-top: auto; }
+  @media (max-width: 1000px) { .lpg--3 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) { .lpg--2, .lpg--3 { grid-template-columns: 1fr; } .lpg--1 .lpg__c { display: flex; } }
 
   /* карточки кейсов с главной: 2 в ряд, белые, рамка при наведении */
   .lpw { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--xgap); }
