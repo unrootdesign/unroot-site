@@ -269,3 +269,8 @@ html:has(body.x) { scroll-behavior: smooth; }
 .xsv__more { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
 .xsv__more .link { color: var(--ink-2); }
 .xsv__more .link:hover { color: var(--violet-d); }
+
+/* цены на главной: 2 карточки, концепт и созвон */
+.xp--2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--xgap); }
+.xp--2 .xp__c { min-height: clamp(420px, 34vw, 500px); }
+@media (max-width: 760px) { .xp--2 { grid-template-columns: 1fr; } .xp--2 .xp__c { min-height: 0; } }

@@ -1,5 +1,5 @@
 ---
-/* Шаблон отдельных страниц под поисковые запросы: /pricing, /web-design/ai-startups, /concept.
+/* Шаблон отдельных страниц под поисковые запросы: /pricing, /concept, /web-design/*, /web-development/*.
    Текст от Adam (документ «Batch 1: page copy and build notes»), ничего сверх него.
    Вид как у главной: серый фон, белые карточки с тенью, сетка из 3 колонок, заголовки в 2 тона,
    тёмный блок со звёздами. Вопросы и ответы есть в HTML и дублируются в схеме FAQPage. */
@@ -12,7 +12,7 @@ import { home } from '../data/home';
 const M = '/home/';
 type Block =
   | { kind: 'text'; html: string[]; big?: boolean }                    // абзацы, внутри можно <a>; big: крупный текст для коротких секций
-  | { kind: 'plans'; items: { name: string; price: string; unit: string; d: string; btn: 'concept' | 'call'; more?: { label: string; href: string } }[] }
+  | { kind: 'plans'; cols?: 2 | 3; items: { name: string; price: string; unit: string; d: string; btn: 'concept' | 'call'; more?: { label: string; href: string } }[] }
   | { kind: 'tiles'; items: string[] }                                 // пункты списка плитками 2 на 2
   | { kind: 'steps'; items: { t?: string; d: string }[] }
   | { kind: 'quote'; text: string; name: string; role: string; avatar?: string; logo?: string }
@@ -111,7 +111,7 @@ const wide = (s: { blocks: Block[] }) => s.blocks.some(b => WIDE.includes(b.kind
               {b.kind === 'text' && <div class={b.big ? 'lpt lpt--big' : 'lpt'}>{b.html.map((t) => <p set:html={t} />)}</div>}
 
               {b.kind === 'plans' && (
-                <div class="x3 xp lpp">{b.items.map((it) => (
+                <div class={b.cols === 2 ? 'xp xp--2 lpp' : 'x3 xp lpp'}>{b.items.map((it) => (
                   <article class={`xp__c${it.btn === 'concept' ? ' xp__c--concept' : ''}`}>
                     {it.btn === 'concept' && <canvas class="stars" data-d=".3" aria-hidden="true"></canvas>}
                     <p class="xp__n">{it.name}</p>

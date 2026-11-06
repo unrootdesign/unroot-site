@@ -1,33 +1,26 @@
 ---
 import LandingPage from '../components/LandingPage.astro';
 import { BUY_CONCEPT } from '../data/links';
-// текст из документа Adam «Batch 1: page copy and build notes», Page 1
+// Ноябрь 2026: публичная цена осталась только у концепта. Полный сайт оцениваем после созвона.
+// Тексты собраны из Batch 1 (Adam), без цен спринта и месяца
 const title = "Website design pricing for startups | Unroot Design";
-const description = "Concept $1,499, Sprint $2,499 a week, Monthly $7,899. Fixed public prices, what each includes and who owns the files.";
+const description = "The homepage concept is $1,499 in 7 days. The full website is priced after a call, once we know what you need.";
 const org = { '@type': 'Organization', name: 'Unroot Design', url: 'https://unroot.design' };
-const offer = (name: string, price: string, url: string, unit?: string) => ({
-  '@context': 'https://schema.org', '@type': 'Offer', name, price, priceCurrency: 'USD', url, seller: org,
-  ...(unit ? { priceSpecification: { '@type': 'UnitPriceSpecification', price, priceCurrency: 'USD', unitText: unit } } : {}),
-});
-const U = 'https://unroot.design/pricing';
 ---
 <LandingPage title={title} description={description}
   crumbs={[{ name: 'Home', href: '/' }, { name: 'Pricing' }]}
   h1="Website design pricing <span>for startups</span>"
-  lede="Three ways to work with us. The prices are fixed and public, so you know the number before the call."
+  lede="2 ways to start. Take the $1,499 homepage concept, or tell us about the full project on a call and we send you an estimate."
   sections={[
-    { h: 'Pick how we <span>work together</span>', blocks: [{ kind: 'plans', items: [
+    { h: '2 ways <span>to start</span>', blocks: [{ kind: 'plans', cols: 2, items: [
       { name: 'Homepage concept', price: '$1,499', unit: '7 days', btn: 'concept', more: { label: 'How the concept works', href: '/concept' },
         d: 'An animated homepage concept, hero plus 3 sections. Designed in Figma and turned into a live preview you can click through and share with your team. The files are yours. The $1,499 goes toward the full website if you start within 60 days.' },
-      { name: 'Design and Build Sprint', price: '$2,499', unit: 'a week', btn: 'call',
-        d: '1 week of design, build or both. It ends on Friday. No notice period. Use it when the job fits in 1 week.' },
-      { name: 'Monthly Design and Build', price: '$7,899', unit: 'a month', btn: 'call',
-        d: '4 weeks with a senior designer and a senior developer. Handover and AI setup included. Pause or stop after any month. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
+      { name: 'Full website', price: 'Let’s talk', unit: 'priced after a call', btn: 'call',
+        d: 'The price depends on what you need. Tell us about the project in a 30 minute call, and we send you an estimate. You can also start with the concept and price the rest after it.' },
     ]}]},
     { h: 'Which one <span>to start with</span>', blocks: [{ kind: 'text', big: true, html: [
       'Not sure what the website should look like: start with <a href="/concept">the concept</a>.',
-      'You know what you need and it fits in a week: take a sprint.',
-      'You need a landing page plus a few pages, or a full website: take a month, or 2 for a full website.',
+      'You know what you need: <a href="/call">book a call</a>, and we estimate the project.',
     ]}]},
     { h: 'What every project <span>includes</span>', blocks: [{ kind: 'tiles', items: [
       'A private Slack channel with the people doing the work.',
@@ -46,15 +39,13 @@ const U = 'https://unroot.design/pricing';
   ]}
   faqTitle="Pricing <span>questions</span>"
   faq={[
-    { q: 'How much does a startup website cost with Unroot?', a: 'A landing page plus a few pages is 1 Monthly Design and Build at $7,899. A full website takes 1–2 months, so $7,899–15,798. If you want to see the direction first, start with the $1,499 concept.' },
-    { q: 'Is Monthly Design and Build a subscription?', a: 'No. It is 1 month of work, not a plan that renews on its own. Stop after any month and come back when you need us. No notice period.' },
+    { q: 'How much does a startup website cost with Unroot?', a: 'It depends on what you need. Tell us about the project on a call, and we send you an estimate. If you want to see the direction first, start with the $1,499 concept.' },
+    { q: 'How long does a website take?', a: 'The concept takes 7 days. A landing page plus a few pages fits into 1 month. A full website takes 1–2 months.' },
     { q: 'What if I do not move forward after the concept?', a: 'You keep the concept and can build it with anyone. If you start the full website with us within 60 days, the $1,499 goes toward it.' },
     { q: 'Who owns the files?', a: 'You do. Everything is yours once the project is paid.' },
   ]}
   closing="Take the concept, or want a call first?"
-  extraSchema={[
-    offer('Homepage concept', '1499', BUY_CONCEPT),
-    offer('Design and Build Sprint', '2499', U, 'week'),
-    offer('Monthly Design and Build', '7899', U, 'month'),
-  ]}
+  extraSchema={[{
+    '@context': 'https://schema.org', '@type': 'Offer', name: 'Homepage concept', price: '1499', priceCurrency: 'USD', url: BUY_CONCEPT, seller: org,
+  }]}
 />

@@ -185,10 +185,6 @@ export const home = {
    "a": "No. Designers make every decision on direction and layout. AI helps us write the code, which is why a landing page plus a few pages fits into a month."
   },
   {
-   "q": "How is Monthly Design and Build different from a subscription?",
-   "a": "It is 1 month of work, not a plan that renews on its own. Stop after any month and come back when you need us. No notice period."
-  },
-  {
    "q": "Do you only work with AI startups?",
    "a": "Most of our clients build in AI, fintech and health. If you sell a complex product and need a website that explains it fast, we are likely a fit."
   },
