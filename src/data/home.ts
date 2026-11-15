@@ -127,6 +127,14 @@ export const home = {
  ],
  "quotes": [
   {
+   "text": "We're happy to pay almost even 2x that to you guys because of the relationship we've built. We want to work with partners who are thoughtful and kind and communicative. And you guys have demonstrated all of that!",
+   "name": "Jonah Neuss",
+   "role": "Co-founder at Wow House Studio",
+   "avatar": "jonah",
+   "url": "",
+   "video": "t-jonah"
+  },
+  {
    "text": "Javelin worked with Adam at Unroot on the re-design and development of our website, transitioning from WordPress to Webflow. We could not have been happier with his work and strongly recommend him to any future clients. He is creative and very timely with responses, which we really appreciated.",
    "name": "Tasnia Huque",
    "role": "Principal at Javelin VP",

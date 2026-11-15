@@ -125,7 +125,12 @@
   /* ── отзывы ── */
   const qs = $$('#xq blockquote');
   let qi = 0;
-    const quote = i => { qi = (i + qs.length) % qs.length; qs.forEach((q, k) => q.classList.toggle('on', k === qi)); };
+    const quote = i => { qi = (i + qs.length) % qs.length; qs.forEach((q, k) => q.classList.toggle('on', k === qi));
+    $$('#xq video').forEach(v => v.pause()); };
+  // видео-отзыв: по кнопке запускаем со звуком и показываем штатные контролы
+  $$('#xq .xq__play').forEach(b => b.addEventListener('click', () => {
+    const v = b.parentElement.querySelector('video'); v.controls = true; v.play(); b.hidden = true;
+  }));
   $$('#xq .xq__arr').forEach(b => b.addEventListener('click', () => quote(qi + +b.dataset.d)));
 
   /* ── услуги: список переключает кадр, картинки внутри услуги сменяются сами ── */

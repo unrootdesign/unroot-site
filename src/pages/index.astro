@@ -121,6 +121,21 @@ const schema = [{
       <div class="x3 xr">
         <div class="xq s2" id="xq">
           {home.quotes.map((q, i) => (
+            q.video ? (
+              <blockquote class={`xq--v${i === 0 ? ' on' : ''}`}>
+                <div class="xq__vid">
+                  <video src={`${M}${q.video}.mp4`} poster={`${M}${q.video}.jpg`} preload="none" playsinline></video>
+                  <button type="button" class="xq__play" aria-label={`Play the video from ${q.name}`}><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z" fill="currentColor"/></svg>Watch</button>
+                </div>
+                <div class="xq__vt">
+                  <p>&ldquo;{q.text}&rdquo;</p>
+                  <footer>
+                    <img src={`${M}av-${q.avatar}.jpg`} alt="" width="44" height="44" loading="lazy" />
+                    <span><b>{q.name}</b>{q.role}</span>
+                  </footer>
+                </div>
+              </blockquote>
+            ) : (
             <blockquote class={i === 0 ? 'on' : ''}>
               <p>&ldquo;{q.text}&rdquo;</p>
               <footer>
@@ -129,6 +144,7 @@ const schema = [{
               </footer>
               {q.url && <a class="xq__tp" href={q.url} target="_blank" rel="noopener">See on Trustpilot ↗</a>}
             </blockquote>
+            )
           ))}
           <div class="xq__nav">
             <button type="button" class="xq__arr" data-d="-1" aria-label="Previous review">←</button>
