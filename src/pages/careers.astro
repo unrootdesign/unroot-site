@@ -4,7 +4,7 @@ import Tri from '../components/Tri.astro';
 
 // title дословно из Webflow, description написан заново (в Webflow не было)
 const title = "Careers | Unroot.design";
-const description = "Open roles at Unroot Design. We are a small remote studio designing and building websites for AI and tech startups. AI-native designers, Webflow and Framer developers, project managers.";
+const description = "Open roles at Unroot Design. We are a small remote studio designing and building websites for AI and tech startups, and we are hiring an AI-native web designer.";
 
 /* Заявки уходят через Web3Forms на почту владельца ключа.
    Ключ в переменной PUBLIC_WEB3FORMS_KEY в настройках Cloudflare Pages. */
@@ -20,9 +20,9 @@ const principles = [
   { t: 'You are already learning', d: 'Show us what you tried last month. We invest in people who push their craft now, not someday.' },
 ];
 const roles = [
-  { dep: 'Design', t: 'AI-Native Product Designer', d: 'Web, brand and motion in 1 person. You design in Figma, then vibe code the concept into a live prototype yourself, with whatever AI tools get it there fastest.' },
-  { dep: 'Development', t: 'AI-First Webflow / Framer Developer', d: 'You turn a Figma file into a clean, responsive build in days, not weeks. AI writes the custom code and animations with you, and you check every breakpoint yourself.' },
-  { dep: 'Management', t: 'Project Manager', d: 'A project manager fluent in design and development logic. You keep projects moving on your own, far beyond forwarding messages.' },
+  { dep: 'Design', t: 'AI-Native Web Designer', open: true, d: 'Web, brand and motion in 1 person. You design in Figma, then vibe code the concept into a live prototype yourself, with whatever AI tools get it there fastest.' },
+  { dep: 'Development', t: 'AI-First Webflow / Framer Developer', open: false, d: 'You turn a Figma file into a clean, responsive build in days, not weeks. AI writes the custom code and animations with you, and you check every breakpoint yourself.' },
+  { dep: 'Management', t: 'Project Manager', open: false, d: 'A project manager fluent in design and development logic. You keep projects moving on your own, far beyond forwarding messages.' },
 ];
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
@@ -53,13 +53,23 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <ul class="cr__roles">
         {roles.map(r => (
           <li>
-            <a href="#apply" data-role={r.t}>
-              <span class="mono cr__dep">{r.dep}</span>
-              <span class="cr__rt">{r.t}</span>
-              <span class="cr__rd">{r.d}</span>
-              <span class="mono cr__meta">Remote · Full-time or part-time · Salary negotiable</span>
-              <span class="link cr__go">Apply <Tri /></span>
-            </a>
+            {r.open ? (
+              <a href="#apply" data-role={r.t}>
+                <span class="mono cr__dep">{r.dep}</span>
+                <span class="cr__rt">{r.t}</span>
+                <span class="cr__rd">{r.d}</span>
+                <span class="mono cr__meta">Remote · Full-time or part-time · Salary negotiable</span>
+                <span class="link cr__go">Apply <Tri /></span>
+              </a>
+            ) : (
+              <div class="cr__closed" aria-disabled="true">
+                <span class="mono cr__dep">{r.dep}</span>
+                <span class="cr__rt">{r.t}</span>
+                <span class="cr__rd">{r.d}</span>
+                <span class="mono cr__meta">Not hiring right now</span>
+                <span class="mono cr__go cr__shut">Closed</span>
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -75,21 +85,21 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </div>
       <form class="cr__form" id="applyForm" data-key={FORM_KEY} novalidate>
         <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
-        <label class="f"><span class="mono">Full name</span><input name="name" type="text" required autocomplete="name" /></label>
-        <label class="f"><span class="mono">Email</span><input name="email" type="email" required autocomplete="email" /></label>
-        <label class="f"><span class="mono">Country you live in now</span><input name="country" type="text" required autocomplete="country-name" />
+        <label class="f"><span class="mono">Full name</span><input name="name" type="text" placeholder="Jane Smith" required autocomplete="name" /></label>
+        <label class="f"><span class="mono">Email</span><input name="email" type="email" placeholder="jane@example.com" required autocomplete="email" /></label>
+        <label class="f"><span class="mono">Country you live in now</span><input name="country" type="text" placeholder="Poland" required autocomplete="country-name" />
           <small class="f__hint">We can only work with people based in countries where we are able to send payments.</small></label>
         <label class="f"><span class="mono">Role</span>
           <select name="role" required>
             <option value="">Select a role</option>
-            {roles.map(r => <option value={r.t}>{r.t}</option>)}
+            {roles.map(r => <option value={r.t} disabled={!r.open}>{r.open ? r.t : `${r.t} (closed)`}</option>)}
             <option value="Other">Other</option>
           </select>
         </label>
-        <label class="f"><span class="mono">Portfolio link</span><input name="portfolio" type="url" placeholder="https://" required /></label>
-        <label class="f"><span class="mono">What are you currently learning or improving?</span><textarea name="learning" rows="4" required></textarea></label>
-        <label class="f"><span class="mono">What is one thing you created or solved that made you proud?</span><textarea name="proud" rows="4" required></textarea></label>
-        <label class="f"><span class="mono">Salary expectations</span><input name="salary" type="text" required /></label>
+        <label class="f"><span class="mono">Portfolio link</span><input name="portfolio" type="url" placeholder="Website or Behance link" required /></label>
+        <label class="f"><span class="mono">Tell us about your AI workflow</span><textarea name="ai_workflow" rows="4" placeholder="How you use AI in your work, and how it helps you work better and faster" required></textarea></label>
+        <label class="f"><span class="mono">Why do you want to work with us?</span><textarea name="why_us" rows="4" placeholder="And what a good way of working looks like for you" required></textarea></label>
+        <label class="f"><span class="mono">Salary expectations</span><input name="salary" type="text" placeholder="Monthly or hourly rate" required /></label>
         <button type="submit" class="btn btn--main cr__send"><span>Send application</span><Tri /></button>
         <p class="cr__status mono" role="status" aria-live="polite"></p>
       </form>
@@ -107,7 +117,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .cr__grid b { display: block; margin-top: 18px; font-size: clamp(1.3rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -.03em; line-height: 1.2; }
   .cr__grid p { margin-top: 10px; color: var(--ink-2); line-height: 1.6; max-width: 52ch; }
   .cr__roles { list-style: none; padding: 0; margin: clamp(32px, 4vw, 48px) 0 0; border-top: 1px solid var(--line); }
-  .cr__roles a { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; grid-template-areas: "dep t go" "dep d go" "dep m go"; column-gap: clamp(20px, 3vw, 40px); row-gap: 8px;
+  .cr__roles a, .cr__roles .cr__closed { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; grid-template-areas: "dep t go" "dep d go" "dep m go"; column-gap: clamp(20px, 3vw, 40px); row-gap: 8px;
     padding: 24px 0; border-bottom: 1px solid var(--line); position: relative; transition: padding var(--t) var(--ease); }
   .cr__roles a::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--violet); transform: scaleY(0); transition: transform .35s var(--ease); }
   .cr__roles a:hover { padding-left: 22px; }
@@ -118,11 +128,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .cr__rd { grid-area: d; color: var(--ink-2); max-width: 60ch; }
   .cr__meta { grid-area: m; color: var(--ink-3); }
   .cr__go { grid-area: go; align-self: center; }
-  @media (max-width: 760px) { .cr__roles a { grid-template-columns: 1fr; grid-template-areas: "dep" "t" "d" "m" "go"; } .cr__go { justify-self: start; margin-top: 8px; } }
+  @media (max-width: 760px) { .cr__roles a, .cr__roles .cr__closed { grid-template-columns: 1fr; grid-template-areas: "dep" "t" "d" "m" "go"; } .cr__go { justify-self: start; margin-top: 8px; } }
   .cr__two { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
   @media (max-width: 900px) { .cr__two { grid-template-columns: 1fr; } }
   .cr__form { display: grid; gap: 18px; }
   .f { display: grid; gap: 8px; }
+  .f input::placeholder, .f textarea::placeholder { color: var(--ink-3); opacity: .8; }
+  .cr__closed { position: relative; opacity: .45; cursor: not-allowed; }
+  .cr__shut { color: var(--ink-3); }
   .f__hint { font-size: .85rem; line-height: 1.45; color: var(--ink-3); }
   .f span { font: 500 var(--caps-fs)/1.5 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-2); }
   .f input, .f select, .f textarea { width: 100%; padding: 13px 14px; border: 1px solid var(--line-b); border-radius: 0; background: var(--white); font-size: 1rem; color: var(--ink);
