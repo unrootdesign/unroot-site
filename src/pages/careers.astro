@@ -77,6 +77,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
         <input type="checkbox" name="botcheck" class="visually-hidden" tabindex="-1" autocomplete="off" />
         <label class="f"><span class="mono">Full name</span><input name="name" type="text" required autocomplete="name" /></label>
         <label class="f"><span class="mono">Email</span><input name="email" type="email" required autocomplete="email" /></label>
+        <label class="f"><span class="mono">Country you live in now</span><input name="country" type="text" required autocomplete="country-name" />
+          <small class="f__hint">We can only work with people based in countries where we are able to send payments.</small></label>
         <label class="f"><span class="mono">Role</span>
           <select name="role" required>
             <option value="">Select a role</option>
@@ -121,6 +123,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   @media (max-width: 900px) { .cr__two { grid-template-columns: 1fr; } }
   .cr__form { display: grid; gap: 18px; }
   .f { display: grid; gap: 8px; }
+  .f__hint { font-size: .85rem; line-height: 1.45; color: var(--ink-3); }
   .f span { font: 500 var(--caps-fs)/1.5 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-2); }
   .f input, .f select, .f textarea { width: 100%; padding: 13px 14px; border: 1px solid var(--line-b); border-radius: 0; background: var(--white); font-size: 1rem; color: var(--ink);
     transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease); }
