@@ -134,7 +134,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .cr__form { display: grid; gap: 18px; }
   .f { display: grid; gap: 8px; }
   .f input::placeholder, .f textarea::placeholder { color: var(--ink-3); opacity: .8; }
-  .cr__closed { position: relative; opacity: .45; cursor: not-allowed; }
+  /* закрытые позиции: серый блок цвета линий, текст приглушён */
+  .cr__roles .cr__closed { margin-inline: -22px; padding-inline: 22px; background: var(--line); border-bottom-color: var(--white); cursor: not-allowed; }
+  .cr__closed > * { opacity: .55; }
+  @media (max-width: 760px) { .cr__roles .cr__closed { margin-inline: -16px; padding-inline: 16px; } }
   .cr__shut { color: var(--ink-3); }
   .f__hint { font-size: .85rem; line-height: 1.45; color: var(--ink-3); }
   .f span { font: 500 var(--caps-fs)/1.5 var(--mono); letter-spacing: var(--caps-ls); text-transform: uppercase; color: var(--ink-2); }
